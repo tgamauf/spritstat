@@ -1,0 +1,81 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Login to Github container registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u USERNAME --password-stdin
+      - name: Tag current image as previous image for recovery purposes
+        run: |
+          docker pull ghcr.io/tgamauf/spritstat:latest
+          docker tag ghcr.io/tgamauf/spritstat:latest ghcr.io/tgamauf/spritstat:previous
+      # Not using docker/build-push-action as it has broken handling of .dockerignore
+      #  https://github.com/docker/buildx/issues/850
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: |
+          docker build -t ghcr.io/tgamauf/spritstat:latest -f docker/Dockerfile .
+      - name: Push latest and previous images
+        run: |
+          docker push ghcr.io/tgamauf/spritstat:previous
+          docker push ghcr.io/tgamauf/spritstat:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [docker]
+    steps:
+      - name: Get public Github action worker IP
+        id: ip
+        uses: haythem/public-ip@v1.2
+      - name: Set environment variables for use in following steps
+        run: |
+          echo "AWS_DEFAULT_REGION=eu-central-1" >> $GITHUB_ENV
+          echo "AWS_SG_NAME=default-ec2" >> $GITHUB_ENV
+      - name: Add IP of worker to security group of AWS EC2 machine
+        run: |
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} \
+            --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+      - uses: actions/checkout@v2
+      - name: Create database snapshot for recovery purposes
+        run: |
+          aws rds create-db-snapshot --db-instance-identifier spritstat \
+            --db-snapshot-identifier release-spritstat-$(date +%Y-%m-%d-%H-%M)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+      - name: Deploy new application to AWS EC2 machine
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          directory: deployment
+          playbook: playbook.yml
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts:
+            "|1|V8f6Yi23JAJnMazuk85U2nZfzto=|WAWN9BBCx7i8jtH2K2snd14z2M8= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNhvP8JuSP70F1C0sJPHYEXnnggsMcc6yPAKVNdpOtRsv2xWJFFL4HiaT03qHDqg6MtqQYpXN/j4f7xMJZ9jecc=
+            |1|4snRNIYax/BvlZMPa2gJ1TdizyM=|Ewnzp67KA4+aHQZgBOCeG1lTvVA= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNhvP8JuSP70F1C0sJPHYEXnnggsMcc6yPAKVNdpOtRsv2xWJFFL4HiaT03qHDqg6MtqQYpXN/j4f7xMJZ9jecc="
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --user github-actions
+            --inventory inventory
+      - name: Remove IP of worker from security group of AWS EC2 machine
+        run: |
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} \
+            --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+        if: always()

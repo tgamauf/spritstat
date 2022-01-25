@@ -1,0 +1,12 @@
+{% extends "account/email/base_message.txt" %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}
+{% blocktrans with site_domain=current_site.domain %}
+Du erhältst dieses Email weil sich jemand mit dieser Email-Adresse bei https://{{ site_domain }}/ registriert hat.
+
+Falls du das Service benutzen möchtest, klicke den Link um die Email-Adresse zu bestätigen:
+{{ activate_url }}
+
+Es freut uns sehr dass du SPRITSTAT benutzen möchtest!{% endblocktrans %}{% endautoescape %}{% endblock %}

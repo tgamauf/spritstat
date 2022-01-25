@@ -1,0 +1,56 @@
+[
+  {
+    "model": "django_q.schedule",
+    "pk": 1,
+    "fields": {
+      "name": null,
+      "func": "spritstat.services.request_location_prices",
+      "hook": null,
+      "args": "(1,)",
+      "kwargs": "{}",
+      "schedule_type": "H",
+      "minutes": null,
+      "repeats": -1748,
+      "next_run": "2021-12-22T16:56:18.383Z",
+      "cron": null,
+      "task": "5a210a76a2794b12aa98c39b998f6d9b",
+      "cluster": null
+    }
+  },
+  {
+    "model": "django_q.schedule",
+    "pk": 2,
+    "fields": {
+      "name": null,
+      "func": "spritstat.services.request_location_prices",
+      "hook": null,
+      "args": "(2,)",
+      "kwargs": "{}",
+      "schedule_type": "H",
+      "minutes": null,
+      "repeats": -1748,
+      "next_run": "2021-12-22T17:56:18.383Z",
+      "cron": null,
+      "task": "5a210a76a2794b12aa98c39b998f6d9c",
+      "cluster": null
+    }
+  },
+  {
+    "model": "django_q.schedule",
+    "pk": 3,
+    "fields": {
+      "name": null,
+      "func": "spritstat.services.request_location_prices",
+      "hook": null,
+      "args": "(3,)",
+      "kwargs": "{}",
+      "schedule_type": "H",
+      "minutes": null,
+      "repeats": -1748,
+      "next_run": "2021-12-22T18:56:18.383Z",
+      "cron": null,
+      "task": "5a210a76a2794b12aa98c39b998f6d9d",
+      "cluster": null
+    }
+  }
+]

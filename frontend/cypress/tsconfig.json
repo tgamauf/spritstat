@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./**/*.ts"],
+  "exclude": [],
+  "compilerOptions": {
+    "types": ["cypress", "cypress-real-events"],
+    "lib": ["es2015", "dom", "ES2021.String"],
+    "isolatedModules": false,
+    "allowJs": true,
+    "noEmit": true
+  }
+}

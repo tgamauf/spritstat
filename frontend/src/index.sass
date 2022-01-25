@@ -1,0 +1,35 @@
+@charset "utf-8"
+
+@import "../node_modules/bulma/sass/utilities/functions.sass"
+
+$indigo: #4071bc
+$edgewater: #baddd5
+$peach: #ffe2bb
+$salmon: #fc8474
+
+$primary: $indigo
+$link: $edgewater
+$info: $peach
+
+$navbar-item-img-max-height: 2rem
+
+$footer-padding: 1rem 1.5rem 1rem
+$section-padding-large-mobile: 7rem 1.5rem
+
+@import "../node_modules/bulma/bulma.sass"
+
+.huge-text
+  font-size: 10vw
+  white-space: nowrap
+
+.hero-body
+  justify-content: center
+
+.hero-foot
+  margin-bottom: 0.5rem
+
+.card-header-title .card-key
+  @extend .has-text-primary
+  @extend .has-text-weight-bold
+.card-header-title .card-value
+  @extend .has-text-weight-medium

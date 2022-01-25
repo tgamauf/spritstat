@@ -1,0 +1,6 @@
+[tool.black]
+include = '\.pyi?$'
+extend-exclude = '''
+frontend/
+venv/
+'''

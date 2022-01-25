@@ -1,0 +1,23 @@
+# We use inclusion instead of exclusion style
+*
+
+!docker/entrypoint.sh
+!docker/supervisord.conf
+
+!frontend/
+frontend/cypress/
+frontend/node_modules/
+frontend/public/
+frontend/.gitignore
+
+!spritstat/
+spritstat/fixtures/
+spritstat/static/spritstat/build/
+spritstat/tests/
+
+!users/
+users/fixtures/
+users/tests/
+
+!manage.py
+!requirements.txt

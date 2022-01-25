@@ -1,0 +1,56 @@
+[
+  {
+    "model": "spritstat.location",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "type": 1,
+      "latitude": "48.23554",
+      "longitude": "16.41364",
+      "address": "Bruno-Kreisky-Platz 1",
+      "postal_code": "1220",
+      "city": "Wien",
+      "region_code": null,
+      "region_type": "",
+      "region_name": "",
+      "fuel_type": "DIE",
+      "schedule": 1
+    }
+  },
+  {
+    "model": "spritstat.location",
+    "pk": 2,
+    "fields": {
+      "user": 4,
+      "type": 1,
+      "latitude": 47.0737304,
+      "longitude": 15.4376933,
+      "address": "Am Schlossberg",
+      "postal_code": "8010",
+      "city": "Graz",
+      "region_code": null,
+      "region_type": "",
+      "region_name": "",
+      "fuel_type": "DIE",
+      "schedule": 2
+    }
+  },
+  {
+    "model": "spritstat.location",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "type": 2,
+      "latitude": null,
+      "longitude": null,
+      "address": "",
+      "postal_code": "",
+      "city": "",
+      "region_code": 201,
+      "region_type": "PB",
+      "region_name": "Klagenfurt Stadt",
+      "fuel_type": "SUP",
+      "schedule": 3
+    }
+  }
+]

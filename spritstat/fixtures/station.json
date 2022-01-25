@@ -1,0 +1,132 @@
+[
+  {
+    "model": "spritstat.station",
+    "pk": 30231,
+    "fields": {
+      "user_id": 2,
+      "name": "TAC",
+      "address": "Taborstraße 102-108 ",
+      "postal_code": "1200",
+      "city": "Wien",
+      "latitude": "48.2270659",
+      "longitude": "16.3870746"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 30246,
+    "fields": {
+      "user_id": 2,
+      "name": "BP",
+      "address": "Handelskai 90",
+      "postal_code": "1200",
+      "city": "Wien",
+      "latitude": "48.2430922",
+      "longitude": "16.3843336"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 34016,
+    "fields": {
+      "user_id": 2,
+      "name": "Baertl GmbH",
+      "address": "Stuwerstrasse 41",
+      "postal_code": "1020",
+      "city": "Wien",
+      "latitude": "48.2190511",
+      "longitude": "16.4058666"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 41587,
+    "fields": {
+      "user_id": 2,
+      "name": "Disk",
+      "address": "Franzensbrückenstrasse 15",
+      "postal_code": "1020",
+      "city": "Wien",
+      "latitude": "48.2146367",
+      "longitude": "16.3916044"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 255985,
+    "fields": {
+      "user_id": 2,
+      "name": "123tanken.at - Tankstellenbetriebs & Service GmbH",
+      "address": "Rotensterngasse 25",
+      "postal_code": "1020",
+      "city": "Wien",
+      "latitude": "48.2172366",
+      "longitude": "16.3844335"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 427017,
+    "fields": {
+      "user_id": 2,
+      "name": "Shell Austria",
+      "address": "AUSSTELLUNGSSTRASSE 4",
+      "postal_code": "1020",
+      "city": "WIEN",
+      "latitude": "48.2177700",
+      "longitude": "16.3946400"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 450524,
+    "fields": {
+      "user_id": 2,
+      "name": "Shell Austria",
+      "address": "WAGRAMERSTRASSE 14",
+      "postal_code": "1220",
+      "city": "WIEN",
+      "latitude": "48.2336700",
+      "longitude": "16.4203600"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1261240,
+    "fields": {
+      "user_id": 2,
+      "name": "Turmöl",
+      "address": "Engerthstrasse 146",
+      "postal_code": "1200",
+      "city": "Wien",
+      "latitude": "48.2338360",
+      "longitude": "16.3910922"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1354895,
+    "fields": {
+      "user_id": 2,
+      "name": "avanti - Wien Nordbahnstraße 1",
+      "address": "Nordbahnstrasse 1",
+      "postal_code": "1020",
+      "city": "Wien",
+      "latitude": "48.2291200",
+      "longitude": "16.3885200"
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1354901,
+    "fields": {
+      "user_id": 2,
+      "name": "avanti - Wien Gaussplatz 1",
+      "address": "Gaussplatz 1",
+      "postal_code": "1020",
+      "city": "Wien",
+      "latitude": "48.2258800",
+      "longitude": "16.3708000"
+    }
+  }
+]

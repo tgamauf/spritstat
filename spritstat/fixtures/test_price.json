@@ -1,0 +1,41 @@
+[
+  {
+    "model": "spritstat.price",
+    "pk": 1,
+    "fields": {
+      "location": 2,
+      "datetime": "2021-06-01T12:00:00.000Z",
+      "min_amount": 1.284,
+      "max_amount": 1.349,
+      "average_amount": 1.3215,
+      "median_amount": 1.3315000000000001,
+      "stations": [2]
+    }
+  },
+  {
+    "model": "spritstat.price",
+    "pk": 2,
+    "fields": {
+      "location": 2,
+      "datetime": "2021-12-05T12:00:00.000Z",
+      "min_amount": 1.284,
+      "max_amount": 1.349,
+      "average_amount": 1.316,
+      "median_amount": 1.324,
+      "stations": [2, 3]
+    }
+  },
+  {
+    "model": "spritstat.price",
+    "pk": 3,
+    "fields": {
+      "location": 2,
+      "datetime": "2022-01-10T12:00:00.000Z",
+      "min_amount": 1.284,
+      "max_amount": 1.349,
+      "average_amount": 1.316,
+      "median_amount": 1.324,
+      "stations": [2, 3]
+    }
+  }
+]

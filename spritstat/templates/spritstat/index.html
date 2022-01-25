@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="{% static 'spritstat/build/img/favicon.ico' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Spritpreis Statistiken von österreichischen Tankstellen."
+    />
+    <title>SPRITSTAT</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'spritstat/build/css/app.css' %}"
+    />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script
+      type="text/javascript"
+      src="{% static 'spritstat/build/js/app.js' %}"
+    ></script>
+  </body>
+</html>

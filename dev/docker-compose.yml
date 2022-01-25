@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  db:
+    container_name: postgres
+    image: postgres:12.8
+    env_file:
+      - .env.compose
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  app:
+    container_name: spritstat
+    image: tgamauf/spritstat:latest
+    env_file:
+      - .env.compose
+    expose:
+      - 8000
+    depends_on:
+      - db
+    volumes:
+      - staticfiles:/home/app/web/staticfiles
+  ofelia:
+    container_name: ofelia
+    image: mcuadros/ofelia:latest
+    volumes:
+      - ./ofelia/config.ini:/etc/ofelia/config.ini
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: daemon --config=/etc/ofelia/config.ini
+  nginx:
+    container_name: nginx-proxy
+    image: nginxproxy/nginx-proxy:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - staticfiles:/home/app/web/staticfiles/
+      - ./nginx/vhost.d/:/etc/nginx/vhost.d/
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - app
+
+volumes:
+  postgres:
+  staticfiles:

@@ -1,0 +1,6 @@
+{% load i18n %}{% autoescape off %}{% blocktrans %}Hallo!
+{% endblocktrans %}{% block content %}{% endblock %}
+
+{% blocktrans %}
+Dein SPRITSTAT-Team
+{% endblocktrans %}{% endautoescape %}

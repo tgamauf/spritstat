@@ -1,0 +1,68 @@
+FROM node:17 AS builder
+
+WORKDIR build
+
+COPY frontend/ .
+
+RUN npm install
+RUN npm run build
+
+
+FROM python:3.9
+
+# These two environment variables prevent __pycache__/ files.
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+ENV APP_USER=spritstat
+ENV APP_HOME=/home/app/web
+ENV APP_STATIC_BUILD=$APP_HOME/spritstat/static/spritstat/build
+
+EXPOSE 8000
+
+RUN useradd --user-group \
+    --create-home \
+    --home-dir ${APP_HOME} \
+    --no-log-init \
+    --shell \
+    /bin/bash $APP_USER
+
+# Required by entrypoint.sh in order to wait for the DB
+RUN apt-get update \
+  && apt-get install -y netcat \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR $APP_HOME
+
+RUN mkdir /var/log/supervisord /var/run/supervisord
+RUN chown -R ${APP_USER}:${APP_USER} /var/log/supervisord /var/run/supervisord
+COPY docker/supervisord.conf /etc/supervisord.conf
+
+COPY docker/entrypoint.sh /bin/entrypoint.sh
+RUN chmod 755 /bin/entrypoint.sh
+
+RUN mkdir -p $APP_HOME/staticfiles
+
+RUN pip install --upgrade --no-warn-script-location pip supervisor gunicorn
+
+# We need to install the app dependencies for the user to allow for migrations
+#  of dependencies
+COPY requirements.txt ${APP_HOME}/
+USER ${APP_USER}:${APP_USER}
+RUN pip install --user --no-warn-script-location -r requirements.txt
+USER root:root
+
+# Copy application files
+COPY manage.py ${APP_HOME}/
+COPY users/ ${APP_HOME}/users/
+COPY spritstat/ ${APP_HOME}/spritstat/
+RUN chown -R ${APP_USER}:${APP_USER} $APP_HOME
+
+# Copy frontend build artifacts
+RUN mkdir -p $APP_STATIC_BUILD
+COPY --from=builder /build/public/ $APP_STATIC_BUILD/
+
+USER ${APP_USER}:${APP_USER}
+
+ENTRYPOINT ["/bin/entrypoint.sh"]
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisord.conf"]

@@ -1,0 +1,74 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$gbmierftrfzEOYIenzha1y$p/jAi+b+8c5kL1SmmrE/PvT4bLB6Fo4s9CtIMicjgFA=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "tom",
+      "first_name": "",
+      "last_name": "",
+      "email": "tom@thga.at",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2021-12-22T16:42:29.092Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$4Ecfwg9prHkrBoNJtwgVtO$J4EJOL4LvtRN6WPQA86HMLj5hMeRjR8rU9PT1kK8KTQ=",
+      "last_login": "2021-10-11T17:10:04.007Z",
+      "is_superuser": false,
+      "username": "thga",
+      "first_name": "",
+      "last_name": "",
+      "email": "test@thga.at",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-10-10T21:50:24Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$9v2WyCYKwR1QmldBoDAfih$q1Ie/FT6/aepA0ylHE3qmXnQtE6ql2sWTxQsg21z4LY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "test",
+      "first_name": "",
+      "last_name": "",
+      "email": "test@test.at",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-01-09T18:04:38Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$9v2WyCYKwR1QmldBoDAfih$q1Ie/FT6/aepA0ylHE3qmXnQtE6ql2sWTxQsg21z4LY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "test2",
+      "first_name": "",
+      "last_name": "",
+      "email": "test2@test.at",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-01-09T18:04:38Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

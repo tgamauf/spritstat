@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg version="1.1" viewBox="0 0 720 102" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(.35417 .35417)">
+  <g transform="matrix(2.289 0 0 2.289 -.83247 -.83247)" fill="none" stroke="#baddd5" stroke-linejoin="round" stroke-width="4">
+   <rect x="2.6458" y="2.6458" width="26.458" height="39.688"/>
+   <rect x="9.2358" y="10.642" width="13.211" height="7.8199"/>
+   <path d="m29.104 23.812h5.2917v7.9375s2.6458 5.2917 5.2917 0v-13.229l-6.5101 0.04233"/>
+  </g>
+  <text x="105.76217" y="90.37101" fill="#baddd5" font-family="sans-serif" font-size="24.225px" stroke-width=".60563" style="line-height:1.25" xml:space="preserve"><tspan x="105.76217" y="90.37101" fill="#baddd5" font-family="Carlito" font-size="121.12px" stroke-width=".60563" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">SPRITSTAT</tspan></text>
+ </g>
+</svg>
