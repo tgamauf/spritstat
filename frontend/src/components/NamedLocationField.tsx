@@ -37,7 +37,10 @@ export default function NamedLocationField({
   }, [])
 
   useEffect(() => {
+    // Clean up predictions if the user deleted the text
     if (searchText.length === 0) {
+      setPredictions([]);
+
       return;
     }
 
