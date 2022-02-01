@@ -144,6 +144,11 @@ export default function NamedLocationField({
     "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.";
   return (
     <div className="field is-horizontal" data-test="location-add-address">
+      {searchCoordinates && (
+        <div className={`notification is-success`}>
+          Current location: {searchCoordinates.latitude}/{searchCoordinates.longitude}
+        </div>
+      )}
       {hasBetaAccess && (
         <div className="field">
           <button

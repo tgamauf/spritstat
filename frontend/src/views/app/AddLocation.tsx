@@ -148,7 +148,9 @@ export default function AddLocation(): JSX.Element {
                       title="Wähle den Typ von Treibstoff aus für den Preise
                       aufgezeichnet werden sollen."
                       value={fuelType}
-                      onChange={(e) => setFuelType(e.target.value)}
+                      onChange={(e) => setFuelType(
+                        e.target.value as FuelType
+                      )}
                       data-test="field-fuel-type"
                     >
                       <option value={FuelType.Diesel}>
