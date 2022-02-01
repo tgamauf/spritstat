@@ -18,14 +18,11 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "type",
+            "name",
             "latitude",
             "longitude",
-            "address",
-            "postal_code",
-            "city",
             "region_code",
             "region_type",
-            "region_name",
             "fuel_type",
         )
 

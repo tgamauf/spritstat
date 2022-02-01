@@ -1,3 +1,4 @@
+import unittest
 from copy import deepcopy
 from django.conf import settings
 from django.urls import reverse
@@ -13,9 +14,9 @@ from spritstat.models import Location
 
 class TestLocationCreate(APITestCase):
     fixtures = ["customuser.json"]
-    global_fields = ["type", "fuel_type"]
-    address_type_fields = ["latitude", "longitude", "address", "postal_code", "city"]
-    region_type_fields = ["region_code", "region_type", "region_name"]
+    global_fields = ["type", "name", "fuel_type"]
+    address_type_fields = ["latitude", "longitude"]
+    region_type_fields = ["region_code", "region_type"]
     url: str
 
     @classmethod
@@ -25,18 +26,16 @@ class TestLocationCreate(APITestCase):
     def setUp(self):
         self.default_address_location_data = {
             "type": 1,
+            "name": "Default Name 1, 1234 Default City 1",
             "latitude": 48.1234567,
             "longitude": 16.1234567,
-            "address": "Default Address 1",
-            "postal_code": "1234",
-            "city": "Default City 1",
             "fuel_type": "DIE",
         }
         self.default_region_location_data = {
             "type": 2,
+            "name": "Test",
             "region_code": 1,
             "region_type": "PB",
-            "region_name": "Test",
             "fuel_type": "DIE",
         }
 
@@ -59,20 +58,16 @@ class TestLocationCreate(APITestCase):
         data_1 = self.default_address_location_data
         data_2 = {
             "type": 1,
+            "name": "Default Name 2, 5678 Default City 2",
             "latitude": 49.1234567,
             "longitude": 17.1234567,
-            "address": "Default Address 2",
-            "postal_code": "5678",
-            "city": "Default City 2",
             "fuel_type": "SUP",
         }
         data_3 = {
             "type": 1,
+            "name": "Default Name 3, 4321 Default City 3",
             "latitude": 50.1234567,
             "longitude": 18.1234567,
-            "address": "Default Address 3",
-            "postal_code": "4321",
-            "city": "Default City 3",
             "fuel_type": "GAS",
         }
         check_data = [data_1, data_2, data_3]
@@ -137,10 +132,10 @@ class TestLocationCreate(APITestCase):
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_global_field_invalid_value(self):
-        # Ensure that the two global values type and fuel_type only accept the
-        #  defined choices.
+        # Ensure that the two global values type, name, and fuel_type only
+        #  accept allowed values.
 
-        for field, value in zip(self.global_fields, (10, "INVALID")):
+        for field, value in zip(self.global_fields, (10, "X" * 201, "INVALID")):
             with self.subTest(field=field, value=value):
                 data = deepcopy(self.default_address_location_data)
                 data[field] = value
@@ -201,13 +196,11 @@ class TestLocationCreate(APITestCase):
                     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_address_field_invalid_value(self):
-        # Verify the maximum length of the address part of the address
-        #  components - we are checking this here to verify the API and ensure
-        #  consistent lengths on the backend and frontend
+        # Verify the maximum length of the name - we are checking this here to
+        #  verify the API and ensure consistent lengths on the backend and
+        #  frontend
 
-        for field, value in zip(
-            self.address_type_fields, ["X", "X", "X" * 81, "X" * 5, "X" * 31]
-        ):
+        for field, value in zip(self.address_type_fields, ["X", "X"]):
             with self.subTest(field=field, value=value):
                 data = deepcopy(self.default_address_location_data)
                 data[field] = value
@@ -254,7 +247,7 @@ class TestLocationCreate(APITestCase):
     def test_region_field_invalid_value(self):
         # Ensure that the region values accept only allowed values
 
-        for field, value in zip(self.region_type_fields, ("X", "INVALID", "X" * 51)):
+        for field, value in zip(self.region_type_fields, ("X" * 201, "X", "INVALID")):
             with self.subTest(field=field, value=value):
                 data = deepcopy(self.default_region_location_data)
                 data[field] = value
@@ -285,6 +278,9 @@ class TestLocationList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(response.data)
 
+    @unittest.skip(
+        "Disable until address, city, postal_code and region_name have been removed from model"
+    )
     def test_ok(self):
         # Two locations exist for this user - validate data for users.
 

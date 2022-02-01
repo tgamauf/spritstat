@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 
-import { useGlobalState } from "../../App";
-import AddressLocationField from "../../components/AddressLocationField";
+import {useGlobalState} from "../../App";
+import NamedLocationField from "../../components/NamedLocationField";
 import BasePage from "../../components/BasePage";
 import RegionLocationField from "../../components/RegionLocationField";
 import {apiCreateLocation} from "../../services/api";
-import { RegionType } from "../../services/econtrolApi";
+import {RegionType} from "../../services/econtrolApi";
 import {
   FuelType,
   FuelTypeLabels,
-  OurFormElement,
   LocationType,
-  RouteNames,
+  OurFormElement,
+  NamedLocation,
+  RouteNames
 } from "../../utils/types";
 
 const BREADCRUMB = {
@@ -21,14 +22,6 @@ const BREADCRUMB = {
   icon: faPlusSquare,
   destination: RouteNames.AddLocation,
 };
-
-interface Address {
-  address: string;
-  postalCode: string;
-  city: string;
-  latitude: number;
-  longitude: number;
-}
 
 interface Region {
   code: number;
@@ -39,9 +32,9 @@ interface Region {
 export default function AddLocation(): JSX.Element {
   const [{ isAuthenticated }] = useGlobalState();
   const [errorMessage, setErrorMessage] = useState("");
-  const [locationType, setLocationType] = useState<LocationType>(LocationType.Address);
+  const [locationType, setLocationType] = useState<LocationType>(LocationType.Named);
   const [fuelType, setFuelType] = useState<FuelType>(FuelType.Diesel);
-  const [address, setAddress] = useState<Address>();
+  const [namedLocation, setNamedLocation] = useState<NamedLocation>();
   const [region, setRegion] = useState<Region>();
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
@@ -58,15 +51,17 @@ export default function AddLocation(): JSX.Element {
 
       apiCreateLocation({
         type: locationType,
-        ...address,
+        name: locationType === LocationType.Named
+          ? namedLocation?.name : region?.name,
+        latitude: namedLocation?.coords.latitude,
+        longitude: namedLocation?.coords.longitude,
         regionCode: region?.code,
         regionType: region?.type,
-        regionName: region?.name,
         fuelType,
       })
         .then((isSuccess) => {
           if (isSuccess) {
-            navigate(-1);
+            navigate(RouteNames.Dashboard);
           } else {
             console.error(`Failed to add location: request status not ok`);
             setErrorMessage("Der Ort konnte nicht angelegt werden.");
@@ -79,6 +74,18 @@ export default function AddLocation(): JSX.Element {
     }
   }, [submitted]);
 
+  function changeLocationType(event: React.ChangeEvent<HTMLSelectElement>) {
+    event.preventDefault();
+
+    const type = Number(event.target.value);
+    if (type !== locationType) {
+      // Clean up previously chosen locations
+      setNamedLocation(undefined);
+      setRegion(undefined);
+      setLocationType(type);
+    }
+  }
+
   function onSubmit(e: React.FormEvent<OurFormElement>) {
     e.preventDefault();
 
@@ -87,10 +94,10 @@ export default function AddLocation(): JSX.Element {
   }
 
   let mainComponent;
-  if (locationType === LocationType.Address) {
+  if (locationType === LocationType.Named) {
     mainComponent = (
-      <AddressLocationField
-        setAddress={setAddress}
+      <NamedLocationField
+        setLocation={setNamedLocation}
         setErrorMessage={setErrorMessage}
       />
     );
@@ -121,10 +128,10 @@ export default function AddLocation(): JSX.Element {
                     <select
                       title="Wähle den Typ von Ortsangabe aus."
                       value={locationType}
-                      onChange={(e) => setLocationType(Number(e.target.value))}
+                      onChange={(e) => changeLocationType(e)}
                       data-test="field-location-type"
                     >
-                      <option value={LocationType.Address}>Adresse</option>
+                      <option value={LocationType.Named}>Suche</option>
                       <option value={LocationType.Region}>Region</option>
                     </select>
                   </p>
@@ -164,7 +171,7 @@ export default function AddLocation(): JSX.Element {
                     className="button is-primary"
                     type="submit"
                     value="Hinzufügen"
-                    disabled={!address && !region}
+                    disabled={!namedLocation && !region}
                     data-test="btn-submit"
                   />
                 </p>

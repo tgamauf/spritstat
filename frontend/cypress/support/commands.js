@@ -107,35 +107,8 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "mockGeoCoordinatesAPI",
-  (responseStatus = 200, responseBody = null) => {
-    cy.log(`mockGeoCoordinatesAPI status=${responseStatus} body=${JSON.stringify(responseBody)}`);
-    let body = responseBody ? responseBody : {
-      status: "OK",
-      results: [{
-        geometry: {
-          location: {
-            lat: 48.21016009993677,
-            lng: 16.37002493713177
-          }
-        }
-      }]
-    };
-    cy.intercept(
-      "GET",
-      "https://maps.googleapis.com/maps/api/geocode/json*",
-      {
-        statusCode: responseStatus,
-        body
-      }
-    ).as("geoCoordinatesRequest");
-  }
-);
-
-Cypress.Commands.add(
   "mockEcontrolRegionAPI",
   (responseStatus = 200, responseBody = null) => {
-    cy.log(`mockEcontrolRegionAPI status=${responseStatus} body=${JSON.stringify(responseBody)}`);
     let body = responseBody ? responseBody : [
       {
         code: 1,
@@ -177,8 +150,11 @@ Cypress.Commands.add(
       }
     ];
     cy.intercept(
-      "GET",
-      "https://api.e-control.at/sprit/1.0/regions*",
+      {
+        method: "GET",
+        hostname: "api.e-control.at",
+        pathname: "/sprit/1.0/regions"
+      },
       {
         statusCode: responseStatus,
         body
@@ -190,7 +166,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "mockEcontrolPriceAPI",
   (responseStatus = 200, responseBody = null) => {
-    cy.log(`mockEcontrolPriceAPI status=${responseStatus} body=${JSON.stringify(responseBody)}`);
     let body = responseBody ? responseBody : [{
       id: 1,
       name: "Station",
@@ -204,8 +179,11 @@ Cypress.Commands.add(
       }]
     }];
     cy.intercept(
-      "GET",
-      "https://api.e-control.at/sprit/1.0/search/gas-stations/*",
+      {
+        method: "GET",
+        hostname: "api.e-control.at",
+        pathname: "/sprit/1.0/search/gas-stations/*"
+      },
       {
         statusCode: responseStatus,
         body

@@ -1,6 +1,17 @@
 import "cypress-real-events/support";
+import * as googleLoader from "@googlemaps/js-api-loader";
 
 import './commands'
+
+
+beforeEach(function () {
+  // Short circuit the Google Maps calls for all tests, as they are executed
+  //  during page load.
+  cy.intercept(
+    {hostname: "maps.googleapis.com"},
+    {statusCode: 200}
+  ).as("googleMaps");
+});
 
 declare global {
   namespace Cypress {
@@ -36,16 +47,6 @@ declare global {
        * @example cy.mockLoggedOut();
        */
       mockLoggedOut(): Chainable<Element>;
-
-      /**
-       * Mock the Google Geocode API.
-       * @example cy.mockGeoCoordinatesAPI();
-       * @example cy.mockGeoCoordinatesAPI(400, []);
-       */
-      mockGeoCoordinatesAPI(
-        responseStatus?: number,
-        responseBody?: [])
-        : Chainable<Element>;
 
       /**
        * Mock the E-Control region API.

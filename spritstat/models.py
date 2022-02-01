@@ -15,13 +15,14 @@ FUEL_TYPES = (("DIE", "Diesel"), ("SUP", "Super"), ("GAS", "Gas"))
 
 
 class LocationType(models.IntegerChoices):
-    ADDRESS = 1, "Address"
+    NAMED = 1, "Named"
     REGION = 2, "Region"
 
 
 class Location(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     type = models.IntegerField(choices=LocationType.choices)
+    name = models.CharField(max_length=200)
     latitude = models.DecimalField(
         max_digits=9, decimal_places=7, blank=True, null=True
     )
@@ -43,26 +44,18 @@ class Location(models.Model):
                 name="%(app_label)s_%(class)s_value_matches_type",
                 check=(
                     models.Q(
-                        type=LocationType.ADDRESS,
+                        type=LocationType.NAMED,
                         latitude__isnull=False,
                         longitude__isnull=False,
-                        address__length__gt=0,
-                        postal_code__length__gt=0,
-                        city__length__gt=0,
                         region_code__isnull=True,
                         region_type__exact="",
-                        region_name__exact="",
                     )
                     | models.Q(
                         type=LocationType.REGION,
                         latitude__isnull=True,
                         longitude__isnull=True,
-                        address__exact="",
-                        postal_code__exact="",
-                        city__exact="",
                         region_code__isnull=False,
                         region_type__length__gt=0,
-                        region_name__length__gt=0,
                     )
                 ),
             )

@@ -21,14 +21,11 @@ interface PasswordValidationResponse {
 
 interface LocationData {
   type: LocationType;
-  address?: string;
-  postalCode?: string;
-  city?: string;
+  name?: string;
   latitude?: number;
   longitude?: number;
   regionCode?: number;
   regionType?: RegionType;
-  regionName?: string;
   fuelType: FuelType;
 }
 
@@ -150,14 +147,11 @@ async function apiCreateLocation(location: LocationData): Promise<boolean> {
         },
         body: JSON.stringify({
           type: location.type,
-          address: location.address ? location.address : "",
-          postal_code: location.postalCode ? location.postalCode : "",
-          city: location.city ? location.city : "",
+          name: location.name,
           latitude: location.latitude,
           longitude: location.longitude,
           region_code: location.regionCode,
           region_type: location.regionType ? location.regionType : RegionType.Invalid,
-          region_name: location.regionName ? location.regionName : "",
           fuel_type: location.fuelType
         }),
       }

@@ -37,7 +37,7 @@ enum RouteNames {
 }
 
 enum LocationType {
-  Address = 1,
+  Named = 1,
   Region = 2,
 }
 
@@ -53,23 +53,25 @@ const FuelTypeLabels = new Map<FuelType, string>([
   [FuelType.Gas, "Gas"],
 ]);
 
-interface Location {
-  id: number;
-  type: LocationType;
-  latitude?: number;
-  longitude?: number;
-  address?: string;
-  postal_code?: string;
-  city?: string;
-  region_code?: string;
-  region_type?: string;
-  region_name?: string;
-  fuel_type: FuelType;
-}
-
 interface Coordinates {
   latitude: number;
   longitude: number;
+}
+
+interface NamedLocation {
+  name: string;
+  coords: Coordinates;
+}
+
+interface Location {
+  id: number;
+  type: LocationType;
+  name: string;
+  latitude?: number;
+  longitude?: number;
+  region_code?: string;
+  region_type?: string;
+  fuel_type: FuelType;
 }
 
 interface Station {
@@ -92,6 +94,7 @@ export type {
   Location,
   GlobalState,
   OurFormElement,
+  NamedLocation,
   Price,
   Session,
   Station,

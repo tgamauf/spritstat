@@ -1,0 +1,199 @@
+import React, {useEffect, useRef, useState} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkedAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  AutocompletePrediction,
+  AutocompleteResult,
+  GoogleMapsAPI,
+  INVALID_LOCATION,
+  loadGoogleMapsAPI
+} from "../services/google";
+import {Coordinates, NamedLocation} from "../utils/types";
+
+const MAX_LOCATION_NAME_LENGTH = 200;  // mirrors the length of the model field
+const LOCATION_REQUEST_TIMEOUT_MS = 5000;
+
+interface Props {
+  setLocation: (location: NamedLocation) => void;
+  setErrorMessage: (msg: string) => void;
+}
+
+export default function NamedLocationField({
+  setLocation,
+  setErrorMessage,
+}: Props): JSX.Element {
+  const dropdownRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const [googleMapsAPI, setGoogleMapsAPI] = useState<GoogleMapsAPI | null>(null);
+  const [searchText, setSearchText] = useState("");
+  const [predictions, setPredictions] = useState<AutocompleteResult>([]);
+  const [searchCoordinates, setSearchCoordinates] = useState<Coordinates>();
+  const [selectedPrediction, setSelectedPrediction] = useState<AutocompletePrediction>();
+
+  useEffect(() => {
+    if (!googleMapsAPI) {
+      loadGoogleMapsAPI().then((api) => setGoogleMapsAPI(api));
+    }
+  }, [])
+
+  useEffect(() => {
+    if (searchText.length === 0) {
+      return;
+    }
+
+    // We won't search for a location if the user selected a prediction
+    if (selectedPrediction) {
+      return;
+    }
+
+    googleMapsAPI?.getPredictions(searchText)
+      .then((predictions) => {
+        setPredictions(predictions);
+      });
+  }, [searchText]);
+
+  useEffect(() => {
+    if (selectedPrediction) {
+      googleMapsAPI?.selectPrediction(selectedPrediction.id)
+        .then((location) => {
+          if (location === INVALID_LOCATION) {
+            setErrorMessage("Der Ort konnte nicht gefunden werden.");
+            return;
+          }
+
+          // Set the description of the selected prediction as search text, to
+          //  maintain consistency.
+          setSearchText(selectedPrediction.description);
+          setLocation(location);
+        });
+    }
+  }, [selectedPrediction]);
+
+  useEffect(() => {
+    if (searchCoordinates) {
+      googleMapsAPI?.getLocationFromCoordinates(searchCoordinates)
+        .then((location) => {
+          if (location === INVALID_LOCATION) {
+            setErrorMessage(
+              "Dein Ort konnte nicht gefunden werden."
+            );
+            return;
+          }
+
+          // Set the name of the received location as search text
+          setSearchText(location.name);
+          setLocation(location);
+        });
+    }
+  }, [searchCoordinates]);
+
+  function changeSearchText(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault();
+
+    const target = event.target as HTMLInputElement;
+
+    // If the user manually changed anything in the search text we remove the
+    //  selected prediction again as the user obviously wasn't satisfied with it.
+    setSelectedPrediction(undefined);
+    setSearchText(target.value);
+  }
+
+  function setPosition(position: GeolocationPosition) {
+    setSearchCoordinates({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    })
+  }
+
+  function setPositionError(error: GeolocationPositionError) {
+    console.error(`Failed to get position: ${error.message}`);
+    if (error.code === GeolocationPositionError.PERMISSION_DENIED) {
+      setErrorMessage("Die Seite hat nicht das Erlaubnis den Ort abzurufen.");
+    } else {
+      setErrorMessage("Der Ort ist aktuell nicht verfügbar.");
+    }
+  }
+
+  function requestLocation(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+
+    navigator.geolocation.getCurrentPosition(
+      setPosition,
+      setPositionError,
+      {
+        enableHighAccuracy: true,
+        timeout: LOCATION_REQUEST_TIMEOUT_MS,
+      }
+    );
+  }
+
+  if (dropdownRef.current) {
+    if ((predictions.length > 0) && !selectedPrediction) {
+      dropdownRef.current.classList.add("is-active");
+    } else {
+      dropdownRef.current.classList.remove("is-active");
+    }
+  }
+
+  const fieldTitle =
+    "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.";
+  return (
+    <div className="field is-horizontal" data-test="location-add-address">
+      <div className="dropdown" ref={dropdownRef}>
+        <div className="dropdown-trigger">
+          <div className="field">
+            <p className="control is-expanded has-icons-right">
+              <input
+                className="input"
+                title={fieldTitle}
+                type="text"
+                placeholder="Ort"
+                maxLength={MAX_LOCATION_NAME_LENGTH}
+                value={searchText}
+                required={true}
+                onInput={(e) => changeSearchText(e)}
+                data-test="field-search"
+              />
+              <span className="icon is-small is-right">
+                <FontAwesomeIcon icon={faSearch} />
+              </span>
+            </p>
+          </div>
+        </div>
+        <div className="dropdown-menu">
+          <div className="dropdown-content">
+            {
+              predictions.map((item) => {
+                return (
+                  <a
+                    className="dropdown-item"
+                    href="#"
+                    onClick={() => setSelectedPrediction(item)}
+                    key={item.id}
+                    data-test={`field-search-dropdown-${item.id}`}
+                  >
+                    {item.description}
+                  </a>
+                )
+              })
+            }
+          </div>
+        </div>
+      </div>
+      <div className="field ml-1">
+        <button
+          className="button is-outlined"
+          disabled={!navigator.geolocation}
+          onClick={(e) => requestLocation(e)}
+        >
+          <FontAwesomeIcon
+            className="icon has-text-primary"
+            icon={faMapMarkedAlt}
+          />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export type { Props as NamedLocationFieldProps };
