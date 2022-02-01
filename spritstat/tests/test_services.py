@@ -100,12 +100,12 @@ class TestServices(TestCase):
         }
 
     def test_request_location_prices__address_diesel(self):
-        # Test location type address and fuel type DIE. This corresponds to a
+        # Test location type named and fuel type DIE. This corresponds to a
         #  real response with 5 entries, where 3 have an equal price, one has a
         #  higher price and one without price.
         # Of the 3 equal prices the first station does already exist, while the
         #  second and third don't, so only two stations are added.
-        # We do a full check of all of the price statistics here, which won't be
+        # We do a full check of all the price statistics here, which won't be
         #  necessary in any of the following tests.
 
         check_location_id = 1

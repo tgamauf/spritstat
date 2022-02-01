@@ -22,19 +22,15 @@ class LocationType(models.IntegerChoices):
 class Location(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     type = models.IntegerField(choices=LocationType.choices)
-    name = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=200)
     latitude = models.DecimalField(
         max_digits=9, decimal_places=7, blank=True, null=True
     )
     longitude = models.DecimalField(
         max_digits=9, decimal_places=7, blank=True, null=True
     )
-    address = models.CharField(max_length=80, blank=True)
-    postal_code = models.CharField(max_length=4, blank=True)
-    city = models.CharField(max_length=30, blank=True)
     region_code = models.IntegerField(blank=True, null=True)
     region_type = models.CharField(max_length=2, choices=REGION_TYPES, blank=True)
-    region_name = models.CharField(max_length=50, blank=True)
     fuel_type = models.CharField(max_length=10, choices=FUEL_TYPES)
     schedule = models.OneToOneField(Schedule, null=True, on_delete=models.CASCADE)
 

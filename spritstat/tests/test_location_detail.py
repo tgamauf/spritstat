@@ -26,18 +26,7 @@ class TestLocationDetail(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         db_entry_dict = Location.objects.get(id=location_id).__dict__
-        [
-            db_entry_dict.pop(key)
-            for key in [
-                "_state",
-                "user_id",
-                "schedule_id",
-                "address",
-                "city",
-                "postal_code",
-                "region_name",
-            ]
-        ]
+        [db_entry_dict.pop(key) for key in ["_state", "user_id", "schedule_id"]]
         for key in ["latitude", "longitude"]:
             if db_entry_dict[key] is not None:
                 db_entry_dict[key] = str(db_entry_dict[key])

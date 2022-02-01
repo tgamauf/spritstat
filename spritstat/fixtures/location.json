@@ -8,12 +8,8 @@
       "name": "Bruno-Kreisky-Platz 1, 1220 Wien",
       "latitude": "48.23554",
       "longitude": "16.41364",
-      "address": "",
-      "postal_code": "",
-      "city": "",
       "region_code": null,
       "region_type": "",
-      "region_name": "",
       "fuel_type": "DIE",
       "schedule": 1
     }
@@ -27,12 +23,8 @@
       "name": "Am Schlossberg, 8010 Graz",
       "latitude": 47.0737304,
       "longitude": 15.4376933,
-      "address": "",
-      "postal_code": "",
-      "city": "",
       "region_code": null,
       "region_type": "",
-      "region_name": "",
       "fuel_type": "DIE",
       "schedule": 2
     }
@@ -46,12 +38,8 @@
       "name": "Klagenfurt Stadt",
       "latitude": null,
       "longitude": null,
-      "address": "",
-      "postal_code": "",
-      "city": "",
       "region_code": 201,
       "region_type": "PB",
-      "region_name": "",
       "fuel_type": "SUP",
       "schedule": 3
     }

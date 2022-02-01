@@ -5,14 +5,11 @@
     "fields": {
       "user": 1,
       "type": 1,
+      "name": "Address 1, ZIP1 City 1",
       "latitude": "0.0000000",
       "longitude": "0.0000000",
-      "address": "Address 1",
-      "postal_code": "ZIP1",
-      "city": "City 1",
       "region_code": null,
       "region_type": "",
-      "region_name": "",
       "fuel_type": "DIE",
       "schedule": null
     }
@@ -23,14 +20,11 @@
     "fields": {
       "user": 1,
       "type": 2,
+      "name": "Region 1",
       "latitude": null,
       "longitude": null,
-      "address": "",
-      "postal_code": "",
-      "city": "",
       "region_code": 1,
       "region_type": "BL",
-      "region_name": "Region 1",
       "fuel_type": "SUP",
       "schedule": null
     }
@@ -41,14 +35,11 @@
     "fields": {
       "user": 2,
       "type": 1,
+      "name": "Address 2, ZIP2 City 2",
       "latitude": "1.0000000",
       "longitude": "1.0000000",
-      "address": "Address 2",
-      "postal_code": "ZIP2",
-      "city": "City 2",
       "region_code": null,
       "region_type": "",
-      "region_name": "",
       "fuel_type": "GAS",
       "schedule": null
     }

@@ -119,7 +119,6 @@ class TestLocationCreate(APITestCase):
         response = self.client.post(self.url, self.default_address_location_data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    @unittest.skip("Skip temporarily until name is updated")
     def test_global_field_missing(self):
         # Ensure that the two global values type and fuel_type are required.
 
@@ -279,9 +278,6 @@ class TestLocationList(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(response.data)
 
-    @unittest.skip(
-        "Disable until address, city, postal_code and region_name have been removed from model"
-    )
     def test_ok(self):
         # Two locations exist for this user - validate data for users.
 
