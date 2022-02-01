@@ -30,7 +30,7 @@ interface Region {
 }
 
 export default function AddLocation(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const [{ isAuthenticated, hasBetaAccess }] = useGlobalState();
   const [errorMessage, setErrorMessage] = useState("");
   const [locationType, setLocationType] = useState<LocationType>(LocationType.Named);
   const [fuelType, setFuelType] = useState<FuelType>(FuelType.Diesel);
@@ -99,6 +99,7 @@ export default function AddLocation(): JSX.Element {
       <NamedLocationField
         setLocation={setNamedLocation}
         setErrorMessage={setErrorMessage}
+        hasBetaAccess={hasBetaAccess}
       />
     );
   } else {

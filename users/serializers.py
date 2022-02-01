@@ -32,7 +32,7 @@ class _NoDatabaseMixin:
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ("email",)
+        fields = ("email", "has_beta_access")
 
 
 class PasswordValidationSerializer(_NoDatabaseMixin, serializers.Serializer):

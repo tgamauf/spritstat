@@ -9,11 +9,13 @@ interface OurFormElement extends HTMLFormElement {
 
 interface Session {
   isAuthenticated: boolean;
+  hasBetaAccess: boolean;
   email: string;
 }
 
 interface GlobalState {
   isAuthenticated: boolean;
+  hasBetaAccess: boolean;
   email: string;
 }
 

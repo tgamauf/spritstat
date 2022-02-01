@@ -17,11 +17,13 @@ const LOCATION_REQUEST_TIMEOUT_MS = 5000;
 interface Props {
   setLocation: (location: NamedLocation) => void;
   setErrorMessage: (msg: string) => void;
+  hasBetaAccess: boolean
 }
 
 export default function NamedLocationField({
   setLocation,
   setErrorMessage,
+  hasBetaAccess
 }: Props): JSX.Element {
   const dropdownRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [googleMapsAPI, setGoogleMapsAPI] = useState<GoogleMapsAPI | null>(null);
@@ -142,18 +144,20 @@ export default function NamedLocationField({
     "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.";
   return (
     <div className="field is-horizontal" data-test="location-add-address">
-      <div className="field">
-        <button
-          className="button is-ghost"
-          disabled={!navigator.geolocation}
-          onClick={(e) => requestLocation(e)}
-        >
-          <FontAwesomeIcon
-            className="icon has-text-primary"
-            icon={faMapMarkerAlt}
-          />
-        </button>
-      </div>
+      {hasBetaAccess && (
+        <div className="field">
+          <button
+            className="button is-ghost"
+            disabled={!navigator.geolocation}
+            onClick={(e) => requestLocation(e)}
+          >
+            <FontAwesomeIcon
+              className="icon has-text-primary"
+              icon={faMapMarkerAlt}
+            />
+          </button>
+        </div>
+      )}
       <div className="dropdown" ref={dropdownRef}>
         <div className="dropdown-trigger">
           <div className="field">

@@ -2,7 +2,6 @@ import React, { Dispatch, useEffect, useReducer, useState } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 import moment from "moment-timezone";
 
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { HeaderDropdownItem } from "./components/HeaderDropdown";
 import { apiGetSessionRequest } from "./services/api";
@@ -13,6 +12,7 @@ import CenteredBox from "./components/CenteredBox";
 
 const initialGlobalState: GlobalState = {
   isAuthenticated: false,
+  hasBetaAccess: false,
   email: "",
 };
 

@@ -22,6 +22,7 @@ function reducer(state: State, action: ActionTypes): State {
     return {
       ...state,
       isAuthenticated: action.session.isAuthenticated,
+      hasBetaAccess: action.session.hasBetaAccess,
       email: action.session.email
     }
   }

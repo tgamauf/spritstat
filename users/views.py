@@ -70,7 +70,14 @@ def session_view(request):
     if not request.user.is_authenticated:
         return Response({"isAuthenticated": False})
 
-    return Response({"isAuthenticated": True, "email": request.user.email})
+    user = CustomUser.objects.get(id=request.user.id)
+    return Response(
+        {
+            "isAuthenticated": True,
+            "hasBetaAccess": user.has_beta_access,
+            "email": user.email,
+        }
+    )
 
 
 class ContactView(GenericAPIView):

@@ -1,7 +1,8 @@
-from django.core import mail
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
+from users.models import CustomUser
 
 
 class TestSession(APITestCase):
@@ -22,7 +23,19 @@ class TestSession(APITestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(
-            response.data, {"isAuthenticated": True, "email": self.email}
+            response.data,
+            {"isAuthenticated": True, "hasBetaAccess": False, "email": self.email},
+        )
+
+        # Test beta access
+        user = CustomUser.objects.get(email=self.email)
+        user.has_beta_access = True
+        user.save()
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictEqual(
+            response.data,
+            {"isAuthenticated": True, "hasBetaAccess": True, "email": self.email},
         )
 
     def test_not_logged_in(self):
