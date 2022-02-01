@@ -6,9 +6,6 @@ while ! nc -z "$DJANGO_POSTGRES_HOST" "$DJANGO_POSTGRES_PORT"; do
 done
 echo "PostgreSQL started"
 
-# exit when any command fails as all of the following commands are required
-set -e
-
 echo "Migrating the database."
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
