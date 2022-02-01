@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkedAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import {
   AutocompletePrediction,
@@ -142,10 +142,22 @@ export default function NamedLocationField({
     "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.";
   return (
     <div className="field is-horizontal" data-test="location-add-address">
+      <div className="field">
+        <button
+          className="button is-ghost"
+          disabled={!navigator.geolocation}
+          onClick={(e) => requestLocation(e)}
+        >
+          <FontAwesomeIcon
+            className="icon has-text-primary"
+            icon={faMapMarkerAlt}
+          />
+        </button>
+      </div>
       <div className="dropdown" ref={dropdownRef}>
         <div className="dropdown-trigger">
           <div className="field">
-            <p className="control is-expanded has-icons-right">
+            <p className="control has-icons-right">
               <input
                 className="input"
                 title={fieldTitle}
@@ -182,18 +194,6 @@ export default function NamedLocationField({
             }
           </div>
         </div>
-      </div>
-      <div className="field ml-1">
-        <button
-          className="button is-outlined"
-          disabled={!navigator.geolocation}
-          onClick={(e) => requestLocation(e)}
-        >
-          <FontAwesomeIcon
-            className="icon has-text-primary"
-            icon={faMapMarkedAlt}
-          />
-        </button>
       </div>
     </div>
   );
