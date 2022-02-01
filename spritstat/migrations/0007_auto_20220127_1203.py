@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="location",
             name="name",
-            field=models.CharField(max_length=200),
+            field=models.CharField(max_length=200, null=True),
         ),
         migrations.AlterField(
             model_name="location",

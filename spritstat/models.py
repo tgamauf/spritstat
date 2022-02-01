@@ -22,7 +22,7 @@ class LocationType(models.IntegerChoices):
 class Location(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     type = models.IntegerField(choices=LocationType.choices)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=True)
     latitude = models.DecimalField(
         max_digits=9, decimal_places=7, blank=True, null=True
     )
