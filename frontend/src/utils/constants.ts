@@ -7,12 +7,14 @@ const EMPTY_SESSION: Session = {
 };
 const MAX_SCREENSIZE_MOBILE = 768;
 
+const INVALID_COORDINATES = {
+  latitude: -1,
+  longitude: -1
+};
+
 const INVALID_LOCATION: NamedLocation = {
   name: "",
-  coords: {
-    latitude: -1,
-    longitude: -1
-  }
+  coords: INVALID_COORDINATES
 }
 
-export { EMPTY_SESSION, INVALID_LOCATION, MAX_SCREENSIZE_MOBILE };
+export { EMPTY_SESSION, INVALID_COORDINATES, INVALID_LOCATION, MAX_SCREENSIZE_MOBILE };

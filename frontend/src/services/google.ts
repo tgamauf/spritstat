@@ -1,6 +1,6 @@
 import {Loader} from "@googlemaps/js-api-loader";
 
-import {INVALID_LOCATION} from "../utils/constants";
+import {INVALID_COORDINATES, INVALID_LOCATION} from "../utils/constants";
 import {Coordinates, NamedLocation} from "../utils/types";
 
 // The Google Maps API has to be loaded dynamically.
@@ -26,8 +26,14 @@ interface Prediction {
   coords?: Coordinates;
 }
 
-interface ParsedLocation extends NamedLocation{
+interface ParsedLocation extends NamedLocation {
   placeId: string;
+}
+
+const INVALID_PREDICTION: Prediction = {
+ placeId: "",
+ description: "",
+ coords: INVALID_COORDINATES
 }
 
 const INVALID_PARSED_LOCATION: ParsedLocation = {
@@ -78,7 +84,7 @@ class GoogleMapsAPI {
       region: "AT"
     });
 
-    const predictions: Prediction[] = [];
+    let predictions: Prediction[] = [];
     for (const loc of locations) {
       predictions.push({
         placeId: loc.placeId,
@@ -86,6 +92,14 @@ class GoogleMapsAPI {
         coords: loc.coords
       });
     }
+
+    // Deduplicate the predictions
+    predictions = predictions.filter(
+      (item, index, self) =>
+        index === self.findIndex((t) => (
+          t.description === item.description)
+        )
+    )
 
     return predictions;
   }
@@ -212,9 +226,9 @@ class GoogleMapsAPI {
   }
 
   private static createLocationName(
-    {street, streetNumber, other}: {street?: string, streetNumber?: string, other?: string}
+    {street, streetNumber, other}: { street?: string, streetNumber?: string, other?: string }
   ): string | undefined {
-        // Create the name, which either consists of a street, a street + street
+    // Create the name, which either consists of a street, a street + street
     //  number, or one of the other features (like an establishment, or natural
     //  feature
     let name;
@@ -232,7 +246,7 @@ class GoogleMapsAPI {
   }
 
   private static createLocationDescription(
-    {name, locality, postalCode}: {name?: string, locality?: string, postalCode?: string}
+    {name, locality, postalCode}: { name?: string, locality?: string, postalCode?: string }
   ): string {
     let description;
     if (name && locality && postalCode) {
@@ -265,4 +279,4 @@ async function loadGoogleMapsAPI(): Promise<GoogleMapsAPI | null> {
 }
 
 export type {Prediction, Coordinates};
-export {GoogleMapsAPI, INVALID_LOCATION, loadGoogleMapsAPI};
+export {GoogleMapsAPI, INVALID_LOCATION, INVALID_PREDICTION, loadGoogleMapsAPI};

@@ -1,35 +1,41 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  Prediction,
-  GoogleMapsAPI,
-  INVALID_LOCATION,
-  loadGoogleMapsAPI
-} from "../services/google";
-import {Coordinates, NamedLocation} from "../utils/types";
+import {Prediction, GoogleMapsAPI, loadGoogleMapsAPI, INVALID_PREDICTION} from "../services/google";
+import {INVALID_COORDINATES, INVALID_LOCATION} from "../utils/constants";
+import {NamedLocation} from "../utils/types";
 
 const MAX_LOCATION_NAME_LENGTH = 200;  // mirrors the length of the model field
 const LOCATION_REQUEST_TIMEOUT_MS = 5000;
+const INVALID_SEARCH_TEXT = "";
+const NO_PREDICTIONS: Prediction[] = [];
+
 
 interface Props {
   setLocation: (location: NamedLocation) => void;
   setErrorMessage: (msg: string) => void;
-  hasBetaAccess: boolean
 }
 
 export default function NamedLocationField({
   setLocation,
   setErrorMessage,
-  hasBetaAccess
 }: Props): JSX.Element {
   const dropdownRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const buttonRef = useRef() as React.MutableRefObject<HTMLAnchorElement>
   const [googleMapsAPI, setGoogleMapsAPI] = useState<GoogleMapsAPI | null>(null);
-  const [searchText, setSearchText] = useState("");
-  const [predictions, setPredictions] = useState<Prediction[]>([]);
-  const [searchCoordinates, setSearchCoordinates] = useState<Coordinates>();
-  const [selectedPrediction, setSelectedPrediction] = useState<Prediction>();
+  const [searchText, setSearchText] = useState(INVALID_SEARCH_TEXT);
+  const [searchCoordinates, setSearchCoordinates] = useState(INVALID_COORDINATES);
+  const [predictions, setPredictions] = useState(NO_PREDICTIONS);
+  const [selectedPrediction, setSelectedPrediction] = useState(INVALID_PREDICTION);
+  const [displayText, setDisplayText] = useState("");
+
+  const escapePressed = useCallback((event) => {
+    if(event.key === "Escape") {
+      // Clear predictions if the escape key is pressed
+      setPredictions(NO_PREDICTIONS);
+    }
+  }, []);
 
   useEffect(() => {
     if (!googleMapsAPI) {
@@ -38,15 +44,15 @@ export default function NamedLocationField({
   }, [])
 
   useEffect(() => {
-    // Clean up predictions if the user deleted the text
-    if (searchText.length === 0) {
-      setPredictions([]);
+    document.addEventListener("keydown", escapePressed, false);
 
-      return;
-    }
+    return () => {
+      document.removeEventListener("keydown", escapePressed, false);
+    };
+  }, []);
 
-    // We won't search for a location if the user selected a prediction
-    if (selectedPrediction) {
+  useEffect(() => {
+    if (searchText === INVALID_SEARCH_TEXT) {
       return;
     }
 
@@ -57,48 +63,76 @@ export default function NamedLocationField({
   }, [searchText]);
 
   useEffect(() => {
-    if (selectedPrediction) {
-      googleMapsAPI?.selectPrediction(selectedPrediction)
-        .then((location) => {
-          if (location === INVALID_LOCATION) {
-            setErrorMessage("Der Ort konnte nicht gefunden werden.");
-            return;
-          }
-
-          // Set the description of the selected prediction as search text, to
-          //  maintain consistency.
-          setSearchText(selectedPrediction.description);
-          setLocation(location);
-        });
+    if (searchCoordinates === INVALID_COORDINATES) {
+      return;
     }
-  }, [selectedPrediction]);
+
+    googleMapsAPI?.getPredictionsFromCoordinates(searchCoordinates)
+      .then((predictions) => {
+        setPredictions(predictions);
+      });
+  }, [searchCoordinates]);
 
   useEffect(() => {
-    if (searchCoordinates) {
-      googleMapsAPI?.getPredictionsFromCoordinates(searchCoordinates)
-        .then((predictions) => {
-          setPredictions(predictions);
-        });
+    if (selectedPrediction === INVALID_PREDICTION) {
+      return;
     }
-  }, [searchCoordinates]);
+
+    googleMapsAPI?.selectPrediction(selectedPrediction)
+      .then((location) => {
+        if (location === INVALID_LOCATION) {
+          setErrorMessage("Der Ort konnte nicht gefunden werden.");
+          return;
+        }
+
+        setLocation(location);
+      });
+  }, [selectedPrediction]);
+
+  useLayoutEffect(() => {
+    // One of the location sources has changed, so let's delete the previous
+    //  location.
+    setLocation(INVALID_LOCATION);
+
+    if (searchCoordinates !== INVALID_COORDINATES) {
+      setDisplayText(
+        `${searchCoordinates.latitude}, ${searchCoordinates.longitude}`
+      );
+      return;
+    } else if (selectedPrediction !== INVALID_PREDICTION) {
+      setDisplayText(selectedPrediction.description);
+      return;
+    } else {
+      // If none of the others is valid we set the search text.
+      setDisplayText(searchText);
+    }
+  }, [searchText, searchCoordinates, selectedPrediction]);
 
   function changeSearchText(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
 
     const target = event.target as HTMLInputElement;
-
-    // If the user manually changed anything in the search text we remove the
-    //  selected prediction again as the user obviously wasn't satisfied with it.
-    setSelectedPrediction(undefined);
     setSearchText(target.value);
+
+    setSearchCoordinates(INVALID_COORDINATES);
+    setSelectedPrediction(INVALID_PREDICTION);
+    setPredictions(NO_PREDICTIONS);
+  }
+
+  function changeSelectedPrediction(prediction: Prediction) {
+    setSelectedPrediction(prediction);
+
+    setSearchText(INVALID_SEARCH_TEXT);
+    setSearchCoordinates(INVALID_COORDINATES);
+    setPredictions(NO_PREDICTIONS);
   }
 
   function setPosition(position: GeolocationPosition) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    setSearchCoordinates(position.coords);
 
-    setSearchText(`${latitude}, ${longitude}`);
-    setSearchCoordinates({latitude, longitude});
+    setSearchText(INVALID_SEARCH_TEXT);
+    setSelectedPrediction(INVALID_PREDICTION);
+    setPredictions(NO_PREDICTIONS);
   }
 
   function setPositionError(error: GeolocationPositionError) {
@@ -110,9 +144,7 @@ export default function NamedLocationField({
     }
   }
 
-  function requestLocation(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-
+  function requestLocation() {
     navigator.geolocation.getCurrentPosition(
       setPosition,
       setPositionError,
@@ -124,49 +156,38 @@ export default function NamedLocationField({
   }
 
   if (dropdownRef.current) {
-    if ((predictions.length > 0) && !selectedPrediction) {
+    if (predictions.length > 0) {
       dropdownRef.current.classList.add("is-active");
     } else {
       dropdownRef.current.classList.remove("is-active");
     }
   }
 
-  const fieldTitle =
-    "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.";
+  if (buttonRef.current) {
+    if (navigator.geolocation) {
+      buttonRef.current.classList.remove("is-static");
+    } else {
+      buttonRef.current.classList.add("is-static");
+    }
+  }
+
   return (
-    <div className="field is-horizontal" data-test="location-add-address">
-      {searchCoordinates && (
-        <div className={`notification is-success`}>
-          Current location: {searchCoordinates.latitude}/{searchCoordinates.longitude}
-        </div>
-      )}
-      {hasBetaAccess && (
-        <div className="field">
-          <button
-            className="button is-ghost"
-            disabled={!navigator.geolocation}
-            onClick={(e) => requestLocation(e)}
-          >
-            <FontAwesomeIcon
-              className="icon has-text-primary"
-              icon={faMapMarkerAlt}
-            />
-          </button>
-        </div>
-      )}
+    <div
+      className="field is-horizontal has-addons"
+      data-test="location-add-address"
+    >
       <div className="dropdown" ref={dropdownRef}>
         <div className="dropdown-trigger">
           <div className="field">
             <p className="control has-icons-right">
               <input
                 className="input"
-                title={fieldTitle}
+                title="Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen."
                 type="text"
                 placeholder="Ort"
                 maxLength={MAX_LOCATION_NAME_LENGTH}
-                value={searchText}
-                required={true}
-                onInput={(e) => changeSearchText(e)}
+                value={displayText}
+                onChange={(e) => changeSearchText(e)}
                 data-test="field-search"
               />
               <span className="icon is-small is-right">
@@ -183,7 +204,7 @@ export default function NamedLocationField({
                   <a
                     className="dropdown-item"
                     href="#"
-                    onClick={() => setSelectedPrediction(item)}
+                    onClick={() => changeSelectedPrediction(item)}
                     key={index}
                     data-test={`field-search-dropdown-${index}`}
                   >
@@ -194,6 +215,19 @@ export default function NamedLocationField({
             }
           </div>
         </div>
+      </div>
+      <div className="control">
+        <a
+          className="button is-ghost"
+          title="Übernimm deinen aktuellen Ort."
+          ref={buttonRef}
+          onClick={() => requestLocation()}
+        >
+          <FontAwesomeIcon
+            className="icon has-text-primary"
+            icon={faMapMarkerAlt}
+          />
+        </a>
       </div>
     </div>
   );

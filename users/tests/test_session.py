@@ -13,7 +13,7 @@ class TestSession(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse("account_session")
-        cls.email = "test@test.at"
+        cls.email = "test2@test.at"
 
     def setUp(self):
         if not self.id().endswith("_not_logged_in"):

@@ -8,20 +8,20 @@ import BasePage from "../../components/BasePage";
 import RegionLocationField from "../../components/RegionLocationField";
 import {apiCreateLocation} from "../../services/api";
 import {RegionType} from "../../services/econtrolApi";
-import {
-  FuelType,
-  FuelTypeLabels,
-  LocationType,
-  OurFormElement,
-  NamedLocation,
-  RouteNames
-} from "../../utils/types";
+import {FuelType, FuelTypeLabels, LocationType, OurFormElement, RouteNames} from "../../utils/types";
+import {INVALID_LOCATION} from "../../utils/constants";
 
 const BREADCRUMB = {
   name: "Ort hinzufügen",
   icon: faPlusSquare,
   destination: RouteNames.AddLocation,
 };
+
+const INVALID_REGION: Region = {
+  code: -1,
+  type: RegionType.Invalid,
+  name: ""
+}
 
 interface Region {
   code: number;
@@ -30,12 +30,12 @@ interface Region {
 }
 
 export default function AddLocation(): JSX.Element {
-  const [{ isAuthenticated, hasBetaAccess }] = useGlobalState();
+  const [{ isAuthenticated }] = useGlobalState();
   const [errorMessage, setErrorMessage] = useState("");
   const [locationType, setLocationType] = useState<LocationType>(LocationType.Named);
   const [fuelType, setFuelType] = useState<FuelType>(FuelType.Diesel);
-  const [namedLocation, setNamedLocation] = useState<NamedLocation>();
-  const [region, setRegion] = useState<Region>();
+  const [namedLocation, setNamedLocation] = useState(INVALID_LOCATION);
+  const [region, setRegion] = useState(INVALID_REGION);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
@@ -49,14 +49,27 @@ export default function AddLocation(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
+      let name;
+      let latitude;
+      let longitude;
+      let regionCode;
+      let regionType;
+      if (locationType === LocationType.Named) {
+        name = namedLocation.name;
+        latitude = namedLocation.coords.latitude;
+        longitude = namedLocation.coords.longitude;
+      } else {
+        name = region.name;
+        regionCode = region.code;
+        regionType = region.type
+      }
       apiCreateLocation({
         type: locationType,
-        name: locationType === LocationType.Named
-          ? namedLocation?.name : region?.name,
-        latitude: namedLocation?.coords.latitude,
-        longitude: namedLocation?.coords.longitude,
-        regionCode: region?.code,
-        regionType: region?.type,
+        name,
+        latitude,
+        longitude,
+        regionCode,
+        regionType,
         fuelType,
       })
         .then((isSuccess) => {
@@ -80,8 +93,8 @@ export default function AddLocation(): JSX.Element {
     const type = Number(event.target.value);
     if (type !== locationType) {
       // Clean up previously chosen locations
-      setNamedLocation(undefined);
-      setRegion(undefined);
+      setNamedLocation(INVALID_LOCATION);
+      setRegion(INVALID_REGION);
       setLocationType(type);
     }
   }
@@ -99,7 +112,6 @@ export default function AddLocation(): JSX.Element {
       <NamedLocationField
         setLocation={setNamedLocation}
         setErrorMessage={setErrorMessage}
-        hasBetaAccess={hasBetaAccess}
       />
     );
   } else {
@@ -174,7 +186,10 @@ export default function AddLocation(): JSX.Element {
                     className="button is-primary"
                     type="submit"
                     value="Hinzufügen"
-                    disabled={!namedLocation && !region}
+                    disabled={
+                      (namedLocation === INVALID_LOCATION)
+                      && (region === INVALID_REGION)
+                    }
                     data-test="btn-submit"
                   />
                 </p>

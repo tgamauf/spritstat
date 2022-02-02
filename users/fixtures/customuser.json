@@ -12,6 +12,7 @@
       "email": "tom@thga.at",
       "is_staff": true,
       "is_active": true,
+      "has_beta_access": false,
       "date_joined": "2021-12-22T16:42:29.092Z",
       "groups": [],
       "user_permissions": []
@@ -30,6 +31,7 @@
       "email": "tom@thga.at",
       "is_staff": false,
       "is_active": true,
+      "has_beta_access": false,
       "date_joined": "2021-10-10T21:50:24Z",
       "groups": [],
       "user_permissions": []
@@ -48,6 +50,7 @@
       "email": "test@test.at",
       "is_staff": false,
       "is_active": true,
+      "has_beta_access": true,
       "date_joined": "2022-01-09T18:04:38Z",
       "groups": [],
       "user_permissions": []
@@ -66,6 +69,7 @@
       "email": "test2@test.at",
       "is_staff": false,
       "is_active": true,
+      "has_beta_access": false,
       "date_joined": "2022-01-09T18:04:38Z",
       "groups": [],
       "user_permissions": []
