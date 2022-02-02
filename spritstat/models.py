@@ -64,7 +64,7 @@ class Location(models.Model):
 
 class Station(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=80)
     address = models.CharField(max_length=80)
     postal_code = models.CharField(max_length=4)
     city = models.CharField(max_length=30)
