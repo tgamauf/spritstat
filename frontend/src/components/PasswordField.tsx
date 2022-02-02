@@ -19,7 +19,7 @@ export default function PasswordField({
   data_cy = "field-current-password",
   children,
 }: Props): JSX.Element {
-  const [passwordVisible, setPasswordVisible] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   let passwordFieldType;
   let passwordVisibleIcon;
