@@ -1,5 +1,6 @@
 import {Loader} from "@googlemaps/js-api-loader";
 
+import {INVALID_LOCATION} from "../utils/constants";
 import {Coordinates, NamedLocation} from "../utils/types";
 
 // The Google Maps API has to be loaded dynamically.
@@ -19,34 +20,25 @@ try {
 }
 
 
-interface AutocompletePrediction {
-  id: number;
+interface Prediction {
+  placeId: string;
   description: string;
-}
-
-type AutocompleteResult = AutocompletePrediction[];
-
-interface ParsedLocation {
-  name?: string
-  locality?: string;
-  postalCode?: string;
-  country?: string;
   coords?: Coordinates;
 }
 
-const INVALID_LOCATION: NamedLocation = {
-  name: "",
-  coords: {
-    latitude: -1,
-    longitude: -1
-  }
+interface ParsedLocation extends NamedLocation{
+  placeId: string;
 }
+
+const INVALID_PARSED_LOCATION: ParsedLocation = {
+  ...INVALID_LOCATION,
+  placeId: ""
+};
 
 class GoogleMapsAPI {
   private autocompleteService: google.maps.places.AutocompleteService;
   private geocoderService: google.maps.Geocoder;
   private readonly sessionToken: google.maps.places.AutocompleteSessionToken;
-  private predictions: google.maps.places.AutocompletePrediction[];
 
   constructor() {
     this.autocompleteService = new google.maps.places.AutocompleteService();
@@ -54,12 +46,10 @@ class GoogleMapsAPI {
 
     // As an instance is created every time we use this, we set the session here
     this.sessionToken = new google.maps.places.AutocompleteSessionToken();
-    this.predictions = []
   }
 
-  public async getPredictions(input: string): Promise<AutocompleteResult> {
+  public async getPredictionsFromText(input: string): Promise<Prediction[]> {
     // Search for the input string and store the returned results
-
     try {
       const result = await this.autocompleteService.getPlacePredictions({
         input,
@@ -67,38 +57,78 @@ class GoogleMapsAPI {
         sessionToken: this.sessionToken
       });
 
-      // Replace the previous predictions
-      this.predictions = [];
-      return result.predictions.map((prediction, index) => {
-        this.predictions.push(prediction);
-        return {id: index, description: prediction.description};
-      })
+      return result.predictions.map((prediction) => {
+        return {
+          placeId: prediction.place_id,
+          description: prediction.description
+        };
+      });
     } catch (e: any) {
       console.error(`Autocomplete call failed: ${e}`);
       return [];
     }
   }
 
-  public async getLocationFromCoordinates(
+  public async getPredictionsFromCoordinates(
     coords: Coordinates
-  ): Promise<NamedLocation> {
+  ): Promise<Prediction[]> {
     // Get the location details for the provided coordinates
-
-    return this.getLocation({
+    const locations = await this.getLocation({
       location: new google.maps.LatLng(coords.latitude, coords.longitude),
-      componentRestrictions: {country: "AT"}
+      region: "AT"
     });
+
+    const predictions: Prediction[] = [];
+    for (const loc of locations) {
+      predictions.push({
+        placeId: loc.placeId,
+        description: loc.name,
+        coords: loc.coords
+      });
+    }
+
+    return predictions;
   }
 
-  public async selectPrediction(id: number): Promise<NamedLocation> {
+  public async selectPrediction(prediction: Prediction): Promise<NamedLocation> {
     // Return the location details of the selected location
 
-    return this.getLocation({placeId: this.predictions[id].place_id});
+    // If we have the coordinates already just return the location directly
+    if (prediction.coords) {
+      return {name: prediction.description, coords: prediction.coords};
+    }
+
+    const locations = await this.getLocation({
+      placeId: prediction.placeId,
+      region: "AT"
+    });
+
+    if (locations.length == 0) {
+      return INVALID_LOCATION;
+    }
+
+    if (locations.length > 1) {
+      console.warn(
+        `Received more than one result for selected prediction: 
+        ${JSON.stringify(locations, null, 2)}`
+      );
+    }
+
+    // Pick the first valid location
+    let index = 0;
+    while (locations[index] === INVALID_PARSED_LOCATION) {
+      index++;
+    }
+    if (locations[index] === INVALID_PARSED_LOCATION) {
+      return INVALID_LOCATION;
+    }
+
+    return locations[index];
   }
 
   private async getLocation(
     request: google.maps.GeocoderRequest
-  ): Promise<NamedLocation> {
+  ): Promise<ParsedLocation[]> {
     // Get the location details for the provided data
 
     const result = await this.geocoderService.geocode(request);
@@ -107,63 +137,43 @@ class GoogleMapsAPI {
       console.error(
         `No results returned for request ${JSON.stringify(request, null, 2)}`
       );
-      return INVALID_LOCATION;
+      return [];
     }
 
-    const location = this.parseLocationResult(result.results[0]);
+    const locations: ParsedLocation[] = [];
+    for (const entry of result.results) {
+      const loc = this.parseLocationResult(entry);
+      if (loc === INVALID_PARSED_LOCATION) {
+        continue;
+      }
 
-    if (!location.country || (location.country !== "AT")) {
-      console.error(
-        `Provided location is not in Austria: ${JSON.stringify(result, null, 2)}`
-      )
-      return INVALID_LOCATION;
-    }
-    if (!location.coords) {
-      console.error(
-        `Provided location is not valid: ${JSON.stringify(result, null, 2)}`
-      )
-      return INVALID_LOCATION;
+      locations.push(loc);
     }
 
-    let name;
-    if (location.name && location.locality && location.postalCode) {
-      name = `${location.name}, ${location.postalCode} ${location.locality}`;
-    } else if (location.locality && location.postalCode) {
-      name = `${location.postalCode} ${location.locality}`;
-    } else if (location.locality) {
-      name = location.locality;
-    } else if (location.postalCode) {
-      name = location.postalCode;
-    } else {
-      console.warn(
-        `Provided location is country-only: ${JSON.stringify(result, null, 2)}`
-      )
-      name = "Österreich";
-    }
-    return {
-      name,
-      coords: location.coords
-    };
+    return locations;
   }
 
   private parseLocationResult(location: google.maps.GeocoderResult): ParsedLocation {
-    let coords;
-    let street_number;
+    if (!location.place_id || !location.geometry) {
+      console.error(`Invalid location received: ${JSON.stringify(location, null, 2)}`);
+      return INVALID_PARSED_LOCATION;
+    }
+
+    const placeId = location.place_id
+    const coords = {
+      latitude: location.geometry.location.lat(),
+      longitude: location.geometry.location.lng()
+    }
+
+    let streetNumber;
     let street;
     let other;
     let locality;
     let postalCode;
     let district;
-    let country;
-    if (location.geometry.location) {
-      coords = {
-        latitude: location.geometry.location.lat(),
-        longitude: location.geometry.location.lng()
-      }
-    }
     for (const entry of location.address_components) {
       if (entry.types.includes("street_number")) {
-        street_number = entry.long_name;
+        streetNumber = entry.long_name;
       }
       if (entry.types.includes("route")) {
         street = entry.long_name;
@@ -182,32 +192,11 @@ class GoogleMapsAPI {
       if (entry.types.includes("administrative_area_level_2")) {
         district = entry.long_name;
       }
-      if (entry.types.includes("country")) {
-        country = entry.short_name;
-      }
     }
 
-    // This address isn't in Austria, so it isn't supported
-    if (country !== "AT") {
-      console.error(
-        `Provided address not in Austria: ${JSON.stringify(location, null, 2)}`
-      )
-      return INVALID_LOCATION;
-    }
-
-    // Create the name, which either consists of a street, a street + street
-    //  number, or one of the other features (like an establishment, or natural
-    //  feature
-    let name;
-    if (street) {
-      name = street;
-
-      if (street_number) {
-        name += ` ${street_number}`;
-      }
-    } else if (other) {
-      name = other;
-    }
+    const name = GoogleMapsAPI.createLocationName(
+      {street, streetNumber: streetNumber, other}
+    );
 
     // Create the "city" which is either a locality or a district in certain
     //  edge cases like a natural feature.
@@ -215,7 +204,50 @@ class GoogleMapsAPI {
       locality = district;
     }
 
-    return { name, locality, postalCode, country, coords };
+    const description = GoogleMapsAPI.createLocationDescription(
+      {name, locality, postalCode}
+    );
+
+    return {name: description, placeId, coords};
+  }
+
+  private static createLocationName(
+    {street, streetNumber, other}: {street?: string, streetNumber?: string, other?: string}
+  ): string | undefined {
+        // Create the name, which either consists of a street, a street + street
+    //  number, or one of the other features (like an establishment, or natural
+    //  feature
+    let name;
+    if (street) {
+      name = street;
+
+      if (streetNumber) {
+        name += ` ${streetNumber}`;
+      }
+    } else if (other) {
+      name = other;
+    }
+
+    return name;
+  }
+
+  private static createLocationDescription(
+    {name, locality, postalCode}: {name?: string, locality?: string, postalCode?: string}
+  ): string {
+    let description;
+    if (name && locality && postalCode) {
+      description = `${name}, ${postalCode} ${locality}`;
+    } else if (locality && postalCode) {
+      description = `${postalCode} ${locality}`;
+    } else if (locality) {
+      description = locality;
+    } else if (postalCode) {
+      description = postalCode;
+    } else {
+      description = "Österreich";
+    }
+
+    return description;
   }
 }
 
@@ -232,10 +264,5 @@ async function loadGoogleMapsAPI(): Promise<GoogleMapsAPI | null> {
   return null;
 }
 
-export type {
-  AutocompletePrediction,
-  AutocompleteResult,
-  Coordinates
-};
-
+export type {Prediction, Coordinates};
 export {GoogleMapsAPI, INVALID_LOCATION, loadGoogleMapsAPI};

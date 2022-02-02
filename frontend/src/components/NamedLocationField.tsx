@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import {
-  AutocompletePrediction,
-  AutocompleteResult,
+  Prediction,
   GoogleMapsAPI,
   INVALID_LOCATION,
   loadGoogleMapsAPI
@@ -28,9 +27,9 @@ export default function NamedLocationField({
   const dropdownRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [googleMapsAPI, setGoogleMapsAPI] = useState<GoogleMapsAPI | null>(null);
   const [searchText, setSearchText] = useState("");
-  const [predictions, setPredictions] = useState<AutocompleteResult>([]);
+  const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [searchCoordinates, setSearchCoordinates] = useState<Coordinates>();
-  const [selectedPrediction, setSelectedPrediction] = useState<AutocompletePrediction>();
+  const [selectedPrediction, setSelectedPrediction] = useState<Prediction>();
 
   useEffect(() => {
     if (!googleMapsAPI) {
@@ -51,7 +50,7 @@ export default function NamedLocationField({
       return;
     }
 
-    googleMapsAPI?.getPredictions(searchText)
+    googleMapsAPI?.getPredictionsFromText(searchText)
       .then((predictions) => {
         setPredictions(predictions);
       });
@@ -59,7 +58,7 @@ export default function NamedLocationField({
 
   useEffect(() => {
     if (selectedPrediction) {
-      googleMapsAPI?.selectPrediction(selectedPrediction.id)
+      googleMapsAPI?.selectPrediction(selectedPrediction)
         .then((location) => {
           if (location === INVALID_LOCATION) {
             setErrorMessage("Der Ort konnte nicht gefunden werden.");
@@ -76,18 +75,9 @@ export default function NamedLocationField({
 
   useEffect(() => {
     if (searchCoordinates) {
-      googleMapsAPI?.getLocationFromCoordinates(searchCoordinates)
-        .then((location) => {
-          if (location === INVALID_LOCATION) {
-            setErrorMessage(
-              "Dein Ort konnte nicht gefunden werden."
-            );
-            return;
-          }
-
-          // Set the name of the received location as search text
-          setSearchText(location.name);
-          setLocation(location);
+      googleMapsAPI?.getPredictionsFromCoordinates(searchCoordinates)
+        .then((predictions) => {
+          setPredictions(predictions);
         });
     }
   }, [searchCoordinates]);
@@ -104,10 +94,11 @@ export default function NamedLocationField({
   }
 
   function setPosition(position: GeolocationPosition) {
-    setSearchCoordinates({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    })
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    setSearchText(`${latitude}, ${longitude}`);
+    setSearchCoordinates({latitude, longitude});
   }
 
   function setPositionError(error: GeolocationPositionError) {
@@ -187,14 +178,14 @@ export default function NamedLocationField({
         <div className="dropdown-menu">
           <div className="dropdown-content">
             {
-              predictions.map((item) => {
+              predictions.map((item, index) => {
                 return (
                   <a
                     className="dropdown-item"
                     href="#"
                     onClick={() => setSelectedPrediction(item)}
-                    key={item.id}
-                    data-test={`field-search-dropdown-${item.id}`}
+                    key={index}
+                    data-test={`field-search-dropdown-${index}`}
                   >
                     {item.description}
                   </a>
