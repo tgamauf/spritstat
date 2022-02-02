@@ -66,11 +66,11 @@ def session_view(request):
     # This has to be a POST request as we need the CSRF token to prevent
     #  malicious actors to check if we are authenticated and GET requests
     #  need to be idempotent
-
     if not request.user.is_authenticated:
         return Response({"isAuthenticated": False})
 
     user = CustomUser.objects.get(id=request.user.id)
+    user.save(update_fields=["last_activity"])
     return Response(
         {
             "isAuthenticated": True,

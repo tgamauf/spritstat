@@ -13,6 +13,7 @@
       "is_staff": true,
       "is_active": true,
       "has_beta_access": false,
+      "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2021-12-22T16:42:29.092Z",
       "groups": [],
       "user_permissions": []
@@ -32,6 +33,7 @@
       "is_staff": false,
       "is_active": true,
       "has_beta_access": false,
+      "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2021-10-10T21:50:24Z",
       "groups": [],
       "user_permissions": []
@@ -51,6 +53,7 @@
       "is_staff": false,
       "is_active": true,
       "has_beta_access": true,
+      "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2022-01-09T18:04:38Z",
       "groups": [],
       "user_permissions": []
@@ -70,6 +73,7 @@
       "is_staff": false,
       "is_active": true,
       "has_beta_access": false,
+      "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2022-01-09T18:04:38Z",
       "groups": [],
       "user_permissions": []

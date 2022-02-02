@@ -1,6 +1,9 @@
+import datetime
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+from unittest.mock import patch
 
 from users.models import CustomUser
 
@@ -20,11 +23,18 @@ class TestSession(APITestCase):
             self.client.login(username=self.email, password="test")
 
     def test_ok(self):
-        response = self.client.post(self.url)
+        mock_datetime = datetime.datetime.strptime(
+            "2022-02-02T22:53+0000", "%Y-%m-%dT%H:%M%z"
+        )
+        with patch("django.utils.timezone.now", return_value=mock_datetime):
+            response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(
             response.data,
             {"isAuthenticated": True, "hasBetaAccess": False, "email": self.email},
+        )
+        self.assertEqual(
+            CustomUser.objects.get(email=self.email).last_activity, mock_datetime
         )
 
         # Test beta access
