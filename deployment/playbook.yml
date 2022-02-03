@@ -54,11 +54,6 @@
         src: common/01-max_mem_count.conf
         dest: /etc/sysctl.d/01-max_mem_count.conf
 
-    - name: Provide ofelia configuration on machine
-      copy:
-        src: ofelia/
-        dest: /etc/ofelia/
-
     - name: Provide custom nginx configuration on machine
       copy:
         src: nginx/
@@ -88,21 +83,6 @@
           - name: spritstat
         networks_cli_compatible: yes
         env_file: /etc/spritstat/production.env
-
-    - name: Run ofelia
-      # This container is responsible for regularly scheduled jobs
-      docker_container:
-        name: ofelia
-        image: mcuadros/ofelia:latest
-        pull: yes
-        state: started
-        restart: yes
-        restart_policy: always
-        volumes:
-          - /etc/ofelia/config.ini:/etc/ofelia/config.ini
-          - /var/run/docker.sock:/var/run/docker.sock:ro
-        networks_cli_compatible: yes
-        command: daemon --config=/etc/ofelia/config.ini
 
     - name: Run nginx-proxy
       # This nginx container uses autoconfiguration to map domain names
@@ -153,7 +133,6 @@
         name: spritstat
         connected:
           - spritstat
-          - ofelia
           - nginx-proxy
           - nginx-proxy-acme
 

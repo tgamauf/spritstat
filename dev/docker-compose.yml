@@ -21,13 +21,6 @@ services:
       - db
     volumes:
       - staticfiles:/home/app/web/staticfiles
-  ofelia:
-    container_name: ofelia
-    image: mcuadros/ofelia:latest
-    volumes:
-      - ./ofelia/config.ini:/etc/ofelia/config.ini
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    command: daemon --config=/etc/ofelia/config.ini
   nginx:
     container_name: nginx-proxy
     image: nginxproxy/nginx-proxy:alpine

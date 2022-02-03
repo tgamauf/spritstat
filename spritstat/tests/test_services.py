@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 from datetime import timedelta
+from django.conf import settings
+from django.contrib import auth
+from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.sessions.models import Session
 from django.test import TestCase
+from django.utils import timezone
 import json
 from statistics import mean, median
 from typing import List, Dict, Optional
@@ -9,6 +14,7 @@ from urllib3 import PoolManager
 
 from spritstat.models import Location, Price, Station
 from spritstat import services
+from users.models import CustomUser
 
 
 @dataclass
@@ -72,7 +78,7 @@ class MockPriceStatistics(services.PriceStatistics):
         object.__setattr__(self, "median_amount", value)
 
 
-class TestServices(TestCase):
+class TestRequestLocationPrices(TestCase):
     fixtures = ["customuser.json", "test_services.json"]
 
     def setUp(self):
@@ -358,3 +364,40 @@ class TestServices(TestCase):
         services.create_price_if_changed(**self.default_test_price)
         self.assertEqual(Price.objects.count(), check_price_count)
         self.assertEqual(Price.objects.last().median_amount, check_median_amount)
+
+
+class TestClearExpiredSessions(TestCase):
+    fixtures = ["customuser.json"]
+
+    @staticmethod
+    def create_session(expiry: int) -> None:
+        user = CustomUser.objects.first()
+
+        session = SessionStore(None)
+        session.clear()
+        session.cycle_key()
+        session[auth.SESSION_KEY] = user._meta.pk.value_to_string(user)
+        session[auth.BACKEND_SESSION_KEY] = "django.contrib.auth.backends.ModelBackend"
+        session[auth.HASH_SESSION_KEY] = user.get_session_auth_hash()
+        session.set_expiry(expiry)
+        session.save()
+
+    def test_clear_sessions(self):
+        # Setup sessions (non-expired, expired, no expiry date)
+        self.create_session(settings.SESSION_COOKIE_AGE)
+        self.create_session(1)
+        self.create_session(0)
+
+        # Ensure that the session with expiry "SESSION_COOKIE_AGE" (seconds)
+        #  isn't expired, but the sessions with expiry 1 (seconds) is for sure.
+        # The session with expiry 0 will also expire after SESSION_COOKIE_AGE.
+        mock_now = timezone.now() + timedelta(seconds=settings.SESSION_COOKIE_AGE // 2)
+        with patch("django.utils.timezone.now", return_value=mock_now):
+            services.clear_expired_sessions()
+        self.assertEqual(Session.objects.count(), 2)
+
+        # All cookies should expire now
+        mock_now = timezone.now() + timedelta(seconds=settings.SESSION_COOKIE_AGE + 1)
+        with patch("django.utils.timezone.now", return_value=mock_now):
+            services.clear_expired_sessions()
+        self.assertEqual(Session.objects.count(), 0)

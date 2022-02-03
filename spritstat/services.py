@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 from decimal import Decimal
+from django.contrib.sessions.management.commands.clearsessions import (
+    Command as ClearSessionCommand,
+)
 from enum import Enum, unique
 import json
 from statistics import mean, median
@@ -295,3 +298,8 @@ def get_or_create_stations(
         objects.append(object_)
 
     return objects
+
+
+def clear_expired_sessions():
+    # Clear database backed sessions using the clearsessions command
+    ClearSessionCommand().handle()
