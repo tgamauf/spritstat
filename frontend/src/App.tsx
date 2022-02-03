@@ -61,13 +61,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className="App app-wrapper">
+    <div className="App">
       <Header
         isAuthenticated={state.isAuthenticated}
         dispatchGlobalState={dispatch}
         dropdownItems={headerDropdownItems}
       />
-      <div className="content-wrapper">
+      <div>
         {loading ? (
           <CenteredBox loading={loading} />
         ) : (
