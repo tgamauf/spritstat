@@ -69,7 +69,7 @@ jobs:
           path: frontend/public
           retention-days: 1
       - name: Collect test specs to allow for parallel tests
-        uses: tgamauf/cypress-parallel@v1
+        uses: tgamauf/cypress-parallel@v1-beta
         with:
           working-directory: frontend
 
@@ -89,7 +89,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        spec: ${{ fromJson(prepare-end-to-end-tests.outputs.integration-tests) }}
+        spec: ${{ fromJson(needs.prepare-end-to-end-tests.outputs.integration-tests) }}
     steps:
       - uses: actions/checkout@v2
       - name: Download the build folders from prepare step
