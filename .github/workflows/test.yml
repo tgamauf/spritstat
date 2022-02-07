@@ -75,6 +75,7 @@ jobs:
         uses: tgamauf/cypress-parallel@v1
         with:
           working-directory: frontend
+          count-runners: 5
 
   test-end-to-end:
     services:
