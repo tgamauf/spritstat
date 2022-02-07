@@ -76,6 +76,12 @@ interface Location {
   fuel_type: FuelType;
 }
 
+enum DateRange {
+  All,
+  OneMonth,
+  SixMonths,
+}
+
 interface Station {
   id: number;
   name: string;
@@ -102,4 +108,4 @@ export type {
   Station,
 };
 
-export { FuelType, FuelTypeLabels, LocationType, RouteNames };
+export { DateRange, FuelType, FuelTypeLabels, LocationType, RouteNames };
