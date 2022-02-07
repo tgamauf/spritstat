@@ -49,6 +49,8 @@ jobs:
 
   prepare-end-to-end-tests:
     runs-on: ubuntu-latest
+    outputs:
+      integration-tests: ${{ steps.parse.outputs.integration-tests }}
     steps:
       - uses: actions/checkout@v2
       - name: Install frontend dependencies
@@ -69,7 +71,8 @@ jobs:
           path: frontend/public
           retention-days: 1
       - name: Collect test specs to allow for parallel tests
-        uses: tgamauf/cypress-parallel@v1-beta
+        id: parse
+        uses: tgamauf/cypress-parallel@v1
         with:
           working-directory: frontend
 
@@ -98,7 +101,7 @@ jobs:
           name: build
           path: frontend/public
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v2g
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -119,6 +122,3 @@ jobs:
           start: python ../manage.py runserver
           wait-on: "http://127.0.0.1:8000"
           spec: ${{ matrix.spec }}
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
