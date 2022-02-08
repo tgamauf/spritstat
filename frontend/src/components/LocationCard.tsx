@@ -5,16 +5,18 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import CurrentPriceField from "./CurrentPriceField";
 import LocationField from "./LocationField";
 import LocationPriceLineChart from "./LocationPriceLineChart";
-import { Location } from "../utils/types";
+import {Location, StationMap} from "../utils/types";
 
 interface Props {
   location: Location;
+  stations: StationMap;
   setLocationToDelete: (id: number) => void;
   setErrorMessage: (msg: string) => void;
 }
 
 export default function LocationCard({
   location,
+  stations,
   setLocationToDelete,
   setErrorMessage,
 }: Props): JSX.Element {
@@ -43,6 +45,7 @@ export default function LocationCard({
         <LocationPriceLineChart
           id={String(location.id)}
           location={location}
+          stations={stations}
           setErrorMessage={setErrorMessage}
         />
       </div>

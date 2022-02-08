@@ -45,8 +45,6 @@ class StationSerializer(serializers.ModelSerializer):
             "address",
             "postal_code",
             "city",
-            "latitude",
-            "longitude",
         )
 
 

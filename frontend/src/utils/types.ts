@@ -90,10 +90,14 @@ interface Station {
   city: string;
 }
 
+type StationMap = {
+  [key: number]: Station;
+};
+
 interface Price {
   id: number;
   datetime: string;
-  cheapest_station: number;
+  stations: number[];
   min_amount: number;
 }
 
@@ -106,6 +110,7 @@ export type {
   Price,
   Session,
   Station,
+  StationMap,
 };
 
 export { DateRange, FuelType, FuelTypeLabels, LocationType, RouteNames };

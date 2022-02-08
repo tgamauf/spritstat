@@ -1,4 +1,4 @@
-import {NamedLocation, Session} from "./types";
+import {NamedLocation, Session, Station} from "./types";
 
 const EMPTY_SESSION: Session = {
   isAuthenticated: false,
@@ -17,4 +17,18 @@ const INVALID_LOCATION: NamedLocation = {
   coords: INVALID_COORDINATES
 }
 
-export { EMPTY_SESSION, INVALID_COORDINATES, INVALID_LOCATION, MAX_SCREENSIZE_MOBILE };
+const INVALID_STATION: Station = {
+  id: -1,
+  name: "",
+  address: "",
+  postalCode: "",
+  city: ""
+}
+
+export {
+  EMPTY_SESSION,
+  INVALID_COORDINATES,
+  INVALID_LOCATION,
+  INVALID_STATION,
+  MAX_SCREENSIZE_MOBILE
+};

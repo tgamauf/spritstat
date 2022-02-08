@@ -8,7 +8,7 @@ import CenteredBox from "../../components/CenteredBox";
 import BasePage from "../../components/BasePage";
 import LocationList from "../../components/LocationList";
 import {apiGetLocations} from "../../services/api";
-import { Location, RouteNames } from "../../utils/types";
+import {Location, RouteNames} from "../../utils/types";
 
 const BREADCRUMB = {
   name: "Startseite",

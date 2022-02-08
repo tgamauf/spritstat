@@ -1,9 +1,10 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
-import { Location, RouteNames } from "../utils/types";
+import {apiGetStations} from "../services/api";
+import {Location, RouteNames, StationMap} from "../utils/types";
 import LocationCard from "./LocationCard";
 import DeleteLocationModal, {NO_LOCATION_ID} from "./DeleteLocationModal";
 
@@ -18,6 +19,22 @@ export default function LocationList(
 ): JSX.Element {
   const [locationToDelete, setLocationToDelete] =
     useState<number>(NO_LOCATION_ID);
+  const [stations, setStations] = useState<StationMap>([]);
+
+  useEffect(() => {
+    apiGetStations()
+      .then((stations_) => {
+        setStations(stations_.reduce(function(map: StationMap, item) {
+            map[item.id] = item;
+            return map;
+          }, {})
+        );
+      })
+      .catch((error) => {
+        // We aren't notifying the user about this as stations aren't mandatory
+        console.error(`Failed to get stations: ${error}`);
+      });
+  }, []);
 
   const setErrorMessageCallback = useCallback(
     (msg: string) => setErrorMessage(msg),
@@ -74,6 +91,7 @@ export default function LocationList(
             <LocationCard
               key={location.id}
               location={location}
+              stations={stations}
               setLocationToDelete={setLocationToDeleteCallback}
               setErrorMessage={setErrorMessageCallback}
             />

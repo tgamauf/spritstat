@@ -1,7 +1,7 @@
 import Cookie from "universal-cookie";
 
 import {EMPTY_SESSION} from "../utils/constants";
-import {DateRange, FuelType, Location, LocationType, Price, Session} from "../utils/types";
+import {DateRange, FuelType, Location, LocationType, Price, Session, Station} from "../utils/types";
 import {RegionType} from "./econtrolApi";
 
 // Get the URL of the website, this is also where the API is available.
@@ -55,7 +55,7 @@ async function apiPostRequest(
 
     if (!response.ok) {
       console.error(
-        `API post request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
+        `API post request to "${path}" returned not-ok: ${response.statusText} [${response.status}`
       );
       return null;
     }
@@ -93,7 +93,7 @@ async function apiGetRequest(
 
     if (!response.ok) {
       console.error(
-        `API get request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
+        `API get request to "${path}" returned not-ok: ${response.statusText} [${response.status}`
       );
       return null;
     }
@@ -127,7 +127,7 @@ async function apiDeleteRequest(path: string): Promise<any> {
 
     if (!response.ok) {
       console.error(
-        `API delete request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
+        `API delete request to "${path}" returned not-ok: ${response.statusText} [${response.status}`
       );
       return null;
     }
@@ -239,6 +239,17 @@ async function apiGetLocations(): Promise<Location[]> {
   return data;
 }
 
+async function apiGetStations(): Promise<Station[]> {
+  const data = await apiGetRequest("sprit/station");
+
+  if ((typeof data === "boolean") || (data === null)) {
+    throw new Error(`could not retrieve stations`);
+  }
+
+  // No error if no locations have been received
+  return data;
+}
+
 async function apiGetPrices(locationId: number, dateRange?: DateRange): Promise<Price[]> {
   // This will also skip DateRange.All as it's value is 0
   let searchParams;
@@ -275,6 +286,7 @@ export {
   apiDeleteRequest,
   apiGetLocations,
   apiGetPrices,
+  apiGetStations,
   apiGetSessionRequest,
   apiPostRequest,
   apiValidatePasswordRequest,

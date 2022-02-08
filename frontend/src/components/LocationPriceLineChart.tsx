@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState,} from "react";
 import {
   CategoryScale,
   Chart,
@@ -15,16 +9,16 @@ import {
   LineController,
   LineElement,
   PointElement,
-  Title,
   Tooltip,
+  TooltipItem,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
-import {DateRange, Location, Price} from "../utils/types";
+import {DateRange, Location, StationMap} from "../utils/types";
 import {apiGetPrices} from "../services/api";
 import Spinner from "./Spinner";
 import moment from "moment-timezone";
-import { useIsMobile } from "../utils/reponsiveness";
+import {useIsMobile} from "../utils/reponsiveness";
 
 Chart.register(
   CategoryScale,
@@ -32,7 +26,6 @@ Chart.register(
   LineElement,
   LinearScale,
   PointElement,
-  Title,
   Tooltip,
   zoomPlugin
 );
@@ -43,34 +36,38 @@ const LINE_CHART_CONTAINER_NAME = "line-chart";
 interface ChartDataProps {
   labels: string[];
   data: number[];
+  stationsMap: number[][];
 }
 
 class ChartData {
   labels: string[];
   datasets: {
-    label: "Günstister Preis";
+    label: "Geringster Preis";
     borderColor: string;
-    hidden: boolean;
     data: number[];
+    stationsMap: number[][];
   }[];
 
   constructor(props?: ChartDataProps) {
     this.labels = [];
     this.datasets = [
       {
-        label: "Günstister Preis",
+        label: "Geringster Preis",
         borderColor: "#88B04B",
-        hidden: false,
         data: [],
+        stationsMap: []
       },
     ];
 
     if (props) {
       this.labels = [...props.labels];
       this.datasets[0].data = [...props.data];
+      this.datasets[0].stationsMap = [...props.stationsMap];
     }
   }
 }
+
+type TooltipFooterCallback = (items: TooltipItem<"line">[]) => string | string[];
 
 class ChartConfig implements ChartConfiguration {
   // If only a few datapoints exist in the dataset show the points itself and
@@ -81,7 +78,11 @@ class ChartConfig implements ChartConfiguration {
   public options: ChartOptions<"line">;
   public data: ChartData;
 
-  constructor(isMobile: boolean, data: ChartData) {
+  constructor(
+    isMobile: boolean,
+    data: ChartData,
+    tooltipFooterCallback: TooltipFooterCallback
+  ) {
     let pointRadius = 0;
     if (data.labels.length < ChartConfig.POINT_SHOW_LIMIT) {
       pointRadius = 3;
@@ -101,6 +102,11 @@ class ChartConfig implements ChartConfiguration {
       aspectRatio: isMobile ? 1 : 2,
       normalized: true,
       plugins: {
+        tooltip: {
+          callbacks: {
+            footer: tooltipFooterCallback,
+          }
+        },
         zoom: {
           pan: {
             enabled: true,
@@ -127,14 +133,18 @@ class ChartConfig implements ChartConfiguration {
 interface Props {
   id: string;
   location: Location;
+  stations: StationMap;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function LocationPriceLineChart({
-  id,
-  location,
-  setErrorMessage,
-}: Props) {
+export default function LocationPriceLineChart(
+  {
+   id,
+   location,
+   stations,
+   setErrorMessage,
+  }: Props
+) {
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const dateRangeButton1m =
@@ -158,14 +168,16 @@ export default function LocationPriceLineChart({
       .then((prices) => {
         const labels = [];
         const data = [];
+        const stationsMap = [];
         for (const i in prices) {
           const entry = prices[i];
           labels.push(
             moment.tz(entry.datetime, TIMEZONE).format("DD.MM.YY HH:mm")
           );
           data.push(entry.min_amount);
+          stationsMap.push(entry.stations);
         }
-        const chartData_ = new ChartData({ labels, data });
+        const chartData_ = new ChartData({labels, data, stationsMap});
 
         setChartData(chartData_);
       })
@@ -173,13 +185,47 @@ export default function LocationPriceLineChart({
         console.error(`Failed to get price data: ${e}`);
         setErrorMessage(
           "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-            "probier es nochmal."
+          "probier es nochmal."
         );
       })
       .finally(() => {
         setLoading(false);
       });
+
+
   }, [selectedDateRange]);
+
+  const getStation = useCallback((items: TooltipItem<"line">[]): string[] => {
+    // We should always only get a single item as we only have a single graph
+    if (!chartData) {
+      console.error("Chart data not set");
+      return [];
+    }
+
+    if (!items || (items.length > 1)) {
+      console.error(`Invalid tooltip items received, length=${items.length}`);
+    }
+
+    const dataIndex = items[0].dataIndex;
+    const dataset = chartData.datasets[0];
+    const stationIds = dataset.stationsMap[dataIndex];
+
+    const stationNames = [];
+    if (stationIds.length > 0) {
+      // Only show the header if there is at least one station
+      stationNames.push("Tankstellen:");
+      for (const id of stationIds) {
+        const station = stations[id];
+        if (typeof station === "undefined") {
+          continue;
+        }
+
+        stationNames.push(`\t- ${station.name}`);
+      }
+    }
+
+    return stationNames;
+  }, [stations, chartData])
 
   const createChart = useCallback(() => {
     if (!chartData) {
@@ -191,7 +237,7 @@ export default function LocationPriceLineChart({
       return;
     }
 
-    const config = new ChartConfig(isMobile, chartData);
+    const config = new ChartConfig(isMobile, chartData, getStation);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
   }, [loading, isMobile]);
@@ -228,7 +274,7 @@ export default function LocationPriceLineChart({
 
   let mainComponent;
   if (loading || !chartData) {
-    mainComponent = <Spinner />;
+    mainComponent = <Spinner/>;
   } else if (chartData.labels.length === 0) {
     mainComponent = (
       <span>
@@ -240,32 +286,27 @@ export default function LocationPriceLineChart({
     mainComponent = (
       <div>
         <div className="content">
-          <canvas id={chartId} ref={canvasRef} />
+          <canvas id={chartId} ref={canvasRef}/>
         </div>
-        <div
-          className="buttons has-addons"
-          onClick={(e) => {
-            setSelectedDateRange(Number(e.target.value));
-          }}
-        >
+        <div className="buttons has-addons">
           <button
             className="button is-small is-selected is-primary"
             ref={dateRangeButton1m}
-            value={DateRange.OneMonth}
+            onClick={() => setSelectedDateRange(DateRange.OneMonth)}
           >
             1M
           </button>
           <button
             className="button is-small"
             ref={dateRangeButton6m}
-            value={DateRange.SixMonths}
+            onClick={() => setSelectedDateRange(DateRange.SixMonths)}
           >
             6M
           </button>
           <button
             className="button is-small"
             ref={dateRangeButtonAll}
-            value={DateRange.All}
+            onClick={() => setSelectedDateRange(DateRange.All)}
           >
             Alles
           </button>
@@ -277,6 +318,6 @@ export default function LocationPriceLineChart({
   return mainComponent;
 }
 
-export type { Props as LocationPriceLineChartProps };
+export type {Props as LocationPriceLineChartProps};
 
-export { DateRange as LocationPriceLineChartDateRange };
+export {DateRange as LocationPriceLineChartDateRange};
