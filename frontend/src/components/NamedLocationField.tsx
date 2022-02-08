@@ -222,6 +222,7 @@ export default function NamedLocationField({
           title="Übernimm deinen aktuellen Ort."
           ref={buttonRef}
           onClick={() => requestLocation()}
+          data-test="btn-location"
         >
           <FontAwesomeIcon
             className="icon has-text-primary"

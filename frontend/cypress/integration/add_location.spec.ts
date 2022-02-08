@@ -1,7 +1,6 @@
 import {FuelType, LocationType, RouteNames} from "../../src/utils/types";
 import {RegionType} from "../../src/services/econtrolApi";
-import {Loader} from "@googlemaps/js-api-loader";
-
+import * as google from "../../src/services/google";
 
 
 class MockLatLng {
@@ -21,8 +20,21 @@ class MockLatLng {
   }
 }
 
+type Window = Cypress.AUTWindow & {
+  google: {
+    maps: {
+      Geocoder: any;
+      LatLng: typeof MockLatLng;
+      places: {
+        AutocompleteSessionToken: any;
+        AutocompleteService: any;
+      }
+    }
+  }
+}
+
 function mockGoogleMapsAPI(
-  win: Cypress.AUTWindow,
+  win: Window,
   geocodeResults: any,
   predictions: any
 ) {
@@ -32,19 +44,19 @@ function mockGoogleMapsAPI(
         async geocode(request: any) {
           return Promise.resolve({ results: geocodeResults });
         }
-      } as any,
-      LatLng: MockLatLng as any,
+      },
+      LatLng: MockLatLng,
       places: {
         AutocompleteSessionToken: class {},
         AutocompleteService: class {
           async getPlacePredictions(request: any) {
             return Promise.resolve({ predictions: predictions });
           }
-        } as any,
-      } as any
-    } as any
-  } as any;
-  cy.stub(Loader.prototype, "load").resolves(true);
+        },
+      }
+    }
+  };
+  cy.stub(google, "waitForGoogleMapsAPI").resolves(true);
 }
 
 
@@ -110,53 +122,27 @@ describe("Add location flows", () => {
       .should("have.value", FuelType.Gas);
   });
 
-  it.skip("create location from address success", () => {
-    // TODO: we do not execute this for now as I didn't manage to make cy.stub
-    //  work (see https://stackoverflow.com/q/70940991/3927228). Using the live
-    //  Google Maps API is extremely brittle and we are actually better off not
-    //  even testing it ...
+  it("create location from address success", () => {
     const mockPredictions = [
-      {
-        description: "Prediction 1",
-        place_id: "1",
-      },
-      {
-        description: "Prediction 2",
-        place_id: "2",
-      }
+      {description: "Prediction 1", place_id: "1"},
+      {description: "Prediction 2", place_id: "2"}
     ];
     const mockGocodeResult = {
       address_components: [
-        {
-          long_name: "1",
-          types: [ "street_number" ]
-        },
-        {
-          long_name: "Street",
-          types: [ "route" ]
-        },
-        {
-          long_name: "City",
-          types: [ "locality" ]
-        },
-        {
-          long_name: "1234",
-          types: [ "postal_code" ]
-        },
-        {
-          short_name: "AT",
-          types: [ "country" ]
-        }
+        {long_name: "1", types: [ "street_number" ]},
+        {long_name: "Street", types: [ "route" ]},
+        {long_name: "City", types: [ "locality" ]},
+        {long_name: "1234", types: [ "postal_code" ]},
+        {short_name: "AT", types: [ "country" ]}
       ],
-      geometry: {
-        location: new MockLatLng(48.21016009993677, 16.37002493713177)
-      }
+      place_id: "prediction1",
+      geometry: {location: new MockLatLng(48.21016009993677, 16.37002493713177)}
     };
 
     cy.visit(
       RouteNames.AddLocation,
       {
-        onBeforeLoad(win: Cypress.AUTWindow) {
+        onBeforeLoad(win: Window) {
           // We replace the Google Maps API created by the Google Maps API Loader
           //  with our mocks
           mockGoogleMapsAPI(win, [mockGocodeResult], mockPredictions);
@@ -169,12 +155,62 @@ describe("Add location flows", () => {
     cy.getBySel("btn-submit").should("be.disabled");
     cy.getBySelLike("field-search-dropdown-")
       .should("have.length.gte", 1);
-    cy.getBySel("field-search-dropdown-0").within(() => {
-      cy.get(mockPredictions[0].description);
-    });
+    cy.getBySel("field-search-dropdown-0").contains(mockPredictions[0].description);
     cy.getBySel("btn-submit").should("be.disabled");
 
     // Check if place is extracted correctly and the correct place is created
+    cy.getBySel("field-search-dropdown-0").click();
+    cy.getBySel("btn-submit").click();
+    cy.wait("@addLocationRequest").then((interception) => {
+      const addrComp = mockGocodeResult.address_components
+      expect(interception.request.body).to.deep.equal({
+        type: LocationType.Named,
+        name: `${addrComp[1].long_name} ${addrComp[0].long_name}, ${addrComp[3].long_name} ${addrComp[2].long_name}`,
+        latitude: mockGocodeResult.geometry.location.lat(),
+        longitude: mockGocodeResult.geometry.location.lng(),
+        region_type: "",
+        fuel_type: "DIE"
+      })
+    });
+    cy.url().should("include", RouteNames.Dashboard);
+  });
+
+  it("create location from current location success", () => {
+    const mockCoords = {latitude: 48.21016009993677, longitude: 16.37002493713177};
+    const mockPredictions = [{description: "Prediction 1", place_id: "1"}];
+    const mockGocodeResult = {
+      address_components: [
+        {long_name: "1", types: [ "street_number" ]},
+        {long_name: "Street", types: [ "route" ]},
+        {long_name: "City", types: [ "locality" ]},
+        {long_name: "1234", types: [ "postal_code" ]},
+        {short_name: "AT", types: [ "country" ]}
+      ],
+      place_id: "prediction1",
+      geometry: {location: new MockLatLng(mockCoords.latitude, mockCoords.longitude)}
+    };
+
+    cy.visit(
+      RouteNames.AddLocation,
+      {
+        onBeforeLoad(win: Window) {
+          // We replace the Google Maps API created by the Google Maps API Loader
+          //  with our mocks
+          mockGoogleMapsAPI(win, [mockGocodeResult], mockPredictions);
+          cy.stub(
+            win.navigator.geolocation,
+            "getCurrentPosition",
+            (successCallback, errorCallback, options) => {
+              return successCallback({coords: mockCoords});
+            }
+          )
+        }
+      }
+    );
+
+    // Check predictions are filled in correctly
+    cy.getBySel("btn-location").click();
+    cy.getBySel("btn-submit").should("be.disabled");
     cy.getBySel("field-search-dropdown-0").click();
     cy.getBySel("btn-submit").click();
     cy.wait("@addLocationRequest").then((interception) => {
@@ -201,7 +237,6 @@ describe("Add location flows", () => {
     cy.getBySel("btn-submit").click();
 
     cy.wait("@addLocationRequest").then((interception) => {
-      console.log(JSON.stringify(interception.request.body))
       expect(interception.request.body).to.deep.equal({
         type: LocationType.Region,
         name: "State 1", // from cy.mockEcontrolRegionAPI
@@ -235,16 +270,12 @@ describe("Add location flows", () => {
       .should("have.class", "is-danger");
   });
 
-  it.skip("address check failed", () => {
-    // TODO: we do not test this for now as I didn't manage to make cy.stub work
-    //  (see https://stackoverflow.com/q/70940991/3927228). Using the live
-    //  Google Maps API is extremely brittle and we are actually better off not
-    //  even testing it ...
+  it("address check failed", () => {
     const mockPredictions = [{ description: "Prediction 1", place_id: "1" }];
     cy.visit(
       RouteNames.AddLocation,
       {
-        onBeforeLoad(win: Cypress.AUTWindow) {
+        onBeforeLoad(win: Window) {
           // We replace the Google Maps API created by the Google Maps API Loader
           //  with our mocks
           mockGoogleMapsAPI(win, [], mockPredictions);
@@ -252,7 +283,9 @@ describe("Add location flows", () => {
       }
     );
 
-    cy.wait("@geoCoordinatesRequest");
+    cy.getBySel("field-search").type("Address 1");
+    cy.getBySel("field-search-dropdown-0").click();
+    cy.getBySel("btn-submit").should("be.disabled");
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-danger");

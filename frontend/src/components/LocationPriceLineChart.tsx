@@ -20,8 +20,8 @@ import {
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
-import { Location, Price } from "../utils/types";
-import { apiGetRequest } from "../services/api";
+import {DateRange, Location, Price} from "../utils/types";
+import {apiGetPrices} from "../services/api";
 import Spinner from "./Spinner";
 import moment from "moment-timezone";
 import { useIsMobile } from "../utils/reponsiveness";
@@ -39,12 +39,6 @@ Chart.register(
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const LINE_CHART_CONTAINER_NAME = "line-chart";
-
-enum DateRange {
-  OneMonth,
-  SixMonths,
-  All,
-}
 
 interface ChartDataProps {
   labels: string[];
@@ -160,25 +154,8 @@ export default function LocationPriceLineChart({
   useEffect(() => {
     setLoading(true);
 
-    let searchParams;
-    if (selectedDateRange === DateRange.OneMonth) {
-      searchParams = { date_range: "1m" };
-    } else if (selectedDateRange == DateRange.SixMonths) {
-      searchParams = { date_range: "6m" };
-    }
-
-    apiGetRequest(`sprit/${location.id}/prices`, searchParams)
-      .then((response) => {
-        if (!response || response === true) {
-          console.error("Failed to get price data: request failed");
-          setErrorMessage(
-            "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-              "probier es nochmal."
-          );
-          return;
-        }
-
-        const prices: Price[] = response;
+    apiGetPrices(location.id, selectedDateRange)
+      .then((prices) => {
         const labels = [];
         const data = [];
         for (const i in prices) {

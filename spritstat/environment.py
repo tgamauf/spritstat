@@ -55,3 +55,7 @@ class Settings:
     SECRET_KEY = os.getenv("DJANGO_SECRET")
     SECURE_COOKIE = _parse_boolean("DJANGO_SECURE_COOKIE")
     DOMAIN = os.getenv("DJANGO_DOMAIN") or "localhost"
+
+
+class Frontend:
+    GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")

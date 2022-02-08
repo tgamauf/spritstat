@@ -1,7 +1,7 @@
 import Cookie from "universal-cookie";
 
 import {EMPTY_SESSION} from "../utils/constants";
-import {FuelType, LocationType, Session} from "../utils/types";
+import {DateRange, FuelType, Location, LocationType, Price, Session} from "../utils/types";
 import {RegionType} from "./econtrolApi";
 
 // Get the URL of the website, this is also where the API is available.
@@ -54,6 +54,9 @@ async function apiPostRequest(
     });
 
     if (!response.ok) {
+      console.error(
+        `API post request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
+      );
       return null;
     }
 
@@ -61,10 +64,82 @@ async function apiPostRequest(
       return await response.json();
     }
 
-    // No content has been provided, so let"s just return true
+    // No content has been provided, so let's just return true
     return true;
   } catch (e: any) {
     throw new Error(`API post request to "${path}" failed: ${e}`);
+  }
+}
+
+async function apiGetRequest(
+  path: string,
+  searchParams?: URLSearchParams
+): Promise<GetResponse> {
+  let url = `${API_URL}/${path}/`;
+
+  if (searchParams) {
+    for (const [key, value] of Object.entries(searchParams)) {
+      url += `?${key}=${value}`;
+    }
+  }
+
+  try {
+    const response = await fetch(encodeURI(url), {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    });
+
+    if (!response.ok) {
+      console.error(
+        `API get request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
+      );
+      return null;
+    }
+
+    if (response.status !== 204) {
+      return await response.json();
+    }
+
+    // No content has been provided, so let's just return true
+    return true;
+  } catch (e: any) {
+    throw new Error(`API get request to "${path}" failed: ${e}`);
+  }
+}
+
+async function apiDeleteRequest(path: string): Promise<any> {
+  let url = `${API_URL}/${path}/`;
+  const cookie = new Cookie();
+
+  try {
+    const csrfToken = cookie.get("csrftoken");
+
+    const response = await fetch(encodeURI(url), {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      }
+    });
+
+    if (!response.ok) {
+      console.error(
+        `API delete request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
+      );
+      return null;
+    }
+
+    if (response.status !== 204) {
+      return await response.json();
+    }
+
+    // No content has been provided, so let's just return true
+    return true;
+  } catch (e: any) {
+    throw new Error(`API delete request to "${path}" failed: ${e}`);
   }
 }
 
@@ -134,18 +209,9 @@ async function apiValidatePasswordRequest(
 
 async function apiCreateLocation(location: LocationData): Promise<boolean> {
   try {
-    const cookie = new Cookie();
-    const csrfToken = cookie.get("csrftoken");
-    const response = await fetch(
-      encodeURI(`${API_URL}/sprit/`),
+    const response = await apiPostRequest(
+      "sprit",
       {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-        },
-        body: JSON.stringify({
           type: location.type,
           name: location.name,
           latitude: location.latitude,
@@ -153,92 +219,62 @@ async function apiCreateLocation(location: LocationData): Promise<boolean> {
           region_code: location.regionCode,
           region_type: location.regionType ? location.regionType : RegionType.Invalid,
           fuel_type: location.fuelType
-        }),
-      }
+        }
     );
 
-    return response.ok;
+    return !!response;
   } catch (e: any) {
     throw new Error(`Could not create location, request failed: ${e}`);
   }
 }
 
-async function apiGetRequest(
-  path: string,
-  searchParams?: URLSearchParams
-): Promise<GetResponse> {
-  let url = `${API_URL}/${path}/`;
+async function apiGetLocations(): Promise<Location[]> {
+  const data = await apiGetRequest("sprit");
 
-  if (searchParams) {
-    for (const [key, value] of Object.entries(searchParams)) {
-      url += `?${key}=${value}`;
-    }
+  if ((typeof data === "boolean") || (data === null)) {
+    throw new Error(`could not retrieve locations`);
   }
 
-  try {
-    const response = await fetch(encodeURI(url), {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    if (response.status !== 204) {
-      return await response.json();
-    }
-
-    return true;
-  } catch (e: any) {
-    throw new Error(`API get request to "${path}" failed: ${e}`);
-  }
+  // No error if no locations have been received
+  return data;
 }
 
-async function apiDeleteRequest(path: string): Promise<any> {
-  let url = `${API_URL}/${path}/`;
-  const cookie = new Cookie();
-
-  try {
-    const csrfToken = cookie.get("csrftoken");
-
-    const response = await fetch(encodeURI(url), {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
-      }
-    });
-
-    if (!response.ok) {
-      return null;
+async function apiGetPrices(locationId: number, dateRange?: DateRange): Promise<Price[]> {
+  // This will also skip DateRange.All as it's value is 0
+  let searchParams;
+  if (dateRange) {
+    switch (dateRange) {
+      case DateRange.OneMonth:
+        searchParams = { date_range: "1m" };
+        break;
+      case DateRange.SixMonths:
+        searchParams = { date_range: "6m" };
+        break;
+      default:
+        break;
     }
-
-    if (response.status !== 204) {
-      return await response.json();
-    }
-
-    // No content has been provided, so let"s just return true
-    return true;
-  } catch (e: any) {
-    throw new Error(`API post request to "${path}" failed: ${e}`);
   }
+  const data = await apiGetRequest(`sprit/${locationId}/prices`, searchParams);
+
+  if ((typeof data === "boolean") || (data === null)) {
+    throw new Error(`could not retrieve prices`);
+  }
+
+  // No error if no prices have been received
+  return data;
 }
 
 export type {
   GetResponse as APIGetResponse,
   LocationData as APILocationData,
   PasswordValidationResponse as APIPasswordValidationResponse,
-  URLSearchParams as APIURLSearchParams
 };
 
 export {
   apiCreateLocation,
   apiDeleteRequest,
-  apiGetRequest,
+  apiGetLocations,
+  apiGetPrices,
   apiGetSessionRequest,
   apiPostRequest,
   apiValidatePasswordRequest,

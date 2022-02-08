@@ -23,5 +23,10 @@
       type="text/javascript"
       src="{% static 'spritstat/build/js/app.js' %}"
     ></script>
+
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&region=AT&language=de&callback=initGoogleMapsAPI"
+    ></script>
   </body>
 </html>

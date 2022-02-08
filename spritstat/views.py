@@ -1,6 +1,6 @@
 from datetime import datetime
-
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django_q.tasks import schedule, Schedule
 from enum import Enum
@@ -14,7 +14,11 @@ from . import serializers
 
 
 def index(request):
-    return render(request, "spritstat/index.html", context={})
+    return render(
+        request,
+        "spritstat/index.html",
+        context={"google_maps_api_key": settings.GOOGLE_MAPS_API_KEY},
+    )
 
 
 class LocationList(generics.ListCreateAPIView):

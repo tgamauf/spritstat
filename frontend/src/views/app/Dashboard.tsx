@@ -7,7 +7,7 @@ import NoLocation from "../../components/NoLocation";
 import CenteredBox from "../../components/CenteredBox";
 import BasePage from "../../components/BasePage";
 import LocationList from "../../components/LocationList";
-import { apiGetRequest } from "../../services/api";
+import {apiGetLocations} from "../../services/api";
 import { Location, RouteNames } from "../../utils/types";
 
 const BREADCRUMB = {
@@ -36,15 +36,9 @@ export default function Dashboard() {
     if (refreshUserLocations) {
       setRefreshUserLocations(false);
 
-      apiGetRequest("sprit")
-        .then((response) => {
-          if (response === null || typeof response === "boolean") {
-            console.error("Failed to get locations: request failed");
-            setErrorMessage("Deine Orte konnten nicht geladen werden.");
-            return;
-          }
-
-          setLocations(response);
+      apiGetLocations()
+        .then((locations_) => {
+          setLocations(locations_);
           setLoading(false);
         })
         .catch((error) => {

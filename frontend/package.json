@@ -30,7 +30,6 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
-    "@googlemaps/js-api-loader": "^1.13.2",
     "bulma": "^0.9.3",
     "chart.js": "^3.7.0",
     "chartjs-plugin-zoom": "^1.2.0",
