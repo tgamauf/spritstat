@@ -1,5 +1,4 @@
 import "cypress-real-events/support";
-import * as googleLoader from "@googlemaps/js-api-loader";
 
 import './commands'
 

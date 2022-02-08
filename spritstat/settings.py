@@ -1,8 +1,7 @@
 import os
 from pathlib import Path
 
-from .environment import Database, Email, Settings
-
+from .environment import Database, Email, Settings, Frontend
 
 # General settings
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -204,3 +203,7 @@ Q_CLUSTER = {
     "catch_up": False,
     "orm": "default",
 }
+
+
+# Frontend configuration
+GOOGLE_MAPS_API_KEY = Frontend.GOOGLE_MAPS_API_KEY

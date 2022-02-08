@@ -55,7 +55,7 @@ async function apiPostRequest(
 
     if (!response.ok) {
       console.error(
-        `API post request to "${path}" returned not-ok: ${response.statusText} [${response.status}`
+        `API post request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
       );
       return null;
     }
@@ -93,7 +93,7 @@ async function apiGetRequest(
 
     if (!response.ok) {
       console.error(
-        `API get request to "${path}" returned not-ok: ${response.statusText} [${response.status}`
+        `API get request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
       );
       return null;
     }
@@ -127,7 +127,7 @@ async function apiDeleteRequest(path: string): Promise<any> {
 
     if (!response.ok) {
       console.error(
-        `API delete request to "${path}" returned not-ok: ${response.statusText} [${response.status}`
+        `API delete request to "${path}" returned not-ok: ${response.statusText} [${response.status}]`
       );
       return null;
     }

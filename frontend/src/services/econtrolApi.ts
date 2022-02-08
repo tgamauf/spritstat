@@ -81,7 +81,7 @@ async function econtrolAPIGetRegions(): Promise<RegionMap | null> {
     });
 
     if (!response.ok) {
-      console.error(`Could not get regions: ${response["status"]}`);
+      console.error(`Could not get regions: ${response.statusText} [${response.status}]`);
       return null;
     }
 
@@ -177,7 +177,7 @@ async function getPriceByAddress(
     if (!response.ok) {
       console.error(
         `Could not get price by address lat=${latitude}, long=${longitude}, 
-        fuelType=${fuelType}: ${response["status"]}`
+        fuelType=${fuelType}: ${response.statusText} [${response.status}]`
       );
       return null;
     }
@@ -217,7 +217,7 @@ async function getPriceByRegion(
     if (!response.ok) {
       console.error(
         `Could not get price by region for code=${code}, type=${type}, 
-        fuelType=${fuelType}: ${response["status"]}`
+        fuelType=${fuelType}: ${response.statusText} [${response.status}]`
       );
       return null;
     }

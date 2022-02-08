@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "user": 2,
-      "email": "tom@thga.at",
+      "email": "tom@test.at",
       "verified": true,
       "primary": true
     }
