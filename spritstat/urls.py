@@ -18,9 +18,9 @@ urlpatterns = [
         name="prices",
     ),
     path(
-        "api/v1/sprit/stations/<int:pk>/",
-        views.StationDetail.as_view(),
-        name="station_detail",
+        "api/v1/sprit/station/",
+        views.StationList.as_view(),
+        name="stations",
     ),
     re_path(r".*", views.index),
 ]

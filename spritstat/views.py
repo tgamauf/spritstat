@@ -64,14 +64,13 @@ class LocationDetail(generics.RetrieveDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwner]
 
 
-class StationDetail(generics.RetrieveAPIView):
+class StationList(generics.ListAPIView):
     serializer_class = serializers.StationSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
 
-    def get_object(self):
-        obj = get_object_or_404(models.Station, id=self.kwargs["pk"])
-        self.check_object_permissions(self.request, obj)
-        return obj
+    def get_queryset(self):
+        # We only list the objects of the current user
+        return models.Station.objects.filter(user=self.request.user.id)
 
 
 class PriceList(generics.ListAPIView):
@@ -86,6 +85,7 @@ class PriceList(generics.ListAPIView):
         self, location: models.Location, date_range: Optional[DateRange]
     ) -> List[models.Price]:
         now = datetime.now()
+
         if date_range == self.DateRange.OneMonth:
             data = models.Price.objects.filter(
                 location=location,

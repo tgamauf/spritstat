@@ -15,16 +15,16 @@ import {
   LineController,
   LineElement,
   PointElement,
-  Title,
-  Tooltip,
+  Tooltip, TooltipItem,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
-import {DateRange, Location, Price} from "../utils/types";
+import {DateRange, Location, Price, Station, StationMap} from "../utils/types";
 import {apiGetPrices} from "../services/api";
 import Spinner from "./Spinner";
 import moment from "moment-timezone";
 import { useIsMobile } from "../utils/reponsiveness";
+import {INVALID_STATION} from "../utils/constants";
 
 Chart.register(
   CategoryScale,
@@ -32,7 +32,6 @@ Chart.register(
   LineElement,
   LinearScale,
   PointElement,
-  Title,
   Tooltip,
   zoomPlugin
 );
@@ -72,6 +71,8 @@ class ChartData {
   }
 }
 
+type TooltipFooterCallback = (items: TooltipItem<"line">[]) => string | string[];
+
 class ChartConfig implements ChartConfiguration {
   // If only a few datapoints exist in the dataset show the points itself and
   //  not only the line
@@ -81,7 +82,11 @@ class ChartConfig implements ChartConfiguration {
   public options: ChartOptions<"line">;
   public data: ChartData;
 
-  constructor(isMobile: boolean, data: ChartData) {
+  constructor(
+    isMobile: boolean,
+    data: ChartData,
+    tooltipFooterCallback: TooltipFooterCallback
+  ) {
     let pointRadius = 0;
     if (data.labels.length < ChartConfig.POINT_SHOW_LIMIT) {
       pointRadius = 3;
@@ -101,6 +106,11 @@ class ChartConfig implements ChartConfiguration {
       aspectRatio: isMobile ? 1 : 2,
       normalized: true,
       plugins: {
+        tooltip: {
+          callbacks: {
+            footer: tooltipFooterCallback,
+          }
+        },
         zoom: {
           pan: {
             enabled: true,
@@ -127,12 +137,14 @@ class ChartConfig implements ChartConfiguration {
 interface Props {
   id: string;
   location: Location;
+  stations: StationMap;
   setErrorMessage: (msg: string) => void;
 }
 
 export default function LocationPriceLineChart({
   id,
   location,
+  stations,
   setErrorMessage,
 }: Props) {
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
@@ -179,7 +191,27 @@ export default function LocationPriceLineChart({
       .finally(() => {
         setLoading(false);
       });
+
+
   }, [selectedDateRange]);
+
+  const getStation = useCallback((items: TooltipItem<"line">[]): string[] => {
+    // TODO doesn't work yet -> no tooltip shown
+
+    // We should always only get a single item as we only have a single graph
+    const stationIds = (items[0].raw as Price).stations;
+    const stationNames = [];
+    for (const id of stationIds) {
+      const station = stations[id];
+      if (typeof station === "undefined") {
+        continue;
+      }
+
+      stationNames.push(station.name);
+    }
+
+    return stationNames;
+  }, [stations])
 
   const createChart = useCallback(() => {
     if (!chartData) {
@@ -191,7 +223,7 @@ export default function LocationPriceLineChart({
       return;
     }
 
-    const config = new ChartConfig(isMobile, chartData);
+    const config = new ChartConfig(isMobile, chartData, getStation);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
   }, [loading, isMobile]);
@@ -242,30 +274,25 @@ export default function LocationPriceLineChart({
         <div className="content">
           <canvas id={chartId} ref={canvasRef} />
         </div>
-        <div
-          className="buttons has-addons"
-          onClick={(e) => {
-            setSelectedDateRange(Number(e.target.value));
-          }}
-        >
+        <div className="buttons has-addons">
           <button
             className="button is-small is-selected is-primary"
             ref={dateRangeButton1m}
-            value={DateRange.OneMonth}
+            onClick={() => setSelectedDateRange(DateRange.OneMonth)}
           >
             1M
           </button>
           <button
             className="button is-small"
             ref={dateRangeButton6m}
-            value={DateRange.SixMonths}
+            onClick={() => setSelectedDateRange(DateRange.SixMonths)}
           >
             6M
           </button>
           <button
             className="button is-small"
             ref={dateRangeButtonAll}
-            value={DateRange.All}
+            onClick={() => setSelectedDateRange(DateRange.All)}
           >
             Alles
           </button>
