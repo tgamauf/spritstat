@@ -49,6 +49,8 @@ jobs:
 
   prepare-end-to-end-tests:
     runs-on: ubuntu-latest
+    outputs:
+      integration-tests: ${{ steps.parse.outputs.integration-tests }}
     steps:
       - uses: actions/checkout@v2
       - name: Install frontend dependencies
@@ -68,6 +70,12 @@ jobs:
           if-no-files-found: error
           path: frontend/public
           retention-days: 1
+      - name: Collect test specs to allow for parallel tests
+        id: parse
+        uses: tgamauf/cypress-parallel@v1
+        with:
+          working-directory: frontend
+          count-runners: 5
 
   test-end-to-end:
     services:
@@ -85,8 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # run 5 copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
+        spec: ${{ fromJson(needs.prepare-end-to-end-tests.outputs.integration-tests) }}
     steps:
       - uses: actions/checkout@v2
       - name: Download the build folders from prepare step
@@ -105,7 +112,7 @@ jobs:
           pip install -r requirements.txt
           python manage.py migrate --noinput
       - name: Install frontend dependencies
-        working-directory: ./frontend
+        working-directory: frontend
         run: |
           npm install
       - name: Execute tests
@@ -115,8 +122,4 @@ jobs:
           install: false
           start: python ../manage.py runserver
           wait-on: "http://127.0.0.1:8000"
-          record: true
-          parallel: true
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          spec: ${{ matrix.spec }}
