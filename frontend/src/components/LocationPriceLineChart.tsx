@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState,} from "react";
 import {
   CategoryScale,
   Chart,
@@ -15,16 +9,16 @@ import {
   LineController,
   LineElement,
   PointElement,
-  Tooltip, TooltipItem,
+  Tooltip,
+  TooltipItem,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
-import {DateRange, Location, Price, Station, StationMap} from "../utils/types";
+import {DateRange, Location, StationMap} from "../utils/types";
 import {apiGetPrices} from "../services/api";
 import Spinner from "./Spinner";
 import moment from "moment-timezone";
-import { useIsMobile } from "../utils/reponsiveness";
-import {INVALID_STATION} from "../utils/constants";
+import {useIsMobile} from "../utils/reponsiveness";
 
 Chart.register(
   CategoryScale,
@@ -42,31 +36,33 @@ const LINE_CHART_CONTAINER_NAME = "line-chart";
 interface ChartDataProps {
   labels: string[];
   data: number[];
+  stationsMap: number[][];
 }
 
 class ChartData {
   labels: string[];
   datasets: {
-    label: "Günstister Preis";
+    label: "Geringster Preis";
     borderColor: string;
-    hidden: boolean;
     data: number[];
+    stationsMap: number[][];
   }[];
 
   constructor(props?: ChartDataProps) {
     this.labels = [];
     this.datasets = [
       {
-        label: "Günstister Preis",
+        label: "Geringster Preis",
         borderColor: "#88B04B",
-        hidden: false,
         data: [],
+        stationsMap: []
       },
     ];
 
     if (props) {
       this.labels = [...props.labels];
       this.datasets[0].data = [...props.data];
+      this.datasets[0].stationsMap = [...props.stationsMap];
     }
   }
 }
@@ -141,12 +137,14 @@ interface Props {
   setErrorMessage: (msg: string) => void;
 }
 
-export default function LocationPriceLineChart({
-  id,
-  location,
-  stations,
-  setErrorMessage,
-}: Props) {
+export default function LocationPriceLineChart(
+  {
+   id,
+   location,
+   stations,
+   setErrorMessage,
+  }: Props
+) {
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const dateRangeButton1m =
@@ -170,14 +168,16 @@ export default function LocationPriceLineChart({
       .then((prices) => {
         const labels = [];
         const data = [];
+        const stationsMap = [];
         for (const i in prices) {
           const entry = prices[i];
           labels.push(
             moment.tz(entry.datetime, TIMEZONE).format("DD.MM.YY HH:mm")
           );
           data.push(entry.min_amount);
+          stationsMap.push(entry.stations);
         }
-        const chartData_ = new ChartData({ labels, data });
+        const chartData_ = new ChartData({labels, data, stationsMap});
 
         setChartData(chartData_);
       })
@@ -185,7 +185,7 @@ export default function LocationPriceLineChart({
         console.error(`Failed to get price data: ${e}`);
         setErrorMessage(
           "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-            "probier es nochmal."
+          "probier es nochmal."
         );
       })
       .finally(() => {
@@ -196,22 +196,36 @@ export default function LocationPriceLineChart({
   }, [selectedDateRange]);
 
   const getStation = useCallback((items: TooltipItem<"line">[]): string[] => {
-    // TODO doesn't work yet -> no tooltip shown
-
     // We should always only get a single item as we only have a single graph
-    const stationIds = (items[0].raw as Price).stations;
-    const stationNames = [];
-    for (const id of stationIds) {
-      const station = stations[id];
-      if (typeof station === "undefined") {
-        continue;
-      }
+    if (!chartData) {
+      console.error("Chart data not set");
+      return [];
+    }
 
-      stationNames.push(station.name);
+    if (!items || (items.length > 1)) {
+      console.error(`Invalid tooltip items received, length=${items.length}`);
+    }
+
+    const dataIndex = items[0].dataIndex;
+    const dataset = chartData.datasets[0];
+    const stationIds = dataset.stationsMap[dataIndex];
+
+    const stationNames = [];
+    if (stationIds.length > 0) {
+      // Only show the header if there is at least one station
+      stationNames.push("Tankstellen:");
+      for (const id of stationIds) {
+        const station = stations[id];
+        if (typeof station === "undefined") {
+          continue;
+        }
+
+        stationNames.push(`\t- ${station.name}`);
+      }
     }
 
     return stationNames;
-  }, [stations])
+  }, [stations, chartData])
 
   const createChart = useCallback(() => {
     if (!chartData) {
@@ -260,7 +274,7 @@ export default function LocationPriceLineChart({
 
   let mainComponent;
   if (loading || !chartData) {
-    mainComponent = <Spinner />;
+    mainComponent = <Spinner/>;
   } else if (chartData.labels.length === 0) {
     mainComponent = (
       <span>
@@ -272,7 +286,7 @@ export default function LocationPriceLineChart({
     mainComponent = (
       <div>
         <div className="content">
-          <canvas id={chartId} ref={canvasRef} />
+          <canvas id={chartId} ref={canvasRef}/>
         </div>
         <div className="buttons has-addons">
           <button
@@ -304,6 +318,6 @@ export default function LocationPriceLineChart({
   return mainComponent;
 }
 
-export type { Props as LocationPriceLineChartProps };
+export type {Props as LocationPriceLineChartProps};
 
-export { DateRange as LocationPriceLineChartDateRange };
+export {DateRange as LocationPriceLineChartDateRange};
