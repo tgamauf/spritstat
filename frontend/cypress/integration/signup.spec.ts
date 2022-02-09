@@ -83,7 +83,7 @@ describe("Validate confirm email address", () => {
     cy.intercept(
       "POST",
       "/api/v1/users/auth/verify-email/",
-      {statusCode: 200, body: { detail: "ok" } }
+      {statusCode: 200, body: { detail: "Ok" } }
     ).as("verifyRequest");
 
     cy.visit(`${RouteNames.ConfirmEmail}/key/`);
@@ -107,12 +107,12 @@ describe("Validate confirm email address", () => {
     cy.intercept(
       "POST",
       "/api/v1/users/auth/logout/",
-      {statusCode: 200, body: { detail: "ok" } }
+      {statusCode: 200, body: { detail: "Ok" } }
     ).as("logout")
     cy.intercept(
       "POST",
       "/api/v1/users/auth/verify-email/",
-      {statusCode: 200, body: { detail: "ok" } }
+      {statusCode: 200, body: { detail: "Ok" } }
     ).as("verifyRequest");
 
     cy.visit(`${RouteNames.ConfirmEmail}/key/`);
