@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import CenteredBox from "../../components/CenteredBox";
-import { apiPostRequest } from "../../services/api";
+import {apiPostRequest, apiVerifyEmailKey} from "../../services/api";
 import { setSession } from "../../services/store";
 import { EMPTY_SESSION } from "../../utils/constants";
 import { useGlobalState } from "../../App";
@@ -37,22 +37,25 @@ export default function ConfirmEmail(): JSX.Element {
       return;
     }
 
-    const data = {
-      key,
-    };
-    apiPostRequest("users/auth/verify-email", data)
-      .then((result) => {
-        if (result && result.detail === "ok") {
+    if (!key) {
+      console.error("Email verification failed, no key provided");
+      setLoading(false);
+      return;
+    }
+
+    apiVerifyEmailKey(key)
+      .then((valid) => {
+        if (valid) {
           navigate(
             `${RouteNames.Login}?emailVerified=true`,
             { replace: true }
           );
         } else {
-          console.log(`Error during email confirmation: request failed`);
+          console.log("Email verification returned false");
         }
       })
       .catch((e: any) => {
-        console.error(`Error during email confirmation: ${e}`);
+        console.error(`Email verification failed: ${e}`);
       })
       .finally(() => {
         setLoading(false);

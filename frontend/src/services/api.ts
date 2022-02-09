@@ -1,6 +1,6 @@
 import Cookie from "universal-cookie";
 
-import {EMPTY_SESSION} from "../utils/constants";
+import {EMPTY_SESSION, INVALID_LOCATION} from "../utils/constants";
 import {DateRange, FuelType, Location, LocationType, Price, Session, Station} from "../utils/types";
 import {RegionType} from "./econtrolApi";
 
@@ -11,12 +11,17 @@ interface URLSearchParams {
   [key: string]: boolean | number | string;
 }
 
+type PostResponse = [] | object | boolean | null;
 type GetResponse = [] | boolean | null;
 
 interface PasswordValidationResponse {
   valid: boolean;
   score: number;
   suggestions: string[];
+}
+
+interface DetailResponse {
+  detail: string;
 }
 
 interface LocationData {
@@ -32,7 +37,7 @@ interface LocationData {
 async function apiPostRequest(
   path: string,
   requestData?: object
-): Promise<any> {
+): Promise<PostResponse> {
   const cookie = new Cookie();
 
   try {
@@ -153,7 +158,18 @@ async function apiGetSessionRequest(): Promise<Session> {
       return EMPTY_SESSION;
     }
 
-    return await apiPostRequest("users/account/session");
+    const response = await apiPostRequest("users/account/session");
+
+    if (
+      response
+      && (typeof response === "object")
+      && (response as Session).isAuthenticated
+    ) {
+      return response as Session;
+    }
+
+    console.debug(`Get session returned "${JSON.stringify(response, null, 2)}"`);
+    return EMPTY_SESSION;
   } catch (e: any) {
     throw new Error(`Could not fetch session data: ${e}`);
   }
@@ -205,6 +221,23 @@ async function apiValidatePasswordRequest(
   } catch (e: any) {
     throw new Error(`Could not validate password, request failed: ${e}`);
   }
+}
+
+async function apiVerifyEmailKey(key: string): Promise<boolean> {
+    const response = await apiPostRequest(
+      "users/auth/verify-email", {key}
+    );
+
+    if (
+      response
+      && (typeof response === "object")
+      && (response as DetailResponse).detail === "Ok"
+    ) {
+      return true;
+    }
+
+    console.debug(`Verify email key returned "${JSON.stringify(response, null, 2)}"`);
+    return false;
 }
 
 async function apiCreateLocation(location: LocationData): Promise<boolean> {
@@ -290,4 +323,5 @@ export {
   apiGetSessionRequest,
   apiPostRequest,
   apiValidatePasswordRequest,
+  apiVerifyEmailKey,
 };
