@@ -1,4 +1,4 @@
-django~=3.2
+django>=3.2.12, <4
 django-allauth~=0.47
 django-compress-staticfiles>=1.0.1b0
 django-cors-headers~=3.10

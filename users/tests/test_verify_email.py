@@ -1,10 +1,12 @@
 from django.core import mail
+from django.test import override_settings
 from django.urls import reverse
 import re
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 
+@override_settings(ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN=0)
 class TestVerifyEmail(APITestCase):
     fixtures = ["emailaddress.json", "customuser.json"]
 
