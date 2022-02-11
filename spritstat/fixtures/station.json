@@ -1,132 +1,467 @@
 [
   {
     "model": "spritstat.station",
+    "pk": 4135,
+    "fields": {
+      "name": "OMV ",
+      "address": "Wienerstra\u00dfe 29",
+      "postal_code": "2860",
+      "city": "Kirchschlag",
+      "latitude": "47.4987588",
+      "longitude": "16.2899594",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 4187,
+    "fields": {
+      "name": "INNTALER Logistik Park GmbH",
+      "address": "Endach 34",
+      "postal_code": "6330",
+      "city": "Kufstein",
+      "latitude": "47.5657690",
+      "longitude": "12.1502350",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6070,
+    "fields": {
+      "name": "TANKEnergie Ringgarage",
+      "address": "Untere Viaduktgasse 47-49",
+      "postal_code": "1030",
+      "city": "Wien",
+      "latitude": "48.2066605",
+      "longitude": "16.3873229",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6083,
+    "fields": {
+      "name": "Turm\u00f6l Quick",
+      "address": "W\u00e4hringer G\u00fcrtel 116",
+      "postal_code": "1090",
+      "city": "Wien",
+      "latitude": "48.2266238",
+      "longitude": "16.3504673",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6302,
+    "fields": {
+      "name": "Genol RLH-S\u00fcd-Bgld",
+      "address": "RLH S\u00fcd Wiesfleck 237",
+      "postal_code": "7423",
+      "city": "Wiesfleck",
+      "latitude": "47.3707740",
+      "longitude": "16.1530890",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6407,
+    "fields": {
+      "name": "Freie Tankstelle Nockenstein",
+      "address": "Wolfgangseestra\u00dfe 35",
+      "postal_code": "5023",
+      "city": "Koppl",
+      "latitude": "47.8203145",
+      "longitude": "13.1112882",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6435,
+    "fields": {
+      "name": "Turm\u00f6l",
+      "address": "Ungargasse 22",
+      "postal_code": "2700",
+      "city": "Wiener Neustadt",
+      "latitude": "47.8120078",
+      "longitude": "16.2506431",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6475,
+    "fields": {
+      "name": "KFZ SIMON  -  Pinkafeld",
+      "address": "Wienerstra\u00dfe 72",
+      "postal_code": "7423",
+      "city": "Pinkafeld",
+      "latitude": "47.3813530",
+      "longitude": "16.1204460",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 6502,
+    "fields": {
+      "name": "Shell",
+      "address": "Jormannsdorferstra\u00dfe 52",
+      "postal_code": "7431",
+      "city": "Bad Tatzmannsdorf",
+      "latitude": "47.3454259",
+      "longitude": "16.2241246",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 7569,
+    "fields": {
+      "name": "Tankstelle Lichtenegg",
+      "address": "Hauptstra\u00dfe 13",
+      "postal_code": "2813",
+      "city": "Lichtenegg",
+      "latitude": "47.6007660",
+      "longitude": "16.1966370",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
     "pk": 30231,
     "fields": {
-      "user_id": 2,
       "name": "TAC",
-      "address": "Taborstraße 102-108 ",
+      "address": "Taborstra\u00dfe 102-108 ",
       "postal_code": "1200",
       "city": "Wien",
       "latitude": "48.2270659",
-      "longitude": "16.3870746"
+      "longitude": "16.3870746",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 30246,
     "fields": {
-      "user_id": 2,
       "name": "BP",
       "address": "Handelskai 90",
       "postal_code": "1200",
       "city": "Wien",
       "latitude": "48.2430922",
-      "longitude": "16.3843336"
+      "longitude": "16.3843336",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 34016,
     "fields": {
-      "user_id": 2,
       "name": "Baertl GmbH",
       "address": "Stuwerstrasse 41",
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2190511",
-      "longitude": "16.4058666"
+      "longitude": "16.4058666",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 34320,
+    "fields": {
+      "name": "freie Tankstelle",
+      "address": "Untere Hauptstr. 153",
+      "postal_code": "7422",
+      "city": "Riedlingsdorf",
+      "latitude": "47.3371468",
+      "longitude": "16.1450365",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 41587,
     "fields": {
-      "user_id": 2,
       "name": "Disk",
-      "address": "Franzensbrückenstrasse 15",
+      "address": "Franzensbr\u00fcckenstrasse 15",
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2146367",
-      "longitude": "16.3916044"
+      "longitude": "16.3916044",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 44686,
+    "fields": {
+      "name": "avanti - Pinkafeld Wiener Stra\u00dfe 8",
+      "address": "Wiener Strasse 8",
+      "postal_code": "7423",
+      "city": "Pinkafeld",
+      "latitude": "47.3744000",
+      "longitude": "16.1255400",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 85913,
+    "fields": {
+      "name": "TURMTANKSTELLE",
+      "address": "Irrsdorfer Bachstra\u00dfe Nr. 47",
+      "postal_code": "5204",
+      "city": "Stra\u00dfwalchen",
+      "latitude": "47.9679450",
+      "longitude": "13.2763550",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 247822,
+    "fields": {
+      "name": "eni",
+      "address": "Wiener Strasse 52",
+      "postal_code": "7423",
+      "city": "Pinkafeld",
+      "latitude": "47.3790130",
+      "longitude": "16.1220930",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 247827,
+    "fields": {
+      "name": "eni",
+      "address": "Steinbr\u00fcckl 14",
+      "postal_code": "7531",
+      "city": "Kemeten",
+      "latitude": "47.2759370",
+      "longitude": "16.1560240",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 247939,
+    "fields": {
+      "name": "eni",
+      "address": "Urstein Nord 15",
+      "postal_code": "5412",
+      "city": "Puch bei Hallein",
+      "latitude": "47.7321870",
+      "longitude": "13.0861870",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 255985,
     "fields": {
-      "user_id": 2,
       "name": "123tanken.at - Tankstellenbetriebs & Service GmbH",
       "address": "Rotensterngasse 25",
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2172366",
-      "longitude": "16.3844335"
+      "longitude": "16.3844335",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 427017,
     "fields": {
-      "user_id": 2,
       "name": "Shell Austria",
       "address": "AUSSTELLUNGSSTRASSE 4",
       "postal_code": "1020",
       "city": "WIEN",
       "latitude": "48.2177700",
-      "longitude": "16.3946400"
+      "longitude": "16.3946400",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 450524,
     "fields": {
-      "user_id": 2,
       "name": "Shell Austria",
       "address": "WAGRAMERSTRASSE 14",
       "postal_code": "1220",
       "city": "WIEN",
       "latitude": "48.2336700",
-      "longitude": "16.4203600"
+      "longitude": "16.4203600",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 605978,
+    "fields": {
+      "name": "Turm\u00f6l Gold",
+      "address": "Steinamangerstrasse 8",
+      "postal_code": "7423",
+      "city": "Pinkafeld",
+      "latitude": "47.3635786",
+      "longitude": "16.1251255",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1121781,
+    "fields": {
+      "name": "Turm\u00f6l Quick",
+      "address": "Mariasdorf 54",
+      "postal_code": "7433",
+      "city": "Mariasdorf",
+      "latitude": "47.3629773",
+      "longitude": "16.2406650",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 1261240,
     "fields": {
-      "user_id": 2,
-      "name": "Turmöl",
+      "name": "Turm\u00f6l",
       "address": "Engerthstrasse 146",
       "postal_code": "1200",
       "city": "Wien",
       "latitude": "48.2338360",
-      "longitude": "16.3910922"
+      "longitude": "16.3910922",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 1354895,
     "fields": {
-      "user_id": 2,
-      "name": "avanti - Wien Nordbahnstraße 1",
+      "name": "avanti - Wien Nordbahnstra\u00dfe 1",
       "address": "Nordbahnstrasse 1",
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2291200",
-      "longitude": "16.3885200"
+      "longitude": "16.3885200",
+      "users": [
+        2
+      ]
     }
   },
   {
     "model": "spritstat.station",
     "pk": 1354901,
     "fields": {
-      "user_id": 2,
       "name": "avanti - Wien Gaussplatz 1",
       "address": "Gaussplatz 1",
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2258800",
-      "longitude": "16.3708000"
+      "longitude": "16.3708000",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1468288,
+    "fields": {
+      "name": "Glanzvoll Auto-Aufbereitung",
+      "address": "Am Gewerbepark 4",
+      "postal_code": "8241",
+      "city": "Dechantskirchen",
+      "latitude": "47.4142018",
+      "longitude": "16.0229405",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1470767,
+    "fields": {
+      "name": "P\u00fcrrer Trans GmbH.",
+      "address": "Wei\u00dfes Kreuz 100",
+      "postal_code": "2851",
+      "city": "Krumbach",
+      "latitude": "47.5411530",
+      "longitude": "16.1548080",
+      "users": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "spritstat.station",
+    "pk": 1472948,
+    "fields": {
+      "name": "SARA1 ENERGY",
+      "address": "Industriestra\u00dfe-Nord 1",
+      "postal_code": "2601",
+      "city": "Sollenau",
+      "latitude": "47.9076300",
+      "longitude": "16.2531600",
+      "users": [
+        2
+      ]
     }
   }
 ]
