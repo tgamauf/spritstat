@@ -65,7 +65,6 @@ class Location(models.Model):
 
 
 class Station(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     users = models.ManyToManyField(CustomUser, related_name="stations")
     name = models.CharField(max_length=80)
     address = models.CharField(max_length=80)

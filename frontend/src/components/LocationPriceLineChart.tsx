@@ -162,11 +162,6 @@ export default function LocationPriceLineChart(
   const [chartData, setChartData] = useState<ChartData>();
 
   useEffect(() => {
-    //TODO remove after #23 has been solved
-    console.debug(`Stations provided: ${JSON.stringify(stations, null, 2)}`);
-  }, [stations]);
-
-  useEffect(() => {
     setLoading(true);
 
     apiGetPrices(location.id, selectedDateRange)
@@ -222,8 +217,6 @@ export default function LocationPriceLineChart(
       for (const id of stationIds) {
         const station = stations[id];
         if (typeof station === "undefined") {
-          //TODO remove after #23 has been solved
-          console.error(`Tooltip station not found, stations ids: ${JSON.stringify(stationIds)}`);
           continue;
         }
 

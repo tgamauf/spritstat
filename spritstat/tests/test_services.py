@@ -207,7 +207,9 @@ class TestRequestLocationPrices(TestCase):
             [s.id for s in last_stations],
             [check_response_entry_2.id, check_response_entry_3.id],
         )
-        self.assertListEqual([s.user for s in last_stations], [check_location.user] * 2)
+        self.assertListEqual(
+            [u for s in last_stations for u in s.users.all()], [check_location.user] * 2
+        )
         self.assertEqual(Price.objects.count(), check_price_count)
         result_price = Price.objects.last()
         self.assertEqual(result_price.location.id, check_location_id)
@@ -234,9 +236,9 @@ class TestRequestLocationPrices(TestCase):
         # Ensure that the fuel type in the fixture is indeed super
         self.assertEqual(check_location.fuel_type, "SUP")
 
-        # Ensure that the user corrsponding to the location has stations and
+        # Ensure that the user corresponding to the location has stations and
         #  prices
-        self.assertGreater(Station.objects.filter(user=check_location.user).count(), 0)
+        self.assertGreater(Station.objects.filter(users=check_location.user).count(), 0)
         self.assertGreater(Price.objects.filter(location=check_location).count(), 0)
 
         existing_station = Station.objects.get(pk=2)
@@ -288,7 +290,7 @@ class TestRequestLocationPrices(TestCase):
         )
 
         # Ensure that no station or price exist for this location
-        self.assertFalse(Station.objects.filter(user=check_location.user).count())
+        self.assertFalse(Station.objects.filter(users=check_location.user).count())
         self.assertFalse(Price.objects.filter(location=check_location).count())
 
         check_station_count = Station.objects.count() + 1
@@ -321,7 +323,6 @@ class TestRequestLocationPrices(TestCase):
         mock_response_entry.id = check_station_id
         station = Station.objects.create(
             id=mock_response_entry.id,
-            user_id=user_existing_station.id,
             name=mock_response_entry.name,
             address=mock_response_entry.address,
             postal_code=mock_response_entry.postal_code,

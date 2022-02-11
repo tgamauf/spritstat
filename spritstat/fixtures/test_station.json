@@ -3,7 +3,6 @@
     "model": "spritstat.station",
     "pk": 1,
     "fields": {
-      "user_id": 2,
       "name": "TAC",
       "address": "Taborstraße 102-108 ",
       "postal_code": "1200",
@@ -16,7 +15,6 @@
     "model": "spritstat.station",
     "pk": 2,
     "fields": {
-      "user_id": 4,
       "name": "BP",
       "address": "Handelskai 90",
       "postal_code": "1200",
@@ -29,13 +27,44 @@
     "model": "spritstat.station",
     "pk": 3,
     "fields": {
-      "user_id": 4,
       "name": "Disk",
       "address": "Franzensbrückenstrasse 15",
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2146367",
       "longitude": "16.3916044"
+    }
+  },
+  {
+    "model": "spritstat.station_users",
+    "pk": 1,
+    "fields": {
+      "station": 1,
+      "customuser": 2
+    }
+  },
+  {
+    "model": "spritstat.station_users",
+    "pk": 2,
+    "fields": {
+      "station": 2,
+      "customuser": 2
+    }
+  },
+  {
+    "model": "spritstat.station_users",
+    "pk": 3,
+    "fields": {
+      "station": 2,
+      "customuser": 4
+    }
+  },
+  {
+    "model": "spritstat.station_users",
+    "pk": 4,
+    "fields": {
+      "station": 3,
+      "customuser": 4
     }
   }
 ]
