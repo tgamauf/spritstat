@@ -283,19 +283,21 @@ def get_or_create_stations(
 
     objects = []
     for s in stations:
-        (object_, _) = models.Station.objects.get_or_create(
-            id=s.id,
-            defaults={
-                "user": location.user,
-                "name": s.name,
-                "address": s.address,
-                "postal_code": s.postal_code,
-                "city": s.city,
-                "latitude": s.latitude,
-                "longitude": s.longitude,
-            },
-        )
-        objects.append(object_)
+        try:
+            obj = models.Station.objects.get(pk=s.id)
+            obj.users.add(location.user)
+        except models.Station.DoesNotExist:
+            obj = models.Station.objects.create(
+                id=s.id,
+                user=location.user,
+                name=s.name,
+                address=s.address,
+                postal_code=s.postal_code,
+                city=s.city,
+                latitude=s.latitude,
+                longitude=s.longitude,
+            )
+        objects.append(obj)
 
     return objects
 

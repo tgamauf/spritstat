@@ -120,9 +120,9 @@ class TestRequestLocationPrices(TestCase):
         # Ensure that the fuel type in the fixture is indeed diesel
         self.assertEqual(check_location.fuel_type, "DIE")
 
-        # Ensure that the user corrsponding to the location has stations and
+        # Ensure that the user corresponding to the location has stations and
         #  prices
-        self.assertGreater(Station.objects.filter(user=check_location.user).count(), 0)
+        self.assertGreater(Station.objects.filter(users=check_location.user).count(), 0)
         self.assertGreater(Price.objects.filter(location=check_location).count(), 0)
 
         check_min_price = self.default_mock_response_entry.price
@@ -304,6 +304,49 @@ class TestRequestLocationPrices(TestCase):
         result_price = Price.objects.last()
         self.assertEqual(result_price.location.id, check_location_id)
         self.assertEqual(result_price.stations.count(), 1)
+
+    def test_request_location_prices__station_exists_other_user(self):
+        # Test adding a price for a station that has been created for another
+        #  user.
+
+        check_location_id = 3  # this belongs to user 3
+        check_station_id = 10000  # this is a station id that must not exist
+        user_existing_station = Location.objects.get(pk=1).user
+        user_test = Location.objects.get(pk=check_location_id).user
+
+        self.assertNotEqual(user_existing_station, user_test)
+        self.assertFalse(Station.objects.filter(id=check_station_id).exists())
+
+        mock_response_entry = self.default_mock_response_entry
+        mock_response_entry.id = check_station_id
+        station = Station.objects.create(
+            id=mock_response_entry.id,
+            user_id=user_existing_station.id,
+            name=mock_response_entry.name,
+            address=mock_response_entry.address,
+            postal_code=mock_response_entry.postal_code,
+            city=mock_response_entry.city,
+            latitude=mock_response_entry.latitude,
+            longitude=mock_response_entry.longitude,
+        )
+        station.users.add(user_existing_station)
+
+        check_station_count = Station.objects.count()
+        check_price_count = Price.objects.count() + 1
+
+        mock_response = MockAPIResponse(
+            status=200, data=[mock_response_entry]
+        ).as_mock()
+        with patch.object(PoolManager, "request", return_value=mock_response):
+            services.request_location_prices(check_location_id)
+
+        self.assertEqual(Station.objects.count(), check_station_count)
+        self.assertEqual(Price.objects.count(), check_price_count)
+
+        self.assertListEqual(
+            list(Station.objects.get(id=check_station_id).users.all()),
+            [user_existing_station, user_test],
+        )
 
     def test_request_location_prices__no_prices(self):
         check_station_count = Station.objects.count()
