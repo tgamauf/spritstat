@@ -48,7 +48,6 @@
     "model": "spritstat.station",
     "pk": 1,
     "fields": {
-      "user_id": 1,
       "name": "Station 1",
       "address": "Station Address 1",
       "postal_code": "ZIP1",
@@ -61,7 +60,6 @@
     "model": "spritstat.station",
     "pk": 2,
     "fields": {
-      "user_id": 1,
       "name": "Station 2",
       "address": "Station Address 2",
       "postal_code": "ZIP2",

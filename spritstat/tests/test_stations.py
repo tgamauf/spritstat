@@ -37,14 +37,10 @@ class TestStations(APITestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        for station, object_ in zip(
-            response.data, Station.objects.filter(user=self.user)
+        for station, check_station in zip(
+            response.data, Station.objects.filter(users=self.user).values()
         ):
-            check_station = object_.__dict__
-            [
-                check_station.pop(key)
-                for key in ["_state", "user_id", "latitude", "longitude"]
-            ]
+            [check_station.pop(key) for key in ["latitude", "longitude"]]
             self.assertDictEqual(station, check_station)
 
     def test_post(self):
