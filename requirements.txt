@@ -4,9 +4,9 @@
 #
 #    pip-compile --generate-hashes --output-file=requirements.txt requirements/production.in
 #
-arrow==1.2.1 \
-    --hash=sha256:6b2914ef3997d1fd7b37a71ce9dd61a6e329d09e1c7b44f4d3099ca4a5c0933e \
-    --hash=sha256:c2dde3c382d9f7e6922ce636bf0b318a7a853df40ecb383b29192e6c5cc82840
+arrow==1.2.2 \
+    --hash=sha256:05caf1fd3d9a11a1135b2b6f09887421153b94558e5ef4d090b567b47173ac2b \
+    --hash=sha256:d622c46ca681b5b3e3574fcb60a04e5cc81b9625112d5fb2b44220c36c892177
     # via django-q
 asgiref==3.5.0 \
     --hash=sha256:2f8abc20f7248433085eda803936d98992f1343ddb022065779f37c5da0181d0 \
@@ -136,9 +136,9 @@ cffi==1.15.0 \
     --hash=sha256:fd8a250edc26254fe5b33be00402e6d287f562b6a5b2152dec302fa15bb3e997 \
     --hash=sha256:ffaa5c925128e29efbde7301d8ecaf35c8c60ffbcd6a1ffd3a552177c8e5e796
     # via cryptography
-charset-normalizer==2.0.10 \
-    --hash=sha256:876d180e9d7432c5d1dfd4c5d26b72f099d503e8fcc0feb7532c9289be60fcbd \
-    --hash=sha256:cb957888737fc0bbcd78e3df769addb41fd1ff8cf950dc9e7ad7793f1bf44455
+charset-normalizer==2.0.11 \
+    --hash=sha256:2842d8f5e82a1f6aa437380934d5e1cd4fcf2003b06fed6940769c164a480a45 \
+    --hash=sha256:98398a9d69ee80548c762ba991a4728bfc3836768ed226b3945908d1a688371c
     # via requests
 cryptography==36.0.1 \
     --hash=sha256:0a817b961b46894c5ca8a66b599c745b9a3d9f822725221f0e0fe49dc043a3a3 \
@@ -169,12 +169,12 @@ defusedxml==0.7.1 \
     --hash=sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69 \
     --hash=sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61
     # via python3-openid
-dj-rest-auth==2.2.2 \
-    --hash=sha256:fda25a777ac23bc2561f2579de5c45f058d0f1d27410469d5b321c353c4822ad
+dj-rest-auth==2.2.3 \
+    --hash=sha256:f292f3dffb8fc896da10adf47e94a254fb8bf42e672a066e63566363d764ad42
     # via -r requirements/production.in
-django==3.2.11 \
-    --hash=sha256:0a0a37f0b93aef30c4bf3a839c187e1175bcdeb7e177341da0cb7b8194416891 \
-    --hash=sha256:69c94abe5d6b1b088bf475e09b7b74403f943e34da107e798465d2045da27e75
+django==3.2.12 \
+    --hash=sha256:9772e6935703e59e993960832d66a614cf0233a1c5123bc6224ecc6ad69e41e2 \
+    --hash=sha256:9b06c289f9ba3a8abea16c9c9505f25107809fb933676f6c891ded270039d965
     # via
     #   -r requirements/production.in
     #   dj-rest-auth
@@ -184,8 +184,8 @@ django==3.2.11 \
     #   django-picklefield
     #   django-q
     #   djangorestframework
-django-allauth==0.47.0 \
-    --hash=sha256:2bcf09d4c6e672620981d283f555d643982ac066b71f8947dbd81882a1d7c5e8
+django-allauth==0.48.0 \
+    --hash=sha256:531821ce6a2278168054add13421776c9f8e565cf39926e799fa02d6c29da920
     # via -r requirements/production.in
 django-compress-staticfiles==1.0.1b0 \
     --hash=sha256:ce6b9b766cda23c77ef1072846a60de856b4c1c29519d3e57c6cffe7281d7f04 \
@@ -217,9 +217,9 @@ idna==3.3 \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
     --hash=sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d
     # via requests
-oauthlib==3.1.1 \
-    --hash=sha256:42bf6354c2ed8c6acb54d971fce6f88193d97297e18602a3a886603f9d7730cc \
-    --hash=sha256:8f0215fcc533dd8dd1bee6f4c412d4f0cd7297307d43ac61666389e3bc3198a3
+oauthlib==3.2.0 \
+    --hash=sha256:23a8208d75b902797ea29fd31fa80a15ed9dc2c6c16fe73f5d346f83f6fa27a2 \
+    --hash=sha256:6db33440354787f9b7f3a6dbd4febf5d0f93758354060e802f6c06cb493022fe
     # via requests-oauthlib
 psycopg2-binary==2.9.3 \
     --hash=sha256:01310cf4cf26db9aea5158c217caa92d291f0500051a6469ac52166e1a16f5b7 \
@@ -317,9 +317,9 @@ requests==2.27.1 \
     # via
     #   django-allauth
     #   requests-oauthlib
-requests-oauthlib==1.3.0 \
-    --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
-    --hash=sha256:b4261601a71fd721a8bd6d7aa1cc1d6a8a93b4a9f5e96626f8e4d91e8beeaa6a
+requests-oauthlib==1.3.1 \
+    --hash=sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5 \
+    --hash=sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a
     # via django-allauth
 rjsmin==1.2.0 \
     --hash=sha256:05efa485dfddb6418e3b86d8862463aa15641a61f6ae05e7e6de8f116ee77c69 \
