@@ -105,6 +105,9 @@ class ChartConfig implements ChartConfiguration {
         tooltip: {
           callbacks: {
             footer: tooltipFooterCallback,
+          },
+          footerFont: {
+            weight: "normal"
           }
         },
         zoom: {
