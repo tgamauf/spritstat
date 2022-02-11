@@ -20,7 +20,9 @@ class LocationType(models.IntegerChoices):
 
 
 class Location(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="locations"
+    )
     type = models.IntegerField(choices=LocationType.choices)
     name = models.CharField(max_length=200)
     latitude = models.DecimalField(
@@ -64,6 +66,7 @@ class Location(models.Model):
 
 class Station(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    users = models.ManyToManyField(CustomUser, related_name="stations")
     name = models.CharField(max_length=80)
     address = models.CharField(max_length=80)
     postal_code = models.CharField(max_length=4)
@@ -73,7 +76,9 @@ class Station(models.Model):
 
 
 class Price(models.Model):
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, related_name="prices"
+    )
     datetime = models.DateTimeField(auto_now_add=True)
     stations = models.ManyToManyField(Station, related_name="prices")
     min_amount = models.FloatField()

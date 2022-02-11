@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 
 from . import models
+from users.models import CustomUser
 
 
 @admin.register(models.Location)
@@ -14,6 +15,10 @@ class UserLocationAdmin(admin.ModelAdmin):
 
 
 class StationAdminForm(forms.ModelForm):
+    users = forms.ModelMultipleChoiceField(
+        queryset=CustomUser.objects.all(),
+        required=False,
+    )
     prices = forms.ModelMultipleChoiceField(
         queryset=models.Price.objects.all(),
         required=False,
@@ -22,7 +27,7 @@ class StationAdminForm(forms.ModelForm):
     class Meta:
         model = models.Station
         fields = (
-            "user",
+            "users",
             "name",
             "address",
             "postal_code",
@@ -36,12 +41,14 @@ class StationAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.instance:
+            self.fields["users"].initial = self.instance.users.all()
             self.fields["prices"].initial = self.instance.prices.all()
 
     def save(self, commit=True):
         station = super().save(commit=False)
 
-        station.prices = self.cleaned_data["prices"]
+        station.users.add(*self.cleaned_data["users"])
+        station.prices.add(*self.cleaned_data["prices"])
 
         if commit:
             station.save()
@@ -53,7 +60,7 @@ class StationAdminForm(forms.ModelForm):
 @admin.register(models.Station)
 class StationAdmin(admin.ModelAdmin):
     fields = (
-        "user",
+        "users",
         "name",
         "address",
         "postal_code",

@@ -70,7 +70,7 @@ class StationList(generics.ListAPIView):
 
     def get_queryset(self):
         # We only list the objects of the current user
-        return models.Station.objects.filter(user=self.request.user.id)
+        return models.Station.objects.filter(users=self.request.user)
 
 
 class PriceList(generics.ListAPIView):
