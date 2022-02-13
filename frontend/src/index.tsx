@@ -4,25 +4,25 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import App from "./App";
-import NoMatch from "./views/app/NoMatch";
-import { RouteNames } from "./utils/types";
-import Home from "./views/app/Home";
-import Imprint from "./views/app/Imprint";
-import Index from "./views/app/Index";
-import PrivacyPolicy from "./views/app/PrivacyPolicy";
-import Signup from "./views/auth/Signup";
-import EmailVerificationSent from "./views/auth/EmailVerificationSent";
-import ConfirmEmail from "./views/auth/ConfirmEmail";
-import PasswordRecoveryEmail from "./views/auth/PasswordRecoveryEmail";
-import Settings from "./views/app/Settings";
-import Login from "./views/auth/Login";
-import ResetPassword from "./views/auth/ResetPassword";
-import ChangePassword from "./views/auth/ChangePassword";
-import Dashboard from "./views/app/Dashboard";
-import AddLocation from "./views/app/AddLocation";
-import AccountDeleted from "./views/app/AccountDeleted";
-import Contact from "./views/app/Contact";
+import App from "./app/App";
+import NoMatch from "./common/components/NoMatch";
+import { RouteNames } from "./common/types";
+import Home from "./common/components/Home";
+import Imprint from "./common/components/Imprint";
+import Index from "./common/components/Index";
+import PrivacyPolicy from "./common/components/PrivacyPolicy";
+import Signup from "./features/auth/Signup";
+import EmailVerificationSent from "./features/auth/EmailVerificationSent";
+import ConfirmEmail from "./features/auth/ConfirmEmail";
+import PasswordRecoveryEmail from "./features/auth/PasswordRecoveryEmail";
+import Settings from "./features/settings/Settings";
+import Login from "./features/auth/Login";
+import ResetPassword from "./features/auth/ResetPassword";
+import ChangePassword from "./features/auth/ChangePassword";
+import Dashboard from "./features/location/Dashboard";
+import AddLocation from "./features/location/AddLocation";
+import AccountDeleted from "./features/settings/AccountDeleted";
+import Contact from "./features/contact/Contact";
 
 ReactDOM.render(
   <React.StrictMode>

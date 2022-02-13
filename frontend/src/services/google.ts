@@ -1,5 +1,5 @@
-import {INVALID_COORDINATES, INVALID_LOCATION} from "../utils/constants";
-import {Coordinates, NamedLocation} from "../utils/types";
+import {INVALID_COORDINATES, INVALID_LOCATION} from "../common/constants";
+import {Coordinates, NamedLocation} from "../common/types";
 
 
 let ready = false;

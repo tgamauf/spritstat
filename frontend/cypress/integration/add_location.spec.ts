@@ -1,4 +1,4 @@
-import {FuelType, LocationType, RouteNames} from "../../src/utils/types";
+import {FuelType, LocationType, RouteNames} from "../../src/common/types";
 import {RegionType} from "../../src/services/econtrolApi";
 import * as google from "../../src/services/google";
 

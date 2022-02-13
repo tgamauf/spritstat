@@ -1,4 +1,4 @@
-import {RouteNames} from "../../src/utils/types";
+import {RouteNames} from "../../src/common/types";
 
 describe("Validate initial page load", () => {
   it("verify index redirects", () => {

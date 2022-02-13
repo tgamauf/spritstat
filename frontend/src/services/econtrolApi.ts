@@ -1,4 +1,4 @@
-import { Location, LocationType, Station } from "../utils/types";
+import { Location, LocationType, Station } from "../common/types";
 
 const API_URL = "https://api.e-control.at/sprit/1.0";
 

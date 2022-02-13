@@ -1,7 +1,7 @@
 import Cookie from "universal-cookie";
 
-import {EMPTY_SESSION, INVALID_LOCATION} from "../utils/constants";
-import {DateRange, FuelType, Location, LocationType, Price, Session, Station} from "../utils/types";
+import {EMPTY_SESSION} from "../common/constants";
+import {DateRange, FuelType, Location, LocationType, Price, Session, Station} from "../common/types";
 import {RegionType} from "./econtrolApi";
 
 // Get the URL of the website, this is also where the API is available.
