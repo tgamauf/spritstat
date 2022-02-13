@@ -20,6 +20,7 @@ import Dashboard from "../features/location/Dashboard";
 import AddLocation from "../features/location/AddLocation";
 import AccountDeleted from "../features/settings/AccountDeleted";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "../features/auth/AuthProvider";
+import LocationDetails from "../features/location/LocationDetails";
 
 
 export default function App() {
@@ -87,6 +88,10 @@ export default function App() {
         <Route
           path={RouteNames.AddLocation}
           element={<RequireAuth><AddLocation/></RequireAuth>}
+        />
+        <Route
+          path={`${RouteNames.LocationDetails}/:id`}
+          element={<RequireAuth><LocationDetails/></RequireAuth>}
         />
       </Routes>
     </AuthProvider>

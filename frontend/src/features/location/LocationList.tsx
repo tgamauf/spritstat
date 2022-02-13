@@ -65,7 +65,6 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
             <LocationCard
               key={location.id}
               location={location}
-              deleteLocation={() => setLocationToDelete(location.id)}
               setErrorMessage={setErrorMessageCallback}
             />
           );

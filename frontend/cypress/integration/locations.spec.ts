@@ -113,16 +113,11 @@ describe("Dashboard process", () => {
     cy.intercept("DELETE", "/api/v1/sprit/*").as("deleteRequest");
 
     cy.visit(RouteNames.Dashboard);
-    cy.getBySel("card-location-2").as("cardToDelete");
-    cy.get("@cardToDelete")
-      .within(() => {
-        cy.getBySel("btn-open-delete").click();
-     })
-    cy.getBySel("modal-delete-location").should("be.visible");
-    cy.getBySel("btn-delete").click();
 
-    cy.wait(["@deleteRequest", "@locationRequest"]);
-    cy.get("@cardToDelete").should("not.exist");
+
+    const locationId = 2;
+    cy.getBySel(`card-location-${locationId}`).click();
+    cy.url().should("include", `${RouteNames.LocationDetails}/${locationId}`)
  });
 
   it("redirect if not logged in", () => {

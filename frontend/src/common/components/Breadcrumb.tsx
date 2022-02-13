@@ -20,9 +20,19 @@ export default function Breadcrumb({items}: Props) {
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
             {items.map((item, index) => {
+              // The last breadcrumb shouldn't be interactive
+              let destination;
+              if (index >= items?.length - 1) {
+                destination = ""
+              } else {
+                destination = item.destination
+              }
               return (
                 <li key={index} data-test={`breadcrumb-${index}`}>
-                  <Link className="has-text-primary" to={item.destination}>
+                  <Link
+                    className="has-text-primary"
+                    to={destination}
+                  >
                     <FontAwesomeIcon className="icon" icon={item.icon} />
                     <span>{item.name}</span>
                   </Link>

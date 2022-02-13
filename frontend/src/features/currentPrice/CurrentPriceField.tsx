@@ -16,9 +16,10 @@ type Stations = {
 
 interface Props {
   location: Location;
+  isInteractive: boolean;
 }
 
-export default function CurrentPriceField({location}: Props): JSX.Element {
+export default function CurrentPriceField({location, isInteractive}: Props): JSX.Element {
   const {data, error, isLoading} = useGetCurrentPriceQuery(location);
   const [currentPrice, setCurrentPrice] = useState<number>(NO_CURRENT_PRICE);
   const [stations, setStations] = useState<Stations>([]);
@@ -71,15 +72,19 @@ export default function CurrentPriceField({location}: Props): JSX.Element {
                 {stations.map((item, index) => {
                   return (
                     <li key={index}>
-                      <a
-                        className="has-text-dark is-underlined"
-                        title={`${item.address}, ${item.postalCode} ${item.city}`}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span>{item.name}</span>
-                      </a>
+                      {isInteractive ? (
+                        <a
+                          className="has-text-dark is-underlined"
+                          title={`${item.address}, ${item.postalCode} ${item.city}`}
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>{item.name}</span>
+                        </a>
+                      ) : (
+                        <p className="has-text-dark">{item.name}</p>
+                      )}
                     </li>
                   );
                })}
