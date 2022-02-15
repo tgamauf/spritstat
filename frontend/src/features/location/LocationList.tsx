@@ -1,48 +1,23 @@
-import React, {useCallback, useEffect, useState} from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import React, {useCallback, useState} from "react";
+import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 
-import {apiGetStations} from "../../services/api";
-import {Location, RouteNames, StationMap} from "../../common/types";
+import {RouteNames} from "../../common/types";
 import LocationCard from "./LocationCard";
 import DeleteLocationModal, {NO_LOCATION_ID} from "./DeleteLocationModal";
+import {useGetLocationsQuery} from "./locationApiSlice";
 
 interface Props {
-  locations: Location[];
   setErrorMessage: (msg: string) => void;
-  triggerLocationsRefresh: () => void;
 }
 
-export default function LocationList(
-  {locations, setErrorMessage, triggerLocationsRefresh}: Props
-): JSX.Element {
-  const [locationToDelete, setLocationToDelete] =
-    useState<number>(NO_LOCATION_ID);
-  const [stations, setStations] = useState<StationMap>([]);
-
-  useEffect(() => {
-    apiGetStations()
-      .then((stations_) => {
-        setStations(stations_.reduce(function(map: StationMap, item) {
-            map[item.id] = item;
-            return map;
-          }, {})
-        );
-      })
-      .catch((error) => {
-        // We aren't notifying the user about this as stations aren't mandatory
-        console.error(`Failed to get stations: ${error}`);
-      });
-  }, []);
+export default function LocationList({setErrorMessage}: Props): JSX.Element {
+  const {data: locations} = useGetLocationsQuery();
+  const [locationToDelete, setLocationToDelete] = useState<number>(NO_LOCATION_ID);
 
   const setErrorMessageCallback = useCallback(
     (msg: string) => setErrorMessage(msg),
-    []
-  );
-
-  const setLocationToDeleteCallback = useCallback(
-    (id: number) => setLocationToDelete(id),
     []
   );
 
@@ -52,7 +27,6 @@ export default function LocationList(
 
   function notifyLocationDeleted() {
     setLocationToDelete(NO_LOCATION_ID);
-    triggerLocationsRefresh();
   }
 
   return (
@@ -86,13 +60,12 @@ export default function LocationList(
             </div>
           </div>
         </div>
-        {locations.map((location) => {
+        {locations && locations.map((location) => {
           return (
             <LocationCard
               key={location.id}
               location={location}
-              stations={stations}
-              setLocationToDelete={setLocationToDeleteCallback}
+              deleteLocation={() => setLocationToDelete(location.id)}
               setErrorMessage={setErrorMessageCallback}
             />
           );

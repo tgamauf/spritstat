@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 
-import {useGlobalState} from "../../app/App";
 import NamedLocationField from "./NamedLocationField";
 import BasePage from "../../common/components/BasePage";
-import RegionLocationField from "./RegionLocationField";
-import {apiCreateLocation} from "../../services/api";
-import {RegionType} from "../../services/econtrolApi";
-import {FuelType, FuelTypeLabels, LocationType, OurFormElement, RouteNames} from "../../common/types";
+import RegionLocationField from "./RegionLocationField/RegionLocationField";
+import {RegionType} from "../../common/types";
+import {FuelType, LocationType, OurFormElement, RouteNames} from "../../common/types";
 import {INVALID_LOCATION} from "../../common/constants";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useAddLocationMutation} from "./locationApiSlice";
 
 const BREADCRUMB = {
   name: "Ort hinzufügen",
@@ -30,7 +31,9 @@ interface Region {
 }
 
 export default function AddLocation(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [addLocation, {isLoading}] = useAddLocationMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [errorMessage, setErrorMessage] = useState("");
   const [locationType, setLocationType] = useState<LocationType>(LocationType.Named);
   const [fuelType, setFuelType] = useState<FuelType>(FuelType.Diesel);
@@ -63,7 +66,7 @@ export default function AddLocation(): JSX.Element {
         regionCode = region.code;
         regionType = region.type
       }
-      apiCreateLocation({
+      addLocation({
         type: locationType,
         name,
         latitude,
@@ -71,7 +74,7 @@ export default function AddLocation(): JSX.Element {
         regionCode,
         regionType,
         fuelType,
-      })
+      }).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(RouteNames.Dashboard);
@@ -81,7 +84,7 @@ export default function AddLocation(): JSX.Element {
           }
         })
         .catch((e: any) => {
-          console.error(`Failed to to add location: ${e}`);
+          console.error(`Failed to add location: ${JSON.stringify(e, null, 2)}`);
           setErrorMessage("Der Ort konnte nicht angelegt werden");
         });
     }
@@ -104,6 +107,14 @@ export default function AddLocation(): JSX.Element {
 
     setSubmitted(true);
     setErrorMessage("");
+  }
+
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
   }
 
   let mainComponent;
@@ -166,13 +177,13 @@ export default function AddLocation(): JSX.Element {
                       data-test="field-fuel-type"
                     >
                       <option value={FuelType.Diesel}>
-                        {FuelTypeLabels.get(FuelType.Diesel)}
+                        {FuelType.Diesel}
                       </option>
                       <option value={FuelType.Super}>
-                        {FuelTypeLabels.get(FuelType.Super)}
+                        {FuelType.Super}
                       </option>
                       <option value={FuelType.Gas}>
-                        {FuelTypeLabels.get(FuelType.Gas)}
+                        {FuelType.Gas}
                       </option>
                     </select>
                   </div>
@@ -190,6 +201,7 @@ export default function AddLocation(): JSX.Element {
                       (namedLocation === INVALID_LOCATION)
                       && (region === INVALID_REGION)
                     }
+                    ref={buttonRef}
                     data-test="btn-submit"
                   />
                 </p>

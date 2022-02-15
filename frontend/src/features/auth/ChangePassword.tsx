@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { faKey } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {faKey} from "@fortawesome/free-solid-svg-icons";
 
-import { useGlobalState } from "../../app/App";
 import CenteredBox from "../../common/components/CenteredBox";
 import PasswordField from "./PasswordField";
 import PasswordWithValidationField from "./PasswordWithValidationField";
 import BasePage from "../../common/components/BasePage";
-import { apiPostRequest } from "../../services/api";
-import { OurFormElement, RouteNames } from "../../common/types";
-import { SETTINGS_BREADCRUMB } from "../settings/Settings";
+import {OurFormElement, RouteNames} from "../../common/types";
+import {SETTINGS_BREADCRUMB} from "../settings/Settings";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useChangePasswordMutation} from "./authApiSlice";
 
 const BREADCRUMB = {
   name: "Passwort ändern",
@@ -18,8 +19,9 @@ const BREADCRUMB = {
 };
 
 function ChangePassword(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
-  const { uid, token } = useParams();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [changePassword, {isLoading}] = useChangePasswordMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordValid, setNewPasswordValid] = useState(false);
@@ -31,28 +33,18 @@ function ChangePassword(): JSX.Element {
     if (!isAuthenticated) {
       navigate(RouteNames.Login, { replace: true });
     }
-  });
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (submitted) {
       setSubmitted(false);
 
-      const userData = {
-        uid,
-        token,
-        old_password: oldPassword,
-        // We have to send the new password twice to satisfy
-        //  dj_rest_auth/allauth
-        new_password1: newPassword,
-        new_password2: newPassword,
-      };
-
-      apiPostRequest("users/auth/password/change", userData)
+      changePassword({oldPassword, newPassword}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(-1);
           } else {
-            console.error(`Failed to reset password: request status not ok`);
+            console.error("Failed to reset password: request status not ok");
             setError(true);
           }
         })
@@ -73,6 +65,14 @@ function ChangePassword(): JSX.Element {
   let submitDisabled = true;
   if (oldPassword.length > 1 && newPassword.length > 1 && newPasswordValid) {
     submitDisabled = false;
+  }
+
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
   }
 
   return (
@@ -104,6 +104,7 @@ function ChangePassword(): JSX.Element {
                   type="submit"
                   value="Passwort speichern"
                   disabled={submitDisabled}
+                  ref={buttonRef}
                   data-test="btn-submit"
                 />
               </p>

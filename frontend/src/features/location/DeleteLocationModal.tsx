@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 
-import { apiDeleteRequest } from "../../services/api";
+import {useDeleteLocationMutation} from "./locationApiSlice";
 
 const NO_LOCATION_ID = -1;
 
@@ -17,10 +17,10 @@ export default function DeleteLocationModal({
   notifyDeleted,
   setErrorMessage,
 }: Props): JSX.Element {
+  const [deleteLocation, {isLoading: isDeleting}] = useDeleteLocationMutation();
   const modalRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const deleteButtonRef = useRef() as React.MutableRefObject<HTMLButtonElement>;
   const [doDelete, setDoDelete] = useState(false);
-  const [deleteInProgress, setDeleteInProgress] = useState(false);
 
   useEffect(() => {
     if (locationId === NO_LOCATION_ID) {
@@ -31,21 +31,19 @@ export default function DeleteLocationModal({
     }
 
     setDoDelete(false);
-    setDeleteInProgress(true);
 
-    apiDeleteRequest(`sprit/${locationId}`)
+    deleteLocation(locationId).unwrap()
       .then((success) => {
         if (!success) {
-          console.error(`Failed to delete location: request failed`);
+          console.error(`Failed to delete location ${locationId}: request failed`);
           setErrorMessage("Dein Ort konnte nicht gelöscht werden.");
         }
       })
       .catch((e) => {
-        console.error(`Failed to delete location: ${e}`);
+        console.error(`Failed to delete location ${locationId}: ${e}`);
         setErrorMessage("Dein Ort konnte nicht gelöscht werden.");
       })
       .finally(() => {
-        setDeleteInProgress(false);
         notifyDeleted();
       });
   }, [doDelete]);
@@ -62,7 +60,7 @@ export default function DeleteLocationModal({
 
   useLayoutEffect(() => {
     if (deleteButtonRef.current) {
-      if (deleteInProgress) {
+      if (isDeleting) {
         deleteButtonRef.current.classList.add("is-loading");
         deleteButtonRef.current.disabled = true;
       } else {
@@ -70,7 +68,7 @@ export default function DeleteLocationModal({
         deleteButtonRef.current.disabled = false;
       }
     }
-  }, [deleteInProgress]);
+  }, [isDeleting]);
 
   return (
     <div className="modal" ref={modalRef} data-test="modal-delete-location">
@@ -82,8 +80,8 @@ export default function DeleteLocationModal({
           </p>
           <button
             className="button is-danger"
-            ref={deleteButtonRef}
             onClick={() => setDoDelete(true)}
+            ref={deleteButtonRef}
             data-test="btn-delete"
           >
             Löschen

@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 import CenteredBox from "../../common/components/CenteredBox";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
-import BasePage, { BasePageSeverity } from "../../common/components/BasePage";
-import {
-  apiPostRequest,
-  apiGetSessionRequest,
-} from "../../services/api";
-import { setSession } from "../../services/store";
-import { OurFormElement, RouteNames } from "../../common/types";
-import { EMPTY_SESSION } from "../../common/constants";
-import { useGlobalState } from "../../app/App";
+import BasePage, {BasePageSeverity} from "../../common/components/BasePage";
+import {OurFormElement, RouteNames} from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useLoginMutation} from "./authApiSlice";
 
 function Login(): JSX.Element {
-  const [{ isAuthenticated }, dispatchGlobalState] = useGlobalState();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const [passwordRecovered, setPasswordRecovered] = useState(
@@ -27,6 +22,9 @@ function Login(): JSX.Element {
   const [emailVerified, setEmailVerified] = useState(
     query.get("emailVerified") === "true"
   );
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [login, {isLoading}] = useLoginMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -54,30 +52,15 @@ function Login(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
-      const userData = {
-        email,
-        password,
-        remember,
-      };
-
-      apiPostRequest("users/auth/login", userData)
+      login({email, password, remember}).unwrap()
         .then((isSuccess) => {
-          if (isSuccess) {
-            apiGetSessionRequest()
-              .then((session) => {
-                dispatchGlobalState(setSession(session));
-              })
-              .catch((e) => {
-                // Assume user isn"t logged in
-                dispatchGlobalState(setSession(EMPTY_SESSION));
-              });
-          } else {
+          if (!isSuccess) {
             console.error(`Failed to login: request status not ok`);
             setError(true);
           }
         })
         .catch((e: any) => {
-          console.error(`Failed to login: ${e}`);
+          console.error(`Failed to login: ${JSON.stringify(e, null, 2)}`);
           setError(true);
         });
     }
@@ -125,6 +108,14 @@ function Login(): JSX.Element {
   let submitDisabled = true;
   if (email.length >= 3 && password.length > 1) {
     submitDisabled = false;
+  }
+
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
   }
 
   return (
@@ -180,6 +171,7 @@ function Login(): JSX.Element {
                       type="submit"
                       value="Einloggen"
                       disabled={submitDisabled}
+                      ref={buttonRef}
                       data-test="btn-submit"
                     />
                   </p>

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 
-import { useGlobalState } from "../../app/App";
 import DeleteAccountModal from "./DeleteAccountModal";
 import BasePage from "../../common/components/BasePage";
 import { RouteNames } from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectEmail, selectIsAuthenticated} from "../../common/sessionSlice";
 
 const BREADCRUMB = {
   name: "Einstellungen",
@@ -14,9 +15,10 @@ const BREADCRUMB = {
 };
 
 export default function Settings(): JSX.Element {
-  const [{ isAuthenticated, email }, dispatchGlobalState] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const email = useAppSelector(selectEmail);
   const [errorMessage, setErrorMessage] = useState("");
-  const [deleteAccount, setDeleteAccount] = useState(false);
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,9 +36,8 @@ export default function Settings(): JSX.Element {
         discardMessage={() => setErrorMessage("")}
       >
         <DeleteAccountModal
-          dispatchGlobalState={dispatchGlobalState}
-          show={deleteAccount}
-          close={() => setDeleteAccount(false)}
+          show={showDeleteAccount}
+          close={() => setShowDeleteAccount(false)}
           setErrorMessage={setErrorMessage}
         />
         <section className="section">
@@ -81,7 +82,7 @@ export default function Settings(): JSX.Element {
             <p className="mt-2">
               <button
                 className="button is-danger"
-                onClick={() => setDeleteAccount(true)}
+                onClick={() => setShowDeleteAccount(true)}
                 data-test="btn-open-delete-account"
               >
                 Löschen

@@ -7,18 +7,6 @@ interface OurFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-interface Session {
-  isAuthenticated: boolean;
-  hasBetaAccess: boolean;
-  email: string;
-}
-
-interface GlobalState {
-  isAuthenticated: boolean;
-  hasBetaAccess: boolean;
-  email: string;
-}
-
 enum RouteNames {
   Index = "/",
   Home = "/home",
@@ -39,21 +27,21 @@ enum RouteNames {
 }
 
 enum LocationType {
-  Named = 1,
-  Region = 2,
+  Named,
+  Region,
+}
+
+enum RegionType {
+  Invalid,
+  State,
+  District,
 }
 
 enum FuelType {
-  Diesel = "DIE",
-  Super = "SUP",
-  Gas = "GAS",
+  Diesel = "Diesel",
+  Super = "Super",
+  Gas = "Gas",
 }
-
-const FuelTypeLabels = new Map<FuelType, string>([
-  [FuelType.Diesel, "Diesel"],
-  [FuelType.Super, "Super"],
-  [FuelType.Gas, "Gas"],
-]);
 
 interface Coordinates {
   latitude: number;
@@ -71,9 +59,9 @@ interface Location {
   name: string;
   latitude?: number;
   longitude?: number;
-  region_code?: string;
-  region_type?: string;
-  fuel_type: FuelType;
+  regionCode?: string;
+  regionType?: RegionType;
+  fuelType: FuelType;
 }
 
 enum DateRange {
@@ -98,19 +86,9 @@ interface Price {
   id: number;
   datetime: string;
   stations: number[];
-  min_amount: number;
+  amount: number;
 }
 
-export type {
-  Coordinates,
-  Location,
-  GlobalState,
-  OurFormElement,
-  NamedLocation,
-  Price,
-  Session,
-  Station,
-  StationMap,
-};
+export type {Coordinates, Location, OurFormElement, NamedLocation, Price, Station, StationMap};
 
-export { DateRange, FuelType, FuelTypeLabels, LocationType, RouteNames };
+export {DateRange, FuelType, LocationType, RegionType, RouteNames};

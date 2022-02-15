@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {faHome} from "@fortawesome/free-solid-svg-icons";
 
-import { useGlobalState } from "../../app/App";
 import NoLocation from "./NoLocation";
-import CenteredBox from "../../common/components/CenteredBox";
 import BasePage from "../../common/components/BasePage";
 import LocationList from "./LocationList";
-import {apiGetLocations} from "../../services/api";
-import {Location, RouteNames} from "../../common/types";
+import {RouteNames} from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useGetLocationsQuery} from "./locationApiSlice";
+import LoadingError from "../../common/components/LoadingError";
+
 
 const BREADCRUMB = {
   name: "Startseite",
@@ -17,48 +19,41 @@ const BREADCRUMB = {
 };
 
 export default function Dashboard() {
-  const [{ isAuthenticated }] = useGlobalState();
-  const [loading, setLoading] = useState(true);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const {data: locations, error, isError, isFetching, isSuccess} = useGetLocationsQuery();
   const [errorMessage, setErrorMessage] = useState("");
-  const [refreshUserLocations, setRefreshUserLocations] = useState(false);
-  const [locations, setLocations] = useState<Location[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      setRefreshUserLocations(true);
-    } else {
+    if (!isAuthenticated) {
       navigate(RouteNames.Login, { replace: true });
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (refreshUserLocations) {
-      setRefreshUserLocations(false);
-
-      apiGetLocations()
-        .then((locations_) => {
-          setLocations(locations_);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error(`Failed to get locations: ${error}`);
-          setErrorMessage("Deine Orte konnten nicht geladen werden.");
-        });
+    if (isError) {
+      console.error(
+        `Failed to get locations: ${JSON.stringify(error, null, 2)}`
+      );
     }
-  }, [refreshUserLocations]);
+  }, [isError]);
 
   let mainComponent;
-  if (loading) {
-    mainComponent = <CenteredBox loading={loading} />;
-  } else if (locations.length === 0) {
-    mainComponent = <NoLocation />;
+  if (isSuccess && locations) {
+    if (locations.length === 0) {
+      mainComponent = <NoLocation />;
+    } else {
+      mainComponent = <LocationList setErrorMessage={setErrorMessage} />;
+    }
   } else {
+    // TODO: need to check if this is actually reloading the locations,
+    //  otherwise we need to use refetch of useGetLocationsQuery
     mainComponent = (
-      <LocationList
-        locations={locations}
-        setErrorMessage={setErrorMessage}
-        triggerLocationsRefresh={() => setRefreshUserLocations(true)}
+      <LoadingError
+        loading={isFetching}
+        message="Deine Orte konnten nicht geladen werden."
+        linkTo={RouteNames.Dashboard}
+        linkName="Neu Laden"
       />
     );
   }

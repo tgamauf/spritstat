@@ -1,16 +1,19 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {FormEvent, useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-import { useGlobalState } from "../../app/App";
 import CenteredBox from "../../common/components/CenteredBox";
 import EmailField from "./EmailField";
 import BasePage from "../../common/components/BasePage";
 import PasswordWithValidationField from "./PasswordWithValidationField";
-import { apiPostRequest } from "../../services/api";
-import { OurFormElement, RouteNames } from "../../common/types";
+import {OurFormElement, RouteNames} from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useSignupMutation} from "./authApiSlice";
 
 function Signup(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [signup, {isLoading}] = useSignupMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(false);
@@ -28,14 +31,14 @@ function Signup(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
-      const userData = {
-        email,
-        // We have to send the password twice to satisfy dj_rest_auth/allauth
-        password1: password,
-        password2: password,
-      };
+      if (!email || !password) {
+        console.error(
+          `Signup failed: email=${email}, password=${!password ? "INVALID" : "**********"}`
+        );
+        return;
+      }
 
-      apiPostRequest("users/auth/register", userData)
+      signup({email, password}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(`${RouteNames.VerifyEmailSent}/${email}`);
@@ -63,6 +66,14 @@ function Signup(): JSX.Element {
     submitDisabled = false;
   }
 
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
+  }
+
   return (
     <div>
       <BasePage
@@ -87,6 +98,7 @@ function Signup(): JSX.Element {
                   type="submit"
                   value="Registrieren"
                   disabled={submitDisabled}
+                  ref={buttonRef}
                   data-test="btn-submit"
                 />
               </p>

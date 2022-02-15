@@ -1,7 +1,7 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, {FormEvent, useEffect, useRef, useState} from "react";
 
 import { OurFormElement } from "../../common/types";
-import { apiPostRequest } from "../../services/api";
+import {useSendContactFormMutation} from "./contactApiSlice";
 
 // This has to match the message length defined in the send view
 const MAX_MESSAGE_LENGTH = 500;
@@ -21,6 +21,8 @@ export default function ContactForm({
   notifySubmitted,
   setErrorMessage,
 }: Props): JSX.Element {
+  const [sendContactForm, {isLoading}] = useSendContactFormMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -30,13 +32,7 @@ export default function ContactForm({
     if (submitted) {
       setSubmitted(false);
 
-      const userData = {
-        contact_form_id: id,
-        name,
-        subject,
-        message,
-      };
-      apiPostRequest("users/account/contact", userData)
+      sendContactForm({formId: id, name, subject, message}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             notifySubmitted();
@@ -46,7 +42,7 @@ export default function ContactForm({
           }
         })
         .catch((e: any) => {
-          console.error(`Failed to send message: ${e}`);
+          console.error(`Failed to send message: ${JSON.stringify(e, null, 2)}`);
           setErrorMessage(ERROR_MESSAGE);
         });
     }
@@ -57,6 +53,14 @@ export default function ContactForm({
 
     setSubmitted(true);
     setErrorMessage("");
+  }
+
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
   }
 
   const submitDisabled = message.length <= 0;
@@ -136,6 +140,7 @@ export default function ContactForm({
               type="submit"
               value="Senden"
               disabled={submitDisabled}
+              ref={buttonRef}
               data-test="btn-submit"
             />
           </p>

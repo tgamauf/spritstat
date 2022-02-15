@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
-import { useGlobalState } from "../../app/App";
-import { RouteNames } from "../types";
+import {RouteNames} from "../types";
+import {useAppSelector} from "../utils";
+import {selectIsAuthenticated} from "../sessionSlice";
 
 export default function Index() {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const navigate = useNavigate();
 
   useEffect(() => {

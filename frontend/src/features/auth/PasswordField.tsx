@@ -7,7 +7,7 @@ interface OwnProps {
   value: string;
   update: (value: string) => void;
   autoComplete?: string;
-  data_cy?: string;
+  data_test?: string;
 }
 type Props = PropsWithChildren<OwnProps>;
 
@@ -16,7 +16,7 @@ export default function PasswordField({
   value,
   update,
   autoComplete = "current-password",
-  data_cy = "field-current-password",
+  data_test = "field-current-password",
   children,
 }: Props): JSX.Element {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -38,7 +38,7 @@ export default function PasswordField({
     showButtonTitle = "Klicke hier um dein Passwort anzuzeigen.";
   }
   return (
-    <div className="field" data-test={data_cy}>
+    <div className="field" data-test={data_test}>
       <div className="field has-addons mb-0">
         <p className="control has-icons-left is-expanded">
           <input

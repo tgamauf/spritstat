@@ -1,6 +1,7 @@
-import {NamedLocation, Session, Station} from "./types";
+import {NamedLocation, Station} from "./types";
+import {SessionData} from "./apis/spritstatApi";
 
-const EMPTY_SESSION: Session = {
+const EMPTY_SESSION: SessionData = {
   isAuthenticated: false,
   hasBetaAccess: false,
   email: "",

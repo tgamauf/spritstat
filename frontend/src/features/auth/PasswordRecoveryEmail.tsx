@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 import CenteredBox from "../../common/components/CenteredBox";
 import EmailField from "./EmailField";
 import BasePage from "../../common/components/BasePage";
-import { apiPostRequest } from "../../services/api";
-import { OurFormElement, RouteNames } from "../../common/types";
-import { useGlobalState } from "../../app/App";
+import {OurFormElement, RouteNames} from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useResetPasswordMutation} from "./authApiSlice";
 
 function PasswordRecoveryEmail(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [resetPassword, {isLoading}] = useResetPasswordMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -25,11 +28,7 @@ function PasswordRecoveryEmail(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
-      const userData = {
-        email,
-      };
-
-      apiPostRequest("users/auth/password/reset", userData)
+      resetPassword(email).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(`${RouteNames.Login}?passwordRecovered=true`);
@@ -57,6 +56,14 @@ function PasswordRecoveryEmail(): JSX.Element {
     submitDisabled = false;
   }
 
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
+  }
+
   return (
     <div>
       <BasePage
@@ -75,6 +82,7 @@ function PasswordRecoveryEmail(): JSX.Element {
                   type="submit"
                   value="Password zurücksetzen"
                   disabled={submitDisabled}
+                  ref={buttonRef}
                   data-test="btn-submit"
                 />
               </p>

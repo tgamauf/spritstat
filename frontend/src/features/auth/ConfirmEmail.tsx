@@ -1,32 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 
-import CenteredBox from "../../common/components/CenteredBox";
-import {apiPostRequest, apiVerifyEmailKey} from "../../services/api";
-import { setSession } from "../../services/store";
-import { EMPTY_SESSION } from "../../common/constants";
-import { useGlobalState } from "../../app/App";
-import { RouteNames } from "../../common/types";
+import {RouteNames} from "../../common/types";
 import BasePage from "../../common/components/BasePage";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useVerifyEmailMutation, useLogoutMutation} from "./authApiSlice";
+import LoadingError from "../../common/components/LoadingError";
 
 export default function ConfirmEmail(): JSX.Element {
-  const [{ isAuthenticated }, dispatchGlobalState] = useGlobalState();
-  const { key } = useParams();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [logout] = useLogoutMutation();
+  const [confirmEmail] = useVerifyEmailMutation();
+  const {key} = useParams();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated) {
-      // If we are logged in we logout out as it is possible that a different
+      // If we are logged in we log out as it is possible that a different
       //  user than the one this confirmation link belongs to is logged in.
-      apiPostRequest("users/auth/logout")
-        .catch((e: any) => {
-          console.error(`Error during logout: ${e}`);
-        })
-        .finally(() => {
-          dispatchGlobalState(setSession(EMPTY_SESSION));
+      logout().unwrap()
+        .catch((e) => {
+          console.error(`Error during logout: ${JSON.stringify(e, null, 2)}`);
         });
     }
   }, [isAuthenticated]);
@@ -38,12 +34,11 @@ export default function ConfirmEmail(): JSX.Element {
     }
 
     if (!key) {
-      console.error("Email verification failed, no key provided");
-      setLoading(false);
+      console.error("Could not verify email, key not found");
       return;
     }
 
-    apiVerifyEmailKey(key)
+    confirmEmail(key).unwrap()
       .then((valid) => {
         if (valid) {
           navigate(
@@ -55,7 +50,7 @@ export default function ConfirmEmail(): JSX.Element {
         }
       })
       .catch((e: any) => {
-        console.error(`Email verification failed: ${e}`);
+        console.error(`Email verification failed: ${JSON.stringify(e, null, 2)}`);
       })
       .finally(() => {
         setLoading(false);
@@ -64,30 +59,12 @@ export default function ConfirmEmail(): JSX.Element {
 
   return (
     <BasePage>
-      <CenteredBox loading={loading}>
-        <div data-test="block-error">
-          <p>
-            <FontAwesomeIcon
-              className="icon has-text-danger is-large"
-              icon={faTimes}
-              size="lg"
-            />
-          </p>
-          <p className="mt-3">
-            Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink
-            ungültig.
-          </p>
-          <p className="mt-3">
-            <Link
-              className="has-text-primary"
-              to={RouteNames.Index}
-              data-test="link-home"
-            >
-              Homepage
-            </Link>
-          </p>
-        </div>
-      </CenteredBox>
+      <LoadingError
+        loading={loading}
+        message="Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig."
+        linkTo={RouteNames.Index}
+        linkName="Homepage"
+      />
     </BasePage>
   );
 }

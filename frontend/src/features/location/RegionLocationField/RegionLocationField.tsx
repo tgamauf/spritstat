@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import {
-  econtrolAPIGetRegions,
-  RegionMap,
-  RegionType,
-} from "../../services/econtrolApi";
+import {RegionType, useGetRegionsQuery} from "./regionsApiSlice";
 
 const POSTAL_CODE_LENGTH = 4;
 
@@ -17,37 +13,24 @@ export default function RegionLocationField({
   setRegion,
   setErrorMessage,
 }: Props): JSX.Element {
-  const [regionMap, setRegionMap] = useState<RegionMap | null>(null);
+  const {data: regionMap, error, isLoading} = useGetRegionsQuery();
   const [selectedState, setSelectedState] = useState<number | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<number | null>(null);
   const [postalCode, setPostalCode] = useState("");
 
   useEffect(() => {
-    // Get the current region information from E-Control on site load.
-    econtrolAPIGetRegions()
-      .then((regionMap) => {
-        if (regionMap !== null) {
-          setRegionMap(regionMap);
-        } else {
-          console.error(`Failed to get region map`);
-          setErrorMessage(
-            "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
-              "neu und versuche es nochmal."
-          );
-        }
-      })
-      .catch((e) => {
-        console.error(`Failed to get region map: ${e}`);
-        setErrorMessage(
-          "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
-            "neu und versuche es nochmal."
-        );
-      });
-  }, []);
+    if (error) {
+      console.error(`Failed to get region map: ${JSON.stringify(error, null, 2)}`);
+      setErrorMessage(
+        "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
+        "neu und versuche es nochmal."
+      );
+    }
+  }, [error]);
 
   useEffect(() => {
     if (
-      regionMap === null ||
+      !regionMap ||
       postalCode === "" ||
       postalCode.length < POSTAL_CODE_LENGTH
     ) {
@@ -74,10 +57,10 @@ export default function RegionLocationField({
         "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
       );
     }
-  }, [postalCode, regionMap]);
+  }, [postalCode, isLoading]);
 
   useEffect(() => {
-    if (regionMap === null) {
+    if (!regionMap) {
       return;
     }
 
@@ -105,11 +88,11 @@ export default function RegionLocationField({
         });
       }
     }
-  }, [regionMap, selectedState, selectedDistrict]);
+  }, [isLoading, selectedState, selectedDistrict]);
 
   let states: { code: number; name: string }[] = [];
   let districts: { code: number; name: string }[] = [];
-  if (regionMap !== null) {
+  if (regionMap) {
     states = Array.from(regionMap.states, ([code, state]) => ({
       code,
       name: state.name,

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 import ContactForm from "./ContactForm";
 import BasePage from "../../common/components/BasePage";
-import { RouteNames } from "../../common/types";
-import { useGlobalState } from "../../app/App";
+import {RouteNames} from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
 
 const BREADCRUMB = {
   name: "Kontakt",
@@ -14,7 +15,7 @@ const BREADCRUMB = {
 };
 
 export default function Contact(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 

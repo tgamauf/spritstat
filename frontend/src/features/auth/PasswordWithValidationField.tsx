@@ -2,10 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import _debuounce from "lodash.debounce";
 
 import PasswordField, { PasswordFieldProps } from "./PasswordField";
-import {
-  apiValidatePasswordRequest,
-  APIPasswordValidationResponse,
-} from "../../services/api";
+import {PasswordValidationResponse, useValidatePasswordMutation} from "./authApiSlice";
 
 const DEBOUNCE_TIMEOUT_MS = 200;
 // as defined by Django settings PASSWORD_MINIMUM_SCORE
@@ -19,7 +16,7 @@ interface Props extends PasswordFieldProps {
   setPasswordValid: (passwordValid: boolean) => void;
   email?: string;
   autoComplete?: string;
-  data_cy?: string;
+  data_test?: string;
 }
 
 export default function PasswordWithValidationField({
@@ -30,9 +27,9 @@ export default function PasswordWithValidationField({
   setPasswordValid,
   email = "",
   autoComplete = "new-password",
-  data_cy = "field-new-password"
+  data_test = "field-new-password"
 }: Props): JSX.Element {
-  // const indicatorRef = useRef() as React.MutableRefObject<HTMLProgressElement>;
+  const [apiValidatePassword] = useValidatePasswordMutation();
   const [score, setScore] = useState(0);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
@@ -48,23 +45,23 @@ export default function PasswordWithValidationField({
     }
   }, [password, email]);
 
-  const validatePasswordDebounced = useCallback(
-    _debuounce(validatePassword, DEBOUNCE_TIMEOUT_MS),
-    []
-  );
-
   function validatePassword(password: string, email?: string) {
-    apiValidatePasswordRequest(password, email)
-      .then((validation: APIPasswordValidationResponse) => {
+    apiValidatePassword({password, email}).unwrap()
+      .then((validation: PasswordValidationResponse) => {
         setPasswordValid(validation.valid);
         setScore(validation.score);
         setSuggestions(validation.suggestions)
       })
       .catch((e: any) => {
         // We just log this, but take no action as nothing can be done anyway.
-        console.error(`Failed to validate password: ${e}`);
+        console.error(`Failed to validate password: ${JSON.stringify(e, null, 2)}`);
       });
   }
+
+  const validatePasswordDebounced = useCallback(
+    _debuounce(validatePassword, DEBOUNCE_TIMEOUT_MS),
+    []
+  );
 
   let passwordIndicatorColor;
   if (score < MIN_VALID_PASSWORD_SCORE) {
@@ -84,7 +81,7 @@ export default function PasswordWithValidationField({
       value={password}
       update={update}
       autoComplete={autoComplete}
-      data_cy={data_cy}
+      data-test={data_test}
     >
       <progress
         className={`progress is-small ${passwordIndicatorColor}`}

@@ -2,8 +2,9 @@ import React, { PropsWithChildren } from "react";
 
 import Breadcrumb, { BreadcrumbItem } from "./Breadcrumb";
 import { DASHBOARD_BREADCRUMB } from "../../features/location/Dashboard";
-import { useGlobalState } from "../../app/App";
 import Footer from "./Footer";
+import {useAppSelector} from "../utils";
+import {selectIsAuthenticated} from "../sessionSlice";
 
 enum Severity {
   Error = 0,
@@ -28,7 +29,7 @@ export default function BasePage({
   discardMessage,
   children,
 }: Props): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   let breadcrumbItems;
   if (isAuthenticated) {
     if (additionalBreadcrumbItems) {

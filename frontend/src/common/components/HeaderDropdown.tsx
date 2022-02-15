@@ -1,12 +1,14 @@
-import React, { Dispatch, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { RouteNames } from "../types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
-import { apiPostRequest } from "../../services/api";
-import { ActionTypes, setSession } from "../../services/store";
-import { EMPTY_SESSION } from "../constants";
+import {RouteNames} from "../types";
+import {useLogoutMutation} from "../../features/auth/authApiSlice";
+import {useAppDispatch} from "../utils";
+import {setSession} from "../sessionSlice";
+import {EMPTY_SESSION} from "../constants";
+
 
 interface Item {
   name: string;
@@ -16,25 +18,24 @@ interface Item {
 
 interface Props {
   items: Item[];
-  dispatchGlobalState: Dispatch<ActionTypes>;
 }
 
-export default function HeaderDropdown({
-  items,
-  dispatchGlobalState,
-}: Props): JSX.Element {
+export default function HeaderDropdown({items,}: Props): JSX.Element {
+  const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
   const [doLogout, setDoLogout] = useState(false);
 
   useEffect(() => {
     if (doLogout) {
       setDoLogout(false);
-
-      apiPostRequest("users/auth/logout")
-        .catch((e: any) => {
-          console.error(`Error during logout: ${e}`);
+      logout().unwrap()
+        .then(() => {
+          //TODO stuff is reloaded on logout ...
+          navigate(RouteNames.Login, {replace: true});
         })
-        .finally(() => {
-          dispatchGlobalState(setSession(EMPTY_SESSION));
+        .catch((e) => {
+          console.error(`Error during logout: ${JSON.stringify(e, null, 2)}`);
         });
     }
   }, [doLogout]);
@@ -65,7 +66,7 @@ export default function HeaderDropdown({
             </div>
           );
         })}
-        <hr className="navbar-divider" />
+        <hr className="navbar-divider"/>
         <div className="navbar-item">
           <Link
             className="has-text-primary"
@@ -81,4 +82,4 @@ export default function HeaderDropdown({
   );
 }
 
-export type { Item as HeaderDropdownItem, Props as HeaderDropdownProps };
+export type {Item as HeaderDropdownItem, Props as HeaderDropdownProps};

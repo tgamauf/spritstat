@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGlobalState } from "../../app/App";
 import CenteredBox from "../../common/components/CenteredBox";
 import PasswordWithValidationField from "./PasswordWithValidationField";
 import BasePage from "../../common/components/BasePage";
-import { apiPostRequest } from "../../services/api";
 import { OurFormElement, RouteNames } from "../../common/types";
+import {useAppSelector} from "../../common/utils";
+import {selectIsAuthenticated} from "../../common/sessionSlice";
+import {useResetPasswordConfirmMutation} from "./authApiSlice";
 
 function ResetPassword(): JSX.Element {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [resetPasswordConfirm, {isLoading}] = useResetPasswordConfirmMutation();
+  const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const { uid, token } = useParams();
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(false);
@@ -27,15 +30,15 @@ function ResetPassword(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
-      const userData = {
-        uid,
-        token,
-        // We have to send the password twice to satisfy dj_rest_auth/allauth
-        new_password1: password,
-        new_password2: password,
-      };
+      if (!uid || !token || !password) {
+        console.error(
+          "Password reset confirm data not available: " +
+          `uid=${uid}, token=${token}, password=${!password ? "INVALID" : "**********"}`
+        );
+        return;
+      }
 
-      apiPostRequest("users/auth/password/reset/confirm", userData)
+      resetPasswordConfirm({uid, token, password}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(
@@ -66,6 +69,14 @@ function ResetPassword(): JSX.Element {
     submitDisabled = false;
   }
 
+  if (buttonRef.current) {
+    if (submitted || isLoading) {
+      buttonRef.current.classList.add("is-loading");
+    } else {
+      buttonRef.current.classList.remove("is-loading");
+    }
+  }
+
   return (
     <div>
       <BasePage
@@ -88,6 +99,7 @@ function ResetPassword(): JSX.Element {
                   type="submit"
                   value="Passwort speichern"
                   disabled={submitDisabled}
+                  ref={buttonRef}
                   data-test="btn-submit"
                 />
               </p>

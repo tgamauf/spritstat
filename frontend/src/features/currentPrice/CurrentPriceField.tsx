@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Location, Station } from "../../common/types";
-import { econtrolAPIGetPrice } from "../../services/econtrolApi";
+import {useGetCurrentPriceQuery} from "./priceApiSlice";
 
 const MAPS_URL = "https://www.google.com/maps/search";
 const NO_CURRENT_PRICE = -1;
@@ -19,8 +19,9 @@ interface Props {
 }
 
 export default function CurrentPriceField({ location }: Props): JSX.Element {
-  const [currentPrice, setCurrentPrice] = useState<number>();
-  const [stations, setStations] = useState<Stations>();
+  const {data, error, isLoading} = useGetCurrentPriceQuery(location);
+  const [currentPrice, setCurrentPrice] = useState<number>(NO_CURRENT_PRICE);
+  const [stations, setStations] = useState<Stations>([]);
 
   useEffect(() => {
     function createMapsURL(station: Station): string {
@@ -32,20 +33,11 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
       return encodeURI(`${MAPS_URL}/${searchQuery}`);
     }
 
-    async function getPrice(location: Location): Promise<void> {
-      const currentPrice = await econtrolAPIGetPrice(location);
-      if (!currentPrice) {
-        console.error(`Could not fetch price: request not ok`);
-        return;
-      }
-      if (!currentPrice.amount) {
-        console.warn(`Could not fetch price: no price found`);
-        setCurrentPrice(NO_CURRENT_PRICE);
-        return;
-      }
+    if (data) {
+      setCurrentPrice(data.amount);
 
       const stations_: Stations = [];
-      for (const s of currentPrice.stations) {
+      for (const s of data.stations) {
         stations_.push({
           name: s.name,
           address: s.address,
@@ -54,26 +46,22 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
           url: createMapsURL(s),
         });
       }
-
-      setCurrentPrice(currentPrice.amount);
       setStations(stations_);
     }
 
-    getPrice(location).catch((e: any) => {
-      console.error(`Could not fetch cheapest price urls: ${e}`);
-    });
-  }, []);
+    if (error) {
+      console.error(`Failed to get current price: ${JSON.stringify(error, null, 2)}`);
+    }
+  }, [isLoading]);
 
   return (
     <div className="tile is-parent">
-      {currentPrice && (
+      {currentPrice ? (
         <div>
           <div className="tile is-child content mb-5">
             <p className="card-key mb-0">Bester Preis</p>
-            {currentPrice !== NO_CURRENT_PRICE ? (
+            {currentPrice !== NO_CURRENT_PRICE && (
               <p className="card-value ml-3">{currentPrice} €</p>
-            ) : (
-              <p className="card-value has-text-danger ml-3">-- €</p>
             )}
           </div>
           {stations && stations.length > 0 && (
@@ -99,6 +87,8 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
             </div>
           )}
         </div>
+      ) : (
+        <div />
       )}
     </div>
   );

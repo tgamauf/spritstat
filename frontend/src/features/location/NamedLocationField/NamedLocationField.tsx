@@ -2,9 +2,9 @@ import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import {Prediction, GoogleMapsAPI, loadGoogleMapsAPI, INVALID_PREDICTION} from "../../services/google";
-import {INVALID_COORDINATES, INVALID_LOCATION} from "../../common/constants";
-import {NamedLocation} from "../../common/types";
+import {Prediction, GoogleMapsAPI, loadGoogleMapsAPI, INVALID_PREDICTION} from "./google";
+import {INVALID_COORDINATES, INVALID_LOCATION} from "../../../common/constants";
+import {NamedLocation} from "../../../common/types";
 
 const MAX_LOCATION_NAME_LENGTH = 200;  // mirrors the length of the model field
 const LOCATION_REQUEST_TIMEOUT_MS = 5000;
@@ -17,7 +17,7 @@ interface Props {
   setErrorMessage: (msg: string) => void;
 }
 
-export default function NamedLocationField({
+export function NamedLocationField({
   setLocation,
   setErrorMessage,
 }: Props): JSX.Element {

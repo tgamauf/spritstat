@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-import { RouteNames } from "../types";
-import { useGlobalState } from "../../app/App";
+import {RouteNames} from "../types";
 import BasePage from "./BasePage";
+import {useAppSelector} from "../utils";
+import {selectIsAuthenticated} from "../sessionSlice";
 
 export default function PrivacyPolicy() {
-  const [{ isAuthenticated }] = useGlobalState();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   let contactFormLink = <span> Kontaktformular </span>;
   if (isAuthenticated) {
     contactFormLink = (

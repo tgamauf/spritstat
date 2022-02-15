@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useRef, useState,} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {
   CategoryScale,
   Chart,
@@ -14,11 +14,10 @@ import {
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
 
-import {DateRange, Location, StationMap} from "../../common/types";
-import {apiGetPrices} from "../../services/api";
+import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
-import moment from "moment-timezone";
-import {useIsMobile} from "../../common/reponsiveness";
+import {useIsMobile} from "../../common/utils";
+import {useLazyGetPriceChartDataQuery, useGetStationsQuery} from "./locationApiSlice";
 
 Chart.register(
   CategoryScale,
@@ -30,7 +29,6 @@ Chart.register(
   zoomPlugin
 );
 
-const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const LINE_CHART_CONTAINER_NAME = "line-chart";
 
 interface ChartDataProps {
@@ -70,7 +68,7 @@ class ChartData {
 type TooltipFooterCallback = (items: TooltipItem<"line">[]) => string | string[];
 
 class ChartConfig implements ChartConfiguration {
-  // If only a few datapoints exist in the dataset show the points itself and
+  // If only a few data points exist in the dataset show the points itself and
   //  not only the line
   private static readonly POINT_SHOW_LIMIT = 20;
 
@@ -134,20 +132,25 @@ class ChartConfig implements ChartConfiguration {
 }
 
 interface Props {
-  id: string;
   location: Location;
-  stations: StationMap;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function LocationPriceLineChart(
-  {
-   id,
-   location,
-   stations,
-   setErrorMessage,
-  }: Props
-) {
+export default function LocationPriceLineChart({location, setErrorMessage}: Props) {
+  const {
+    data: stations,
+    error: stationsError,
+    isError: isStationsError,
+    isFetching: isStationsFetching,
+    isSuccess: isStationsSuccess
+  } = useGetStationsQuery();
+  const [
+    getPriceData,
+    {
+      isFetching: isPriceFetching,
+      isSuccess: isPriceSuccess
+    }
+  ] = useLazyGetPriceChartDataQuery();
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const dateRangeButton1m =
@@ -157,50 +160,36 @@ export default function LocationPriceLineChart(
   const dateRangeButtonAll =
     useRef() as React.MutableRefObject<HTMLButtonElement>;
   const isMobile = useIsMobile();
-  const chartId = `${LINE_CHART_CONTAINER_NAME}-${id}`;
-  const [loading, setLoading] = useState(true);
+  const chartId = `${LINE_CHART_CONTAINER_NAME}-${location.id}`;
   const [selectedDateRange, setSelectedDateRange] = useState(
     DateRange.OneMonth
   );
   const [chartData, setChartData] = useState<ChartData>();
 
   useEffect(() => {
-    setLoading(true);
-
-    apiGetPrices(location.id, selectedDateRange)
-      .then((prices) => {
-        const labels = [];
-        const data = [];
-        const stationsMap = [];
-        for (const i in prices) {
-          const entry = prices[i];
-          labels.push(
-            moment.tz(entry.datetime, TIMEZONE).format("DD.MM.YY HH:mm")
-          );
-          data.push(entry.min_amount);
-          stationsMap.push(entry.stations);
-        }
-        const chartData_ = new ChartData({labels, data, stationsMap});
-
-        setChartData(chartData_);
+    getPriceData({locationId: location.id, dateRange: selectedDateRange}).unwrap()
+      .then((data) => {
+        setChartData(new ChartData(data));
       })
       .catch((e) => {
-        console.error(`Failed to get price data: ${e}`);
+        console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(
           "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
           "probier es nochmal."
         );
-      })
-      .finally(() => {
-        setLoading(false);
       });
+  }, [location, selectedDateRange]);
 
-
-  }, [selectedDateRange]);
+  useEffect(() => {
+    if (isStationsError) {
+      console.error(`Failed to get stations: ${
+        JSON.stringify(stationsError, null, 2)}`);
+    }
+  }, [isStationsError]);
 
   const getStation = useCallback((items: TooltipItem<"line">[]): string[] => {
     // We should always only get a single item as we only have a single graph
-    if (!chartData) {
+    if (!isStationsSuccess || !stations) {
       console.error("Chart data not set");
       return [];
     }
@@ -210,7 +199,7 @@ export default function LocationPriceLineChart(
     }
 
     const dataIndex = items[0].dataIndex;
-    const dataset = chartData.datasets[0];
+    const dataset = items[0].dataset as unknown as { stationsMap: number[][] }
     const stationIds = dataset.stationsMap[dataIndex];
 
     const stationNames = [];
@@ -228,8 +217,9 @@ export default function LocationPriceLineChart(
     }
 
     return stationNames;
-  }, [stations, chartData])
+  }, [isStationsFetching, isStationsSuccess])
 
+  // TODO graph not shown at first and not updated after loading other time range
   const createChart = useCallback(() => {
     if (!chartData) {
       return;
@@ -243,12 +233,16 @@ export default function LocationPriceLineChart(
     const config = new ChartConfig(isMobile, chartData, getStation);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
-  }, [loading, isMobile]);
+  }, [isPriceFetching, isMobile]);
 
   useEffect(() => {
+    if (isPriceFetching || !isPriceSuccess) {
+      return;
+    }
+
     chartRef.current?.destroy();
     createChart();
-  }, [loading, isMobile]);
+  }, [isPriceFetching, isMobile]);
 
   useLayoutEffect(() => {
     if (
@@ -273,49 +267,51 @@ export default function LocationPriceLineChart(
       dateRangeButton1m.current.classList.remove(...tokens);
       dateRangeButton6m.current.classList.remove(...tokens);
     }
-  }, [selectedDateRange, loading]);
+  }, [selectedDateRange, isPriceFetching]); //TODO do I need isPriceFetching here?
 
   let mainComponent;
-  if (loading || !chartData) {
-    mainComponent = <Spinner/>;
-  } else if (chartData.labels.length === 0) {
-    mainComponent = (
-      <span>
-        Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-        vorhanden. In ein paar Stunden gibt es aber schon etwas zu sehen!
-      </span>
-    );
+  if (isPriceSuccess && chartData) {
+    if (chartData.labels.length === 0) {
+      mainComponent = (
+        <span>
+          Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
+          vorhanden. In ein paar Stunden gibt es aber schon etwas zu sehen!
+        </span>
+      );
+    } else {
+      mainComponent = (
+        <div>
+          <div className="content">
+            <canvas id={chartId} ref={canvasRef}/>
+          </div>
+          <div className="buttons has-addons">
+            <button
+              className="button is-small is-selected is-primary"
+              ref={dateRangeButton1m}
+              onClick={() => setSelectedDateRange(DateRange.OneMonth)}
+            >
+              1M
+            </button>
+            <button
+              className="button is-small"
+              ref={dateRangeButton6m}
+              onClick={() => setSelectedDateRange(DateRange.SixMonths)}
+            >
+              6M
+            </button>
+            <button
+              className="button is-small"
+              ref={dateRangeButtonAll}
+              onClick={() => setSelectedDateRange(DateRange.All)}
+            >
+              Alles
+            </button>
+          </div>
+        </div>
+      );
+    }
   } else {
-    mainComponent = (
-      <div>
-        <div className="content">
-          <canvas id={chartId} ref={canvasRef}/>
-        </div>
-        <div className="buttons has-addons">
-          <button
-            className="button is-small is-selected is-primary"
-            ref={dateRangeButton1m}
-            onClick={() => setSelectedDateRange(DateRange.OneMonth)}
-          >
-            1M
-          </button>
-          <button
-            className="button is-small"
-            ref={dateRangeButton6m}
-            onClick={() => setSelectedDateRange(DateRange.SixMonths)}
-          >
-            6M
-          </button>
-          <button
-            className="button is-small"
-            ref={dateRangeButtonAll}
-            onClick={() => setSelectedDateRange(DateRange.All)}
-          >
-            Alles
-          </button>
-        </div>
-      </div>
-    );
+    mainComponent = <Spinner />;
   }
 
   return mainComponent;

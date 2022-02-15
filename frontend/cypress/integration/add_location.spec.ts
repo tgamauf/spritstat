@@ -1,6 +1,6 @@
 import {FuelType, LocationType, RouteNames} from "../../src/common/types";
 import {RegionType} from "../../src/services/econtrolApi";
-import * as google from "../../src/services/google";
+import * as google from "../../src/features/location/NamedLocationField/google";
 
 
 class MockLatLng {

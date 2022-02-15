@@ -1,20 +1,15 @@
-import React, { Dispatch, useEffect, useReducer, useState } from "react";
-import { Outlet, useOutletContext } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Outlet} from "react-router-dom";
 import moment from "moment-timezone";
 
 import Header from "../common/components/Header";
-import { HeaderDropdownItem } from "../common/components/HeaderDropdown";
-import { apiGetSessionRequest } from "../services/api";
-import { ActionTypes, reducer, setSession } from "../services/store";
-import { EMPTY_SESSION } from "../common/constants";
-import { GlobalState, RouteNames } from "../common/types";
-import CenteredBox from "../common/components/CenteredBox";
+import {HeaderDropdownItem} from "../common/components/HeaderDropdown";
+import {RouteNames} from "../common/types";
+import {useGetSessionQuery} from "../common/apis/spritstatApi";
+import {useAppDispatch} from "../common/utils";
+import {setSession} from "../common/sessionSlice";
+import {EMPTY_SESSION} from "../common/constants";
 
-const initialGlobalState: GlobalState = {
-  isAuthenticated: false,
-  hasBetaAccess: false,
-  email: "",
-};
 
 const headerDropdownItems: HeaderDropdownItem[] = [
   {
@@ -29,55 +24,32 @@ const headerDropdownItems: HeaderDropdownItem[] = [
   },
 ];
 
-type GlobalStateContext = [GlobalState, Dispatch<ActionTypes>];
-
-function useGlobalState() {
-  return useOutletContext<GlobalStateContext>();
-}
-
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialGlobalState);
-  const [loading, setLoading] = useState(true);
+  const {data: session, error, isError, isFetching, isSuccess} = useGetSessionQuery();
+  const dispatch = useAppDispatch();
 
   // Set the locale for moment timestamps to german
   useEffect(() => {
     moment.locale("de-at");
   }, []);
 
-  // Check if we are authenticated on mount only, afterwards it"s the
-  //  responsibility of the login/logout methods
   useEffect(() => {
-    apiGetSessionRequest()
-      .then((session) => {
-        dispatch(setSession(session));
-      })
-      .catch((e) => {
-        // Assume user isn"t logged in
-        dispatch(setSession(EMPTY_SESSION));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    if (isError) {
+      console.error(`Get session failed: ${JSON.stringify(error, null, 2)}`);
+      dispatch(setSession(EMPTY_SESSION));
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess && session) {
+      dispatch(setSession(session));
+    }
+  }, [isFetching]);
 
   return (
     <div className="App">
-      <Header
-        isAuthenticated={state.isAuthenticated}
-        dispatchGlobalState={dispatch}
-        dropdownItems={headerDropdownItems}
-      />
-      <div>
-        {loading ? (
-          <CenteredBox loading={loading} />
-        ) : (
-          <Outlet context={[state, dispatch]} />
-        )}
-      </div>
+      <Header dropdownItems={headerDropdownItems} />
+      <Outlet />
     </div>
   );
 }
-
-export type { GlobalStateContext };
-
-export { useGlobalState };

@@ -1,14 +1,14 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGasPump } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faGasPump} from "@fortawesome/free-solid-svg-icons";
 
-import { FuelTypeLabels, Location, LocationType } from "../../common/types";
+import {Location, LocationType} from "../../common/types";
 
 interface Props {
   location: Location;
 }
 
-export default function LocationField({ location }: Props): JSX.Element {
+export default function LocationField({location}: Props): JSX.Element {
   return (
     <div>
       <div>
@@ -20,7 +20,7 @@ export default function LocationField({ location }: Props): JSX.Element {
       <div className="mt-3">
         <FontAwesomeIcon className="card-key" icon={faGasPump} />
         <span className="card-value ml-2">
-          {FuelTypeLabels.get(location.fuel_type)}
+          {location.fuelType}
         </span>
       </div>
     </div>

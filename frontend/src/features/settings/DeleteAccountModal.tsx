@@ -1,28 +1,22 @@
-import React, { Dispatch, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-import { apiDeleteRequest } from "../../services/api";
-import { ActionTypes, setSession } from "../../services/store";
-import { EMPTY_SESSION } from "../../common/constants";
-import { RouteNames } from "../../common/types";
+import {RouteNames} from "../../common/types";
+import {useDeleteAccountMutation} from "./settingsApiSlice";
 
 interface Props {
-  dispatchGlobalState: Dispatch<ActionTypes>;
   show: boolean;
   close: () => void;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function DeleteAccountModal({
-  dispatchGlobalState,
-  show,
-  close,
-  setErrorMessage,
-}: Props): JSX.Element {
+export default function DeleteAccountModal(
+  {show, close, setErrorMessage}: Props
+): JSX.Element {
+  const [deleteAccount, {isLoading}] = useDeleteAccountMutation();
   const modalRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const deleteButtonRef = useRef() as React.MutableRefObject<HTMLButtonElement>;
   const [doDelete, setDoDelete] = useState(false);
-  const [deleteInProgress, setDeleteInProgress] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,25 +25,19 @@ export default function DeleteAccountModal({
     }
 
     setDoDelete(false);
-    setDeleteInProgress(true);
 
-    apiDeleteRequest("users/account/delete")
+    deleteAccount().unwrap()
       .then((success) => {
-        if (!success) {
+        if (success) {
+          navigate(RouteNames.AccountDeleted, {replace: true});
+        } else {
           console.error(`Failed to delete account: request failed`);
           setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
-        } else {
-          navigate(RouteNames.AccountDeleted);
-          dispatchGlobalState(setSession(EMPTY_SESSION));
         }
       })
       .catch((e) => {
-        console.error(`Failed to delete account: ${e}`);
+        console.error(`Failed to delete account: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
-      })
-      .finally(() => {
-        setDeleteInProgress(false);
-        close();
       });
   }, [doDelete]);
 
@@ -62,12 +50,10 @@ export default function DeleteAccountModal({
   }
 
   if (deleteButtonRef.current) {
-    if (deleteInProgress) {
+    if (isLoading) {
       deleteButtonRef.current.classList.add("is-loading");
-      deleteButtonRef.current.disabled = true;
     } else {
       deleteButtonRef.current.classList.remove("is-loading");
-      deleteButtonRef.current.disabled = false;
     }
   }
 
@@ -81,8 +67,9 @@ export default function DeleteAccountModal({
           </p>
           <button
             className="button is-danger"
-            ref={deleteButtonRef}
             onClick={() => setDoDelete(true)}
+            disabled={isLoading}
+            ref={deleteButtonRef}
             data-test="btn-delete"
           >
             Löschen

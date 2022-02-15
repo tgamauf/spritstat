@@ -1,23 +1,21 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import CurrentPriceField from "../currentPrice/CurrentPriceField";
 import LocationField from "./LocationField";
 import LocationPriceLineChart from "./LocationPriceLineChart";
-import {Location, StationMap} from "../../common/types";
+import {Location} from "../../common/types";
 
 interface Props {
   location: Location;
-  stations: StationMap;
-  setLocationToDelete: (id: number) => void;
+  deleteLocation: () => void;
   setErrorMessage: (msg: string) => void;
 }
 
 export default function LocationCard({
   location,
-  stations,
-  setLocationToDelete,
+  deleteLocation,
   setErrorMessage,
 }: Props): JSX.Element {
   return (
@@ -35,19 +33,14 @@ export default function LocationCard({
           className="card-header-icon
                 is-align-items-start
                 has-text-primary"
-          onClick={() => setLocationToDelete(location.id)}
+          onClick={() => deleteLocation()}
           data-test="btn-open-delete"
         >
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </header>
       <div className="card-content">
-        <LocationPriceLineChart
-          id={String(location.id)}
-          location={location}
-          stations={stations}
-          setErrorMessage={setErrorMessage}
-        />
+        <LocationPriceLineChart location={location} setErrorMessage={setErrorMessage} />
       </div>
     </div>
   );
