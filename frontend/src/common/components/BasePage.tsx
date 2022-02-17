@@ -1,16 +1,33 @@
-import React, { PropsWithChildren } from "react";
+import React, {PropsWithChildren} from "react";
 
-import Breadcrumb, { BreadcrumbItem } from "./Breadcrumb";
-import { DASHBOARD_BREADCRUMB } from "../../features/location/Dashboard";
+import Breadcrumb, {BreadcrumbItem} from "./Breadcrumb";
+import {DASHBOARD_BREADCRUMB} from "../../features/location/Dashboard";
 import Footer from "./Footer";
 import {useAppSelector} from "../utils";
-import {selectIsAuthenticated} from "../sessionSlice";
+import {HeaderDropdownItem} from "./HeaderDropdown";
+import {RouteNames} from "../types";
+import Header from "./Header";
+import {selectIsAuthenticated} from "../../features/auth/accountSlice";
+
 
 enum Severity {
   Error = 0,
   Warning,
   Info,
 }
+
+const headerDropdownItems: HeaderDropdownItem[] = [
+  {
+    name: "Einstellungen",
+    route: RouteNames.Settings,
+    "data-test": "link-settings"
+ },
+  {
+    name: "Kontakt",
+    route: RouteNames.Contact,
+    "data-test": "link-contact"
+ },
+];
 
 interface OwnProps {
   breadcrumbItems?: BreadcrumbItem[];
@@ -34,38 +51,39 @@ export default function BasePage({
   if (isAuthenticated) {
     if (additionalBreadcrumbItems) {
       breadcrumbItems = [DASHBOARD_BREADCRUMB, ...additionalBreadcrumbItems];
-    } else {
+   } else {
       breadcrumbItems = [DASHBOARD_BREADCRUMB];
-    }
-  }
+   }
+ }
 
   let severityModifier;
   if (typeof severity === "undefined" || severity === Severity.Error) {
     severityModifier = "is-danger";
-  } else if (severity === Severity.Warning) {
+ } else if (severity === Severity.Warning) {
     severityModifier = "is-warning";
-  } else {
+ } else {
     severityModifier = "is-info";
-  }
+ }
 
   return (
-    <section className="hero is-fullheight-with-navbar">
-      {breadcrumbItems && <Breadcrumb items={breadcrumbItems} />}
-      {active && discardMessage && (
-        <div
-          className={`notification ${severityModifier}`}
-          data-test="notification"
-        >
-          <button className="delete" onClick={() => discardMessage()} />
-          {message}
-        </div>
-      )}
-      <div className="hero-body">{children}</div>
-      <Footer />
-    </section>
+    <div>
+      <Header dropdownItems={headerDropdownItems} />
+      <section className="hero is-fullheight-with-navbar">
+        {breadcrumbItems && <Breadcrumb items={breadcrumbItems} />}
+        {active && discardMessage && (
+          <div
+            className={`notification ${severityModifier}`}
+            data-test="notification"
+          >
+            <button className="delete" onClick={() => discardMessage()} />
+            {message}
+          </div>
+        )}
+        <div className="hero-body">{children}</div>
+        <Footer />
+      </section>
+    </div>
   );
 }
 
-export type { Props as BasePage };
-
-export { Severity as BasePageSeverity };
+export {Severity as BasePageSeverity};

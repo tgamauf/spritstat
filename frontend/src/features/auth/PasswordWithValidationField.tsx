@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import _debuounce from "lodash.debounce";
 
-import PasswordField, { PasswordFieldProps } from "./PasswordField";
+import PasswordField, {PasswordFieldProps} from "./PasswordField";
 import {PasswordValidationResponse, useValidatePasswordMutation} from "./authApiSlice";
 
 const DEBOUNCE_TIMEOUT_MS = 200;
@@ -16,7 +16,7 @@ interface Props extends PasswordFieldProps {
   setPasswordValid: (passwordValid: boolean) => void;
   email?: string;
   autoComplete?: string;
-  data_test?: string;
+  dataTest?: string;
 }
 
 export default function PasswordWithValidationField({
@@ -27,7 +27,7 @@ export default function PasswordWithValidationField({
   setPasswordValid,
   email = "",
   autoComplete = "new-password",
-  data_test = "field-new-password"
+  dataTest = "field-new-password"
 }: Props): JSX.Element {
   const [apiValidatePassword] = useValidatePasswordMutation();
   const [score, setScore] = useState(0);
@@ -38,12 +38,12 @@ export default function PasswordWithValidationField({
     let email_;
     if (email && EMAIL_REGEX.test(email)) {
       email_ = email;
-    }
+   }
 
     if (password.length > 0) {
       validatePasswordDebounced(password, email_);
-    }
-  }, [password, email]);
+   }
+ }, [password, email]);
 
   function validatePassword(password: string, email?: string) {
     apiValidatePassword({password, email}).unwrap()
@@ -51,12 +51,12 @@ export default function PasswordWithValidationField({
         setPasswordValid(validation.valid);
         setScore(validation.score);
         setSuggestions(validation.suggestions)
-      })
+     })
       .catch((e: any) => {
         // We just log this, but take no action as nothing can be done anyway.
         console.error(`Failed to validate password: ${JSON.stringify(e, null, 2)}`);
-      });
-  }
+     });
+ }
 
   const validatePasswordDebounced = useCallback(
     _debuounce(validatePassword, DEBOUNCE_TIMEOUT_MS),
@@ -66,14 +66,14 @@ export default function PasswordWithValidationField({
   let passwordIndicatorColor;
   if (score < MIN_VALID_PASSWORD_SCORE) {
     passwordIndicatorColor = "is-danger";
-  } else if (
+ } else if (
     score >= MIN_VALID_PASSWORD_SCORE &&
     score < GOOD_PASSWORD_SCORE
   ) {
     passwordIndicatorColor = "is-warning";
-  } else {
+ } else {
     passwordIndicatorColor = "is-success";
-  }
+ }
 
   return (
     <PasswordField
@@ -81,7 +81,7 @@ export default function PasswordWithValidationField({
       value={password}
       update={update}
       autoComplete={autoComplete}
-      data-test={data_test}
+      dataTest={dataTest}
     >
       <progress
         className={`progress is-small ${passwordIndicatorColor}`}
@@ -93,6 +93,4 @@ export default function PasswordWithValidationField({
       {children}
     </PasswordField>
   );
-}
-
-export type { Props as PasswordFieldWithValidationProps };
+};

@@ -11,7 +11,7 @@ interface Region {
     type: string;
     name: string;
     postalCodes: string[];
-  }[];
+ }[];
   postalCodes: string[];
 }
 
@@ -48,11 +48,11 @@ const extendedApi = eControlApi.injectEndpoints({
           postalCodeToState: new Map(),
           postalCodeToDistrict: new Map(),
           states: new Map(),
-        };
+       };
         for (const state of response) {
           state.postalCodes.map((postalCode) => {
             regionMap.postalCodeToState.set(postalCode, state.code);
-          });
+         });
 
           const districts: DistrictMap = new Map();
           for (const district of state.subRegions) {
@@ -62,27 +62,27 @@ const extendedApi = eControlApi.injectEndpoints({
             if ("postalCodes" in district) {
               district.postalCodes.map((postalCode) => {
                 regionMap.postalCodeToDistrict.set(postalCode, district.code);
-              });
-            }
+             });
+           }
 
             districts.set(district.code, <District>{
               type: regionTypeReverseMap.get(district.type),
               name: district.name,
-            });
-          }
+           });
+         }
 
           regionMap.states.set(state.code, <State>{
             type: regionTypeReverseMap.get(state.type),
             name: state.name,
             districts,
-          });
-        }
+         });
+       }
 
         return regionMap;
-      }
-    }),
-  })
+     }
+   }),
+ })
 })
 
-export type {RegionMap, RegionType};
-export const { useGetRegionsQuery } = extendedApi;
+export type {RegionMap};
+export const {useGetRegionsQuery} = extendedApi;

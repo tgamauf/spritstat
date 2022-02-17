@@ -44,6 +44,4 @@ export default function LocationCard({
       </div>
     </div>
   );
-}
-
-export type { Props as LocationCardProps };
+};

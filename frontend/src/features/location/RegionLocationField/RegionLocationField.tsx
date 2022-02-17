@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 
-import {RegionType, useGetRegionsQuery} from "./regionsApiSlice";
+import {RegionType} from "../../../common/types";
+import {useGetRegionsQuery} from "./regionsApiSlice";
 
 const POSTAL_CODE_LENGTH = 4;
 
@@ -25,8 +26,8 @@ export default function RegionLocationField({
         "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
         "neu und versuche es nochmal."
       );
-    }
-  }, [error]);
+   }
+ }, [error]);
 
   useEffect(() => {
     if (
@@ -35,7 +36,7 @@ export default function RegionLocationField({
       postalCode.length < POSTAL_CODE_LENGTH
     ) {
       return;
-    }
+   }
 
     // Reset any error if the postal code has been changed.
     setErrorMessage("");
@@ -49,20 +50,20 @@ export default function RegionLocationField({
     ) {
       setSelectedState(stateCode);
       setSelectedDistrict(districtCode);
-    } else {
+   } else {
       setSelectedState(null);
       setSelectedDistrict(null);
 
       setErrorMessage(
         "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
       );
-    }
-  }, [postalCode, isLoading]);
+   }
+ }, [postalCode, isLoading]);
 
   useEffect(() => {
     if (!regionMap) {
       return;
-    }
+   }
 
     // We always use the more specific region, so if the district code exists
     //  we will use it as region. If not we will use the state.
@@ -75,28 +76,28 @@ export default function RegionLocationField({
             code: selectedDistrict,
             type: district.type,
             name: district.name
-          });
-        }
-      }
-    } else if (selectedState !== null) {
+         });
+       }
+     }
+   } else if (selectedState !== null) {
       const state = regionMap.states.get(selectedState);
       if (typeof state !== "undefined") {
         setRegion({
           code: selectedState,
           type: state.type,
           name: state.name
-        });
-      }
-    }
-  }, [isLoading, selectedState, selectedDistrict]);
+       });
+     }
+   }
+ }, [isLoading, selectedState, selectedDistrict]);
 
-  let states: { code: number; name: string }[] = [];
-  let districts: { code: number; name: string }[] = [];
+  let states: {code: number; name: string}[] = [];
+  let districts: {code: number; name: string}[] = [];
   if (regionMap) {
     states = Array.from(regionMap.states, ([code, state]) => ({
       code,
       name: state.name,
-    }));
+   }));
 
     if (selectedState !== null) {
       const state = regionMap.states.get(selectedState);
@@ -104,10 +105,10 @@ export default function RegionLocationField({
         districts = Array.from(state.districts, ([code, district]) => ({
           code,
           name: district.name,
-        }));
-      }
-    }
-  }
+       }));
+     }
+   }
+ }
 
   const dropdownTitle =
     "Wähle ein Bundesland und optional einen Bezirk aus für den " +
@@ -135,7 +136,7 @@ export default function RegionLocationField({
                         {entry.name}
                       </option>
                     );
-                  })}
+                 })}
                 </select>
               </div>
             </div>
@@ -160,7 +161,7 @@ export default function RegionLocationField({
                         {entry.name}
                       </option>
                     );
-                  })}
+                 })}
                 </select>
               </div>
             </div>
@@ -187,6 +188,4 @@ export default function RegionLocationField({
       </div>
     </div>
   );
-}
-
-export type { Props as RegionLocationFieldProps };
+};

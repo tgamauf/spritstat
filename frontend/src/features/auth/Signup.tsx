@@ -6,12 +6,9 @@ import EmailField from "./EmailField";
 import BasePage from "../../common/components/BasePage";
 import PasswordWithValidationField from "./PasswordWithValidationField";
 import {OurFormElement, RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
-import {selectIsAuthenticated} from "../../common/sessionSlice";
 import {useSignupMutation} from "./authApiSlice";
 
 function Signup(): JSX.Element {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [signup, {isLoading}] = useSignupMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [email, setEmail] = useState("");
@@ -22,12 +19,6 @@ function Signup(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(RouteNames.Dashboard, { replace: true });
-    }
-  });
-
-  useEffect(() => {
     if (submitted) {
       setSubmitted(false);
 
@@ -36,43 +27,43 @@ function Signup(): JSX.Element {
           `Signup failed: email=${email}, password=${!password ? "INVALID" : "**********"}`
         );
         return;
-      }
+     }
 
       signup({email, password}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(`${RouteNames.VerifyEmailSent}/${email}`);
-          } else {
+         } else {
             console.error(`Failed to register: request status not ok`);
             setError(true);
-          }
-        })
+         }
+       })
         .catch((e: any) => {
-          console.error(`Failed to register: ${e}`);
+          console.error(`Failed to register: ${JSON.stringify(e, null, 2)}`);
           setError(true);
-        });
-    }
-  }, [submitted]);
+       });
+   }
+ }, [submitted]);
 
   function onSubmit(e: FormEvent<OurFormElement>) {
     e.preventDefault();
 
     setSubmitted(true);
     setError(false);
-  }
+ }
 
   let submitDisabled = true;
   if (email.length >= 3 && password.length > 1 && passwordValid) {
     submitDisabled = false;
-  }
+ }
 
   if (buttonRef.current) {
     if (submitted || isLoading) {
       buttonRef.current.classList.add("is-loading");
-    } else {
+   } else {
       buttonRef.current.classList.remove("is-loading");
-    }
-  }
+   }
+ }
 
   return (
     <div>

@@ -1,11 +1,5 @@
 import {NamedLocation, Station} from "./types";
-import {SessionData} from "./apis/spritstatApi";
 
-const EMPTY_SESSION: SessionData = {
-  isAuthenticated: false,
-  hasBetaAccess: false,
-  email: "",
-};
 const MAX_SCREENSIZE_MOBILE = 768;
 
 const INVALID_COORDINATES = {
@@ -27,7 +21,6 @@ const INVALID_STATION: Station = {
 }
 
 export {
-  EMPTY_SESSION,
   INVALID_COORDINATES,
   INVALID_LOCATION,
   INVALID_STATION,

@@ -22,7 +22,7 @@ export default function DeleteAccountModal(
   useEffect(() => {
     if (!doDelete) {
       return;
-    }
+   }
 
     setDoDelete(false);
 
@@ -30,32 +30,32 @@ export default function DeleteAccountModal(
       .then((success) => {
         if (success) {
           navigate(RouteNames.AccountDeleted, {replace: true});
-        } else {
+       } else {
           console.error(`Failed to delete account: request failed`);
           setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
-        }
-      })
+       }
+     })
       .catch((e) => {
         console.error(`Failed to delete account: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
-      });
-  }, [doDelete]);
+     });
+ }, [doDelete]);
 
   if (modalRef.current) {
     if (show) {
       modalRef.current.classList.add("is-active");
-    } else {
+   } else {
       modalRef.current.classList.remove("is-active");
-    }
-  }
+   }
+ }
 
   if (deleteButtonRef.current) {
     if (isLoading) {
       deleteButtonRef.current.classList.add("is-loading");
-    } else {
+   } else {
       deleteButtonRef.current.classList.remove("is-loading");
-    }
-  }
+   }
+ }
 
   return (
     <div className="modal" ref={modalRef} data-test="modal-delete-account">
@@ -84,6 +84,4 @@ export default function DeleteAccountModal(
       />
     </div>
   );
-}
-
-export type { Props as DeleteAccountModalProps };
+};

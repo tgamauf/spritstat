@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { faCog } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {faCog} from "@fortawesome/free-solid-svg-icons";
 
 import DeleteAccountModal from "./DeleteAccountModal";
 import BasePage from "../../common/components/BasePage";
-import { RouteNames } from "../../common/types";
+import {RouteNames} from "../../common/types";
 import {useAppSelector} from "../../common/utils";
-import {selectEmail, selectIsAuthenticated} from "../../common/sessionSlice";
+import {selectEmail} from "../auth/accountSlice";
 
 const BREADCRUMB = {
   name: "Einstellungen",
@@ -15,17 +15,9 @@ const BREADCRUMB = {
 };
 
 export default function Settings(): JSX.Element {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const email = useAppSelector(selectEmail);
   const [errorMessage, setErrorMessage] = useState("");
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(RouteNames.Login, { replace: true });
-    }
-  });
 
   return (
     <div>
@@ -95,4 +87,4 @@ export default function Settings(): JSX.Element {
   );
 }
 
-export { BREADCRUMB as SETTINGS_BREADCRUMB };
+export {BREADCRUMB as SETTINGS_BREADCRUMB};

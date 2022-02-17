@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, {PropsWithChildren} from "react";
 
 import Spinner from "./Spinner";
 
@@ -16,6 +16,4 @@ export default function CenteredBox({
       {loading ? <Spinner /> : <div className="box">{children}</div>}
     </div>
   );
-}
-
-export type { Props as CenteredBoxProps };
+};

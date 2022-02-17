@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
 
 import NoLocation from "./NoLocation";
 import BasePage from "../../common/components/BasePage";
 import LocationList from "./LocationList";
 import {RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
-import {selectIsAuthenticated} from "../../common/sessionSlice";
 import {useGetLocationsQuery} from "./locationApiSlice";
 import LoadingError from "../../common/components/LoadingError";
 
@@ -19,44 +17,45 @@ const BREADCRUMB = {
 };
 
 export default function Dashboard() {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  const {data: locations, error, isError, isFetching, isSuccess} = useGetLocationsQuery();
+  // The query is skipped if not authenticated
+  const {
+    data: locations,
+    error,
+    isError,
+    isFetching,
+    isSuccess,
+    refetch
+ } = useGetLocationsQuery();
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(RouteNames.Login, { replace: true });
-    }
-  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isError) {
       console.error(
         `Failed to get locations: ${JSON.stringify(error, null, 2)}`
       );
-    }
-  }, [isError]);
+   }
+ }, [isError]);
 
   let mainComponent;
   if (isSuccess && locations) {
     if (locations.length === 0) {
       mainComponent = <NoLocation />;
-    } else {
+   } else {
       mainComponent = <LocationList setErrorMessage={setErrorMessage} />;
-    }
-  } else {
-    // TODO: need to check if this is actually reloading the locations,
-    //  otherwise we need to use refetch of useGetLocationsQuery
+   }
+ } else {
     mainComponent = (
       <LoadingError
         loading={isFetching}
         message="Deine Orte konnten nicht geladen werden."
-        linkTo={RouteNames.Dashboard}
-        linkName="Neu Laden"
+        children={
+          <Link className="has-text-primary" to="" onClick={() => refetch()}>
+            Neu laden
+          </Link>
+       }
       />
     );
-  }
+ }
 
   return (
     <BasePage
@@ -69,4 +68,4 @@ export default function Dashboard() {
   );
 }
 
-export { BREADCRUMB as DASHBOARD_BREADCRUMB };
+export {BREADCRUMB as DASHBOARD_BREADCRUMB};

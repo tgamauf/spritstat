@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
 
 interface Item {
   name: string;
@@ -13,7 +13,7 @@ interface Props {
   items?: Item[];
 }
 
-export default function Breadcrumb({ items }: Props) {
+export default function Breadcrumb({items}: Props) {
   return (
     <div className="block ml-5 mt-1">
       {items && (
@@ -28,7 +28,7 @@ export default function Breadcrumb({ items }: Props) {
                   </Link>
                 </li>
               );
-            })}
+           })}
           </ul>
         </nav>
       )}
@@ -36,4 +36,4 @@ export default function Breadcrumb({ items }: Props) {
   );
 }
 
-export type { Item as BreadcrumbItem, Props as BreadcrumProps };
+export type {Item as BreadcrumbItem};

@@ -13,7 +13,7 @@ describe("Validate the dashboard", () => {
         statusCode: 200,
         body: [],
         delay: 100
-      }
+     }
     ).as("locationRequest");
     cy.visit(RouteNames.Dashboard);
 
@@ -22,11 +22,11 @@ describe("Validate the dashboard", () => {
       .should("exist")
       .within(() => {
         cy.contains("Startseite");
-      });
+     });
     cy.getBySel("loading").should("exist");
     cy.getBySel("no-location").should("not.exist");
     cy.getBySel("location-list").should("not.exist");
-    cy.getBySel("notification").should("not.exist");
+    cy.getBySel("block-error").should("not.exist");
 
     cy.wait("@locationRequest");
     cy.hasBaseStructure(true);
@@ -35,7 +35,7 @@ describe("Validate the dashboard", () => {
     cy.getBySel("loading").should("not.exist");
     cy.getBySel("no-location").should("exist");
     cy.getBySel("location-list").should("not.exist");
-    cy.getBySel("notification").should("not.exist");
+    cy.getBySel("block-error").should("not.exist");
 
     // Test location exist
     cy.intercept(
@@ -55,8 +55,8 @@ describe("Validate the dashboard", () => {
           region_type: "",
           region_name: "",
           fuel_type: "DIE",
-        }]
-      }
+       }]
+     }
     ).as("locationRequest");
     cy.intercept(
       "GET",
@@ -64,7 +64,7 @@ describe("Validate the dashboard", () => {
       {
         statusCode: 200,
         body: []
-      }
+     }
     ).as("priceRequest");
 
     cy.visit(RouteNames.Dashboard);
@@ -72,7 +72,7 @@ describe("Validate the dashboard", () => {
     cy.getBySel("loading").should("not.exist");
     cy.getBySel("no-location").should("not.exist");
     cy.getBySel("location-list").should("exist");
-    cy.getBySel("notification").should("not.exist");
+    cy.getBySel("block-error").should("not.exist");
 
     // Test location request timeout
     cy.intercept(
@@ -81,19 +81,17 @@ describe("Validate the dashboard", () => {
       (req) => {
         req.reply({
           forceNetworkError: true
-        })
-      }
+       })
+     }
     ).as("locationRequest");
 
     cy.visit(RouteNames.Dashboard);
     cy.wait("@locationRequest");
-    cy.getBySel("loading").should("exist");
+    cy.getBySel("loading").should("not.exist");
     cy.getBySel("no-location").should("not.exist");
     cy.getBySel("location-list").should("not.exist");
-    cy.getBySel("notification")
-      .should("exist")
-      .should("have.class", "is-danger");
-  });
+    cy.getBySel("block-error").should("exist");
+ });
 });
 
 describe("Dashboard process", () => {
@@ -108,7 +106,7 @@ describe("Dashboard process", () => {
     ]);
     cy.mockEcontrolPriceAPI();
     cy.login("test2@test.at", "test");
-  })
+ })
 
   it("validate data loaded", () => {
     cy.intercept("GET", "/api/v1/sprit/").as("locationRequest");
@@ -119,18 +117,18 @@ describe("Dashboard process", () => {
     cy.get("@cardToDelete")
       .within(() => {
         cy.getBySel("btn-open-delete").click();
-      })
+     })
     cy.getBySel("modal-delete-location").should("be.visible");
     cy.getBySel("btn-delete").click();
 
     cy.wait(["@deleteRequest", "@locationRequest"]);
     cy.get("@cardToDelete").should("not.exist");
-  });
+ });
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
 
     cy.visit(RouteNames.Dashboard);
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 });

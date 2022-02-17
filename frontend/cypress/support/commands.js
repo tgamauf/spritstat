@@ -1,5 +1,4 @@
 const path = require("path");
-const {RegionType} = require("../../src/services/econtrolApi");
 
 Cypress.Commands.add(
   "resetDB",
@@ -87,79 +86,6 @@ Cypress.Commands.add(
         body: { isAuthenticated: false }
       }
     ).as("isNotAuthenticated");
-  }
-);
-
-Cypress.Commands.add(
-  "mockLogin",
-  (email = "test@test.at") => {
-    // Set the CSRF token, then intercept the call to the session endpoint
-    cy.setCookie("csrftoken", "sometoken");
-    cy.intercept(
-      "POST",
-      "/api/v1/users/account/session/",
-      {
-        statusCode: 200,
-        body: {isAuthenticated: true, email}
-      }
-    ).as("isAuthenticated");
-  }
-);
-
-Cypress.Commands.add(
-  "mockEcontrolRegionAPI",
-  (responseStatus = 200, responseBody = null) => {
-    let body = responseBody ? responseBody : [
-      {
-        code: 1,
-        type: RegionType.State,
-        name: "State 1",
-        subRegions: [
-          {
-          code: 101,
-          type: RegionType.District,
-          name: "District 101",
-          postalCodes: [ "1001", "1002" ]
-          },
-          {
-          code: 102,
-          type: RegionType.District,
-          name: "District 102",
-          postalCodes: [ "1021", "1022" ]
-          }
-        ],
-        postalCodes: [
-         "1001", "1002", "1021", "1022"
-        ]
-      },
-      {
-        code: 2,
-        type: RegionType.State,
-        name: "State 2",
-        subRegions: [
-          {
-          code: 201,
-          type: RegionType.District,
-          name: "District 201",
-          postalCodes: [ "2001", "2002" ]
-          }
-        ],
-        postalCodes: [
-         "2001", "2002"
-        ]
-      }
-    ];
-    cy.intercept(
-      {
-        method: "GET",
-        hostname: "api.e-control.at",
-        pathname: "/sprit/1.0/regions"
-      },
-      {
-        statusCode: responseStatus,
-        body
-      }
-    ).as("econtrolRegionRequest");
   }
 );
 

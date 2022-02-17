@@ -6,8 +6,7 @@ import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 import {RouteNames} from "../types";
 import {useLogoutMutation} from "../../features/auth/authApiSlice";
 import {useAppDispatch} from "../utils";
-import {setSession} from "../sessionSlice";
-import {EMPTY_SESSION} from "../constants";
+import {INVALID_ACCOUNT, setAccount} from "../../features/auth/accountSlice";
 
 
 interface Item {
@@ -29,16 +28,18 @@ export default function HeaderDropdown({items,}: Props): JSX.Element {
   useEffect(() => {
     if (doLogout) {
       setDoLogout(false);
+
+      // Clear session to prevent any page from fetching data during logout
+      dispatch(setAccount(INVALID_ACCOUNT));
       logout().unwrap()
         .then(() => {
-          //TODO stuff is reloaded on logout ...
           navigate(RouteNames.Login, {replace: true});
-        })
+       })
         .catch((e) => {
           console.error(`Error during logout: ${JSON.stringify(e, null, 2)}`);
-        });
-    }
-  }, [doLogout]);
+       });
+   }
+ }, [doLogout]);
 
   return (
     <div
@@ -65,7 +66,7 @@ export default function HeaderDropdown({items,}: Props): JSX.Element {
               </Link>
             </div>
           );
-        })}
+       })}
         <hr className="navbar-divider"/>
         <div className="navbar-item">
           <Link

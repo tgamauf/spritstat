@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { RouteNames } from "../types";
+import {Link} from "react-router-dom";
+import {RouteNames} from "../types";
 
 export default function HeaderLoginButton(): JSX.Element {
   return (

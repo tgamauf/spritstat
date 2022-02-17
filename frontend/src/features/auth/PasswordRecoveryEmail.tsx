@@ -5,12 +5,9 @@ import CenteredBox from "../../common/components/CenteredBox";
 import EmailField from "./EmailField";
 import BasePage from "../../common/components/BasePage";
 import {OurFormElement, RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
-import {selectIsAuthenticated} from "../../common/sessionSlice";
 import {useResetPasswordMutation} from "./authApiSlice";
 
 function PasswordRecoveryEmail(): JSX.Element {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [resetPassword, {isLoading}] = useResetPasswordMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [email, setEmail] = useState("");
@@ -19,50 +16,44 @@ function PasswordRecoveryEmail(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(RouteNames.Dashboard, { replace: true });
-    }
-  });
-
-  useEffect(() => {
     if (submitted) {
       setSubmitted(false);
 
       resetPassword(email).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
-            navigate(`${RouteNames.Login}?passwordRecovered=true`);
-          } else {
+            navigate(`${RouteNames.Login}?passwordRecovered=true`, {replace: true});
+         } else {
             console.error(`Failed to reset password: request status not ok`);
             setError(true);
-          }
-        })
+         }
+       })
         .catch((e: any) => {
-          console.error(`Failed to reset password: ${e}`);
+          console.error(`Failed to reset password: ${JSON.stringify(e, null, 2)}`);
           setError(true);
-        });
-    }
-  }, [submitted]);
+       });
+   }
+ }, [submitted]);
 
   function onSubmit(e: React.FormEvent<OurFormElement>) {
     e.preventDefault();
 
     setSubmitted(true);
     setError(false);
-  }
+ }
 
   let submitDisabled = true;
   if (email.length >= 3) {
     submitDisabled = false;
-  }
+ }
 
   if (buttonRef.current) {
     if (submitted || isLoading) {
       buttonRef.current.classList.add("is-loading");
-    } else {
+   } else {
       buttonRef.current.classList.remove("is-loading");
-    }
-  }
+   }
+ }
 
   return (
     <div>

@@ -4,7 +4,7 @@ interface Props {
   onClick: () => void;
 }
 
-export default function HeaderBurger({ onClick }: Props): JSX.Element {
+export default function HeaderBurger({onClick}: Props): JSX.Element {
   return (
     <a
       role="button"
@@ -20,6 +20,4 @@ export default function HeaderBurger({ onClick }: Props): JSX.Element {
       <span aria-hidden="true" />
     </a>
   );
-}
-
-export type { Props as HeaderBurgerProps };
+};

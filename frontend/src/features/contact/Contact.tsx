@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 import ContactForm from "./ContactForm";
 import BasePage from "../../common/components/BasePage";
 import {RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
-import {selectIsAuthenticated} from "../../common/sessionSlice";
 
 const BREADCRUMB = {
   name: "Kontakt",
@@ -15,20 +13,13 @@ const BREADCRUMB = {
 };
 
 export default function Contact(): JSX.Element {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(RouteNames.Login);
-    }
-  });
-
   function notifySubmitted() {
     setErrorMessage("");
-    navigate(RouteNames.Dashboard);
-  }
+    navigate(-1);
+ }
 
   return (
     <BasePage

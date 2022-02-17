@@ -10,6 +10,33 @@ from . import views
 #  for the inconsistencies in naming
 urlpatterns = [
     # URLs that do not require a session or valid token
+    path(
+        "auth/register/",
+        dj_rest_auth_registration_views.RegisterView.as_view(),
+        name="account_register",
+    ),
+    # This doesn't do anything as we redirect in the frontend, but is required
+    #  by allauth, so we provide an empty template
+    path(
+        "auth/confirm-email-sent/",
+        TemplateView.as_view(),
+        name="account_email_verification_sent",
+    ),
+    re_path(
+        r"^auth/confirm-email/(?P<key>[-:\w]+)/$",
+        views.dummy_confirm_email_view,
+        name="account_confirm_email",
+    ),
+    path(
+        "auth/verify-email/",
+        dj_rest_auth_registration_views.VerifyEmailView.as_view(),
+        name="account_verify_email",
+    ),
+    path(
+        "auth/resend-email/",
+        dj_rest_auth_registration_views.ResendEmailVerificationView.as_view(),
+        name="account_resend_email",
+    ),
     path("auth/login/", views.CustomLoginView.as_view(), name="account_login"),
     path(
         "auth/password/validate/",
@@ -43,33 +70,6 @@ urlpatterns = [
         "auth/password/change/",
         dj_rest_auth_views.PasswordChangeView.as_view(),
         name="account_password_change",
-    ),
-    path(
-        "auth/register/",
-        dj_rest_auth_registration_views.RegisterView.as_view(),
-        name="account_register",
-    ),
-    # This doesn't do anything as we redirect in the frontend, but is required
-    #  by allauth so we provide an empty template
-    path(
-        "auth/confirm-email-sent/",
-        TemplateView.as_view(),
-        name="account_email_verification_sent",
-    ),
-    re_path(
-        r"^auth/confirm-email/(?P<key>[-:\w]+)/$",
-        views.dummy_confirm_email_view,
-        name="account_confirm_email",
-    ),
-    path(
-        "auth/verify-email/",
-        dj_rest_auth_registration_views.VerifyEmailView.as_view(),
-        name="account_verify_email",
-    ),
-    path(
-        "auth/resend-email/",
-        dj_rest_auth_registration_views.ResendEmailVerificationView.as_view(),
-        name="account_resend_email",
     ),
     path(
         "account/",

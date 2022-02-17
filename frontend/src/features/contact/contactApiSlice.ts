@@ -17,18 +17,18 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          },
+         },
           body: {
             contact_form_id: formId,
             name,
             subject,
             message
-          }
-        };
-      },
+         }
+       };
+     },
       transformResponse: () => true,
-    })
-  })
+   })
+ })
 })
 
 export const {useSendContactFormMutation} = extendedApi;

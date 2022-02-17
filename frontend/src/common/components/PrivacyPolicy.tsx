@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {RouteNames} from "../types";
 import BasePage from "./BasePage";
 import {useAppSelector} from "../utils";
-import {selectIsAuthenticated} from "../sessionSlice";
+import {selectIsAuthenticated} from "../../features/auth/accountSlice";
 
 export default function PrivacyPolicy() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
         {contactFormLink}
       </Link>
     );
-  }
+ }
   return (
     <BasePage>
       <div className="columns is-centered mx-auto">

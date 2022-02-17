@@ -70,14 +70,14 @@ const extendedApi = spritstatApi.injectEndpoints({
     addLocation: builder.mutation<boolean, LocationData>({
       query: ({
         type, name, latitude, longitude, regionCode, regionType, fuelType
-      }) => {
+     }) => {
         return {
           url: "sprit/",
           method: "POST",
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          },
+         },
           body: {
             type: locationTypeMap.get(type as LocationType),
             name,
@@ -86,11 +86,11 @@ const extendedApi = spritstatApi.injectEndpoints({
             region_code: regionCode,
             region_type: regionTypeMap.get(regionType as RegionType),
             fuel_type: fuelTypeMap.get(fuelType as FuelType)
-          }
-        };
-      },
+         }
+       };
+     },
       invalidatesTags: ["Locations"]
-    }),
+   }),
     deleteLocation: builder.mutation<boolean, number>({
       query: (id) => {
         return {
@@ -99,14 +99,14 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          }
-        };
-      },
+         }
+       };
+     },
       transformResponse: () => true,
       invalidatesTags: (result, error, arg) => {
         return ["Locations"]
-      }
-    }),
+     }
+   }),
     getLocations: builder.query<Location[], void>({
       query: () => {
         return {
@@ -114,9 +114,9 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          }
-        };
-      },
+         }
+       };
+     },
       transformResponse: (data: LocationResults) => {
         return data.map((loc) => {
           return {
@@ -128,11 +128,11 @@ const extendedApi = spritstatApi.injectEndpoints({
             regionCode: loc.region_code,
             regionType: regionTypeReverseMap.get(loc.region_type as string),
             fuelType: fuelTypeReverseMap.get(loc.fuel_type) as FuelType
-          };
-        });
-      },
+         };
+       });
+     },
       providesTags: ["Locations"]
-    }),
+   }),
     getStations: builder.query<StationMap, void>({
       query: () => {
         return {
@@ -140,30 +140,30 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          }
-        };
-      },
+         }
+       };
+     },
       transformResponse: (data: Station[]) => {
         return data.reduce(function(map: StationMap, item) {
             map[item.id] = item;
             return map;
-          }, {})
-      }
-    }),
+         }, {})
+     }
+   }),
     getPriceChartData: builder.query<PriceChartData, PriceChartRequestData>({
       query: ({locationId, dateRange}) => {
         let url = `sprit/${locationId}/prices/`;
         if (dateRange !== DateRange.All) {
           url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
-        }
+       }
         return {
           url,
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          }
-        };
-      },
+         }
+       };
+     },
       transformResponse: (data: Price[]) => {
         const chartData: PriceChartData = {labels: [], data: [], stationsMap: []};
         for (const i in data) {
@@ -173,11 +173,11 @@ const extendedApi = spritstatApi.injectEndpoints({
           );
           chartData.data.push(entry.min_amount);
           chartData.stationsMap.push(entry.stations);
-        }
+       }
         return chartData;
-      }
-    }),
-  })
+     }
+   }),
+ })
 })
 
 export const {

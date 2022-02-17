@@ -8,8 +8,6 @@ import PasswordWithValidationField from "./PasswordWithValidationField";
 import BasePage from "../../common/components/BasePage";
 import {OurFormElement, RouteNames} from "../../common/types";
 import {SETTINGS_BREADCRUMB} from "../settings/Settings";
-import {useAppSelector} from "../../common/utils";
-import {selectIsAuthenticated} from "../../common/sessionSlice";
 import {useChangePasswordMutation} from "./authApiSlice";
 
 const BREADCRUMB = {
@@ -19,7 +17,6 @@ const BREADCRUMB = {
 };
 
 function ChangePassword(): JSX.Element {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [changePassword, {isLoading}] = useChangePasswordMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [oldPassword, setOldPassword] = useState("");
@@ -30,12 +27,6 @@ function ChangePassword(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(RouteNames.Login, { replace: true });
-    }
-  }, [isAuthenticated]);
-
-  useEffect(() => {
     if (submitted) {
       setSubmitted(false);
 
@@ -43,37 +34,37 @@ function ChangePassword(): JSX.Element {
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(-1);
-          } else {
+         } else {
             console.error("Failed to reset password: request status not ok");
             setError(true);
-          }
-        })
+         }
+       })
         .catch((e: any) => {
-          console.error(`Failed to reset password: ${e}`);
+          console.error(`Failed to reset password: ${JSON.stringify(e, null, 2)}`);
           setError(true);
-        });
-    }
-  }, [submitted]);
+       });
+   }
+ }, [submitted]);
 
   function onSubmit(e: React.FormEvent<OurFormElement>) {
     e.preventDefault();
 
     setSubmitted(true);
     setError(false);
-  }
+ }
 
   let submitDisabled = true;
   if (oldPassword.length > 1 && newPassword.length > 1 && newPasswordValid) {
     submitDisabled = false;
-  }
+ }
 
   if (buttonRef.current) {
     if (submitted || isLoading) {
       buttonRef.current.classList.add("is-loading");
-    } else {
+   } else {
       buttonRef.current.classList.remove("is-loading");
-    }
-  }
+   }
+ }
 
   return (
     <div>

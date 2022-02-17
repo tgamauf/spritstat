@@ -1,6 +1,6 @@
 import React, {FormEvent, useEffect, useRef, useState} from "react";
 
-import { OurFormElement } from "../../common/types";
+import {OurFormElement} from "../../common/types";
 import {useSendContactFormMutation} from "./contactApiSlice";
 
 // This has to match the message length defined in the send view
@@ -36,32 +36,32 @@ export default function ContactForm({
         .then((isSuccess) => {
           if (isSuccess) {
             notifySubmitted();
-          } else {
+         } else {
             console.error(`Failed to send message: request status not ok`);
             setErrorMessage(ERROR_MESSAGE);
-          }
-        })
+         }
+       })
         .catch((e: any) => {
           console.error(`Failed to send message: ${JSON.stringify(e, null, 2)}`);
           setErrorMessage(ERROR_MESSAGE);
-        });
-    }
-  }, [submitted]);
+       });
+   }
+ }, [submitted]);
 
   function onSubmit(e: FormEvent<OurFormElement>) {
     e.preventDefault();
 
     setSubmitted(true);
     setErrorMessage("");
-  }
+ }
 
   if (buttonRef.current) {
     if (submitted || isLoading) {
       buttonRef.current.classList.add("is-loading");
-    } else {
+   } else {
       buttonRef.current.classList.remove("is-loading");
-    }
-  }
+   }
+ }
 
   const submitDisabled = message.length <= 0;
 
@@ -98,7 +98,7 @@ export default function ContactForm({
                 </option>
                 {subjects.map((text, index) => {
                   return <option key={index}>{text}</option>;
-                })}
+               })}
               </select>
             </div>
           ) : (
@@ -148,6 +148,4 @@ export default function ContactForm({
       </form>
     </div>
   );
-}
-
-export type { Props as ContactFormProps };
+};

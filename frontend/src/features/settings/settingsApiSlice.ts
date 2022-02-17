@@ -11,13 +11,13 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-          }
-        };
-      },
+         }
+       };
+     },
       transformResponse: () => true,
       invalidatesTags: ["Session"]
-    })
-  })
+   })
+ })
 })
 
 export const {useDeleteAccountMutation} = extendedApi;

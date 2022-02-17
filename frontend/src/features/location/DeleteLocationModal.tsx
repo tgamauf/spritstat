@@ -25,10 +25,10 @@ export default function DeleteLocationModal({
   useEffect(() => {
     if (locationId === NO_LOCATION_ID) {
       return;
-    }
+   }
     if (!doDelete) {
       return;
-    }
+   }
 
     setDoDelete(false);
 
@@ -37,38 +37,40 @@ export default function DeleteLocationModal({
         if (!success) {
           console.error(`Failed to delete location ${locationId}: request failed`);
           setErrorMessage("Dein Ort konnte nicht gelöscht werden.");
-        }
-      })
+       }
+     })
       .catch((e) => {
-        console.error(`Failed to delete location ${locationId}: ${e}`);
+        console.error(
+          `Failed to delete location ${locationId}: ${JSON.stringify(e, null, 2)}`
+        );
         setErrorMessage("Dein Ort konnte nicht gelöscht werden.");
-      })
+     })
       .finally(() => {
         notifyDeleted();
-      });
-  }, [doDelete]);
+     });
+ }, [doDelete]);
 
   useLayoutEffect(() => {
     if (modalRef.current) {
       if (locationId !== NO_LOCATION_ID) {
         modalRef.current.classList.add("is-active");
-      } else {
+     } else {
         modalRef.current.classList.remove("is-active");
-      }
-    }
-  }, [locationId]);
+     }
+   }
+ }, [locationId]);
 
   useLayoutEffect(() => {
     if (deleteButtonRef.current) {
       if (isDeleting) {
         deleteButtonRef.current.classList.add("is-loading");
         deleteButtonRef.current.disabled = true;
-      } else {
+     } else {
         deleteButtonRef.current.classList.remove("is-loading");
         deleteButtonRef.current.disabled = false;
-      }
-    }
-  }, [isDeleting]);
+     }
+   }
+ }, [isDeleting]);
 
   return (
     <div className="modal" ref={modalRef} data-test="modal-delete-location">
@@ -95,8 +97,6 @@ export default function DeleteLocationModal({
       />
     </div>
   );
-}
+};
 
-export type { Props as DeleteLocationModalProps };
-
-export { NO_LOCATION_ID };
+export {NO_LOCATION_ID};

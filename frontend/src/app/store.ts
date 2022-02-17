@@ -2,19 +2,19 @@ import {configureStore} from "@reduxjs/toolkit";
 
 import {eControlApi} from "../common/apis/eControl";
 import {spritstatApi} from "../common/apis/spritstatApi";
-import {sessionSlice} from "../common/sessionSlice";
+import {accountSlice} from "../features/auth/accountSlice";
 
 
 const store = configureStore({
   reducer: {
     [eControlApi.reducerPath]: eControlApi.reducer,
     [spritstatApi.reducerPath]: spritstatApi.reducer,
-    session: sessionSlice.reducer,
-  },
+    account: accountSlice.reducer,
+ },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
-    }).concat(
+   }).concat(
       eControlApi.middleware,
       spritstatApi.middleware
     ),

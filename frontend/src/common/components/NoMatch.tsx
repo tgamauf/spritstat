@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import CenteredBox from "./CenteredBox";
-import { RouteNames } from "../types";
+import {RouteNames} from "../types";
 import BasePage from "./BasePage";
 
 export default function NoMatch() {

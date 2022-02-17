@@ -32,27 +32,20 @@ const spritstatApi = createApi({
         //  the token is set or removed automatically on login/logout.
         updateCsrfToken();
 
-        let headers;
-        if (window.csrfToken) {
-          headers = {
-            ...DEFAULT_HEADERS,
-            "X-CSRFToken": window.csrfToken
-          }
-        } else {
-          headers = DEFAULT_HEADERS;
-        }
         return {
           url: "users/account/session/",
           method: "POST",
-          headers
-        };
-      },
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+         }
+       };
+     },
       providesTags: ["Session"]
-    }),
-  }),
+   }),
+ }),
 });
 
 const {useGetSessionQuery} = spritstatApi;
 
-export type {SessionData};
 export {DEFAULT_HEADERS, spritstatApi, updateCsrfToken, useGetSessionQuery};

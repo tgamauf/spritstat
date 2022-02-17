@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Location, Station } from "../../common/types";
+import {Location, Station} from "../../common/types";
 import {useGetCurrentPriceQuery} from "./priceApiSlice";
 
 const MAPS_URL = "https://www.google.com/maps/search";
@@ -18,7 +18,7 @@ interface Props {
   location: Location;
 }
 
-export default function CurrentPriceField({ location }: Props): JSX.Element {
+export default function CurrentPriceField({location}: Props): JSX.Element {
   const {data, error, isLoading} = useGetCurrentPriceQuery(location);
   const [currentPrice, setCurrentPrice] = useState<number>(NO_CURRENT_PRICE);
   const [stations, setStations] = useState<Stations>([]);
@@ -31,7 +31,7 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
       const searchQuery = `${station.name} ${station.address} ${station.postalCode} ${station.city}`;
 
       return encodeURI(`${MAPS_URL}/${searchQuery}`);
-    }
+   }
 
     if (data) {
       setCurrentPrice(data.amount);
@@ -44,15 +44,15 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
           postalCode: s.postalCode,
           city: s.city,
           url: createMapsURL(s),
-        });
-      }
+       });
+     }
       setStations(stations_);
-    }
+   }
 
     if (error) {
       console.error(`Failed to get current price: ${JSON.stringify(error, null, 2)}`);
-    }
-  }, [isLoading]);
+   }
+ }, [isLoading]);
 
   return (
     <div className="tile is-parent">
@@ -82,7 +82,7 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
                       </a>
                     </li>
                   );
-                })}
+               })}
               </ul>
             </div>
           )}
@@ -92,6 +92,4 @@ export default function CurrentPriceField({ location }: Props): JSX.Element {
       )}
     </div>
   );
-}
-
-export type { Props as CurrentPriceFieldProps };
+};

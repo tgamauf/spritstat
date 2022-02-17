@@ -37,19 +37,13 @@ const extendedApi = spritstatApi.injectEndpoints({
   endpoints: (builder) => ({
     validatePassword: builder.mutation<PasswordValidationResponse, ValidatePasswordData>({
       query: ({password, email}) => {
-        let headers;
-        if (window.csrfToken) {
-          headers = {
-            ...DEFAULT_HEADERS,
-            "X-CSRFToken": window.csrfToken
-          }
-        } else {
-          headers = DEFAULT_HEADERS;
-        }
         return {
           url: "users/auth/password/validate/",
           method: "POST",
-          headers,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          },
           body: {password, email}
         };
       }
@@ -79,7 +73,7 @@ const extendedApi = spritstatApi.injectEndpoints({
         };
       },
       transformResponse: () => true,
-      invalidatesTags: ["Locations", "Prices", "Session", "Stations"]
+      invalidatesTags: ["Locations", "Session"]
     }),
     logout: builder.mutation<boolean, void>({
       query: () => {
@@ -103,20 +97,20 @@ const extendedApi = spritstatApi.injectEndpoints({
           body: {key}
         };
       },
-      transformResponse: (response: {detail?: string}) => {
+      transformResponse: (response: { detail?: string }) => {
         return response.detail !== "undefined";
       },
     }),
     resendEmail: builder.mutation<boolean, string>({
       query: (email) => {
         return {
-          url: "users/auth/password/resend-email/",
+          url: "users/auth/resend-email/",
           method: "POST",
           headers: DEFAULT_HEADERS,
           body: {email}
         };
       },
-      transformResponse: (response: {detail?: string}) => {
+      transformResponse: (response: { detail?: string }) => {
         return response.detail !== "undefined";
       },
     }),
@@ -129,7 +123,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           body: {email}
         };
       },
-      transformResponse: (response: {detail?: string}) => {
+      transformResponse: (response: { detail?: string }) => {
         return response.detail !== "undefined";
       },
     }),
@@ -149,7 +143,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (response: {detail?: string}) => {
+      transformResponse: (response: { detail?: string }) => {
         return response.detail !== "undefined";
       },
     }),
@@ -171,7 +165,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (response: {detail?: string}) => {
+      transformResponse: (response: { detail?: string }) => {
         return response.detail !== "undefined";
       },
     }),

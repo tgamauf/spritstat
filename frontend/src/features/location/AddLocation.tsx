@@ -8,8 +8,6 @@ import RegionLocationField from "./RegionLocationField/RegionLocationField";
 import {RegionType} from "../../common/types";
 import {FuelType, LocationType, OurFormElement, RouteNames} from "../../common/types";
 import {INVALID_LOCATION} from "../../common/constants";
-import {useAppSelector} from "../../common/utils";
-import {selectIsAuthenticated} from "../../common/sessionSlice";
 import {useAddLocationMutation} from "./locationApiSlice";
 
 const BREADCRUMB = {
@@ -31,7 +29,6 @@ interface Region {
 }
 
 export default function AddLocation(): JSX.Element {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [addLocation, {isLoading}] = useAddLocationMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,12 +38,6 @@ export default function AddLocation(): JSX.Element {
   const [region, setRegion] = useState(INVALID_REGION);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(RouteNames.Login);
-    }
-  });
 
   useEffect(() => {
     if (submitted) {
@@ -61,11 +52,11 @@ export default function AddLocation(): JSX.Element {
         name = namedLocation.name;
         latitude = namedLocation.coords.latitude;
         longitude = namedLocation.coords.longitude;
-      } else {
+     } else {
         name = region.name;
         regionCode = region.code;
         regionType = region.type
-      }
+     }
       addLocation({
         type: locationType,
         name,
@@ -74,21 +65,21 @@ export default function AddLocation(): JSX.Element {
         regionCode,
         regionType,
         fuelType,
-      }).unwrap()
+     }).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
             navigate(RouteNames.Dashboard);
-          } else {
+         } else {
             console.error(`Failed to add location: request status not ok`);
             setErrorMessage("Der Ort konnte nicht angelegt werden.");
-          }
-        })
+         }
+       })
         .catch((e: any) => {
           console.error(`Failed to add location: ${JSON.stringify(e, null, 2)}`);
           setErrorMessage("Der Ort konnte nicht angelegt werden");
-        });
-    }
-  }, [submitted]);
+       });
+   }
+ }, [submitted]);
 
   function changeLocationType(event: React.ChangeEvent<HTMLSelectElement>) {
     event.preventDefault();
@@ -99,23 +90,23 @@ export default function AddLocation(): JSX.Element {
       setNamedLocation(INVALID_LOCATION);
       setRegion(INVALID_REGION);
       setLocationType(type);
-    }
-  }
+   }
+ }
 
   function onSubmit(e: React.FormEvent<OurFormElement>) {
     e.preventDefault();
 
     setSubmitted(true);
     setErrorMessage("");
-  }
+ }
 
   if (buttonRef.current) {
     if (submitted || isLoading) {
       buttonRef.current.classList.add("is-loading");
-    } else {
+   } else {
       buttonRef.current.classList.remove("is-loading");
-    }
-  }
+   }
+ }
 
   let mainComponent;
   if (locationType === LocationType.Named) {
@@ -125,14 +116,14 @@ export default function AddLocation(): JSX.Element {
         setErrorMessage={setErrorMessage}
       />
     );
-  } else {
+ } else {
     mainComponent = (
       <RegionLocationField
         setRegion={setRegion}
         setErrorMessage={setErrorMessage}
       />
     );
-  }
+ }
 
   return (
     <div>
@@ -200,7 +191,7 @@ export default function AddLocation(): JSX.Element {
                     disabled={
                       (namedLocation === INVALID_LOCATION)
                       && (region === INVALID_REGION)
-                    }
+                   }
                     ref={buttonRef}
                     data-test="btn-submit"
                   />
@@ -214,4 +205,4 @@ export default function AddLocation(): JSX.Element {
   );
 }
 
-export { BREADCRUMB as ADD_OCATION_BREADCRUMB };
+export {BREADCRUMB as ADD_OCATION_BREADCRUMB};

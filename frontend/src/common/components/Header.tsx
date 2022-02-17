@@ -7,7 +7,7 @@ import HeaderBurger from "./HeaderBurger";
 import HeaderDropdown, {HeaderDropdownItem} from "./HeaderDropdown";
 import HeaderLoginButton from "./HeaderLoginButton";
 import {useAppSelector} from "../utils";
-import {selectIsAuthenticated} from "../sessionSlice";
+import {selectIsAuthenticated} from "../../features/auth/accountSlice";
 
 interface Props {
   dropdownItems: HeaderDropdownItem[];
@@ -21,14 +21,14 @@ export default function Header({dropdownItems}: Props): JSX.Element {
   useEffect(() => {
     if (!menuRef.current) {
       return;
-    }
+   }
 
     if (menuActive) {
       menuRef.current.classList.add("is-active");
-    } else {
+   } else {
       menuRef.current.classList.remove("is-active");
-    }
-  }, [menuActive]);
+   }
+ }, [menuActive]);
 
   return (
     <nav

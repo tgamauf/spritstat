@@ -10,7 +10,7 @@ describe("Validate initial page load", () => {
     cy.visit(RouteNames.Index);
     cy.wait("@isAuthenticated");
     cy.url().should("include", RouteNames.Dashboard);
-  });
+ });
 
   it("validate content of homepage if logged out", () => {
     cy.visit(RouteNames.Home);
@@ -31,8 +31,8 @@ describe("Validate initial page load", () => {
       .click()
       .then(() => {
         cy.url().should("include", RouteNames.Signup);
-      })
-  });
+     })
+ });
 
   it("validate content of homepage if logged in", () => {
     cy.mockLoggedIn();
@@ -41,14 +41,14 @@ describe("Validate initial page load", () => {
     cy.hasBaseStructure(true);
     cy.getBySel("content-text").should("have.length.at.least", 2);
     cy.getBySel("content-img").should("exist");
-  });
+ });
 
   it("validate login button", () => {
     cy.visit(RouteNames.Home);
 
     cy.getBySel("header-btn-login").click();
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 
   it("validate header dropdown buttons", () => {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
@@ -70,17 +70,19 @@ describe("Validate initial page load", () => {
     cy.getBySel("header-dropdown").realHover();
     cy.getBySel("link-logout").click();
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 
   it("validate footer links", () => {
     cy.visit(RouteNames.Home);
 
-    cy.getBySel("link-imprint").click();
+    // TODO: "force: true" is a workaround till
+    //  https://github.com/cypress-io/cypress/issues/7306 is fixed
+    cy.getBySel("link-imprint").click({force: true});
     cy.url().should("include", RouteNames.Imprint);
     cy.go("back");
 
     cy.getBySel("link-privacy").click();
     cy.url().should("include", RouteNames.PrivacyPolicy);
     cy.go("back");
-  });
+ });
 });

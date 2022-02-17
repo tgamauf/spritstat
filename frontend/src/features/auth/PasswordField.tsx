@@ -1,13 +1,13 @@
-import React, { PropsWithChildren, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash, faLock } from "@fortawesome/free-solid-svg-icons";
+import React, {PropsWithChildren, useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEye, faEyeSlash, faLock} from "@fortawesome/free-solid-svg-icons";
 
 interface OwnProps {
   label?: string;
   value: string;
   update: (value: string) => void;
   autoComplete?: string;
-  data_test?: string;
+  dataTest?: string;
 }
 type Props = PropsWithChildren<OwnProps>;
 
@@ -16,7 +16,7 @@ export default function PasswordField({
   value,
   update,
   autoComplete = "current-password",
-  data_test = "field-current-password",
+  dataTest = "field-current-password",
   children,
 }: Props): JSX.Element {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -26,19 +26,19 @@ export default function PasswordField({
   if (passwordVisible) {
     passwordFieldType = "text";
     passwordVisibleIcon = faEyeSlash;
-  } else {
+ } else {
     passwordFieldType = "password";
     passwordVisibleIcon = faEye;
-  }
+ }
 
   let showButtonTitle;
   if (passwordVisible) {
     showButtonTitle = "Klicke hier um dein Passwort zu verstecken.";
-  } else {
+ } else {
     showButtonTitle = "Klicke hier um dein Passwort anzuzeigen.";
-  }
+ }
   return (
-    <div className="field" data-test={data_test}>
+    <div className="field" data-test={dataTest}>
       <div className="field has-addons mb-0">
         <p className="control has-icons-left is-expanded">
           <input
@@ -72,4 +72,4 @@ export default function PasswordField({
   );
 }
 
-export type { Props as PasswordFieldProps };
+export type {Props as PasswordFieldProps};

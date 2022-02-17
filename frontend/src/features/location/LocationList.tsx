@@ -23,11 +23,11 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
 
   function closeDeleteLocationModal() {
     setLocationToDelete(NO_LOCATION_ID);
-  }
+ }
 
   function notifyLocationDeleted() {
     setLocationToDelete(NO_LOCATION_ID);
-  }
+ }
 
   return (
     <div data-test="location-list">
@@ -69,7 +69,7 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
               setErrorMessage={setErrorMessageCallback}
             />
           );
-        })}
+       })}
       </div>
     </div>
   );

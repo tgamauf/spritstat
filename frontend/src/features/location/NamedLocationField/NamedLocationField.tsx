@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMapMarkerAlt, faSearch} from "@fortawesome/free-solid-svg-icons";
 
 import {Prediction, GoogleMapsAPI, loadGoogleMapsAPI, INVALID_PREDICTION} from "./google";
 import {INVALID_COORDINATES, INVALID_LOCATION} from "../../../common/constants";
@@ -34,60 +34,60 @@ export function NamedLocationField({
     if(event.key === "Escape") {
       // Clear predictions if the escape key is pressed
       setPredictions(NO_PREDICTIONS);
-    }
-  }, []);
+   }
+ }, []);
 
   useEffect(() => {
     if (!googleMapsAPI) {
       loadGoogleMapsAPI().then((api) => setGoogleMapsAPI(api));
-    }
-  }, [])
+   }
+ }, [])
 
   useEffect(() => {
     document.addEventListener("keydown", escapePressed, false);
 
     return () => {
       document.removeEventListener("keydown", escapePressed, false);
-    };
-  }, []);
+   };
+ }, []);
 
   useEffect(() => {
     if (searchText === INVALID_SEARCH_TEXT) {
       return;
-    }
+   }
 
     googleMapsAPI?.getPredictionsFromText(searchText)
       .then((predictions) => {
         setPredictions(predictions);
-      });
-  }, [searchText]);
+     });
+ }, [searchText]);
 
   useEffect(() => {
     if (searchCoordinates === INVALID_COORDINATES) {
       return;
-    }
+   }
 
     googleMapsAPI?.getPredictionsFromCoordinates(searchCoordinates)
       .then((predictions) => {
         setPredictions(predictions);
-      });
-  }, [searchCoordinates]);
+     });
+ }, [searchCoordinates]);
 
   useEffect(() => {
     if (selectedPrediction === INVALID_PREDICTION) {
       return;
-    }
+   }
 
     googleMapsAPI?.selectPrediction(selectedPrediction)
       .then((location) => {
         if (location === INVALID_LOCATION) {
           setErrorMessage("Der Ort konnte nicht gefunden werden.");
           return;
-        }
+       }
 
         setLocation(location);
-      });
-  }, [selectedPrediction]);
+     });
+ }, [selectedPrediction]);
 
   useLayoutEffect(() => {
     // One of the location sources has changed, so let's delete the previous
@@ -99,14 +99,14 @@ export function NamedLocationField({
         `${searchCoordinates.latitude}, ${searchCoordinates.longitude}`
       );
       return;
-    } else if (selectedPrediction !== INVALID_PREDICTION) {
+   } else if (selectedPrediction !== INVALID_PREDICTION) {
       setDisplayText(selectedPrediction.description);
       return;
-    } else {
+   } else {
       // If none of the others is valid we set the search text.
       setDisplayText(searchText);
-    }
-  }, [searchText, searchCoordinates, selectedPrediction]);
+   }
+ }, [searchText, searchCoordinates, selectedPrediction]);
 
   function changeSearchText(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -117,7 +117,7 @@ export function NamedLocationField({
     setSearchCoordinates(INVALID_COORDINATES);
     setSelectedPrediction(INVALID_PREDICTION);
     setPredictions(NO_PREDICTIONS);
-  }
+ }
 
   function changeSelectedPrediction(prediction: Prediction) {
     setSelectedPrediction(prediction);
@@ -125,7 +125,7 @@ export function NamedLocationField({
     setSearchText(INVALID_SEARCH_TEXT);
     setSearchCoordinates(INVALID_COORDINATES);
     setPredictions(NO_PREDICTIONS);
-  }
+ }
 
   function setPosition(position: GeolocationPosition) {
     setSearchCoordinates(position.coords);
@@ -133,16 +133,16 @@ export function NamedLocationField({
     setSearchText(INVALID_SEARCH_TEXT);
     setSelectedPrediction(INVALID_PREDICTION);
     setPredictions(NO_PREDICTIONS);
-  }
+ }
 
   function setPositionError(error: GeolocationPositionError) {
     console.error(`Failed to get position: ${error.message}`);
     if (error.code === GeolocationPositionError.PERMISSION_DENIED) {
       setErrorMessage("Die Seite hat nicht das Erlaubnis den Ort abzurufen.");
-    } else {
+   } else {
       setErrorMessage("Der Ort ist aktuell nicht verfügbar.");
-    }
-  }
+   }
+ }
 
   function requestLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -151,25 +151,25 @@ export function NamedLocationField({
       {
         enableHighAccuracy: true,
         timeout: LOCATION_REQUEST_TIMEOUT_MS,
-      }
+     }
     );
-  }
+ }
 
   if (dropdownRef.current) {
     if (predictions.length > 0) {
       dropdownRef.current.classList.add("is-active");
-    } else {
+   } else {
       dropdownRef.current.classList.remove("is-active");
-    }
-  }
+   }
+ }
 
   if (buttonRef.current) {
     if (navigator.geolocation) {
       buttonRef.current.classList.remove("is-static");
-    } else {
+   } else {
       buttonRef.current.classList.add("is-static");
-    }
-  }
+   }
+ }
 
   return (
     <div
@@ -211,8 +211,8 @@ export function NamedLocationField({
                     {item.description}
                   </a>
                 )
-              })
-            }
+             })
+           }
           </div>
         </div>
       </div>
@@ -232,6 +232,4 @@ export function NamedLocationField({
       </div>
     </div>
   );
-}
-
-export type { Props as NamedLocationFieldProps };
+};

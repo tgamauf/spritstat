@@ -14,7 +14,7 @@ export default function LocationField({location}: Props): JSX.Element {
       <div>
         <p className="card-key mb-0">{
           location.type === LocationType.Named ? "Name" : "Region"
-        }</p>
+       }</p>
         <p className="card-value">{location.name}</p>
       </div>
       <div className="mt-3">
@@ -25,6 +25,4 @@ export default function LocationField({location}: Props): JSX.Element {
       </div>
     </div>
   );
-}
-
-export type { Props as LocationFieldProps };
+};

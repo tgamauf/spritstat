@@ -1,4 +1,3 @@
-import {NamedLocationField, NamedLocationFieldProps} from "./NamedLocationField";
+import {NamedLocationField} from "./NamedLocationField";
 
-export type {NamedLocationFieldProps};
 export default NamedLocationField;
