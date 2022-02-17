@@ -63,7 +63,7 @@ const extendedApi = spritstatApi.injectEndpoints({
         };
       }
     }),
-    login: builder.mutation<boolean, LoginData>({
+    login: builder.mutation<void, LoginData>({
       query: ({email, password, remember}) => {
         return {
           url: "users/auth/login/",
@@ -72,8 +72,12 @@ const extendedApi = spritstatApi.injectEndpoints({
           body: {email, password, remember}
         };
       },
-      transformResponse: () => true,
-      invalidatesTags: ["Locations", "Session"]
+      invalidatesTags: (result, error, arg) => {
+        // Invalidate the tags only if login succeeded. This prevents reloading
+        //  of the session, which in turn would prevent a login error message
+        //  from being shown
+        return error ? [] : ["Locations", "Session"]
+      }
     }),
     logout: builder.mutation<boolean, void>({
       query: () => {

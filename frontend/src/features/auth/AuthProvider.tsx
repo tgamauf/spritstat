@@ -52,7 +52,7 @@ function AuthProvider({children}: Props): JSX.Element {
     <div>
       {isSessionValid ? (children) : (<LoadingPage/>)}
     </div>
-  )
+  );
 }
 
 function RequireAuth({children}: {children: JSX.Element}): JSX.Element {

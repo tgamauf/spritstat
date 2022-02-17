@@ -96,7 +96,7 @@ describe("Login process", () => {
 
     cy.wait("@login");
     cy.getCookie("sessionid").should("not.exist");
-    cy.getBySel("notification")//TODO error is never shown
+    cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-danger");
     cy.url().should("include", RouteNames.Login);

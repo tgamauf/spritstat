@@ -32,33 +32,26 @@ function Login(): JSX.Element {
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  console.log(`Login [0] notify=${notify}, isError=${isError}, passwordChanged=${passwordChanged}, passwordRecovered=${passwordRecovered}, emailVerified=${emailVerified}`)//TODO
-
-  useEffect(() => {
-    if (!notify && (isError || passwordChanged || passwordRecovered || emailVerified)) {
-      setNotify(true);
-   }
- }, [isError, passwordRecovered, passwordChanged, emailVerified, notify]);
-
   useEffect(() => {
     if (submitted) {
       setSubmitted(false);
 
       login({email, password, remember}).unwrap()
-        .then((isSuccess) => {
-          if (isSuccess) {
-            navigate(fromPathName, {replace: true});
-         } else {
-            console.error(`Failed to login: request status not ok`);
-            setIsError(true);
-         }
-       })
+        .then(() => {
+          navigate(fromPathName, {replace: true});
+        })
         .catch((e: any) => {
           console.error(`Failed to login: ${JSON.stringify(e, null, 2)}`);
           setIsError(true);
        });
    }
  }, [submitted]);
+
+  useEffect(() => {
+    if (!notify && (isError || passwordChanged || passwordRecovered || emailVerified)) {
+      setNotify(true);
+   }
+ }, [isError, passwordRecovered, passwordChanged, emailVerified, notify]);
 
   function acknowledgeNotification(): void {
     // Reset all notifications flags if the notification is removed.
@@ -75,8 +68,6 @@ function Login(): JSX.Element {
     setSubmitted(true);
     setIsError(false);
  }
-
- console.log(`Login [1] error=${isError}`);//TODO
 
   let notificationSeverity;
   let notificationText = "";
