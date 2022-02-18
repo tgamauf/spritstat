@@ -1,4 +1,4 @@
-import {RouteNames} from "../../src/utils/types";
+import {RouteNames} from "../../src/common/types";
 
 describe("Validate signup", () => {
   it("validate content of signup view", () => {
@@ -10,7 +10,7 @@ describe("Validate signup", () => {
     cy.getBySel("btn-submit")
       .should("be.visible")
       .should("be.disabled");
-  });
+ });
 
   it("signup success", () => {
     cy.visit(RouteNames.Signup);
@@ -30,9 +30,10 @@ describe("Validate signup", () => {
       "include",
       `${RouteNames.VerifyEmailSent}/${username}`
     );
-  });
+ });
 
   it("validate email verification mail sent view", () => {
+    cy.logout();
     cy.visit(`${RouteNames.VerifyEmailSent}/test@test.at`);
 
     cy.intercept("POST", "/api/v1/users/auth/resend-email/")
@@ -45,8 +46,8 @@ describe("Validate signup", () => {
     cy.wait("@resendRequest")
       .then((interception) => {
         expect(interception.response?.statusCode).to.equal(200);
-      });
-  });
+     });
+ });
 
   it("signup failed", () => {
     cy.visit(RouteNames.Signup);
@@ -54,7 +55,7 @@ describe("Validate signup", () => {
     cy.intercept(
       "POST",
       "/api/v1/users/auth/register/",
-      { statusCode: 400 }
+      {statusCode: 400}
     ).as("signup");
 
     cy.getBySel("field-username").type("test@test.at");
@@ -65,13 +66,16 @@ describe("Validate signup", () => {
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-danger");
-  });
+ });
 
   it("redirect on logged-in", () => {
-    cy.mockLoggedIn();
+    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.login("test@test.at", "test")
+    cy.intercept("/api/v1/users/auth/logout/").as("logout")
     cy.visit(RouteNames.Signup);
-    cy.url().should("include", RouteNames.Dashboard);
-  });
+    cy.wait("@logout")
+    cy.url().should("include", RouteNames.Signup);
+ });
 });
 
 describe("Validate confirm email address", () => {
@@ -83,7 +87,7 @@ describe("Validate confirm email address", () => {
     cy.intercept(
       "POST",
       "/api/v1/users/auth/verify-email/",
-      {statusCode: 200, body: { detail: "Ok" } }
+      {statusCode: 200, body: {detail: "Ok"}}
     ).as("verifyRequest");
 
     cy.visit(`${RouteNames.ConfirmEmail}/key/`);
@@ -94,25 +98,22 @@ describe("Validate confirm email address", () => {
     cy.wait("@verifyRequest")
       .then((interception) => {
         expect(interception.request.body).to.deep.equal({key: "key"});
-      });
+     });
     cy.getBySel("loading").should("not.exist");
     cy.url().should("include", RouteNames.Login);
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-info");
-  });
+ });
 
   it("validate success logged in", () => {
-    cy.mockLoggedIn();
-    cy.intercept(
-      "POST",
-      "/api/v1/users/auth/logout/",
-      {statusCode: 200, body: { detail: "Ok" } }
-    ).as("logout")
+    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.login("test@test.at", "test")
+    cy.intercept("/api/v1/users/auth/logout/").as("logout")
     cy.intercept(
       "POST",
       "/api/v1/users/auth/verify-email/",
-      {statusCode: 200, body: { detail: "Ok" } }
+      {statusCode: 200, body: {detail: "Ok"}}
     ).as("verifyRequest");
 
     cy.visit(`${RouteNames.ConfirmEmail}/key/`);
@@ -123,7 +124,7 @@ describe("Validate confirm email address", () => {
     cy.wait(["@logout", "@verifyRequest"]);
     cy.getBySel("loading").should("not.exist");
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 
   it("validate error", () => {
     cy.mockLoggedOut();
@@ -140,5 +141,5 @@ describe("Validate confirm email address", () => {
     cy.getBySel("block-error").should("exist");
     cy.getBySel("link-home").click();
     cy.url().should("include", RouteNames.Home);
-  });
+ });
 });

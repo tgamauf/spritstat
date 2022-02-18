@@ -48,16 +48,6 @@ declare global {
       mockLoggedOut(): Chainable<Element>;
 
       /**
-       * Mock the E-Control region API.
-       * @example cy.mockEcontrolRegionAPI();
-       * @example cy.mockEcontrolRegionAPI(400, []);
-       */
-      mockEcontrolRegionAPI(
-        responseStatus?: number,
-        responseBody?: [])
-        : Chainable<Element>;
-
-      /**
        * Mock the E-Control price API.
        * @example cy.mockEcontrolPriceAPI();
        * @example cy.mockEcontrolPriceAPI(400, []);
@@ -85,6 +75,6 @@ declare global {
        * @example cy.hasBaseStructure(false);
        */
       hasBaseStructure(loggedIn: boolean): Chainable<Element>;
-    }
-  }
+   }
+ }
 }

@@ -1,4 +1,4 @@
-import {RouteNames} from "../../src/utils/types";
+import {RouteNames} from "../../src/common/types";
 
 describe("Login view", () => {
   it("validate content", () => {
@@ -19,15 +19,15 @@ describe("Login view", () => {
       .then(() => {
         cy.url().should("include", RouteNames.Signup);
         cy.go("back");
-      })
+     })
     cy.getBySel("link-recovery-email")
       .should("be.visible")
       .click()
       .then(() => {
         cy.url().should("include", RouteNames.PasswordRecoveryEmail);
         cy.go("back");
-      });
-  });
+     });
+ });
 });
 
 describe("Login process", () => {
@@ -37,13 +37,13 @@ describe("Login process", () => {
     // Username and password of user in customuser.json
     cy.wrap("test@test.at").as("username");
     cy.wrap("test").as("password");
-  });
+ });
 
   beforeEach(() => {
     cy.logout();
     cy.intercept("POST", "/api/v1/users/auth/login/").as("login");
     Cypress.Cookies.preserveOnce("csrftoken");
-  });
+ });
 
   it("login without remember checked", function() {
     cy.visit(RouteNames.Login);
@@ -60,7 +60,7 @@ describe("Login process", () => {
       .should("not.have.property", "expiry");
     cy.getBySel("notification").should("not.exist");
     cy.url().should("include", RouteNames.Dashboard);
-  });
+ });
 
   it("login with remember checked", function() {
     cy.visit(RouteNames.Login);
@@ -80,13 +80,13 @@ describe("Login process", () => {
       .should("be.gt", 0);
     cy.getBySel("notification").should("not.exist");
     cy.url().should("include", RouteNames.Dashboard);
-  });
+ });
 
   it("login failed", () => {
     cy.intercept(
       "POST",
       "/api/v1/users/auth/login/",
-      { statusCode: 400 }
+      {statusCode: 400}
     ).as("login");
     cy.visit(RouteNames.Login);
 
@@ -100,5 +100,5 @@ describe("Login process", () => {
       .should("exist")
       .should("have.class", "is-danger");
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 });

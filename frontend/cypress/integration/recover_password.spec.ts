@@ -1,9 +1,9 @@
-import {RouteNames} from "../../src/utils/types";
+import {RouteNames} from "../../src/common/types";
 
 describe("Validate sending of password recovery email", () => {
   before(() => {
     cy.wrap("test@test.at").as("email");
-  });
+ });
 
   it("validate success", function() {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
@@ -27,13 +27,13 @@ describe("Validate sending of password recovery email", () => {
       .click();
 
     cy.wait("@resetRequest").then((interception) => {
-      expect(interception.request.body).to.deep.equal({ email: this.email });
-    });
+      expect(interception.request.body).to.deep.equal({email: this.email});
+   });
     cy.url().should("include", RouteNames.Login);
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-info");
-  });
+ });
 
   it("validate error", function() {
     cy.mockLoggedOut();
@@ -46,8 +46,8 @@ describe("Validate sending of password recovery email", () => {
       (req) => {
         req.reply({
           forceNetworkError: true
-        })
-      }
+       })
+     }
     ).as("resetRequest");
 
     cy.getBySel("field-username").type(this.email);
@@ -58,13 +58,18 @@ describe("Validate sending of password recovery email", () => {
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-danger");
-  });
+ });
 
   it("redirect if logged in", () => {
-    cy.mockLoggedIn();
+    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.login("test@test.at", "test")
+
+    cy.intercept("POST", "/api/v1/users/auth/logout/")
+      .as("logout");
     cy.visit(RouteNames.PasswordRecoveryEmail);
-    cy.url().should("include", RouteNames.Dashboard);
-  });
+    cy.wait("@logout");
+    cy.url().should("include", RouteNames.PasswordRecoveryEmail);
+ });
 });
 
 
@@ -76,7 +81,7 @@ describe("Validate reset password flow", () => {
   beforeEach(() => {
     cy.intercept("POST", "/api/v1/users/auth/password/validate/")
       .as("validatePassword");
-  })
+ })
 
   it("password reset success", () => {
     const uid = "99";
@@ -87,7 +92,7 @@ describe("Validate reset password flow", () => {
     cy.intercept(
       "POST",
       "/api/v1/users/auth/password/reset/confirm/",
-      {statusCode: 200, body: { detail: "ok" } }
+      {statusCode: 200, body: {detail: "ok"}}
     ).as("verifyRequest");
 
     cy.visit(`${RouteNames.ResetPassword}/${uid}/${token}/`);
@@ -109,13 +114,13 @@ describe("Validate reset password flow", () => {
           token,
           new_password1: newPassword,
           new_password2: newPassword
-        });
-      });
+       });
+     });
     cy.url().should("include", RouteNames.Login);
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-info");
-  });
+ });
 
   it("password reset request with invalid URL", () => {
     cy.logout();
@@ -134,11 +139,17 @@ describe("Validate reset password flow", () => {
     cy.getBySel("notification")
       .should("exist")
       .should("have.class", "is-danger");
-  });
+ });
 
   it("redirect if logged in", () => {
-    cy.mockLoggedIn();
+    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.login("test@test.at", "test")
+
+    cy.intercept("POST", "/api/v1/users/auth/logout/")
+      .as("logout");
+    const route = `${RouteNames.ResetPassword}/99/token/`;
     cy.visit(`${RouteNames.ResetPassword}/99/token/`);
-    cy.url().should("include", RouteNames.Dashboard);
-  });
+    cy.wait("@logout");
+    cy.url().should("include", `${RouteNames.ResetPassword}/99/token/`);
+ });
 });

@@ -1,4 +1,4 @@
-import {RouteNames} from "../../src/utils/types";
+import {RouteNames} from "../../src/common/types";
 
 describe("Validate change password view", () => {
   it("validate content", () => {
@@ -12,20 +12,20 @@ describe("Validate change password view", () => {
         cy.contains("Startseite");
         cy.contains("Einstellungen");
         cy.contains("Passwort ändern");
-      });
+     });
     cy.getBySel("field-current-password").should("be.visible");
     cy.getBySel("field-new-password").should("be.visible");
     cy.getBySel("btn-submit")
       .should("be.visible")
       .should("be.disabled");
-  });
+ });
 });
 
 describe("Validate password change process", () => {
   before(() => {
     cy.wrap("test@test.at").as("username");
     cy.wrap("test").as("currentPassword");
-  });
+ });
 
   beforeEach(function() {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
@@ -36,7 +36,7 @@ describe("Validate password change process", () => {
       .as("changePassword");
     cy.logout();
     cy.login(this.username, this.currentPassword);
-  });
+ });
 
   it("change password success", function() {
     cy.visit(RouteNames.ChangePassword);
@@ -55,7 +55,7 @@ describe("Validate password change process", () => {
     cy.login(this.username, newPassword);
     cy.visit("/");
     cy.url().should("include", RouteNames.Dashboard);
-  });
+ });
 
   it("invalid current password", () => {
     cy.visit(RouteNames.ChangePassword);
@@ -69,11 +69,11 @@ describe("Validate password change process", () => {
       .should("exist")
       .should("have.class", "is-danger");
     cy.url().should("include", RouteNames.ChangePassword);
-  });
+ });
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
     cy.visit(RouteNames.ChangePassword);
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 });

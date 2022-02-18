@@ -1,6 +1,5 @@
-import {FuelType, LocationType, RouteNames} from "../../src/utils/types";
-import {RegionType} from "../../src/services/econtrolApi";
-import * as google from "../../src/services/google";
+import {FuelType, LocationType, RouteNames} from "../../src/common/types";
+import * as google from "../../src/features/location/NamedLocationField/google";
 
 
 class MockLatLng {
@@ -15,6 +14,7 @@ class MockLatLng {
   public lat(): number {
     return this._lat;
   }
+
   public lng(): number {
     return this._lng;
   }
@@ -42,15 +42,16 @@ function mockGoogleMapsAPI(
     maps: {
       Geocoder: class {
         async geocode(request: any) {
-          return Promise.resolve({ results: geocodeResults });
+          return Promise.resolve({results: geocodeResults});
         }
       },
       LatLng: MockLatLng,
       places: {
-        AutocompleteSessionToken: class {},
+        AutocompleteSessionToken: class {
+        },
         AutocompleteService: class {
           async getPlacePredictions(request: any) {
-            return Promise.resolve({ predictions: predictions });
+            return Promise.resolve({predictions: predictions});
           }
         },
       }
@@ -59,13 +60,67 @@ function mockGoogleMapsAPI(
   cy.stub(google, "waitForGoogleMapsAPI").resolves(true);
 }
 
+function mockEControlApi(responseStatus = 200) {
+  let body = [
+    {
+      code: 1,
+      type: "BL",
+      name: "State 1",
+      subRegions: [
+        {
+          code: 101,
+          type: "PB",
+          name: "District 101",
+          postalCodes: ["1001", "1002"]
+        },
+        {
+          code: 102,
+          type: "PB",
+          name: "District 102",
+          postalCodes: ["1021", "1022"]
+        }
+      ],
+      postalCodes: [
+        "1001", "1002", "1021", "1022"
+      ]
+    },
+    {
+      code: 2,
+      type: "BL",
+      name: "State 2",
+      subRegions: [
+        {
+          code: 201,
+          type: "PB",
+          name: "District 201",
+          postalCodes: ["2001", "2002"]
+        }
+      ],
+      postalCodes: [
+        "2001", "2002"
+      ]
+    }
+  ];
+  cy.intercept(
+    {
+      method: "GET",
+      hostname: "api.e-control.at",
+      pathname: "/sprit/1.0/regions"
+    },
+    {
+      statusCode: responseStatus,
+      body
+    }
+  ).as("econtrolRegionRequest");
+}
+
 
 describe("Add location flows", () => {
   beforeEach(() => {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test");
 
-    cy.mockEcontrolRegionAPI();
+    mockEControlApi();
     cy.mockEcontrolPriceAPI();
     cy.intercept("POST", "/api/v1/sprit/").as("addLocationRequest");
   });
@@ -129,11 +184,11 @@ describe("Add location flows", () => {
     ];
     const mockGocodeResult = {
       address_components: [
-        {long_name: "1", types: [ "street_number" ]},
-        {long_name: "Street", types: [ "route" ]},
-        {long_name: "City", types: [ "locality" ]},
-        {long_name: "1234", types: [ "postal_code" ]},
-        {short_name: "AT", types: [ "country" ]}
+        {long_name: "1", types: ["street_number"]},
+        {long_name: "Street", types: ["route"]},
+        {long_name: "City", types: ["locality"]},
+        {long_name: "1234", types: ["postal_code"]},
+        {short_name: "AT", types: ["country"]}
       ],
       place_id: "prediction1",
       geometry: {location: new MockLatLng(48.21016009993677, 16.37002493713177)}
@@ -164,11 +219,10 @@ describe("Add location flows", () => {
     cy.wait("@addLocationRequest").then((interception) => {
       const addrComp = mockGocodeResult.address_components
       expect(interception.request.body).to.deep.equal({
-        type: LocationType.Named,
+        type: 1,
         name: `${addrComp[1].long_name} ${addrComp[0].long_name}, ${addrComp[3].long_name} ${addrComp[2].long_name}`,
         latitude: mockGocodeResult.geometry.location.lat(),
         longitude: mockGocodeResult.geometry.location.lng(),
-        region_type: "",
         fuel_type: "DIE"
       })
     });
@@ -180,11 +234,11 @@ describe("Add location flows", () => {
     const mockPredictions = [{description: "Prediction 1", place_id: "1"}];
     const mockGocodeResult = {
       address_components: [
-        {long_name: "1", types: [ "street_number" ]},
-        {long_name: "Street", types: [ "route" ]},
-        {long_name: "City", types: [ "locality" ]},
-        {long_name: "1234", types: [ "postal_code" ]},
-        {short_name: "AT", types: [ "country" ]}
+        {long_name: "1", types: ["street_number"]},
+        {long_name: "Street", types: ["route"]},
+        {long_name: "City", types: ["locality"]},
+        {long_name: "1234", types: ["postal_code"]},
+        {short_name: "AT", types: ["country"]}
       ],
       place_id: "prediction1",
       geometry: {location: new MockLatLng(mockCoords.latitude, mockCoords.longitude)}
@@ -216,11 +270,10 @@ describe("Add location flows", () => {
     cy.wait("@addLocationRequest").then((interception) => {
       const addrComp = mockGocodeResult.address_components
       expect(interception.request.body).to.deep.equal({
-        type: LocationType.Named,
+        type: 1,
         name: `${addrComp[1].long_name} ${addrComp[0].long_name}, ${addrComp[3].long_name} ${addrComp[2].long_name}`,
         latitude: mockGocodeResult.geometry.location.lat(),
         longitude: mockGocodeResult.geometry.location.lng(),
-        region_type: "",
         fuel_type: "DIE"
       })
     });
@@ -238,11 +291,11 @@ describe("Add location flows", () => {
 
     cy.wait("@addLocationRequest").then((interception) => {
       expect(interception.request.body).to.deep.equal({
-        type: LocationType.Region,
-        name: "State 1", // from cy.mockEcontrolRegionAPI
-        region_code: 1, // from cy.mockEcontrolRegionAPI
-        region_type: RegionType.State, // from cy.mockEcontrolRegionAPI
-        fuel_type: FuelType.Super
+        type: 2,
+        name: "State 1", // from mockEControlApi
+        region_code: 1, // from mockEControlApi
+        region_type: "BL", // from mockEControlApi
+        fuel_type: "SUP"
       })
     });
     cy.url().should("include", RouteNames.Dashboard);
@@ -252,7 +305,7 @@ describe("Add location flows", () => {
     cy.intercept(
       "POST",
       "/api/v1/sprit/",
-      { statusCode: 400 }
+      {statusCode: 400}
     ).as("addLocationRequest");
 
     cy.visit(RouteNames.AddLocation);
@@ -271,7 +324,7 @@ describe("Add location flows", () => {
   });
 
   it("address check failed", () => {
-    const mockPredictions = [{ description: "Prediction 1", place_id: "1" }];
+    const mockPredictions = [{description: "Prediction 1", place_id: "1"}];
     cy.visit(
       RouteNames.AddLocation,
       {
@@ -292,7 +345,7 @@ describe("Add location flows", () => {
   });
 
   it("get regions failed", () => {
-    cy.mockEcontrolRegionAPI(400);
+    mockEControlApi(400);
 
     cy.visit(RouteNames.AddLocation);
 

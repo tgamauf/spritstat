@@ -1,4 +1,4 @@
-import {RouteNames} from "../../src/utils/types";
+import {RouteNames} from "../../src/common/types";
 
 describe("Validate settings view", () => {
   it("validate user data is shown", () => {
@@ -11,7 +11,7 @@ describe("Validate settings view", () => {
       .within(() => {
         cy.contains("Startseite");
         cy.contains("Einstellungen");
-      });
+     });
     cy.getBySel("text-email").should("be.visible");
 
     cy.getBySel("link-change-password").should("be.visible");
@@ -29,13 +29,13 @@ describe("Validate settings view", () => {
 
     cy.getBySel("link-change-password").click();
     cy.url().should("include", RouteNames.ChangePassword);
-  });
+ });
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
     cy.visit("/settings");
     cy.url().should("include", RouteNames.Login);
-  });
+ });
 });
 
 describe("Validate delete account", () => {
@@ -43,12 +43,12 @@ describe("Validate delete account", () => {
     // Username and password of user in customuser.json
     cy.wrap("test@test.at").as("username");
     cy.wrap("test").as("password");
-  });
+ });
 
   beforeEach(function() {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login(this.username, this.password);
-  });
+ });
 
   it("delete success", function() {
     cy.intercept("DELETE", "/api/v1/users/account/delete/")
@@ -72,13 +72,13 @@ describe("Validate delete account", () => {
       method: "POST",
       url: "/api/v1/users/auth/login/",
       failOnStatusCode: false,
-      body: { email: this.username, password: this.password },
+      body: {email: this.username, password: this.password},
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-      }
-    }).then((response) => {
+     }
+   }).then((response) => {
       expect(response.status).to.equal(400);
-    });
-  });
+   });
+ });
 });
