@@ -180,12 +180,11 @@ export default function LocationPriceLineChart({location, setErrorMessage}: Prop
  }, [isStationsError]);
 
   const getStation = useCallback((items: TooltipItem<"line">[]): string[] => {
-    // We should always only get a single item as we only have a single graph
-    if (!isStationsSuccess || !stations) {
-      console.error("Chart data not set");
+    if (isStationsFetching || !isStationsSuccess || !stations) {
       return [];
    }
 
+    // We should always only get a single item as we only have a single graph
     if (!items || (items.length > 1)) {
       console.error(`Invalid tooltip items received, length=${items.length}`);
    }
@@ -209,7 +208,7 @@ export default function LocationPriceLineChart({location, setErrorMessage}: Prop
    }
 
     return stationNames;
- }, [isStationsFetching, isStationsSuccess])
+ }, [isStationsFetching])
 
   useEffect(() => {
     if (isPriceFetching || !chartData) {
