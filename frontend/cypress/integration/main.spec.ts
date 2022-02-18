@@ -75,7 +75,9 @@ describe("Validate initial page load", () => {
   it("validate footer links", () => {
     cy.visit(RouteNames.Home);
 
-    cy.getBySel("link-imprint").click();
+    // TODO: "force: true" is a workaround till
+    //  https://github.com/cypress-io/cypress/issues/7306 is fixed
+    cy.getBySel("link-imprint").click({force: true});
     cy.url().should("include", RouteNames.Imprint);
     cy.go("back");
 
