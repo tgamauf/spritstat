@@ -15,7 +15,7 @@ interface Props {
 
 export default function Breadcrumb({items}: Props) {
   return (
-    <div className="block ml-5 mt-1">
+    <div className="ml-5 mt-1 mb-5">
       {items && (
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
