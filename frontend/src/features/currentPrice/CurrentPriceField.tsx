@@ -60,7 +60,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
       {currentPrice ? (
         <div>
           <div className="tile is-child content mb-5">
-            <p className="card-key mb-0">Bester Preis</p>
+            <p className="card-key mb-0">Aktuell niedrigster Preis</p>
             {currentPrice !== NO_CURRENT_PRICE && (
               <p className="card-value ml-3">{currentPrice} €</p>
             )}
