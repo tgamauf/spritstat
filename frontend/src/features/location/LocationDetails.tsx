@@ -69,7 +69,7 @@ export default function LocationDetails(): JSX.Element {
           <button
             className="button is-primary is-outlined is-small is-right"
             title="Entferne diesen Ort."
-            data-test="btn-add-location-small"
+            data-test="btn-delete-location-small"
             onClick={() => setDeleteModalActive(true)}
           >
             <FontAwesomeIcon className="icon" icon={faTrash}/>
@@ -78,17 +78,18 @@ export default function LocationDetails(): JSX.Element {
         </div>
         <div className="tile is-ancestor">
           <div className="tile is-vertical">
-            <div className="tile box has-background-primary-light">
-              <div className="card-header-title">
-                <div className="tile">
-                  <LocationField location={location}/>
-                </div>
-                <div className="tile is-ancestor">
-                  <CurrentPriceField location={location} isInteractive={true}/>
-                </div>
+            <div
+              className="tile box card-header-title has-background-primary-light"
+              data-test="location-info"
+            >
+              <div className="tile">
+                <LocationField location={location}/>
+              </div>
+              <div className="tile is-ancestor">
+                <CurrentPriceField location={location} isInteractive={true}/>
               </div>
             </div>
-            <div className="tile box">
+            <div className="tile box" data-test="location-history">
               <LocationPriceLineChart
                 location={location}
                 isInteractive={true}
@@ -109,7 +110,12 @@ export default function LocationDetails(): JSX.Element {
         loading={isFetching && !isLocationError}
         message="Der Ort konnte nicht geladen werden."
       >
-        <Link className="has-text-primary" to="" onClick={() => refetch()}>
+        <Link
+          className="has-text-primary"
+          to=""
+          onClick={() => refetch()}
+          data-test="btn-reload-location"
+        >
           Neu laden
         </Link>
       </LoadingError>
