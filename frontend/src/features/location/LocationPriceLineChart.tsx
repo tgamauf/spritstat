@@ -231,7 +231,7 @@ export default function LocationPriceLineChart(
  }, [chartData, isMobile]);
 
   let mainComponent;
-  if (chartData) {
+  if (!isPriceFetching && chartData) {
     if (chartData.labels.length === 0) {
       mainComponent = (
         <span>
@@ -252,6 +252,7 @@ export default function LocationPriceLineChart(
                 {name: "6M", value: DateRange.SixMonths},
                 {name: "Alles", value: DateRange.All},
               ]}
+              selectedValue={selectedDateRange}
               setSelectedValue={setSelectedDateRange}
             />
           )}

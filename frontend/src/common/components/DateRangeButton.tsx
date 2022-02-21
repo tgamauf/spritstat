@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 
 interface DateRangeItem {
   name: string;
@@ -7,51 +7,48 @@ interface DateRangeItem {
 
 interface Props {
   items: DateRangeItem[];
+  selectedValue: any;
   setSelectedValue: (value: any) => void;
 }
 
 export default function DateRangeButton(
-  {items, setSelectedValue}: Props
+  {items, selectedValue, setSelectedValue}: Props
 ): JSX.Element {
-  const [selected, setSelected] = useState(0);
   const itemRefs: React.MutableRefObject<HTMLButtonElement>[] = [];
   for (const _ in items) {
-      itemRefs.push(useRef() as React.MutableRefObject<HTMLButtonElement>)
- }
+    itemRefs.push(useRef() as React.MutableRefObject<HTMLButtonElement>)
+  }
 
   useEffect(() => {
     if (itemRefs.some((e) => !e.current)) {
       return;
-   }
+    }
 
     const tokens = ["is-selected", "is-primary"];
-    itemRefs[selected].current.classList.add(...tokens);
-    for (let i = 0 ; i < itemRefs.length ; i++) {
-      if (i === selected) {
-        continue;
-     }
-      itemRefs[i].current.classList.remove(...tokens)
-   }
- }, [selected]);
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].value === selectedValue) {
+        itemRefs[i].current.classList.add(...tokens);
+      } else {
+        itemRefs[i].current.classList.remove(...tokens)
+      }
+    }
+  }, [selectedValue]);
 
   return (
     <div className="buttons has-addons">
-      {items.map(({name, value}, index) =>{
-          return (
-            <button
-              className="button is-small is-selected"
-              key={index}
-              ref={itemRefs[index]}
-              onClick={() => {
-                setSelected(index);
-                setSelectedValue(value);
-             }}
-            >
-              {name}
-            </button>
-          );
-       })
-     }
+      {items.map(({name, value}, index) => {
+        return (
+          <button
+            className="button is-small is-selected"
+            key={index}
+            ref={itemRefs[index]}
+            onClick={() => setSelectedValue(value)}
+          >
+            {name}
+          </button>
+        );
+      })
+      }
     </div>
   );
 };
