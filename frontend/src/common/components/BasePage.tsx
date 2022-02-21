@@ -79,7 +79,9 @@ export default function BasePage({
             {message}
           </div>
         )}
-        <div className="hero-body">{children}</div>
+        <div className="hero-body">
+          {children}
+        </div>
         <Footer />
       </section>
     </div>
