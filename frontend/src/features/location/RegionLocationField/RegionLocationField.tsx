@@ -4,20 +4,20 @@ import {RegionType} from "../../../common/types";
 import {useGetRegionsQuery} from "./regionsApiSlice";
 
 const POSTAL_CODE_LENGTH = 4;
+const NO_POSTAL_CODE = "";
 
 interface Props {
-  setRegion: (region: {code: number, type: RegionType, name: string}) => void;
+  setRegion: (region: { code: number, type: RegionType, name: string }) => void;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function RegionLocationField({
-  setRegion,
-  setErrorMessage,
-}: Props): JSX.Element {
+export default function RegionLocationField(
+  {setRegion, setErrorMessage}: Props
+): JSX.Element {
   const {data: regionMap, error, isLoading} = useGetRegionsQuery();
   const [selectedState, setSelectedState] = useState<number | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<number | null>(null);
-  const [postalCode, setPostalCode] = useState("");
+  const [postalCode, setPostalCode] = useState(NO_POSTAL_CODE);
 
   useEffect(() => {
     if (error) {
@@ -26,17 +26,17 @@ export default function RegionLocationField({
         "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
         "neu und versuche es nochmal."
       );
-   }
- }, [error]);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (
       !regionMap ||
-      postalCode === "" ||
-      postalCode.length < POSTAL_CODE_LENGTH
+      (postalCode === NO_POSTAL_CODE) ||
+      (postalCode.length < POSTAL_CODE_LENGTH)
     ) {
       return;
-   }
+    }
 
     // Reset any error if the postal code has been changed.
     setErrorMessage("");
@@ -44,30 +44,27 @@ export default function RegionLocationField({
     const stateCode = regionMap.postalCodeToState.get(postalCode);
     const districtCode = regionMap.postalCodeToDistrict.get(postalCode);
 
-    if (
-      typeof stateCode !== "undefined" &&
-      typeof districtCode !== "undefined"
-    ) {
+    if ((typeof stateCode !== "undefined") && (typeof districtCode !== "undefined")) {
       setSelectedState(stateCode);
       setSelectedDistrict(districtCode);
-   } else {
+    } else {
       setSelectedState(null);
       setSelectedDistrict(null);
 
       setErrorMessage(
         "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
       );
-   }
- }, [postalCode, isLoading]);
+    }
+  }, [postalCode, isLoading]);
 
   useEffect(() => {
     if (!regionMap) {
       return;
-   }
+    }
 
     // We always use the more specific region, so if the district code exists
     //  we will use it as region. If not we will use the state.
-    if (selectedState !== null && selectedDistrict !== null) {
+    if ((selectedState !== null) && (selectedDistrict !== null)) {
       const state = regionMap.states.get(selectedState);
       if (typeof state !== "undefined") {
         const district = state.districts.get(selectedDistrict);
@@ -76,28 +73,28 @@ export default function RegionLocationField({
             code: selectedDistrict,
             type: district.type,
             name: district.name
-         });
-       }
-     }
-   } else if (selectedState !== null) {
+          });
+        }
+      }
+    } else if (selectedState !== null) {
       const state = regionMap.states.get(selectedState);
       if (typeof state !== "undefined") {
         setRegion({
           code: selectedState,
           type: state.type,
           name: state.name
-       });
-     }
-   }
- }, [isLoading, selectedState, selectedDistrict]);
+        });
+      }
+    }
+  }, [isLoading, selectedState, selectedDistrict]);
 
-  let states: {code: number; name: string}[] = [];
-  let districts: {code: number; name: string}[] = [];
+  let states: { code: number; name: string }[] = [];
+  let districts: { code: number; name: string }[] = [];
   if (regionMap) {
     states = Array.from(regionMap.states, ([code, state]) => ({
       code,
       name: state.name,
-   }));
+    }));
 
     if (selectedState !== null) {
       const state = regionMap.states.get(selectedState);
@@ -105,10 +102,10 @@ export default function RegionLocationField({
         districts = Array.from(state.districts, ([code, district]) => ({
           code,
           name: district.name,
-       }));
-     }
-   }
- }
+        }));
+      }
+    }
+  }
 
   const dropdownTitle =
     "Wähle ein Bundesland und optional einen Bezirk aus für den " +
@@ -124,7 +121,11 @@ export default function RegionLocationField({
                   title={dropdownTitle}
                   required={true}
                   value={selectedState === null ? "" : selectedState}
-                  onChange={(e) => setSelectedState(Number(e.target.value))}
+                  onChange={(e) => {
+                    setSelectedState(Number(e.target.value))
+                    setSelectedDistrict(null);
+                    setPostalCode(NO_POSTAL_CODE);
+                  }}
                   data-test="field-state"
                 >
                   <option value="" disabled={true}>
@@ -136,7 +137,7 @@ export default function RegionLocationField({
                         {entry.name}
                       </option>
                     );
-                 })}
+                  })}
                 </select>
               </div>
             </div>
@@ -149,7 +150,10 @@ export default function RegionLocationField({
                   required={false}
                   disabled={selectedState === null}
                   value={selectedDistrict === null ? "" : selectedDistrict}
-                  onChange={(e) => setSelectedDistrict(Number(e.target.value))}
+                  onChange={(e) => {
+                    setSelectedDistrict(Number(e.target.value));
+                    setPostalCode(NO_POSTAL_CODE);
+                  }}
                   data-test="field-district"
                 >
                   <option value="" disabled={true}>
@@ -161,7 +165,7 @@ export default function RegionLocationField({
                         {entry.name}
                       </option>
                     );
-                 })}
+                  })}
                 </select>
               </div>
             </div>
