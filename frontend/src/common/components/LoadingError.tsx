@@ -5,13 +5,13 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 
 interface OwnProps {
-  loading: boolean;
+  loading?: boolean;
   message: string;
 }
 type Props = PropsWithChildren<OwnProps>;
 
 export default function LoadingError(
-  {loading, message, children}: Props
+  {loading = false, message, children}: Props
 ): JSX.Element {
   return (
     <CenteredBox loading={loading}>

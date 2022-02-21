@@ -90,7 +90,7 @@ export default function App() {
           element={<RequireAuth><AddLocation/></RequireAuth>}
         />
         <Route
-          path={`${RouteNames.LocationDetails}/:id`}
+          path={`${RouteNames.LocationDetails}/:locationId`}
           element={<RequireAuth><LocationDetails/></RequireAuth>}
         />
       </Routes>

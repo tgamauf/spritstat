@@ -242,7 +242,7 @@ export default function LocationPriceLineChart(
    } else {
       mainComponent = (
         <div>
-          <div className="content">
+          <div className="content chart-container">
             <canvas id={chartId} ref={canvasRef}/>
           </div>
           {isInteractive && (

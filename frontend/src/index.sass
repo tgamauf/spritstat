@@ -29,13 +29,24 @@ $card-focus-box-shadow-color: bulmaRgba($link, 0.25)
 
 .hero-body
   justify-content: center
+  align-items: stretch
 .hero-foot
   margin-bottom: 0.5rem
+
+.has-content-right
+  display: flex
+  justify-content: flex-end
+  +mobile
+    justify-content: center
+  margin-bottom: 1.5rem
 
 .card:hover
   border-color: $card-focus-border-color
   color: $card-focus-color
   box-shadow: $card-focus-box-shadow-size $card-focus-box-shadow-color
+.card-header-title
+  flex: 1
+  align-items: flex-start
 .card-header-title .card-key
   @extend .has-text-primary
   @extend .has-text-weight-bold
@@ -44,3 +55,6 @@ $card-focus-box-shadow-color: bulmaRgba($link, 0.25)
 .card-overlay
   @include overlay
   opacity: 0
+
+.chart-container
+  //width: 90%

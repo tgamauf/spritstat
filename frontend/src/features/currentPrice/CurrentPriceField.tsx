@@ -32,7 +32,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
       const searchQuery = `${station.name} ${station.address} ${station.postalCode} ${station.city}`;
 
       return encodeURI(`${MAPS_URL}/${searchQuery}`);
-   }
+    }
 
     if (data) {
       setCurrentPrice(data.amount);
@@ -45,15 +45,15 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
           postalCode: s.postalCode,
           city: s.city,
           url: createMapsURL(s),
-       });
-     }
+        });
+      }
       setStations(stations_);
-   }
+    }
 
     if (error) {
       console.error(`Failed to get current price: ${JSON.stringify(error, null, 2)}`);
-   }
- }, [isLoading]);
+    }
+  }, [isLoading]);
 
   return (
     <div className="tile is-parent">
@@ -87,13 +87,13 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
                       )}
                     </li>
                   );
-               })}
+                })}
               </ul>
             </div>
           )}
         </div>
       ) : (
-        <div />
+        <div/>
       )}
     </div>
   );

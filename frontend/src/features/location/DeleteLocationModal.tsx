@@ -23,9 +23,6 @@ export default function DeleteLocationModal({
   const [doDelete, setDoDelete] = useState(false);
 
   useEffect(() => {
-    if (locationId === NO_LOCATION_ID) {
-      return;
-   }
     if (!doDelete) {
       return;
    }
