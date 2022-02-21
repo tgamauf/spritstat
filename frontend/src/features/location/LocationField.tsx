@@ -17,7 +17,7 @@ export default function LocationField({location}: Props): JSX.Element {
        }</p>
         <p className="card-value">{location.name}</p>
       </div>
-      <div className="mt-3">
+      <div>
         <FontAwesomeIcon className="card-key" icon={faGasPump} />
         <span className="card-value ml-2">
           {location.fuelType}

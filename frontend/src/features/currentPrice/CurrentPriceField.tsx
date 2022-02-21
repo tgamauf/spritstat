@@ -62,16 +62,17 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
           <div className="tile is-child content mb-5">
             <p className="card-key mb-0">Aktuell niedrigster Preis</p>
             {currentPrice !== NO_CURRENT_PRICE && (
-              <p className="card-value ml-3">{currentPrice} €</p>
+              <p className="card-value">{currentPrice} €</p>
             )}
           </div>
           {stations && stations.length > 0 && (
             <div className="tile is-child content">
               <span className="card-key">Tankstellen</span>
-              <ul className="card-value mt-0">
+              <div className="card-value mt-0">
                 {stations.map((item, index) => {
                   return (
-                    <li key={index}>
+                    <div className="is-flex is-flex-wrap-nowrap">
+                      <span className="mr-1">&bull;</span>
                       {isInteractive ? (
                         <a
                           className="has-text-dark is-underlined"
@@ -85,10 +86,10 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
                       ) : (
                         <p className="has-text-dark">{item.name}</p>
                       )}
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           )}
         </div>
