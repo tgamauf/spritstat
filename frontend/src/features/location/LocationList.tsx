@@ -1,11 +1,10 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 
 import {RouteNames} from "../../common/types";
 import LocationCard from "./LocationCard";
-import DeleteLocationModal, {NO_LOCATION_ID} from "./DeleteLocationModal";
 import {useGetLocationsQuery} from "./locationApiSlice";
 
 interface Props {
@@ -14,29 +13,14 @@ interface Props {
 
 export default function LocationList({setErrorMessage}: Props): JSX.Element {
   const {data: locations} = useGetLocationsQuery();
-  const [locationToDelete, setLocationToDelete] = useState<number>(NO_LOCATION_ID);
 
   const setErrorMessageCallback = useCallback(
     (msg: string) => setErrorMessage(msg),
     []
   );
 
-  function closeDeleteLocationModal() {
-    setLocationToDelete(NO_LOCATION_ID);
- }
-
-  function notifyLocationDeleted() {
-    setLocationToDelete(NO_LOCATION_ID);
- }
-
   return (
     <div data-test="location-list">
-      <DeleteLocationModal
-        locationId={locationToDelete}
-        close={closeDeleteLocationModal}
-        notifyDeleted={notifyLocationDeleted}
-        setErrorMessage={setErrorMessage}
-      />
       <div className="container">
         <div className="level">
           <div className="level-left">
@@ -65,7 +49,6 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
             <LocationCard
               key={location.id}
               location={location}
-              deleteLocation={() => setLocationToDelete(location.id)}
               setErrorMessage={setErrorMessageCallback}
             />
           );

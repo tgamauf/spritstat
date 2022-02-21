@@ -16,9 +16,10 @@ type Stations = {
 
 interface Props {
   location: Location;
+  isInteractive: boolean;
 }
 
-export default function CurrentPriceField({location}: Props): JSX.Element {
+export default function CurrentPriceField({location, isInteractive}: Props): JSX.Element {
   const {data, error, isLoading} = useGetCurrentPriceQuery(location);
   const [currentPrice, setCurrentPrice] = useState<number>(NO_CURRENT_PRICE);
   const [stations, setStations] = useState<Stations>([]);
@@ -31,7 +32,7 @@ export default function CurrentPriceField({location}: Props): JSX.Element {
       const searchQuery = `${station.name} ${station.address} ${station.postalCode} ${station.city}`;
 
       return encodeURI(`${MAPS_URL}/${searchQuery}`);
-   }
+    }
 
     if (data) {
       setCurrentPrice(data.amount);
@@ -44,15 +45,15 @@ export default function CurrentPriceField({location}: Props): JSX.Element {
           postalCode: s.postalCode,
           city: s.city,
           url: createMapsURL(s),
-       });
-     }
+        });
+      }
       setStations(stations_);
-   }
+    }
 
     if (error) {
       console.error(`Failed to get current price: ${JSON.stringify(error, null, 2)}`);
-   }
- }, [isLoading]);
+    }
+  }, [isLoading]);
 
   return (
     <div className="tile is-parent">
@@ -71,24 +72,28 @@ export default function CurrentPriceField({location}: Props): JSX.Element {
                 {stations.map((item, index) => {
                   return (
                     <li key={index}>
-                      <a
-                        className="has-text-dark is-underlined"
-                        title={`${item.address}, ${item.postalCode} ${item.city}`}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span>{item.name}</span>
-                      </a>
+                      {isInteractive ? (
+                        <a
+                          className="has-text-dark is-underlined"
+                          title={`${item.address}, ${item.postalCode} ${item.city}`}
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>{item.name}</span>
+                        </a>
+                      ) : (
+                        <p className="has-text-dark">{item.name}</p>
+                      )}
                     </li>
                   );
-               })}
+                })}
               </ul>
             </div>
           )}
         </div>
       ) : (
-        <div />
+        <div/>
       )}
     </div>
   );

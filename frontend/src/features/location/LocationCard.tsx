@@ -1,46 +1,36 @@
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {Link} from "react-router-dom";
 
 import CurrentPriceField from "../currentPrice/CurrentPriceField";
 import LocationField from "./LocationField";
 import LocationPriceLineChart from "./LocationPriceLineChart";
-import {Location} from "../../common/types";
+import {Location, RouteNames} from "../../common/types";
 
 interface Props {
   location: Location;
-  deleteLocation: () => void;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function LocationCard({
-  location,
-  deleteLocation,
-  setErrorMessage,
-}: Props): JSX.Element {
+export default function LocationCard({location, setErrorMessage}: Props): JSX.Element {
   return (
-    <div className="card mb-6" data-test={`card-location-${location.id}`}>
+    <div className="card is-focused mb-6" data-test={`card-location-${location.id}`}>
+      <Link className="card-overlay" to={`${RouteNames.LocationDetails}/${location.id}`} />
       <header className="card-header has-background-primary-light">
         <div className="card-header-title">
           <div className="tile">
             <LocationField location={location} />
           </div>
           <div className="tile is-ancestor">
-            <CurrentPriceField location={location} />
+            <CurrentPriceField location={location} isInteractive={false} />
           </div>
         </div>
-        <button
-          className="card-header-icon
-                is-align-items-start
-                has-text-primary"
-          onClick={() => deleteLocation()}
-          data-test="btn-open-delete"
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
       </header>
       <div className="card-content">
-        <LocationPriceLineChart location={location} setErrorMessage={setErrorMessage} />
+        <LocationPriceLineChart
+          location={location}
+          isInteractive={false}
+          setErrorMessage={setErrorMessage}
+        />
       </div>
     </div>
   );

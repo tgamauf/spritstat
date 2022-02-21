@@ -63,7 +63,11 @@ export default function Dashboard() {
       message={errorMessage}
       discardMessage={() => setErrorMessage("")}
     >
-      {mainComponent}
+      <div className="columns is-centered wide-content">
+        <div className="column is-two-thirds-fullhd">
+          {mainComponent}
+        </div>
+      </div>
     </BasePage>
   );
 }

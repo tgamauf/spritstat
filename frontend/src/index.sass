@@ -18,18 +18,45 @@ $section-padding-large-mobile: 7rem 1.5rem
 
 @import "../node_modules/bulma/bulma.sass"
 
+$card-focus-color: $link-focus
+$card-focus-border-color: $link-focus-border
+$card-focus-box-shadow-size: 0 0 0 0.125em
+$card-focus-box-shadow-color: bulmaRgba($link, 0.25)
+
 .huge-text
   font-size: 10vw
   white-space: nowrap
 
 .hero-body
   justify-content: center
-
+  align-items: stretch
 .hero-foot
   margin-bottom: 0.5rem
 
+.has-content-right
+  display: flex
+  justify-content: flex-end
+  +mobile
+    justify-content: center
+  margin-bottom: 1.5rem
+.wide-content
+  width: 100%
+
+.card:hover
+  border-color: $card-focus-border-color
+  color: $card-focus-color
+  box-shadow: $card-focus-box-shadow-size $card-focus-box-shadow-color
+.card-header-title
+  flex: 1
+  align-items: flex-start
 .card-header-title .card-key
   @extend .has-text-primary
   @extend .has-text-weight-bold
 .card-header-title .card-value
   @extend .has-text-weight-medium
+.card-overlay
+  @include overlay
+  opacity: 0
+
+.chart-container
+  width: 100%

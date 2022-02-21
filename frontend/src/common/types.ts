@@ -23,6 +23,7 @@ enum RouteNames {
   Contact = "/contact",
   Dashboard = "/dashboard",
   AddLocation = "/add-location",
+  LocationDetails = "/location-details",
   AccountDeleted = "/account-deleted",
 }
 

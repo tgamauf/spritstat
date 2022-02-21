@@ -79,6 +79,7 @@ class ChartConfig implements ChartConfiguration {
 
   constructor(
     isMobile: boolean,
+    isInteractive: boolean,
     data: ChartData,
     tooltipFooterCallback: TooltipFooterCallback
   ) {
@@ -111,20 +112,20 @@ class ChartConfig implements ChartConfiguration {
        },
         zoom: {
           pan: {
-            enabled: true,
+            enabled: isInteractive,
             mode: "x",
          },
           zoom: {
             mode: "x",
             pinch: {
-              enabled: true,
-           },
+              enabled: isInteractive,
+            },
             wheel: {
-              enabled: true,
-           },
-         },
-       },
-     },
+              enabled: isInteractive,
+            },
+          },
+        },
+      },
       spanGaps: true,
    };
 
@@ -134,10 +135,13 @@ class ChartConfig implements ChartConfiguration {
 
 interface Props {
   location: Location;
+  isInteractive: boolean;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function LocationPriceLineChart({location, setErrorMessage}: Props) {
+export default function LocationPriceLineChart(
+  {location, isInteractive, setErrorMessage}: Props
+) {
   const {
     data: stations,
     error: stationsError,
@@ -221,7 +225,7 @@ export default function LocationPriceLineChart({location, setErrorMessage}: Prop
    }
 
     chartRef.current?.destroy();
-    const config = new ChartConfig(isMobile, chartData, getStation);
+    const config = new ChartConfig(isMobile, isInteractive, chartData, getStation);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
  }, [chartData, isMobile]);
@@ -237,18 +241,20 @@ export default function LocationPriceLineChart({location, setErrorMessage}: Prop
       );
    } else {
       mainComponent = (
-        <div>
+        <div className="chart-container">
           <div className="content">
             <canvas id={chartId} ref={canvasRef}/>
           </div>
-          <DateRangeButton
-            items={[
-              {name: "1M", value: DateRange.OneMonth},
-              {name: "6M", value: DateRange.SixMonths},
-              {name: "Alles", value: DateRange.All},
-            ]}
-            setSelectedValue={setSelectedDateRange}
-          />
+          {isInteractive && (
+            <DateRangeButton
+              items={[
+                {name: "1M", value: DateRange.OneMonth},
+                {name: "6M", value: DateRange.SixMonths},
+                {name: "Alles", value: DateRange.All},
+              ]}
+              setSelectedValue={setSelectedDateRange}
+            />
+          )}
         </div>
       );
    }
