@@ -237,8 +237,7 @@ def create_price_if_changed(
     price_statistics: PriceStatistics,
 ):
     """
-    Create the new price object in the database if any of the statistics has
-    changed from the last price object.
+    Create the new price object in the database.
 
     :param location: location the prices correspond to
     :param stations: list of stations with the minimum price
@@ -246,28 +245,14 @@ def create_price_if_changed(
     """
 
     station_objects = get_or_create_stations(location, stations)
-
-    last_price = models.Price.objects.filter(location=location).last()
-    create = True
-    if (
-        last_price
-        and (set(station_objects) == set(last_price.stations.all()))
-        and (price_statistics.min_amount == last_price.min_amount)
-        and (price_statistics.max_amount == last_price.max_amount)
-        and (price_statistics.average_amount == last_price.average_amount)
-        and (price_statistics.median_amount == last_price.median_amount)
-    ):
-        create = False
-
-    if create:
-        price = models.Price.objects.create(
-            location=location,
-            min_amount=price_statistics.min_amount,
-            max_amount=price_statistics.max_amount,
-            average_amount=price_statistics.average_amount,
-            median_amount=price_statistics.median_amount,
-        )
-        price.stations.add(*station_objects)
+    price = models.Price.objects.create(
+        location=location,
+        min_amount=price_statistics.min_amount,
+        max_amount=price_statistics.max_amount,
+        average_amount=price_statistics.average_amount,
+        median_amount=price_statistics.median_amount,
+    )
+    price.stations.add(*station_objects)
 
 
 def get_or_create_stations(

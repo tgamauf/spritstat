@@ -358,57 +358,6 @@ class TestRequestLocationPrices(TestCase):
         self.assertEqual(Station.objects.count(), check_station_count)
         self.assertEqual(Price.objects.count(), check_price_count)
 
-    def test_create_price_if_changed__no_change(self):
-        check_price_count = Price.objects.count()
-        check_price = Price.objects.last()
-        services.create_price_if_changed(**self.default_test_price)
-        self.assertEqual(Price.objects.count(), check_price_count)
-        self.assertEqual(Price.objects.last(), check_price)
-
-    def test_create_price_if_changed__station_changed(self):
-        check_price_count = Price.objects.count() + 1
-        check_stations = list(Price.objects.first().stations.all())
-        self.default_test_price["stations"] = check_stations
-        services.create_price_if_changed(**self.default_test_price)
-        self.assertEqual(Price.objects.count(), check_price_count)
-        self.assertListEqual(list(Price.objects.last().stations.all()), check_stations)
-
-    def test_create_price_if_changed__min_changed(self):
-        check_price_count = Price.objects.count() + 1
-        check_min_amount = Price.objects.first().min_amount
-        self.default_test_price["price_statistics"].set_min_amount(check_min_amount)
-        services.create_price_if_changed(**self.default_test_price)
-        self.assertEqual(Price.objects.count(), check_price_count)
-        self.assertEqual(Price.objects.last().min_amount, check_min_amount)
-
-    def test_create_price_if_changed__max_changed(self):
-        check_price_count = Price.objects.count() + 1
-        check_max_amount = Price.objects.first().max_amount
-        self.default_test_price["price_statistics"].set_max_amount(check_max_amount)
-        services.create_price_if_changed(**self.default_test_price)
-        self.assertEqual(Price.objects.count(), check_price_count)
-        self.assertEqual(Price.objects.last().max_amount, check_max_amount)
-
-    def test_create_price_if_changed__average_changed(self):
-        check_price_count = Price.objects.count() + 1
-        check_average_amount = Price.objects.first().average_amount
-        self.default_test_price["price_statistics"].set_average_amount(
-            check_average_amount
-        )
-        services.create_price_if_changed(**self.default_test_price)
-        self.assertEqual(Price.objects.count(), check_price_count)
-        self.assertEqual(Price.objects.last().average_amount, check_average_amount)
-
-    def test_create_price_if_changed__median_changed(self):
-        check_price_count = Price.objects.count() + 1
-        check_median_amount = Price.objects.first().min_amount
-        self.default_test_price["price_statistics"].set_median_amount(
-            check_median_amount
-        )
-        services.create_price_if_changed(**self.default_test_price)
-        self.assertEqual(Price.objects.count(), check_price_count)
-        self.assertEqual(Price.objects.last().median_amount, check_median_amount)
-
 
 class TestClearExpiredSessions(TestCase):
     fixtures = ["customuser.json"]
