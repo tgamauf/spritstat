@@ -122,6 +122,7 @@ class ChartConfig implements ChartConfiguration {
             },
             wheel: {
               enabled: isInteractive,
+              modifierKey: "ctrl"
             },
           },
         },
