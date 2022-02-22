@@ -48,7 +48,7 @@ class StationSerializer(serializers.ModelSerializer):
         )
 
 
-class PriceSerializer(serializers.ModelSerializer):
+class PriceHistorySerializer(serializers.ModelSerializer):
     class Meta:
         ordering = ["datetime"]
         model = Price

@@ -14,8 +14,8 @@ urlpatterns = [
     ),
     path(
         "api/v1/sprit/<int:location_id>/prices/",
-        views.PriceList.as_view(),
-        name="prices",
+        views.PriceHistory.as_view(),
+        name="prices_history",
     ),
     path(
         "api/v1/sprit/<int:location_id>/prices/day_of_week/",

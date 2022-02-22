@@ -102,8 +102,8 @@ class AbstractPriceList(ABC, generics.ListAPIView):
         pass
 
 
-class PriceList(AbstractPriceList):
-    serializer_class = serializers.PriceSerializer
+class PriceHistory(AbstractPriceList):
+    serializer_class = serializers.PriceHistorySerializer
 
     def _process_data(self, data: QuerySet[models.Price]) -> QuerySet[models.Price]:
         return data
