@@ -8,9 +8,10 @@ import LocationField from "./LocationField";
 import CurrentPriceField from "../currentPrice/CurrentPriceField";
 import {useGetLocationsQuery} from "./locationApiSlice";
 import LoadingError from "../../common/components/LoadingError";
-import LocationPriceLineChart from "./LocationPriceLineChart";
+import PriceHistoryChart from "./PriceHistoryChart";
 import DeleteLocationModal, {NO_LOCATION_ID} from "./DeleteLocationModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import PriceDayOfWeekChart from "./PriceDayOfWeekChart";
 
 
 const breadcrumb = {
@@ -89,10 +90,16 @@ export default function LocationDetails(): JSX.Element {
                 <CurrentPriceField location={location} isInteractive={true}/>
               </div>
             </div>
-            <div className="tile box" data-test="location-history">
-              <LocationPriceLineChart
+            <div className="tile box" data-test="price-history">
+              <PriceHistoryChart
                 location={location}
                 isInteractive={true}
+                setErrorMessage={setErrorMessage}
+              />
+            </div>
+            <div className="tile box" data-test="price-day-of-week">
+              <PriceDayOfWeekChart
+                location={location}
                 setErrorMessage={setErrorMessage}
               />
             </div>

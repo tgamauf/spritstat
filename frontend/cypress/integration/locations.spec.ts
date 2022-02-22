@@ -151,7 +151,8 @@ describe("Validate location page content", () => {
     cy.getBySel("block-error").should("not.exist");
     cy.getBySel("btn-delete-location-small").should("exist");
     cy.getBySel("location-info").should("exist");
-    cy.getBySel("location-history").should("exist");
+    cy.getBySel("price-history").should("exist");
+    cy.getBySel("price-day-of-week").should("exist");
 
     // Test location not found
     cy.intercept(
@@ -169,7 +170,8 @@ describe("Validate location page content", () => {
     cy.getBySel("btn-reload-location").should("exist");
     cy.getBySel("btn-delete-location-small").should("not.exist");
     cy.getBySel("location-info").should("not.exist");
-    cy.getBySel("location-history").should("not.exist");
+    cy.getBySel("price-history").should("not.exist");
+    cy.getBySel("price-day-of-week").should("not.exist");
   });
 });
 

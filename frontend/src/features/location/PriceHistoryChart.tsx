@@ -17,7 +17,7 @@ import zoomPlugin from "chartjs-plugin-zoom";
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
-import {useLazyGetPriceChartDataQuery, useGetStationsQuery} from "./locationApiSlice";
+import {useLazyGetPriceHistoryDataQuery, useGetStationsQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 
 Chart.register(
@@ -39,8 +39,8 @@ interface ChartDataProps {
 }
 
 class ChartData {
-  labels: string[];
-  datasets: {
+  public labels: string[];
+  public datasets: {
     label: "Geringster Preis";
     borderColor: string;
     data: number[];
@@ -139,7 +139,7 @@ interface Props {
   setErrorMessage: (msg: string) => void;
 }
 
-export default function LocationPriceLineChart(
+export default function PriceHistoryChart(
   {location, isInteractive, setErrorMessage}: Props
 ) {
   const {
@@ -152,7 +152,7 @@ export default function LocationPriceLineChart(
   const [
     getPriceData,
     {isFetching: isPriceFetching}
-  ] = useLazyGetPriceChartDataQuery();
+  ] = useLazyGetPriceHistoryDataQuery();
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const isMobile = useIsMobile();
@@ -266,6 +266,6 @@ export default function LocationPriceLineChart(
   return mainComponent;
 }
 
-export type {Props as LocationPriceLineChartProps};
+export type {Props as PriceHistoryChartProps};
 
-export {DateRange as LocationPriceLineChartDateRange};
+export {DateRange as PriceHistoryChartDateRange};

@@ -23,7 +23,9 @@ const fuelTypeMap = new Map<FuelType, string>([
 const fuelTypeReverseMap = reverseMap<FuelType, string>(fuelTypeMap);
 
 const dateRangeMap = new Map<DateRange, string>([
-  [DateRange.OneMonth, "1m"], [DateRange.SixMonths, "6m"]
+  [DateRange.OneMonth, "1m"],
+  [DateRange.ThreeMonths, "3m"],
+  [DateRange.SixMonths, "6m"]
 ])
 
 interface LocationData {
@@ -54,30 +56,35 @@ interface Price {
   min_amount: number;
 }
 
-interface PriceChartRequestData {
+interface PriceRequestData {
   locationId: number;
   dateRange?: DateRange;
 }
 
-interface PriceChartData {
+interface PriceHistoryData {
   labels: string[];
   data: number[];
   stationsMap: number[][];
 }
 
+type PriceDayOfWeekData = {
+  labels: string[];
+  data: number[];
+};
+
 const extendedApi = spritstatApi.injectEndpoints({
   endpoints: (builder) => ({
     addLocation: builder.mutation<boolean, LocationData>({
       query: ({
-        type, name, latitude, longitude, regionCode, regionType, fuelType
-     }) => {
+                type, name, latitude, longitude, regionCode, regionType, fuelType
+              }) => {
         return {
           url: "sprit/",
           method: "POST",
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-         },
+          },
           body: {
             type: locationTypeMap.get(type as LocationType),
             name,
@@ -86,11 +93,11 @@ const extendedApi = spritstatApi.injectEndpoints({
             region_code: regionCode,
             region_type: regionTypeMap.get(regionType as RegionType),
             fuel_type: fuelTypeMap.get(fuelType as FuelType)
-         }
-       };
-     },
+          }
+        };
+      },
       invalidatesTags: ["Locations"]
-   }),
+    }),
     deleteLocation: builder.mutation<boolean, number>({
       query: (id) => {
         return {
@@ -99,14 +106,14 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-         }
-       };
-     },
+          }
+        };
+      },
       transformResponse: () => true,
       invalidatesTags: (result, error, arg) => {
         return ["Locations"]
-     }
-   }),
+      }
+    }),
     getLocations: builder.query<Location[], void>({
       query: () => {
         return {
@@ -114,25 +121,25 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-         }
-       };
-     },
+          }
+        };
+      },
       transformResponse: (data: LocationResults) => {
-        return data.map((loc) => {
+        return data.map((location) => {
           return {
-            id: loc.id,
-            type: locationTypeReverseMap.get(loc.type) as LocationType,
-            name: loc.name,
-            latitude: loc.latitude,
-            longitude: loc.longitude,
-            regionCode: loc.region_code,
-            regionType: regionTypeReverseMap.get(loc.region_type as string),
-            fuelType: fuelTypeReverseMap.get(loc.fuel_type) as FuelType
-         };
-       });
-     },
+            id: location.id,
+            type: locationTypeReverseMap.get(location.type) as LocationType,
+            name: location.name,
+            latitude: location.latitude,
+            longitude: location.longitude,
+            regionCode: location.region_code,
+            regionType: regionTypeReverseMap.get(location.region_type as string),
+            fuelType: fuelTypeReverseMap.get(location.fuel_type) as FuelType
+          };
+        });
+      },
       providesTags: ["Locations"]
-   }),
+    }),
     getStations: builder.query<StationMap, void>({
       query: () => {
         return {
@@ -140,44 +147,69 @@ const extendedApi = spritstatApi.injectEndpoints({
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-         }
-       };
-     },
+          }
+        };
+      },
       transformResponse: (data: Station[]) => {
-        return data.reduce(function(map: StationMap, item) {
-            map[item.id] = item;
-            return map;
-         }, {})
-     }
-   }),
-    getPriceChartData: builder.query<PriceChartData, PriceChartRequestData>({
+        return data.reduce(function (map: StationMap, item) {
+          map[item.id] = item;
+          return map;
+        }, {})
+      }
+    }),
+    getPriceHistoryData: builder.query<PriceHistoryData, PriceRequestData>({
       query: ({locationId, dateRange}) => {
         let url = `sprit/${locationId}/prices/`;
         if (dateRange !== DateRange.All) {
           url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
-       }
+        }
         return {
           url,
           headers: {
             ...DEFAULT_HEADERS,
             "X-CSRFToken": window.csrfToken
-         }
-       };
-     },
+          }
+        };
+      },
       transformResponse: (data: Price[]) => {
-        const chartData: PriceChartData = {labels: [], data: [], stationsMap: []};
-        for (const i in data) {
+        const chartData: PriceHistoryData = {labels: [], data: [], stationsMap: []};
+        for (let i = 0; i < data.length; i++) {
           const entry = data[i];
           chartData.labels.push(
             moment.tz(entry.datetime, TIMEZONE).format("DD.MM.YY HH:mm")
           );
           chartData.data.push(entry.min_amount);
           chartData.stationsMap.push(entry.stations);
-       }
+        }
         return chartData;
-     }
-   }),
- })
+      }
+    }),
+    getPriceDayOfWeekData: builder.query<PriceDayOfWeekData, PriceRequestData>({
+      query: ({locationId, dateRange}) => {
+        let url = `sprit/${locationId}/prices/day_of_week/`;
+        if (dateRange !== DateRange.All) {
+          url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
+        }
+        return {
+          url,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          }
+        };
+      },
+      transformResponse: (data: {day_of_week: number, amount: number }[]) => {
+        const chartData: PriceDayOfWeekData = {labels: [], data: []};
+        data.forEach((entry) => {
+          chartData.labels.push(
+            moment().day(entry.day_of_week).format("dddd")
+          );
+          chartData.data.push(entry.amount);
+        });
+        return chartData;
+      }
+    }),
+  })
 })
 
 export const {
@@ -185,7 +217,6 @@ export const {
   useDeleteLocationMutation,
   useGetLocationsQuery,
   useGetStationsQuery,
-  useLazyGetPriceChartDataQuery,
+  useLazyGetPriceDayOfWeekDataQuery,
+  useLazyGetPriceHistoryDataQuery,
 } = extendedApi;
-
-export type {PriceChartRequestData};

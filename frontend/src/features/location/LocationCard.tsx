@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 import CurrentPriceField from "../currentPrice/CurrentPriceField";
 import LocationField from "./LocationField";
-import LocationPriceLineChart from "./LocationPriceLineChart";
+import PriceHistoryChart from "./PriceHistoryChart";
 import {Location, RouteNames} from "../../common/types";
 
 interface Props {
@@ -26,7 +26,7 @@ export default function LocationCard({location, setErrorMessage}: Props): JSX.El
         </div>
       </header>
       <div className="card-content">
-        <LocationPriceLineChart
+        <PriceHistoryChart
           location={location}
           isInteractive={false}
           setErrorMessage={setErrorMessage}
