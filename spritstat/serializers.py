@@ -67,3 +67,11 @@ class PriceDayOfWeekSerializer(serializers.BaseSerializer):
 
     def to_representation(self, instance):
         return instance
+
+
+class PriceDayOfMonthSerializer(serializers.BaseSerializer):
+    day_of_month = serializers.IntegerField(min_value=1, max_value=31)
+    amount = serializers.FloatField(min_value=0)
+
+    def to_representation(self, instance):
+        return instance

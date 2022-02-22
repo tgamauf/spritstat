@@ -17,7 +17,7 @@
     "pk": 2,
     "fields": {
       "location": 2,
-      "datetime": "2021-07-11T12:00:00.000Z",
+      "datetime": "2021-07-31T12:00:00.000Z",
       "min_amount": 2.0,
       "max_amount": 1.349,
       "average_amount": 1.3215,
@@ -30,7 +30,7 @@
     "pk": 3,
     "fields": {
       "location": 2,
-      "datetime": "2021-12-05T12:00:00.000Z",
+      "datetime": "2021-12-10T12:00:00.000Z",
       "min_amount": 3.0,
       "max_amount": 1.349,
       "average_amount": 1.316,

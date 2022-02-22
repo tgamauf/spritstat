@@ -116,3 +116,12 @@ class PriceDayOfWeek(AbstractPriceList):
         self, data: Union[models.PriceQuerySet, QuerySet]
     ) -> Union[models.PriceQuerySet, QuerySet]:
         return data.average_day_of_week()
+
+
+class PriceDayOfMonth(AbstractPriceList):
+    serializer_class = serializers.PriceDayOfMonthSerializer
+
+    def _process_data(
+        self, data: Union[models.PriceQuerySet, QuerySet]
+    ) -> Union[models.PriceQuerySet, QuerySet]:
+        return data.average_day_of_month()

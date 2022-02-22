@@ -14,21 +14,13 @@ import {
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
-import {useLazyGetPriceDayOfWeekDataQuery} from "./locationApiSlice";
+import {PriceDayQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
 
 const BAR_CHART_CONTAINER_NAME = "bar-chart";
-const BAR_COLORS = [
-  "#fd7f6f",
-  "#7eb0d5",
-  "#b2e061",
-  "#bd7ebe",
-  "#ffb55a",
-  "#ffee65",
-  "#beb9db"
-];
+const BAR_COLOR = "#88B04B";
 const BAR_LOWER_BOUND_FRACTION = 0.999;
 
 interface ChartDataProps {
@@ -41,8 +33,8 @@ class ChartData {
   public datasets: {
     label: "Durchschnittlich geringster Preis";
     data: number[];
-    backgroundColor: string[];
-    borderColor: string[];
+    backgroundColor: string;
+    borderColor: string;
   }[];
 
   constructor(props?: ChartDataProps) {
@@ -51,8 +43,8 @@ class ChartData {
       {
         label: "Durchschnittlich geringster Preis",
         data: [],
-        backgroundColor: BAR_COLORS,
-        borderColor: BAR_COLORS
+        backgroundColor: BAR_COLOR,
+        borderColor: BAR_COLOR
       },
     ];
 
@@ -71,8 +63,11 @@ class ChartConfig implements ChartConfiguration {
   constructor(isMobile: boolean, data: ChartData) {
     // As the difference between the weekdays isn't really all too significant
     //  we set the minimum so that the lowest bar is BAR_LOWER_BOUND_FRACTION of
-    //  the scale.
-    const minValue = Math.min(...data.datasets[0].data);
+    //  the scale. We ignore 0 as this isn't a valid value, but is added if no
+    //  value is available for a day.
+    const minValue = Math.min(...data.datasets[0].data.filter(
+      (value) => value > 0)
+    );
     this.options = {
       interaction: {
         mode: "nearest",
@@ -93,12 +88,16 @@ class ChartConfig implements ChartConfiguration {
 }
 
 interface Props {
+  name: string;
   location: Location;
+  queryHook: PriceDayQuery,
   setErrorMessage: (msg: string) => void;
 }
 
-export default function PriceDayOfWeekChart({location, setErrorMessage}: Props) {
-  const [getPriceData, {isFetching}] = useLazyGetPriceDayOfWeekDataQuery();
+export default function PriceDayOfXChart(
+  {name, location, queryHook, setErrorMessage}: Props
+) {
+  const [getPriceData, {isFetching}] = queryHook();
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const isMobile = useIsMobile();
@@ -114,7 +113,7 @@ export default function PriceDayOfWeekChart({location, setErrorMessage}: Props) 
         setChartData(new ChartData(data));
       })
       .catch((e) => {
-        console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
+        console.error(`[${name}] failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(
           "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
           "probier es nochmal."
@@ -144,7 +143,7 @@ export default function PriceDayOfWeekChart({location, setErrorMessage}: Props) 
       mainComponent = (
         <span>
           Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-          vorhanden. In ein paar Stunden gibt es aber schon etwas zu sehen!
+          vorhanden.
         </span>
       );
     } else {
@@ -172,7 +171,3 @@ export default function PriceDayOfWeekChart({location, setErrorMessage}: Props) 
 
   return mainComponent;
 }
-
-export type {Props as PriceHistoryChartProps};
-
-export {DateRange as PriceHistoryChartDateRange};
