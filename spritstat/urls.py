@@ -23,6 +23,11 @@ urlpatterns = [
         name="prices_day_of_week",
     ),
     path(
+        "api/v1/sprit/<int:location_id>/prices/day_of_month/",
+        views.PriceDayOfMonth.as_view(),
+        name="prices_day_of_month",
+    ),
+    path(
         "api/v1/sprit/station/",
         views.StationList.as_view(),
         name="stations",

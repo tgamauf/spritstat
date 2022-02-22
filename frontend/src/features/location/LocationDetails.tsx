@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {faChartLine, faTrash} from "@fortawesome/free-solid-svg-icons";
 
@@ -6,12 +6,16 @@ import BasePage from "../../common/components/BasePage";
 import {Location, RouteNames} from "../../common/types";
 import LocationField from "./LocationField";
 import CurrentPriceField from "../currentPrice/CurrentPriceField";
-import {useGetLocationsQuery} from "./locationApiSlice";
+import {
+  useGetLocationsQuery,
+  useLazyGetPriceDayOfMonthDataQuery,
+  useLazyGetPriceDayOfWeekDataQuery
+} from "./locationApiSlice";
 import LoadingError from "../../common/components/LoadingError";
 import PriceHistoryChart from "./PriceHistoryChart";
-import DeleteLocationModal, {NO_LOCATION_ID} from "./DeleteLocationModal";
+import DeleteLocationModal from "./DeleteLocationModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import PriceDayOfWeekChart from "./PriceDayOfWeekChart";
+import PriceDayOfXChart from "./PriceDayOfXChart";
 
 
 const breadcrumb = {
@@ -98,8 +102,18 @@ export default function LocationDetails(): JSX.Element {
               />
             </div>
             <div className="tile box" data-test="price-day-of-week">
-              <PriceDayOfWeekChart
+              <PriceDayOfXChart
+                name="day of week"
                 location={location}
+                queryHook={useLazyGetPriceDayOfWeekDataQuery}
+                setErrorMessage={setErrorMessage}
+              />
+            </div>
+            <div className="tile box" data-test="price-day-of-month">
+              <PriceDayOfXChart
+                name="day of month"
+                location={location}
+                queryHook={useLazyGetPriceDayOfMonthDataQuery}
                 setErrorMessage={setErrorMessage}
               />
             </div>

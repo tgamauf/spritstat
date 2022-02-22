@@ -5,7 +5,7 @@ from typing import Optional, Union
 from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models import Avg
-from django.db.models.functions import Length, ExtractIsoWeekDay
+from django.db.models.functions import Length, ExtractIsoWeekDay, ExtractDay
 
 from django_q.models import Schedule
 from users.models import CustomUser
@@ -115,6 +115,14 @@ class PriceQuerySet(models.QuerySet):
             .values("day_of_week")
             .annotate(amount=Avg("min_amount"))
             .order_by("day_of_week")
+        )
+
+    def average_day_of_month(self) -> Union["PriceQuerySet", models.QuerySet]:
+        return (
+            self.annotate(day_of_month=ExtractDay("datetime"))
+            .values("day_of_month")
+            .annotate(amount=Avg("min_amount"))
+            .order_by("day_of_month")
         )
 
 

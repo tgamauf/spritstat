@@ -61,16 +61,14 @@ interface PriceRequestData {
   dateRange?: DateRange;
 }
 
-interface PriceHistoryData {
+interface PriceData {
   labels: string[];
   data: number[];
-  stationsMap: number[][];
 }
 
-type PriceDayOfWeekData = {
-  labels: string[];
-  data: number[];
-};
+interface PriceHistoryData extends PriceData{
+  stationsMap: number[][];
+}
 
 const extendedApi = spritstatApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -184,7 +182,7 @@ const extendedApi = spritstatApi.injectEndpoints({
         return chartData;
       }
     }),
-    getPriceDayOfWeekData: builder.query<PriceDayOfWeekData, PriceRequestData>({
+    getPriceDayOfWeekData: builder.query<PriceData, PriceRequestData>({
       query: ({locationId, dateRange}) => {
         let url = `sprit/${locationId}/prices/day_of_week/`;
         if (dateRange !== DateRange.All) {
@@ -199,13 +197,62 @@ const extendedApi = spritstatApi.injectEndpoints({
         };
       },
       transformResponse: (data: {day_of_week: number, amount: number }[]) => {
-        const chartData: PriceDayOfWeekData = {labels: [], data: []};
-        data.forEach((entry) => {
-          chartData.labels.push(
-            moment().day(entry.day_of_week).format("dddd")
-          );
-          chartData.data.push(entry.amount);
-        });
+        const chartData: PriceData = {labels: [], data: []};
+
+        // No data, so just return the empty array.
+        if (data.length <= 0) {
+          return chartData;
+        }
+
+        let index = 0;
+        for (let weekday = 1 ; weekday <= 7 ; weekday++) {
+          chartData.labels.push(moment().day(weekday).format("dddd"));
+
+          // If no data is available for this weekday add 0 to the data.
+          if ((index >= data.length) || data[index].day_of_week > weekday) {
+            chartData.data.push(0);
+          } else {
+            chartData.data.push(data[index].amount);
+            index++;
+          }
+        }
+        return chartData;
+      }
+    }),
+    getPriceDayOfMonthData: builder.query<PriceData, PriceRequestData>({
+      query: ({locationId, dateRange}) => {
+        let url = `sprit/${locationId}/prices/day_of_month/`;
+        if (dateRange !== DateRange.All) {
+          url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
+        }
+        return {
+          url,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          }
+        };
+      },
+      transformResponse: (data: {day_of_month: number, amount: number }[]) => {
+        const chartData: PriceData = {labels: [], data: []};
+
+        // No data, so just return the empty array.
+        if (data.length <= 0) {
+          return chartData;
+        }
+
+        let index = 0;
+        for (let dayOfMonth = 1 ; dayOfMonth <= 31 ; dayOfMonth++) {
+          chartData.labels.push(String(dayOfMonth));
+
+          // If no data is available for this weekday add 0 to the data.
+          if ((index >= data.length) || data[index].day_of_month > dayOfMonth) {
+            chartData.data.push(0);
+          } else {
+            chartData.data.push(data[index].amount);
+            index++;
+          }
+        }
         return chartData;
       }
     }),
@@ -217,6 +264,9 @@ export const {
   useDeleteLocationMutation,
   useGetLocationsQuery,
   useGetStationsQuery,
+  useLazyGetPriceDayOfMonthDataQuery,
   useLazyGetPriceDayOfWeekDataQuery,
   useLazyGetPriceHistoryDataQuery,
 } = extendedApi;
+
+export type PriceDayQuery = typeof useLazyGetPriceDayOfMonthDataQuery | typeof useLazyGetPriceDayOfWeekDataQuery;

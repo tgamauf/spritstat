@@ -26,7 +26,7 @@ export default function ConfirmEmail(): JSX.Element {
             {replace: true}
           );
        } else {
-          console.log("Email verification returned false");
+          console.error("Email verification returned false");
        }
      })
       .catch((e: any) => {
