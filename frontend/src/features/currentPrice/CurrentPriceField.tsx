@@ -71,7 +71,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
               <div className="card-value mt-0">
                 {stations.map((item, index) => {
                   return (
-                    <div className="is-flex is-flex-wrap-nowrap">
+                    <div className="is-flex is-flex-wrap-nowrap" key={index}>
                       <span className="mr-1">&bull;</span>
                       {isInteractive ? (
                         <a

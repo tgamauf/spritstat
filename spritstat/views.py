@@ -1,12 +1,13 @@
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
+from abc import ABC, abstractmethod
 from django.conf import settings
+from django.db.models import QuerySet
 from django.shortcuts import render, get_object_or_404
 from django_q.tasks import schedule, Schedule
-from enum import Enum
 from rest_framework import generics
 from rest_framework import permissions
-from typing import List, Optional
+from typing import Union
+
+from rest_framework.serializers import Serializer
 
 from . import models
 from .permissions import IsOwner
@@ -73,35 +74,11 @@ class StationList(generics.ListAPIView):
         return models.Station.objects.filter(users=self.request.user)
 
 
-class PriceList(generics.ListAPIView):
-    serializer_class = serializers.PriceSerializer
+class AbstractPriceList(ABC, generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwner]
+    serializer_class: Serializer
 
-    class DateRange(str, Enum):
-        OneMonth = "1m"
-        SixMonths = "6m"
-
-    def _get_date_range_filtered(
-        self, location: models.Location, date_range: Optional[DateRange]
-    ) -> List[models.Price]:
-        now = datetime.now()
-
-        if date_range == self.DateRange.OneMonth:
-            data = models.Price.objects.filter(
-                location=location,
-                datetime__gte=now - relativedelta(months=1),
-            )
-        elif date_range == self.DateRange.SixMonths:
-            data = models.Price.objects.filter(
-                location=location,
-                datetime__gte=now - relativedelta(months=6),
-            )
-        else:
-            data = models.Price.objects.filter(location=location)
-
-        return data
-
-    def get_queryset(self):
+    def get_queryset(self) -> Union[models.PriceQuerySet, QuerySet]:
         location_id = self.kwargs["location_id"]
         location = get_object_or_404(models.Location, id=location_id)
 
@@ -114,5 +91,28 @@ class PriceList(generics.ListAPIView):
 
         date_range = self.request.query_params.get("date_range")
 
-        # We only list the objects of the current location
-        return self._get_date_range_filtered(location, date_range)
+        return self._process_data(
+            models.Price.objects.filter(location=location).date_range(date_range)
+        )
+
+    @abstractmethod
+    def _process_data(
+        self, data: Union[models.PriceQuerySet, QuerySet]
+    ) -> Union[models.PriceQuerySet, QuerySet]:
+        pass
+
+
+class PriceHistory(AbstractPriceList):
+    serializer_class = serializers.PriceHistorySerializer
+
+    def _process_data(self, data: QuerySet[models.Price]) -> QuerySet[models.Price]:
+        return data
+
+
+class PriceDayOfWeek(AbstractPriceList):
+    serializer_class = serializers.PriceDayOfWeekSerializer
+
+    def _process_data(
+        self, data: Union[models.PriceQuerySet, QuerySet]
+    ) -> Union[models.PriceQuerySet, QuerySet]:
+        return data.average_day_of_week()

@@ -8,34 +8,13 @@ from .models import CustomUser
 from .password_validation import ZxcvbnValidator
 
 
-class _NoDatabaseMixin:
-    # This mixin implements database related methods for serializers that do not
-    #  use the database. They just raise a NotImplementedError, just as the
-    #  base class, as they are not supposed to be used anyway.
-
-    def create(self, validated_data) -> None:
-        raise NotImplementedError(
-            "Database operations are not supported by this serializer"
-        )
-
-    def update(self, instance, validated_data) -> None:
-        raise NotImplementedError(
-            "Database operations are not supported by this serializer"
-        )
-
-    def save(self, **kwargs) -> None:
-        raise NotImplementedError(
-            "Database operations are not supported by this serializer"
-        )
-
-
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ("email", "has_beta_access")
 
 
-class PasswordValidationSerializer(_NoDatabaseMixin, serializers.Serializer):
+class PasswordValidationSerializer(serializers.Serializer):
     user: Optional[CustomUser]
     email = serializers.EmailField(required=False, allow_blank=True, write_only=True)
     password = serializers.CharField(write_only=True)
@@ -92,11 +71,11 @@ class PasswordValidationSerializer(_NoDatabaseMixin, serializers.Serializer):
         return validator.custom_validate(password, email, tokens)
 
 
-class CustomLoginSerializer(_NoDatabaseMixin, LoginSerializer):
+class CustomLoginSerializer(LoginSerializer):
     remember = serializers.BooleanField(required=False, allow_null=True, default=False)
 
 
-class ContactFormSerializer(_NoDatabaseMixin, serializers.Serializer):
+class ContactFormSerializer(serializers.Serializer):
     contact_form_id = serializers.CharField(max_length=20)
     name = serializers.CharField(max_length=50, allow_blank=True)
     subject = serializers.CharField(max_length=100)

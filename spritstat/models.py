@@ -1,11 +1,17 @@
+from datetime import datetime
+from enum import Enum
+from typing import Optional, Union
+
+from dateutil.relativedelta import relativedelta
 from django.db import models
-from django.db.models.functions import Length
+from django.db.models import Avg
+from django.db.models.functions import Length, ExtractIsoWeekDay
 
 from django_q.models import Schedule
 from users.models import CustomUser
 
 
-# We need to modify the CharField so it provides the length function for our
+# We need to modify the CharField, so it provides the length function for our
 #  constraints
 models.CharField.register_lookup(Length)
 
@@ -74,7 +80,47 @@ class Station(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=7)
 
 
+class DateRange(str, Enum):
+    OneMonth = "1m"
+    ThreeMonth = "3m"
+    SixMonths = "6m"
+
+
+class PriceQuerySet(models.QuerySet):
+    def date_range(
+        self, date_range: Optional[DateRange]
+    ) -> Union["PriceQuerySet", models.QuerySet]:
+        now = datetime.now()
+
+        if date_range == DateRange.OneMonth:
+            data = self.filter(
+                datetime__gte=now - relativedelta(months=1),
+            )
+        elif date_range == DateRange.ThreeMonth:
+            data = self.filter(
+                datetime__gte=now - relativedelta(months=3),
+            )
+        elif date_range == DateRange.SixMonths:
+            data = self.filter(
+                datetime__gte=now - relativedelta(months=6),
+            )
+        else:
+            data = self.all()
+
+        return data
+
+    def average_day_of_week(self) -> Union["PriceQuerySet", models.QuerySet]:
+        return (
+            self.annotate(day_of_week=ExtractIsoWeekDay("datetime"))
+            .values("day_of_week")
+            .annotate(amount=Avg("min_amount"))
+            .order_by("day_of_week")
+        )
+
+
 class Price(models.Model):
+    objects = PriceQuerySet.as_manager()
+
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, related_name="prices"
     )

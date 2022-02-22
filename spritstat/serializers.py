@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from .models import Price, Station, Location
+from .models import Price, Station, Location, PriceQuerySet
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -48,7 +48,7 @@ class StationSerializer(serializers.ModelSerializer):
         )
 
 
-class PriceSerializer(serializers.ModelSerializer):
+class PriceHistorySerializer(serializers.ModelSerializer):
     class Meta:
         ordering = ["datetime"]
         model = Price
@@ -59,3 +59,11 @@ class PriceSerializer(serializers.ModelSerializer):
             "stations",
             "min_amount",
         )
+
+
+class PriceDayOfWeekSerializer(serializers.BaseSerializer):
+    day_of_week = serializers.IntegerField(min_value=1, max_value=7)
+    amount = serializers.FloatField(min_value=0)
+
+    def to_representation(self, instance):
+        return instance
