@@ -16,9 +16,10 @@ import zoomPlugin from "chartjs-plugin-zoom";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
-import {useIsMobile} from "../../common/utils";
+import {formatDatetime, useIsMobile} from "../../common/utils";
 import {useLazyGetPriceHistoryDataQuery, useGetStationsQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
+import {useGetCurrentPriceQuery} from "./priceApiSlice";
 
 Chart.register(
   CategoryScale,
@@ -143,6 +144,7 @@ interface Props {
 export default function PriceHistoryChart(
   {location, isInteractive, setErrorMessage}: Props
 ) {
+  const {data: currentPriceData, isSuccess} = useGetCurrentPriceQuery(location);
   const {
     data: stations,
     error: stationsError,
@@ -166,7 +168,20 @@ export default function PriceHistoryChart(
   useEffect(() => {
     getPriceData({locationId: location.id, dateRange: selectedDateRange}).unwrap()
       .then((data) => {
-        setChartData(new ChartData(data));
+        let finalData;
+        if (isSuccess && currentPriceData) {
+          finalData = {
+            labels: [...data.labels, formatDatetime()],   // Add current timestamp
+            data: [...data.data, currentPriceData.amount],
+            // There is a small chance that one of the stations hasn't been seen
+            //  yet, which would mean that it wouldn't be shown in the tooltip. We
+            //  are going to live with this issue.
+            stationsMap: [...data.stationsMap, currentPriceData.stations.map((item) => item.id)]
+          }
+        } else {
+          finalData = data;
+        }
+        setChartData(new ChartData(finalData));
      })
       .catch((e) => {
         console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
@@ -175,7 +190,7 @@ export default function PriceHistoryChart(
           "probier es nochmal."
         );
      });
- }, [location, selectedDateRange]);
+ }, [location, selectedDateRange, isSuccess]);
 
   useEffect(() => {
     if (isStationsError) {

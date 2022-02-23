@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import moment from "moment-timezone";
 
 import type {RootState, AppDispatch} from "../app/store";
-import {MAX_SCREENSIZE_MOBILE} from "./constants";
+import {MAX_SCREENSIZE_MOBILE, TIMEZONE} from "./constants";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -29,4 +30,8 @@ function reverseMap<Key, Value>(map: Map<Key, Value>): Map<Value, Key> {
   );
 }
 
-export {reverseMap, useAppDispatch, useAppSelector, useIsMobile};
+function formatDatetime(datetime?: string): string {
+  return moment.tz(datetime, TIMEZONE).format("DD.MM.YY HH:mm")
+}
+
+export {formatDatetime, reverseMap, useAppDispatch, useAppSelector, useIsMobile};

@@ -1,5 +1,7 @@
 import {NamedLocation, Station} from "./types";
 
+const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 const MAX_SCREENSIZE_MOBILE = 768;
 
 const INVALID_COORDINATES = {
@@ -24,5 +26,6 @@ export {
   INVALID_COORDINATES,
   INVALID_LOCATION,
   INVALID_STATION,
-  MAX_SCREENSIZE_MOBILE
+  MAX_SCREENSIZE_MOBILE,
+  TIMEZONE
 };
