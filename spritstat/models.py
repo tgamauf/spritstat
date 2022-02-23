@@ -127,6 +127,9 @@ class PriceQuerySet(models.QuerySet):
 
 
 class Price(models.Model):
+    class Meta:
+        ordering = ["datetime"]
+
     objects = PriceQuerySet.as_manager()
 
     location = models.ForeignKey(
