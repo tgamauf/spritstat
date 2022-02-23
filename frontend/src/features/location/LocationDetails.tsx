@@ -5,7 +5,7 @@ import {faChartLine, faTrash} from "@fortawesome/free-solid-svg-icons";
 import BasePage from "../../common/components/BasePage";
 import {Location, RouteNames} from "../../common/types";
 import LocationField from "./LocationField";
-import CurrentPriceField from "../currentPrice/CurrentPriceField";
+import CurrentPriceField from "./CurrentPriceField";
 import {
   useGetLocationsQuery,
   useLazyGetPriceDayOfMonthDataQuery,

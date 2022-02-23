@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-import CurrentPriceField from "../currentPrice/CurrentPriceField";
+import CurrentPriceField from "./CurrentPriceField";
 import LocationField from "./LocationField";
 import PriceHistoryChart from "./PriceHistoryChart";
 import {Location, RouteNames} from "../../common/types";
