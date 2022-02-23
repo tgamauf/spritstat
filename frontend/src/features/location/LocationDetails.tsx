@@ -18,7 +18,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PriceDayOfXChart from "./PriceDayOfXChart";
 
 
-const breadcrumb = {
+const BREADCRUMB = {
   name: "Ort",
   icon: faChartLine,
   destination: RouteNames.LocationDetails,
@@ -143,10 +143,9 @@ export default function LocationDetails(): JSX.Element {
     );
   }
 
-  breadcrumb.name = `Ort #${locationId}`;
   return (
     <BasePage
-      breadcrumbItems={[breadcrumb]}
+      breadcrumbItems={[BREADCRUMB]}
       active={errorMessage !== ""}
       message={errorMessage}
       discardMessage={() => setErrorMessage("")}
