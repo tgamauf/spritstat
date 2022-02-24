@@ -192,7 +192,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {day_of_week: number, amount: number }[]) => {
+      transformResponse: (data: {day_of_week: number, value: number }[]) => {
         const chartData: PriceData = {labels: [], data: []};
 
         // No data, so just return the empty array.
@@ -208,7 +208,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           if ((index >= data.length) || data[index].day_of_week > weekday) {
             chartData.data.push(0);
           } else {
-            chartData.data.push(data[index].amount);
+            chartData.data.push(data[index].value);
             index++;
           }
         }
@@ -229,7 +229,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {day_of_month: number, amount: number }[]) => {
+      transformResponse: (data: {day_of_month: number, value: number }[]) => {
         const chartData: PriceData = {labels: [], data: []};
 
         // No data, so just return the empty array.
@@ -245,7 +245,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           if ((index >= data.length) || data[index].day_of_month > dayOfMonth) {
             chartData.data.push(0);
           } else {
-            chartData.data.push(data[index].amount);
+            chartData.data.push(data[index].value);
             index++;
           }
         }

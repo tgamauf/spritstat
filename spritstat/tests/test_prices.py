@@ -137,9 +137,9 @@ class TestPriceDayOfWeek(APITestCase):
         self.assertListEqual(
             response.data,
             [
-                {"day_of_week": 1, "amount": 1.5},  # Price 4 & 5 on Mondays
-                {"day_of_week": 5, "amount": 2.0},  # Price 1 & 3 on Fridays
-                {"day_of_week": 6, "amount": 2.0},  # Price 2 on Saturdays
+                {"day_of_week": 1, "value": 1.5},  # Price 4 & 5 on Mondays
+                {"day_of_week": 5, "value": 2.0},  # Price 1 & 3 on Fridays
+                {"day_of_week": 6, "value": 2.0},  # Price 2 on Saturdays
             ],
         )
 
@@ -156,16 +156,16 @@ class TestPriceDayOfWeek(APITestCase):
                 [entry.value for entry in DateRange],
                 [
                     [  # One month back contains entries 4 & 5
-                        {"day_of_week": 1, "amount": 1.5}
+                        {"day_of_week": 1, "value": 1.5}
                     ],
                     [  # Three months back contains entries 3-5
-                        {"day_of_week": 1, "amount": 1.5},  # Mondays
-                        {"day_of_week": 5, "amount": 3.0},  # Friday
+                        {"day_of_week": 1, "value": 1.5},  # Mondays
+                        {"day_of_week": 5, "value": 3.0},  # Friday
                     ],
                     [  # Six months back contains entries 2-5
-                        {"day_of_week": 1, "amount": 1.5},  # Mondays
-                        {"day_of_week": 5, "amount": 3.0},  # Friday
-                        {"day_of_week": 6, "amount": 2.0},  # Saturdays
+                        {"day_of_week": 1, "value": 1.5},  # Mondays
+                        {"day_of_week": 5, "value": 3.0},  # Friday
+                        {"day_of_week": 6, "value": 2.0},  # Saturdays
                     ],
                 ],
             ):
@@ -235,10 +235,10 @@ class TestPriceDayOfMonth(APITestCase):
         self.assertListEqual(
             response.data,
             [
-                {"day_of_month": 1, "amount": 1.0},  # Price 1 on 1st of month
-                {"day_of_month": 3, "amount": 2.0},  # Price 4 on 3rd of month
-                {"day_of_month": 10, "amount": 2.0},  # Price 3 & 5 on 10th of month
-                {"day_of_month": 31, "amount": 2.0},  # Price 2 on 31st of month
+                {"day_of_month": 1, "value": 1.0},  # Price 1 on 1st of month
+                {"day_of_month": 3, "value": 2.0},  # Price 4 on 3rd of month
+                {"day_of_month": 10, "value": 2.0},  # Price 3 & 5 on 10th of month
+                {"day_of_month": 31, "value": 2.0},  # Price 2 on 31st of month
             ],
         )
 
@@ -254,23 +254,23 @@ class TestPriceDayOfMonth(APITestCase):
                 [entry.value for entry in DateRange],
                 [
                     [  # One month back contains entries 4 & 5
-                        {"day_of_month": 3, "amount": 2.0},
-                        {"day_of_month": 10, "amount": 1.0},
+                        {"day_of_month": 3, "value": 2.0},
+                        {"day_of_month": 10, "value": 1.0},
                     ],
                     [  # Three months back contains entries 3-5
-                        {"day_of_month": 3, "amount": 2.0},
+                        {"day_of_month": 3, "value": 2.0},
                         {
                             "day_of_month": 10,
-                            "amount": 2.0,
+                            "value": 2.0,
                         },  # The 10th is contained twice
                     ],
                     [  # Six months back contains entries 2-5
-                        {"day_of_month": 3, "amount": 2.0},
+                        {"day_of_month": 3, "value": 2.0},
                         {
                             "day_of_month": 10,
-                            "amount": 2.0,
+                            "value": 2.0,
                         },  # The 10th is contained twice
-                        {"day_of_month": 31, "amount": 2.0},
+                        {"day_of_month": 31, "value": 2.0},
                     ],
                 ],
             ):
@@ -286,6 +286,99 @@ class TestPriceDayOfMonth(APITestCase):
 
     def test_station_of_other_user(self):
         url = reverse("prices_day_of_month", args=[1])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_put(self):
+        response = self.client.put(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_patch(self):
+        response = self.client.patch(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_delete(self):
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class TestPriceStationFrequency(APITestCase):
+    fixtures = [
+        "customuser.json",
+        "schedule.json",
+        "location.json",
+        "test_station.json",
+        "test_price.json",
+    ]
+    location_id: int
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.location_id = 2
+        cls.url = reverse("prices_station_frequency", args=[cls.location_id])
+
+    def setUp(self):
+        if not self.id().endswith("_not_logged_in"):
+            self.client.login(username="test2@test.at", password="test")
+
+    def test_not_logged_in(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_ok(self):
+        # Ensure that the correct station frequency is calculated.
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+        # Compare with the calculated amounts
+        self.assertListEqual(
+            response.data,
+            [{"station_id": 2, "frequency": 5}, {"station_id": 3, "frequency": 3}],
+        )
+
+    def test_date_ranges(self):
+        # Test if the correct values are calculated for each date range.
+
+        mock_now = Price.objects.filter(
+            location=self.location_id
+        ).last().datetime + timedelta(days=1)
+        with patch("spritstat.models.datetime") as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            for range_, values in zip(
+                [entry.value for entry in DateRange],
+                [
+                    [  # One month back contains entries 4 & 5
+                        {"station_id": 2, "frequency": 2},
+                        {"station_id": 3, "frequency": 2},
+                    ],
+                    [  # Three months back contains entries 3-5
+                        {"station_id": 2, "frequency": 3},
+                        {"station_id": 3, "frequency": 3},
+                    ],
+                    [  # Six months back contains entries 2-5
+                        {"station_id": 2, "frequency": 4},
+                        {"station_id": 3, "frequency": 3},
+                    ],
+                ],
+            ):
+                with self.subTest(query=range_, values=values):
+                    response = self.client.get(f"{self.url}?date_range={range_}")
+                    self.assertEqual(response.status_code, status.HTTP_200_OK)
+                    self.assertListEqual(response.data, values)
+
+    def test_location_doesnt_exist(self):
+        url = reverse("prices_station_frequency", args=[10])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_station_of_other_user(self):
+        url = reverse("prices_station_frequency", args=[1])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 

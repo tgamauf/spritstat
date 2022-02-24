@@ -63,7 +63,7 @@ class PriceHistorySerializer(serializers.ModelSerializer):
 
 class PriceDayOfWeekSerializer(serializers.BaseSerializer):
     day_of_week = serializers.IntegerField(min_value=1, max_value=7)
-    amount = serializers.FloatField(min_value=0)
+    value = serializers.FloatField(min_value=0)
 
     def to_representation(self, instance):
         return instance
@@ -71,7 +71,15 @@ class PriceDayOfWeekSerializer(serializers.BaseSerializer):
 
 class PriceDayOfMonthSerializer(serializers.BaseSerializer):
     day_of_month = serializers.IntegerField(min_value=1, max_value=31)
-    amount = serializers.FloatField(min_value=0)
+    value = serializers.FloatField(min_value=0)
+
+    def to_representation(self, instance):
+        return instance
+
+
+class PriceStationFrequencySerializer(serializers.BaseSerializer):
+    id = serializers.IntegerField(min_value=1)
+    frequency = serializers.IntegerField(min_value=0)
 
     def to_representation(self, instance):
         return instance
