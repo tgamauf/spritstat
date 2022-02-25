@@ -265,6 +265,7 @@ export default function PriceHistoryChart(
             <DateRangeButton
               items={[
                 {name: "1M", value: DateRange.OneMonth},
+                {name: "3M", value: DateRange.ThreeMonths},
                 {name: "6M", value: DateRange.SixMonths},
                 {name: "Alles", value: DateRange.All},
               ]}

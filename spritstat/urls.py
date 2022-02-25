@@ -28,6 +28,11 @@ urlpatterns = [
         name="prices_day_of_month",
     ),
     path(
+        "api/v1/sprit/<int:location_id>/prices/station_frequency/",
+        views.PriceStationFrequency.as_view(),
+        name="prices_station_frequency",
+    ),
+    path(
         "api/v1/sprit/station/",
         views.StationList.as_view(),
         name="stations",

@@ -16,6 +16,7 @@ import PriceHistoryChart from "./PriceHistoryChart";
 import DeleteLocationModal from "./DeleteLocationModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PriceDayOfXChart from "./PriceDayOfXChart";
+import PriceStationFrequencyChart from "./PriceStationFrequencyChart";
 
 
 const BREADCRUMB = {
@@ -114,6 +115,12 @@ export default function LocationDetails(): JSX.Element {
                 name="day of month"
                 location={location}
                 queryHook={useLazyGetPriceDayOfMonthDataQuery}
+                setErrorMessage={setErrorMessage}
+              />
+            </div>
+            <div className="tile box" data-test="price-station-frequency">
+              <PriceStationFrequencyChart
+                location={location}
                 setErrorMessage={setErrorMessage}
               />
             </div>

@@ -68,6 +68,11 @@ interface PriceHistoryData extends PriceData {
   stationsMap: number[][];
 }
 
+interface StationFrequencyData {
+  stationIds: number[];
+  data: number[];
+}
+
 const extendedApi = spritstatApi.injectEndpoints({
   endpoints: (builder) => ({
     addLocation: builder.mutation<boolean, LocationData>({
@@ -192,7 +197,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {day_of_week: number, amount: number }[]) => {
+      transformResponse: (data: {day_of_week: number, value: number }[]) => {
         const chartData: PriceData = {labels: [], data: []};
 
         // No data, so just return the empty array.
@@ -208,7 +213,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           if ((index >= data.length) || data[index].day_of_week > weekday) {
             chartData.data.push(0);
           } else {
-            chartData.data.push(data[index].amount);
+            chartData.data.push(data[index].value);
             index++;
           }
         }
@@ -229,7 +234,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {day_of_month: number, amount: number }[]) => {
+      transformResponse: (data: {day_of_month: number, value: number }[]) => {
         const chartData: PriceData = {labels: [], data: []};
 
         // No data, so just return the empty array.
@@ -245,10 +250,34 @@ const extendedApi = spritstatApi.injectEndpoints({
           if ((index >= data.length) || data[index].day_of_month > dayOfMonth) {
             chartData.data.push(0);
           } else {
-            chartData.data.push(data[index].amount);
+            chartData.data.push(data[index].value);
             index++;
           }
         }
+        return chartData;
+      }
+    }),
+    getPriceStationFrequency: builder.query<StationFrequencyData, PriceRequestData>({
+      query: ({locationId, dateRange}) => {
+        let url = `sprit/${locationId}/prices/station_frequency/`;
+        if (dateRange !== DateRange.All) {
+          url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
+        }
+        return {
+          url,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          }
+        };
+      },
+      transformResponse: (data: {station_id: number, frequency: number }[]) => {
+        const chartData: StationFrequencyData = {stationIds: [], data: []};
+
+        data.forEach((item) => {
+          chartData.stationIds.push(item.station_id);
+          chartData.data.push(item.frequency);
+        });
         return chartData;
       }
     }),
@@ -263,6 +292,7 @@ export const {
   useLazyGetPriceDayOfMonthDataQuery,
   useLazyGetPriceDayOfWeekDataQuery,
   useLazyGetPriceHistoryDataQuery,
+  useLazyGetPriceStationFrequencyQuery,
 } = extendedApi;
 
 export type PriceDayQuery = typeof useLazyGetPriceDayOfMonthDataQuery | typeof useLazyGetPriceDayOfWeekDataQuery;

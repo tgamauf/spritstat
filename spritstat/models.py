@@ -82,7 +82,7 @@ class Station(models.Model):
 
 class DateRange(str, Enum):
     OneMonth = "1m"
-    ThreeMonth = "3m"
+    ThreeMonths = "3m"
     SixMonths = "6m"
 
 
@@ -96,7 +96,7 @@ class PriceQuerySet(models.QuerySet):
             data = self.filter(
                 datetime__gte=now - relativedelta(months=1),
             )
-        elif date_range == DateRange.ThreeMonth:
+        elif date_range == DateRange.ThreeMonths:
             data = self.filter(
                 datetime__gte=now - relativedelta(months=3),
             )
@@ -113,7 +113,7 @@ class PriceQuerySet(models.QuerySet):
         return (
             self.annotate(day_of_week=ExtractIsoWeekDay("datetime"))
             .values("day_of_week")
-            .annotate(amount=Avg("min_amount"))
+            .annotate(value=Avg("min_amount"))
             .order_by("day_of_week")
         )
 
@@ -121,7 +121,7 @@ class PriceQuerySet(models.QuerySet):
         return (
             self.annotate(day_of_month=ExtractDay("datetime"))
             .values("day_of_month")
-            .annotate(amount=Avg("min_amount"))
+            .annotate(value=Avg("min_amount"))
             .order_by("day_of_month")
         )
 
