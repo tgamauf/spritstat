@@ -1,5 +1,5 @@
 import React, {useLayoutEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {faChartLine, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import BasePage from "../../common/components/BasePage";
@@ -17,8 +17,9 @@ import DeleteLocationModal from "./DeleteLocationModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PriceDayOfXChart from "./PriceDayOfXChart";
 import PriceStationFrequencyChart from "./PriceStationFrequencyChart";
+import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
-const BREADCRUMB = {
+const breadcrumb: BreadcrumbItem = {
   name: "Ort",
   icon: faChartLine,
   destination: RouteNames.LocationDetails,
@@ -39,6 +40,7 @@ export default function LocationDetails(): JSX.Element {
   const [deleteModalActive, setDeleteModalActive] = useState(false);
   const [isLocationError, setIsLocationError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const {pathname} = useLocation();
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
@@ -149,9 +151,10 @@ export default function LocationDetails(): JSX.Element {
     );
   }
 
+  breadcrumb.destination = pathname;
   return (
     <BasePage
-      breadcrumbItems={[BREADCRUMB]}
+      breadcrumbItems={[breadcrumb]}
       active={errorMessage !== ""}
       message={errorMessage}
       discardMessage={() => setErrorMessage("")}

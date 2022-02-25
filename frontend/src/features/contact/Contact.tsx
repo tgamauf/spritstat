@@ -1,12 +1,13 @@
 import React, {useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 import ContactForm from "./ContactForm";
 import BasePage from "../../common/components/BasePage";
 import {RouteNames} from "../../common/types";
+import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
-const BREADCRUMB = {
+const BREADCRUMB: BreadcrumbItem = {
   name: "Kontakt",
   icon: faEnvelope,
   destination: RouteNames.Contact,

@@ -9,8 +9,9 @@ import {RegionType} from "../../common/types";
 import {FuelType, LocationType, OurFormElement, RouteNames} from "../../common/types";
 import {INVALID_LOCATION} from "../../common/constants";
 import {useAddLocationMutation} from "./locationApiSlice";
+import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
-const BREADCRUMB = {
+const BREADCRUMB: BreadcrumbItem = {
   name: "Ort hinzufügen",
   icon: faPlusSquare,
   destination: RouteNames.AddLocation,

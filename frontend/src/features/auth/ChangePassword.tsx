@@ -9,8 +9,9 @@ import BasePage from "../../common/components/BasePage";
 import {OurFormElement, RouteNames} from "../../common/types";
 import {SETTINGS_BREADCRUMB} from "../settings/Settings";
 import {useChangePasswordMutation} from "./authApiSlice";
+import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
-const BREADCRUMB = {
+const BREADCRUMB: BreadcrumbItem = {
   name: "Passwort ändern",
   icon: faKey,
   destination: RouteNames.ChangePassword,

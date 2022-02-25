@@ -8,9 +8,10 @@ import LocationList from "./LocationList";
 import {RouteNames} from "../../common/types";
 import {useGetLocationsQuery} from "./locationApiSlice";
 import LoadingError from "../../common/components/LoadingError";
+import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
 
-const BREADCRUMB = {
+const BREADCRUMB: BreadcrumbItem = {
   name: "Startseite",
   icon: faHome,
   destination: RouteNames.Dashboard,

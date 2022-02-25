@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
 
 import DeleteAccountModal from "./DeleteAccountModal";
@@ -7,8 +7,9 @@ import BasePage from "../../common/components/BasePage";
 import {RouteNames} from "../../common/types";
 import {useAppSelector} from "../../common/utils";
 import {selectEmail} from "../auth/accountSlice";
+import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
-const BREADCRUMB = {
+const BREADCRUMB: BreadcrumbItem = {
   name: "Einstellungen",
   icon: faCog,
   destination: RouteNames.Settings,
