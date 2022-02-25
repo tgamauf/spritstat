@@ -68,6 +68,11 @@ interface PriceHistoryData extends PriceData {
   stationsMap: number[][];
 }
 
+interface StationFrequencyData {
+  stationIds: number[];
+  data: number[];
+}
+
 const extendedApi = spritstatApi.injectEndpoints({
   endpoints: (builder) => ({
     addLocation: builder.mutation<boolean, LocationData>({
@@ -252,6 +257,30 @@ const extendedApi = spritstatApi.injectEndpoints({
         return chartData;
       }
     }),
+    getPriceStationFrequency: builder.query<StationFrequencyData, PriceRequestData>({
+      query: ({locationId, dateRange}) => {
+        let url = `sprit/${locationId}/prices/station_frequency/`;
+        if (dateRange !== DateRange.All) {
+          url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
+        }
+        return {
+          url,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          }
+        };
+      },
+      transformResponse: (data: {station_id: number, frequency: number }[]) => {
+        const chartData: StationFrequencyData = {stationIds: [], data: []};
+
+        data.forEach((item) => {
+          chartData.stationIds.push(item.station_id);
+          chartData.data.push(item.frequency);
+        });
+        return chartData;
+      }
+    }),
   })
 })
 
@@ -263,6 +292,7 @@ export const {
   useLazyGetPriceDayOfMonthDataQuery,
   useLazyGetPriceDayOfWeekDataQuery,
   useLazyGetPriceHistoryDataQuery,
+  useLazyGetPriceStationFrequencyQuery,
 } = extendedApi;
 
 export type PriceDayQuery = typeof useLazyGetPriceDayOfMonthDataQuery | typeof useLazyGetPriceDayOfWeekDataQuery;

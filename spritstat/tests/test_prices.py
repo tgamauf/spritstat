@@ -339,7 +339,7 @@ class TestPriceStationFrequency(APITestCase):
         # Compare with the calculated amounts
         self.assertListEqual(
             response.data,
-            [{"station_id": 2, "frequency": 5}, {"station_id": 3, "frequency": 3}],
+            [{"station_id": 2, "frequency": 1}, {"station_id": 3, "frequency": 0.6}],
         )
 
     def test_date_ranges(self):
@@ -354,16 +354,16 @@ class TestPriceStationFrequency(APITestCase):
                 [entry.value for entry in DateRange],
                 [
                     [  # One month back contains entries 4 & 5
-                        {"station_id": 2, "frequency": 2},
-                        {"station_id": 3, "frequency": 2},
+                        {"station_id": 2, "frequency": 1},
+                        {"station_id": 3, "frequency": 1},
                     ],
                     [  # Three months back contains entries 3-5
-                        {"station_id": 2, "frequency": 3},
-                        {"station_id": 3, "frequency": 3},
+                        {"station_id": 2, "frequency": 1},
+                        {"station_id": 3, "frequency": 1},
                     ],
                     [  # Six months back contains entries 2-5
-                        {"station_id": 2, "frequency": 4},
-                        {"station_id": 3, "frequency": 3},
+                        {"station_id": 2, "frequency": 1},
+                        {"station_id": 3, "frequency": 0.75},
                     ],
                 ],
             ):

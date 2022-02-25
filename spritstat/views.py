@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Union, Dict
 
 from django.conf import settings
-from django.db.models import Count, QuerySet
+from django.db.models import Count, QuerySet, F, FloatField
+from django.db.models.functions import Cast
 from django.shortcuts import render, get_object_or_404
 from django_q.tasks import schedule, Schedule
 from rest_framework import generics
@@ -148,12 +149,11 @@ class PriceStationFrequency(UserLocationMixin, DateRangeMixin, generics.ListAPIV
         location = self._get_user_location()
         date_range = self._get_date_range()
 
+        prices = models.Price.objects.filter(location=location).date_range(date_range)
+        count = prices.count()
         return (
-            models.Price.stations.through.objects.filter(
-                price__in=models.Price.objects.filter(location=location).date_range(
-                    date_range
-                )
-            )
+            models.Price.stations.through.objects.filter(price__in=prices)
             .values("station_id")
-            .annotate(frequency=Count("station_id"))
+            .alias(count=Count("station_id"))
+            .annotate(frequency=Cast(F("count"), output_field=FloatField()) / count)
         )

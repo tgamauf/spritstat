@@ -79,7 +79,7 @@ class PriceDayOfMonthSerializer(serializers.BaseSerializer):
 
 class PriceStationFrequencySerializer(serializers.BaseSerializer):
     id = serializers.IntegerField(min_value=1)
-    frequency = serializers.IntegerField(min_value=0)
+    frequency = serializers.FloatField(min_value=0, max_value=1)
 
     def to_representation(self, instance):
         return instance
