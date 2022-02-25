@@ -9,6 +9,7 @@ import {
   LineController,
   LineElement,
   PointElement,
+  Title,
   Tooltip,
   TooltipItem,
 } from "chart.js";
@@ -27,6 +28,7 @@ Chart.register(
   LineElement,
   LinearScale,
   PointElement,
+  Title,
   Tooltip,
   zoomPlugin
 );
@@ -103,6 +105,10 @@ class ChartConfig implements ChartConfiguration {
       aspectRatio: isMobile ? 1 : 2,
       normalized: true,
       plugins: {
+        title: {
+          display: isInteractive,
+          text: "Niedrigster Preis"
+        },
         tooltip: {
           callbacks: {
             footer: tooltipFooterCallback,

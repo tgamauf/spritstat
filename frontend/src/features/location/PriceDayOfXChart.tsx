@@ -8,6 +8,7 @@ import {
   ChartOptions,
   ChartType,
   LinearScale,
+  Title,
   Tooltip,
 } from "chart.js";
 
@@ -17,7 +18,7 @@ import {useIsMobile} from "../../common/utils";
 import {PriceDayQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip);
 
 const BAR_CHART_CONTAINER_NAME = "bar-chart";
 const BAR_COLOR = "#88B04B";
@@ -60,7 +61,7 @@ class ChartConfig implements ChartConfiguration {
   public options: ChartOptions<"bar">;
   public data: ChartData;
 
-  constructor(isMobile: boolean, data: ChartData) {
+  constructor(name: string, isMobile: boolean, data: ChartData) {
     // As the difference between the weekdays isn't really all too significant
     //  we set the minimum so that the lowest bar is BAR_LOWER_BOUND_FRACTION of
     //  the scale. We ignore 0 as this isn't a valid value, but is added if no
@@ -76,6 +77,12 @@ class ChartConfig implements ChartConfiguration {
       maintainAspectRatio: !isMobile,
       aspectRatio: isMobile ? 1 : 2,
       normalized: true,
+      plugins: {
+        title: {
+          display: true,
+          text: name
+        }
+      },
       scales: {
         y: {
           min: BAR_LOWER_BOUND_FRACTION * minValue
@@ -132,7 +139,7 @@ export default function PriceDayOfXChart(
     }
 
     chartRef.current?.destroy();
-    const config = new ChartConfig(isMobile, chartData);
+    const config = new ChartConfig(name, isMobile, chartData);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
   }, [chartData, isMobile]);
