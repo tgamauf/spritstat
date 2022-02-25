@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.utils.formats import localize
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import CustomUser
@@ -10,7 +9,14 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ("email", "is_active", "is_staff", "is_superuser", "has_beta_access")
+    list_display = (
+        "email",
+        "last_activity",
+        "is_active",
+        "has_beta_access",
+        "is_staff",
+        "is_superuser",
+    )
     readonly_fields = ("last_activity",)
 
     def get_fieldsets(self, request, obj=None):
