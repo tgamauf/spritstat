@@ -8,6 +8,7 @@ import {
   ChartOptions,
   ChartType,
   LinearScale,
+  Title,
   Tooltip,
 } from "chart.js";
 
@@ -17,7 +18,7 @@ import {useIsMobile} from "../../common/utils";
 import {useGetStationsQuery, useLazyGetPriceStationFrequencyQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip);
 
 const BAR_CHART_CONTAINER_NAME = "bar-chart";
 const BAR_COLOR = "#88B04B";
@@ -76,6 +77,12 @@ class ChartConfig implements ChartConfiguration {
       maintainAspectRatio: !isMobile,
       aspectRatio: isMobile ? 1 : 2,
       normalized: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "Häufigkeit niedrigster Preis pro Tankstelle"
+        }
+      },
       scales: {
         y: {
           min: BAR_LOWER_BOUND_FRACTION * minValue

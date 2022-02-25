@@ -18,7 +18,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PriceDayOfXChart from "./PriceDayOfXChart";
 import PriceStationFrequencyChart from "./PriceStationFrequencyChart";
 
-
 const BREADCRUMB = {
   name: "Ort",
   icon: faChartLine,
@@ -104,7 +103,7 @@ export default function LocationDetails(): JSX.Element {
             </div>
             <div className="tile box" data-test="price-day-of-week">
               <PriceDayOfXChart
-                name="day of week"
+                name="Niedrigster Preis pro Wochentag"
                 location={location}
                 queryHook={useLazyGetPriceDayOfWeekDataQuery}
                 setErrorMessage={setErrorMessage}
@@ -112,7 +111,7 @@ export default function LocationDetails(): JSX.Element {
             </div>
             <div className="tile box" data-test="price-day-of-month">
               <PriceDayOfXChart
-                name="day of month"
+                name="Niedrigster Preis pro Tag im Monat"
                 location={location}
                 queryHook={useLazyGetPriceDayOfMonthDataQuery}
                 setErrorMessage={setErrorMessage}
