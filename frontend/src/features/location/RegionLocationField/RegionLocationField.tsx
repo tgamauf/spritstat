@@ -186,9 +186,6 @@ export default function RegionLocationField(
           onChange={(e) => setPostalCode(e.target.value)}
           data-test="field-postal-code"
         />
-        <p className="help">
-          Es wird der zur Postleitzahl gehörige Bezirk ausgewählt.
-        </p>
       </div>
     </div>
   );
