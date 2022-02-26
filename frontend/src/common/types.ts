@@ -67,6 +67,7 @@ interface Location {
 
 enum DateRange {
   All,
+  OneWeek,
   OneMonth,
   ThreeMonths,
   SixMonths,

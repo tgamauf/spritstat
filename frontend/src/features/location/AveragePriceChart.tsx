@@ -94,24 +94,41 @@ class ChartConfig implements ChartConfiguration {
   }
 }
 
+interface DateRangeItem {
+  name: string;
+  value: DateRange;
+}
+
 interface Props {
   name: string;
   location: Location;
   queryHook: PriceDayQuery,
+  dateRangeItems?: DateRangeItem[];
+  initialDateRange?: DateRange;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function PriceDayOfXChart(
-  {name, location, queryHook, setErrorMessage}: Props
+export default function AveragePriceChart(
+  {
+    name,
+    location,
+    queryHook,
+    dateRangeItems = [
+      {name: "1M", value: DateRange.OneMonth},
+      {name: "3M", value: DateRange.ThreeMonths},
+      {name: "6M", value: DateRange.SixMonths},
+      {name: "Alles", value: DateRange.All},
+    ],
+    initialDateRange = DateRange.OneMonth,
+    setErrorMessage
+  }: Props
 ) {
   const [getPriceData, {isFetching}] = queryHook();
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const isMobile = useIsMobile();
   const chartId = `${BAR_CHART_CONTAINER_NAME}-${location.id}`;
-  const [selectedDateRange, setSelectedDateRange] = useState(
-    DateRange.OneMonth
-  );
+  const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const [chartData, setChartData] = useState<ChartData>();
 
   useEffect(() => {
@@ -160,12 +177,7 @@ export default function PriceDayOfXChart(
             <canvas id={chartId} ref={canvasRef}/>
           </div>
           <DateRangeButton
-            items={[
-              {name: "1M", value: DateRange.OneMonth},
-              {name: "3M", value: DateRange.ThreeMonths},
-              {name: "6M", value: DateRange.SixMonths},
-              {name: "Alles", value: DateRange.All},
-            ]}
+            items={dateRangeItems}
             selectedValue={selectedDateRange}
             setSelectedValue={setSelectedDateRange}
           />

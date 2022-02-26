@@ -3,19 +3,20 @@ import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {faChartLine, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import BasePage from "../../common/components/BasePage";
-import {Location, RouteNames} from "../../common/types";
+import {DateRange, Location, RouteNames} from "../../common/types";
 import LocationField from "./LocationField";
 import CurrentPriceField from "./CurrentPriceField";
 import {
   useGetLocationsQuery,
   useLazyGetPriceDayOfMonthDataQuery,
-  useLazyGetPriceDayOfWeekDataQuery
+  useLazyGetPriceDayOfWeekDataQuery,
+  useLazyGetPriceHourDataQuery
 } from "./locationApiSlice";
 import LoadingError from "../../common/components/LoadingError";
 import PriceHistoryChart from "./PriceHistoryChart";
 import DeleteLocationModal from "./DeleteLocationModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import PriceDayOfXChart from "./PriceDayOfXChart";
+import AveragePriceChart from "./AveragePriceChart";
 import PriceStationFrequencyChart from "./PriceStationFrequencyChart";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
@@ -103,8 +104,24 @@ export default function LocationDetails(): JSX.Element {
                 setErrorMessage={setErrorMessage}
               />
             </div>
+            <div className="tile box" data-test="price-hour">
+              <AveragePriceChart
+                name="Niedrigster Preis pro Stunde"
+                location={location}
+                queryHook={useLazyGetPriceHourDataQuery}
+                dateRangeItems={[
+                  {name: "1W", value: DateRange.OneWeek},
+                  {name: "1M", value: DateRange.OneMonth},
+                  {name: "3M", value: DateRange.ThreeMonths},
+                  {name: "6M", value: DateRange.SixMonths},
+                  {name: "Alles", value: DateRange.All},
+                ]}
+                initialDateRange={DateRange.OneWeek}
+                setErrorMessage={setErrorMessage}
+              />
+            </div>
             <div className="tile box" data-test="price-day-of-week">
-              <PriceDayOfXChart
+              <AveragePriceChart
                 name="Niedrigster Preis pro Wochentag"
                 location={location}
                 queryHook={useLazyGetPriceDayOfWeekDataQuery}
@@ -112,7 +129,7 @@ export default function LocationDetails(): JSX.Element {
               />
             </div>
             <div className="tile box" data-test="price-day-of-month">
-              <PriceDayOfXChart
+              <AveragePriceChart
                 name="Niedrigster Preis pro Tag im Monat"
                 location={location}
                 queryHook={useLazyGetPriceDayOfMonthDataQuery}

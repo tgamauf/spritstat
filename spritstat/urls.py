@@ -18,6 +18,11 @@ urlpatterns = [
         name="prices_history",
     ),
     path(
+        "api/v1/sprit/<int:location_id>/prices/hour/",
+        views.PriceHour.as_view(),
+        name="prices_hour",
+    ),
+    path(
         "api/v1/sprit/<int:location_id>/prices/day_of_week/",
         views.PriceDayOfWeek.as_view(),
         name="prices_day_of_week",

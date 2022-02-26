@@ -5,7 +5,7 @@
     "fields": {
       "location": 2,
       "datetime": "2021-01-01T12:00:00.000Z",
-      "min_amount": 1.0,
+      "min_amount": 2.0,
       "max_amount": 1.349,
       "average_amount": 1.3215,
       "median_amount": 1.3315000000000001,
@@ -17,7 +17,7 @@
     "pk": 2,
     "fields": {
       "location": 2,
-      "datetime": "2021-07-31T12:00:00.000Z",
+      "datetime": "2021-07-31T03:00:00.000Z",
       "min_amount": 2.0,
       "max_amount": 1.349,
       "average_amount": 1.3215,
@@ -43,7 +43,7 @@
     "pk": 4,
     "fields": {
       "location": 2,
-      "datetime": "2022-01-03T12:00:00.000Z",
+      "datetime": "2022-01-03T00:00:00.000Z",
       "min_amount": 2.0,
       "max_amount": 1.349,
       "average_amount": 1.316,

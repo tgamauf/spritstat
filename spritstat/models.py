@@ -5,7 +5,12 @@ from typing import Optional, Union
 from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models import Avg
-from django.db.models.functions import Length, ExtractIsoWeekDay, ExtractDay
+from django.db.models.functions import (
+    Length,
+    ExtractIsoWeekDay,
+    ExtractDay,
+    ExtractHour,
+)
 
 from django_q.models import Schedule
 from users.models import CustomUser
@@ -81,6 +86,7 @@ class Station(models.Model):
 
 
 class DateRange(str, Enum):
+    OneWeek = "1w"
     OneMonth = "1m"
     ThreeMonths = "3m"
     SixMonths = "6m"
@@ -92,7 +98,11 @@ class PriceQuerySet(models.QuerySet):
     ) -> Union["PriceQuerySet", models.QuerySet]:
         now = datetime.now()
 
-        if date_range == DateRange.OneMonth:
+        if date_range == DateRange.OneWeek:
+            data = self.filter(
+                datetime__gte=now - relativedelta(weeks=1),
+            )
+        elif date_range == DateRange.OneMonth:
             data = self.filter(
                 datetime__gte=now - relativedelta(months=1),
             )
@@ -108,6 +118,14 @@ class PriceQuerySet(models.QuerySet):
             data = self.all()
 
         return data
+
+    def average_hour(self) -> Union["PriceQuerySet", models.QuerySet]:
+        return (
+            self.annotate(hour=ExtractHour("datetime"))
+            .values("hour")
+            .annotate(value=Avg("min_amount"))
+            .order_by("hour")
+        )
 
     def average_day_of_week(self) -> Union["PriceQuerySet", models.QuerySet]:
         return (

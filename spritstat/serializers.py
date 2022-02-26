@@ -61,6 +61,14 @@ class PriceHistorySerializer(serializers.ModelSerializer):
         )
 
 
+class PriceHourSerializer(serializers.BaseSerializer):
+    day_of_week = serializers.IntegerField(min_value=0, max_value=23)
+    value = serializers.FloatField(min_value=0)
+
+    def to_representation(self, instance):
+        return instance
+
+
 class PriceDayOfWeekSerializer(serializers.BaseSerializer):
     day_of_week = serializers.IntegerField(min_value=1, max_value=7)
     value = serializers.FloatField(min_value=0)

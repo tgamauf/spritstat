@@ -123,6 +123,15 @@ class PriceHistory(AbstractPriceList):
         return data
 
 
+class PriceHour(AbstractPriceList):
+    serializer_class = serializers.PriceHourSerializer
+
+    def _process_data(
+        self, data: Union[models.PriceQuerySet, QuerySet]
+    ) -> Union[models.PriceQuerySet, QuerySet]:
+        return data.average_hour()
+
+
 class PriceDayOfWeek(AbstractPriceList):
     serializer_class = serializers.PriceDayOfWeekSerializer
 

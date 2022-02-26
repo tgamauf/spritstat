@@ -21,6 +21,7 @@ const fuelTypeMap = new Map<FuelType, string>([
 const fuelTypeReverseMap = reverseMap<FuelType, string>(fuelTypeMap);
 
 const dateRangeMap = new Map<DateRange, string>([
+  [DateRange.OneWeek, "1w"],
   [DateRange.OneMonth, "1m"],
   [DateRange.ThreeMonths, "3m"],
   [DateRange.SixMonths, "6m"]
@@ -183,6 +184,43 @@ const extendedApi = spritstatApi.injectEndpoints({
         return chartData;
       }
     }),
+    getPriceHourData: builder.query<PriceData, PriceRequestData>({
+      query: ({locationId, dateRange}) => {
+        let url = `sprit/${locationId}/prices/hour/`;
+        if (dateRange !== DateRange.All) {
+          url += `?date_range=${dateRangeMap.get(dateRange as DateRange)}`;
+        }
+        return {
+          url,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          }
+        };
+      },
+      transformResponse: (data: {hour: number, value: number}[]) => {
+        const chartData: PriceData = {labels: [], data: []};
+
+        // No data, so just return the empty array.
+        if (data.length <= 0) {
+          return chartData;
+        }
+
+        let index = 0;
+        for (let hour = 0 ; hour < 24 ; hour++) {
+          chartData.labels.push(String(hour));
+
+          // If no data is available for this weekday add 0 to the data.
+          if ((index >= data.length) || data[index].hour > hour) {
+            chartData.data.push(0);
+          } else {
+            chartData.data.push(data[index].value);
+            index++;
+          }
+        }
+        return chartData;
+      }
+    }),
     getPriceDayOfWeekData: builder.query<PriceData, PriceRequestData>({
       query: ({locationId, dateRange}) => {
         let url = `sprit/${locationId}/prices/day_of_week/`;
@@ -197,7 +235,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {day_of_week: number, value: number }[]) => {
+      transformResponse: (data: {day_of_week: number, value: number}[]) => {
         const chartData: PriceData = {labels: [], data: []};
 
         // No data, so just return the empty array.
@@ -234,7 +272,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {day_of_month: number, value: number }[]) => {
+      transformResponse: (data: {day_of_month: number, value: number}[]) => {
         const chartData: PriceData = {labels: [], data: []};
 
         // No data, so just return the empty array.
@@ -271,7 +309,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           }
         };
       },
-      transformResponse: (data: {station_id: number, frequency: number }[]) => {
+      transformResponse: (data: {station_id: number, frequency: number}[]) => {
         const chartData: StationFrequencyData = {stationIds: [], data: []};
 
         data.forEach((item) => {
@@ -289,6 +327,7 @@ export const {
   useDeleteLocationMutation,
   useGetLocationsQuery,
   useGetStationsQuery,
+  useLazyGetPriceHourDataQuery,
   useLazyGetPriceDayOfMonthDataQuery,
   useLazyGetPriceDayOfWeekDataQuery,
   useLazyGetPriceHistoryDataQuery,
