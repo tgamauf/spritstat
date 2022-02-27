@@ -11,10 +11,6 @@ class TestStations(APITestCase):
     url: str
     user: CustomUser
 
-    @staticmethod
-    def create_payload(enable: bool):
-        return {"intro": {"enable": enable}}
-
     def intro_settings_as_dict(self):
         return {
             k: v
@@ -36,10 +32,19 @@ class TestStations(APITestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        response = self.client.put(self.url, self.create_payload(True))
+        test_payload = {
+            "intro": {
+                "no_location_active": True,
+                "location_list_active": False,
+                "add_location_active": True,
+                "location_details_active": False,
+            }
+        }
+
+        response = self.client.put(self.url, test_payload)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        response = self.client.patch(self.url, self.create_payload(True))
+        response = self.client.patch(self.url, test_payload)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_ok(self):
@@ -48,42 +53,25 @@ class TestStations(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
 
-        false_check_settings = {
+        # Test if we can set the settings using put
+        test_payload = {
             "intro": {
                 "no_location_active": False,
-                "location_list_active": False,
-                "add_location_active": False,
-                "location_details_active": False,
-            }
-        }
-        true_check_settings = {
-            "intro": {
-                "no_location_active": True,
                 "location_list_active": True,
-                "add_location_active": True,
+                "add_location_active": False,
                 "location_details_active": True,
             }
         }
-        # Test if we can disable the settings using put
-        response = self.client.put(self.url, self.create_payload(False))
+        response = self.client.put(self.url, test_payload)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertDictEqual(response.data, false_check_settings)
-        self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
-        # Test if we can enable the settings again using put
-        response = self.client.put(self.url, self.create_payload(True))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertDictEqual(response.data, true_check_settings)
+        self.assertDictEqual(response.data, test_payload)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
 
-        # Test if we can disable the settings using patch
-        response = self.client.patch(self.url, self.create_payload(False))
+        # Test if we can set the one of the settings using patch
+        test_payload["intro"]["add_location_active"] = True
+        response = self.client.patch(self.url, {"intro": {"add_location_active": True}})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertDictEqual(response.data, false_check_settings)
-        self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
-        # Test if we can enable the settings again using patch
-        response = self.client.patch(self.url, self.create_payload(True))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertDictEqual(response.data, true_check_settings)
+        self.assertDictEqual(response.data, test_payload)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
 
     def test_post(self):

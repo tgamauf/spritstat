@@ -5,12 +5,6 @@ from .models import IntroSettings, Location, Price, Settings, Station
 
 
 class IntroSettingsSerializer(serializers.ModelSerializer):
-    no_location_active = serializers.BooleanField(read_only=True)
-    location_list_active = serializers.BooleanField(read_only=True)
-    add_location_active = serializers.BooleanField(read_only=True)
-    location_details_active = serializers.BooleanField(read_only=True)
-    enable = serializers.BooleanField(write_only=True)
-
     class Meta:
         model = IntroSettings
         fields = [
@@ -18,7 +12,6 @@ class IntroSettingsSerializer(serializers.ModelSerializer):
             "location_list_active",
             "add_location_active",
             "location_details_active",
-            "enable",
         ]
 
 
@@ -37,9 +30,8 @@ class SettingsSerializer(serializers.ModelSerializer):
         self.user = getattr(self.context.get("request"), "user", None)
 
     def update(self, instance, validated_data):
-        enable_intro = validated_data.pop("intro")["enable"]
-
-        instance.intro.set_active(enable_intro)
+        intro_data = validated_data.pop("intro")
+        self.fields["intro"].update(instance.intro, intro_data)
 
         return instance
 

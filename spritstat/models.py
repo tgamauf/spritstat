@@ -27,16 +27,6 @@ class IntroSettings(models.Model):
     add_location_active = models.BooleanField(default=True)
     location_details_active = models.BooleanField(default=True)
 
-    def set_active(self, value: bool):
-        # Shortcut to enable/disable all intro settings
-
-        self.no_location_active = value
-        self.location_list_active = value
-        self.add_location_active = value
-        self.location_details_active = value
-
-        self.save()
-
 
 class Settings(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
