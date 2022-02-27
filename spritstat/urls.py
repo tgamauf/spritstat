@@ -8,6 +8,7 @@ urlpatterns = [
     path("", views.index),
     path("admin/", admin.site.urls),
     path("api/v1/users/", include("users.urls")),
+    path("api/v1/sprit/settings/", views.Settings.as_view(), name="settings"),
     path("api/v1/sprit/", views.LocationList.as_view(), name="locations"),
     path(
         "api/v1/sprit/<int:pk>/", views.LocationDetail.as_view(), name="location_detail"

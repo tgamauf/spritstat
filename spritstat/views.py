@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, Dict
+from typing import Union
 
 from django.conf import settings
 from django.db.models import Count, QuerySet, F, FloatField
@@ -23,6 +23,18 @@ def index(request):
         "spritstat/index.html",
         context={"google_maps_api_key": settings.GOOGLE_MAPS_API_KEY},
     )
+
+
+class Settings(generics.RetrieveUpdateAPIView):
+    queryset = models.Settings.objects.all()
+    serializer_class = serializers.SettingsSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
+
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), user=self.request.user)
+        self.check_object_permissions(self.request, obj)
+
+        return obj
 
 
 class LocationList(generics.ListCreateAPIView):

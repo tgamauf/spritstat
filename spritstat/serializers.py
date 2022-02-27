@@ -1,7 +1,47 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from .models import Price, Station, Location, PriceQuerySet
+from .models import IntroSettings, Location, Price, Settings, Station
+
+
+class IntroSettingsSerializer(serializers.ModelSerializer):
+    no_location_active = serializers.BooleanField(read_only=True)
+    location_list_active = serializers.BooleanField(read_only=True)
+    add_location_active = serializers.BooleanField(read_only=True)
+    location_details_active = serializers.BooleanField(read_only=True)
+    enable = serializers.BooleanField(write_only=True)
+
+    class Meta:
+        model = IntroSettings
+        fields = [
+            "no_location_active",
+            "location_list_active",
+            "add_location_active",
+            "location_details_active",
+            "enable",
+        ]
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+    intro = IntroSettingsSerializer()
+
+    class Meta:
+        ordering = ["id"]
+        model = Settings
+        fields = ["intro"]
+        depth = 1
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.user = getattr(self.context.get("request"), "user", None)
+
+    def update(self, instance, validated_data):
+        enable_intro = validated_data.pop("intro")["enable"]
+
+        instance.intro.set_active(enable_intro)
+
+        return instance
 
 
 class LocationSerializer(serializers.ModelSerializer):
