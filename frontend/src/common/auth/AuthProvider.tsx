@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Navigate, useLocation} from "react-router-dom";
 
-import {useGetSessionQuery} from "../../common/apis/spritstatApi";
-import LoadingPage from "../../common/components/LoadingPage";
-import {useAppDispatch, useAppSelector} from "../../common/utils";
+import {useGetSessionQuery, useLogoutMutation} from "../apis/spritstatApi";
+import LoadingPage from "../components/LoadingPage";
+import {useAppDispatch, useAppSelector} from "../utils";
 import {INVALID_ACCOUNT, selectIsAuthenticated, setAccount} from "./accountSlice";
-import {RouteNames} from "../../common/types";
-import {useLogoutMutation} from "./authApiSlice";
+import {RouteNames} from "../types";
 
 
 interface LocationState {
@@ -33,41 +32,38 @@ function AuthProvider({children}: Props): JSX.Element {
       console.error(`Get session failed: ${JSON.stringify(error, null, 2)}`);
       dispatch(setAccount(INVALID_ACCOUNT));
       setIsSessionValid(true);
-   }
- }, [isError]);
+    }
+  }, [isError]);
 
   useEffect(() => {
     if (!isFetching && isSuccess && session) {
-
       dispatch(setAccount({
         isAuthenticated: session.isAuthenticated,
         email: session.email,
         hasBetaAccess: session.hasBetaAccess
-     }));
+      }));
       setIsSessionValid(true);
-   }
- }, [isFetching]);
+    }
+  }, [isFetching]);
 
   return (
-    <div>
-      {isSessionValid ? (children) : (<LoadingPage/>)}
-    </div>
+    <div>{isSessionValid ? (children) : (<LoadingPage/>)}</div>
   );
 }
 
-function RequireAuth({children}: {children: JSX.Element}): JSX.Element {
+function RequireAuth({children}: { children: JSX.Element }): JSX.Element {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const location = useLocation();
 
   if (!isAuthenticated) {
     const locationState: LocationState = {fromPathName: location.pathname};
-    return <Navigate to={RouteNames.Login} state={locationState} replace />;
- }
+    return <Navigate to={RouteNames.Login} state={locationState} replace/>;
+  }
 
   return children;
 }
 
-function RequireNoAuth({children}: {children: JSX.Element}): JSX.Element {
+function RequireNoAuth({children}: { children: JSX.Element }): JSX.Element {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [logout] = useLogoutMutation();
 
@@ -80,7 +76,7 @@ function RequireNoAuth({children}: {children: JSX.Element}): JSX.Element {
     }
   }, [isAuthenticated]);
 
-  return !isAuthenticated ? children : <LoadingPage />;
+  return !isAuthenticated ? children : <LoadingPage/>;
 }
 
 export {AuthProvider, RequireAuth, RequireNoAuth};

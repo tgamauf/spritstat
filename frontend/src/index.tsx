@@ -1,4 +1,6 @@
 import "./index.sass";
+import "intro.js/introjs.css";
+import "intro.js/themes/introjs-modern.css"
 
 import React from "react";
 import ReactDOM from "react-dom";

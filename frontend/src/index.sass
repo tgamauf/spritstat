@@ -17,6 +17,7 @@ $footer-padding: 1rem 1.5rem 1rem
 $section-padding-large-mobile: 7rem 1.5rem
 
 @import "../node_modules/bulma/bulma.sass"
+@import "~bulma-switch"
 
 $card-focus-color: $link-focus
 $card-focus-border-color: $link-focus-border
@@ -64,3 +65,9 @@ $card-focus-box-shadow-color: bulmaRgba($link, 0.25)
 
 .chart-container
   width: 100%
+
+.settings-block
+  @include block(4rem)
+
+.intro-tooltip
+  text-align: center

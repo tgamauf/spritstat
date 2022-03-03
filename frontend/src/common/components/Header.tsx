@@ -7,7 +7,7 @@ import HeaderBurger from "./HeaderBurger";
 import HeaderDropdown, {HeaderDropdownItem} from "./HeaderDropdown";
 import HeaderLoginButton from "./HeaderLoginButton";
 import {useAppSelector} from "../utils";
-import {selectIsAuthenticated} from "../../features/auth/accountSlice";
+import {selectIsAuthenticated} from "../auth/accountSlice";
 
 interface Props {
   dropdownItems: HeaderDropdownItem[];

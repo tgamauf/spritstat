@@ -1,13 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
 
 import DeleteAccountModal from "./DeleteAccountModal";
-import BasePage from "../../common/components/BasePage";
-import {RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
+import BasePage from "../components/BasePage";
+import {RouteNames} from "../types";
+import {useAppSelector} from "../utils";
 import {selectEmail} from "../auth/accountSlice";
-import {BreadcrumbItem} from "../../common/components/Breadcrumb";
+import {BreadcrumbItem} from "../components/Breadcrumb";
+import {selectIntroActive, setSettings} from "./settingsSlice";
+import {useSetSettingMutation} from "../apis/spritstatApi";
 
 const BREADCRUMB: BreadcrumbItem = {
   name: "Einstellungen",
@@ -16,9 +18,31 @@ const BREADCRUMB: BreadcrumbItem = {
 };
 
 export default function Settings(): JSX.Element {
+  const [setSettings] = useSetSettingMutation();
   const email = useAppSelector(selectEmail);
+  const introActive = useAppSelector(selectIntroActive);
+  const [toggleIntro, setToggleIntro] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+
+  useEffect(() => {
+    if (toggleIntro) {
+      setToggleIntro(false);
+
+      const active = !introActive;
+      setSettings({
+        intro: {
+          add_location_active: active,
+          location_details_active: active,
+          location_list_active: active,
+          no_location_active: active
+        }
+      }).unwrap()
+        .catch((e) => {
+          console.log(`Failed to toggle intro settings: ${JSON.stringify(e, null, 2)}`);
+        });
+    }
+  }, [toggleIntro])
 
   return (
     <div>
@@ -35,7 +59,7 @@ export default function Settings(): JSX.Element {
         />
         <section className="section">
           <h1 className="title">Einstellungen</h1>
-          <div className="block">
+          <div className="settings-block">
             <h2 className="subtitle">Kontodetails</h2>
             <hr />
             <table className="table is-fullwidth">
@@ -65,7 +89,23 @@ export default function Settings(): JSX.Element {
               </tbody>
             </table>
           </div>
-          <div className="block">
+          <div className="settings-block">
+            <h2 className="subtitle">Funktionen</h2>
+            <hr />
+            <div className="field">
+              <input
+                id="intro-active"
+                className="switch is-rounded"
+                type="checkbox"
+                checked={introActive}
+                onChange={() => setToggleIntro(!toggleIntro)}
+              />
+              <label htmlFor="intro-active" className="is-unselectable">
+                Aktiviere/deaktiviere die Einführung
+              </label>
+            </div>
+          </div>
+          <div className="settings-block">
             <h2 className="subtitle has-text-danger">Konto löschen</h2>
             <hr />
             <p>

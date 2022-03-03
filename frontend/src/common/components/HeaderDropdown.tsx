@@ -4,9 +4,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
 import {RouteNames} from "../types";
-import {useLogoutMutation} from "../../features/auth/authApiSlice";
+import {useLogoutMutation} from "../apis/spritstatApi";
 import {useAppDispatch} from "../utils";
-import {INVALID_ACCOUNT, setAccount} from "../../features/auth/accountSlice";
+import {INVALID_ACCOUNT, setAccount} from "../auth/accountSlice";
 
 
 interface Item {

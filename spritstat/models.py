@@ -22,10 +22,10 @@ models.CharField.register_lookup(Length)
 
 
 class IntroSettings(models.Model):
-    no_location_active = models.BooleanField(default=True)
-    location_list_active = models.BooleanField(default=True)
     add_location_active = models.BooleanField(default=True)
     location_details_active = models.BooleanField(default=True)
+    location_list_active = models.BooleanField(default=True)
+    no_location_active = models.BooleanField(default=True)
 
 
 class Settings(models.Model):

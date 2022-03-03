@@ -8,10 +8,10 @@ class IntroSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = IntroSettings
         fields = [
-            "no_location_active",
-            "location_list_active",
             "add_location_active",
             "location_details_active",
+            "location_list_active",
+            "no_location_active",
         ]
 
 

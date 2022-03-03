@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {RouteNames} from "../types";
 import BasePage from "./BasePage";
 import {useAppSelector} from "../utils";
-import {selectIsAuthenticated} from "../../features/auth/accountSlice";
+import {selectIsAuthenticated} from "../auth/accountSlice";
 
 export default function PrivacyPolicy() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
