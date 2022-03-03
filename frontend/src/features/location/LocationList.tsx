@@ -7,7 +7,7 @@ import {RouteNames} from "../../common/types";
 import LocationCard from "./LocationCard";
 import {useGetLocationsQuery} from "./locationApiSlice";
 import {useAppSelector} from "../../common/utils";
-import {selectIntroSettingsNoLocation} from "../../common/settings/settingsSlice";
+import {selectIntroSettingsLocationList} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
 import {Steps} from "intro.js-react";
 import {INTRO_OPTIONS} from "../../common/constants";
@@ -22,7 +22,7 @@ interface Props {
 
 export default function LocationList({setErrorMessage}: Props): JSX.Element {
   const {data: locations} = useGetLocationsQuery();
-  const introActive = useAppSelector(selectIntroSettingsNoLocation);
+  const introActive = useAppSelector(selectIntroSettingsLocationList);
   const [setSettings] = useSetSettingMutation();
   const [introDone, setIntroDone] = useState(false);
 
