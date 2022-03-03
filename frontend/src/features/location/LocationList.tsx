@@ -35,7 +35,7 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
     if (introDone) {
       setIntroDone(false);
 
-      setSettings({intro: {no_location_active: false}}).unwrap()
+      setSettings({intro: {location_list_active: false}}).unwrap()
         .catch((e) => {
           console.error(`Failed to disable NoLocation intro: ${JSON.stringify(e, null, 2)}`);
         })
