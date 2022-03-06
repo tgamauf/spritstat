@@ -33,7 +33,8 @@ Chart.register(
   zoomPlugin
 );
 
-const LINE_CHART_CONTAINER_NAME = "line-chart";
+const CHART_CONTAINER_NAME = "line-chart";
+const BTN_CHART_HISTORY_DATE_RANGE_ID = "btn-chart-history-date-range-id";
 
 interface ChartDataProps {
   labels: string[];
@@ -165,7 +166,7 @@ export default function PriceHistoryChart(
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const isMobile = useIsMobile();
-  const chartId = `${LINE_CHART_CONTAINER_NAME}-${location.id}`;
+  const chartId = `${CHART_CONTAINER_NAME}-${location.id}`;
   const [selectedDateRange, setSelectedDateRange] = useState(
     DateRange.OneMonth
   );
@@ -268,16 +269,18 @@ export default function PriceHistoryChart(
             <canvas id={chartId} ref={canvasRef}/>
           </div>
           {isInteractive && (
-            <DateRangeButton
-              items={[
-                {name: "1M", value: DateRange.OneMonth},
-                {name: "3M", value: DateRange.ThreeMonths},
-                {name: "6M", value: DateRange.SixMonths},
-                {name: "Alles", value: DateRange.All},
-              ]}
-              selectedValue={selectedDateRange}
-              setSelectedValue={setSelectedDateRange}
-            />
+            <div id={BTN_CHART_HISTORY_DATE_RANGE_ID}>
+              <DateRangeButton
+                items={[
+                  {name: "1M", value: DateRange.OneMonth},
+                  {name: "3M", value: DateRange.ThreeMonths},
+                  {name: "6M", value: DateRange.SixMonths},
+                  {name: "Alles", value: DateRange.All},
+                ]}
+                selectedValue={selectedDateRange}
+                setSelectedValue={setSelectedDateRange}
+              />
+            </div>
           )}
         </div>
       );
@@ -289,6 +292,4 @@ export default function PriceHistoryChart(
   return mainComponent;
 }
 
-export type {Props as PriceHistoryChartProps};
-
-export {DateRange as PriceHistoryChartDateRange};
+export {BTN_CHART_HISTORY_DATE_RANGE_ID};

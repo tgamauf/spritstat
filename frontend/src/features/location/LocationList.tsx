@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
+import {Steps} from "intro.js-react";
 
 import {RouteNames} from "../../common/types";
 import LocationCard from "./LocationCard";
@@ -9,8 +10,9 @@ import {useGetLocationsQuery} from "./locationApiSlice";
 import {useAppSelector} from "../../common/utils";
 import {selectIntroSettingsLocationList} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
-import {Steps} from "intro.js-react";
 import {INTRO_OPTIONS} from "../../common/constants";
+import {LOCATION_FIELD_ID} from "./LocationField";
+import {CURRENT_PRICE_FIELD_ID} from "./CurrentPriceField";
 
 
 const BTN_ADD_LOCATION_ID = "btn-add";
@@ -37,7 +39,7 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
 
       setSettings({intro: {location_list_active: false}}).unwrap()
         .catch((e) => {
-          console.error(`Failed to disable NoLocation intro: ${JSON.stringify(e, null, 2)}`);
+          console.error(`Failed to disable LocationList intro: ${JSON.stringify(e, null, 2)}`);
         })
     }
   }, [introDone]);
@@ -70,9 +72,8 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
         </div>
         {locations && locations.map((location, index) => {
           return (
-            <div id={`${CARD_LOCATION_ID_PREFIX}${index}`}>
+            <div key={location.id} id={`${CARD_LOCATION_ID_PREFIX}${index}`}>
               <LocationCard
-                key={location.id}
                 location={location}
                 setErrorMessage={setErrorMessageCallback}
               />
@@ -88,7 +89,17 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
           },
           {
             element: `#${CARD_LOCATION_ID_PREFIX}0`,
-            intro: "Klicke auf einen Ort um die detaillierte Statistiken des Ortes zu erhalten."
+            intro: "Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den "
+              + "Ort um die detaillierte Statistiken des Ortes zu erhalten."
+          },
+          {
+            element: `#${LOCATION_FIELD_ID}`,
+            intro: "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp."
+          },
+          {
+            element: `#${CURRENT_PRICE_FIELD_ID}`,
+            intro: "Außerdem wird der aktuell niedrigste Preis für den angegebenen "
+              + "Treibstofftyp und die Tankstellen die diesen anbieten angezeigt."
           },
           {
             element: `#${BTN_ADD_LOCATION_ID}`,

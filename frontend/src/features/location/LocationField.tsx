@@ -4,13 +4,16 @@ import {faGasPump} from "@fortawesome/free-solid-svg-icons";
 
 import {Location, LocationType} from "../../common/types";
 
+
+const LOCATION_FIELD_ID = "location-field";
+
 interface Props {
   location: Location;
 }
 
 export default function LocationField({location}: Props): JSX.Element {
   return (
-    <div>
+    <div id={LOCATION_FIELD_ID}>
       <div>
         <p className="card-key mb-0">{
           location.type === LocationType.Named ? "Name" : "Region"
@@ -26,3 +29,5 @@ export default function LocationField({location}: Props): JSX.Element {
     </div>
   );
 };
+
+export {LOCATION_FIELD_ID};
