@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-import {RouteNames} from "../../common/types";
-import {useDeleteAccountMutation} from "./settingsApiSlice";
+import {RouteNames} from "../types";
+import {useDeleteAccountMutation} from "../apis/spritstatApi";
 
 interface Props {
   show: boolean;

@@ -2,9 +2,12 @@ import React, {useEffect, useState} from "react";
 
 import {Location, Station} from "../../common/types";
 import {useGetCurrentPriceQuery} from "./priceApiSlice";
+import exp from "constants";
+
 
 const MAPS_URL = "https://www.google.com/maps/search";
 const NO_CURRENT_PRICE = -1;
+const CURRENT_PRICE_FIELD_ID = "current-price-field";
 
 type Stations = {
   name: string;
@@ -56,7 +59,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
   }, [isLoading]);
 
   return (
-    <div className="tile is-parent">
+    <div className="tile is-parent" id={CURRENT_PRICE_FIELD_ID}>
       {currentPrice ? (
         <div>
           <div className="tile is-child content mb-5">
@@ -99,3 +102,5 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
     </div>
   );
 };
+
+export {CURRENT_PRICE_FIELD_ID};

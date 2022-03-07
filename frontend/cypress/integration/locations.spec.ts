@@ -4,6 +4,7 @@ describe("Validate location page content", () => {
   it("validate dashboard content", () => {
     cy.mockEcontrolPriceAPI();
     cy.mockLoggedIn();
+    cy.mockSettings();
 
     // Test no locations
     cy.intercept(
@@ -104,6 +105,7 @@ describe("Validate location page content", () => {
   it("validate location details content", () => {
     cy.mockEcontrolPriceAPI();
     cy.mockLoggedIn();
+    cy.mockSettings();
 
     // Test success
     const locationId = 1;
@@ -233,6 +235,7 @@ describe("Validate location page content", () => {
 
   describe("Dashboard process", () => {
     before(() => {
+      cy.mockSettings();
       cy.resetDB([
         "customuser.json",
         "emailaddress.json",

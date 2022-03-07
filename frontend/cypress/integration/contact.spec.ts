@@ -3,11 +3,16 @@ import {RouteNames} from "../../src/common/types";
 describe("Validate password change process", () => {
   before(() => {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.mockSettings();
     cy.login("test@test.at", "test");
     Cypress.Cookies.defaults({
       preserve: ["sessionid", "csrftoken"],
-   });
- });
+    });
+  });
+
+  beforeEach(() => {
+    cy.mockSettings();
+  });
 
   it("validate content", () => {
     cy.visit(RouteNames.Contact);
@@ -18,7 +23,7 @@ describe("Validate password change process", () => {
       .within(() => {
         cy.contains("Startseite");
         cy.contains("Kontakt");
-     });
+      });
     cy.getBySel("field-name").should("be.visible");
     cy.getBySel("field-select-subject")
       .should("be.visible")
@@ -28,7 +33,7 @@ describe("Validate password change process", () => {
     cy.getBySel("btn-submit")
       .should("be.visible")
       .should("be.disabled");
- });
+  });
 
   it("validate send message", () => {
     // Navigate to "Home" first as we simply go back after sending the message
@@ -53,14 +58,14 @@ describe("Validate password change process", () => {
         name,
         subject: "Ich benötige Hilfe",
         message,
-     })
-   })
+      })
+    })
     cy.url().should("include", RouteNames.Home)
- });
+  });
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
     cy.visit(RouteNames.Contact);
     cy.url().should("include", RouteNames.Login);
- });
+  });
 });

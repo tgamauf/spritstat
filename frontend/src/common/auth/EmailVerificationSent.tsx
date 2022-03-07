@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
 
-import CenteredBox from "../../common/components/CenteredBox";
-import BasePage from "../../common/components/BasePage";
-import {useResendEmailMutation} from "./authApiSlice";
+import CenteredBox from "../components/CenteredBox";
+import BasePage from "../components/BasePage";
+import {useResendEmailMutation} from "../apis/spritstatApi";
 
 function EmailVerificationSent(): JSX.Element {
   const {email} = useParams();

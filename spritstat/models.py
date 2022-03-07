@@ -21,6 +21,18 @@ from users.models import CustomUser
 models.CharField.register_lookup(Length)
 
 
+class IntroSettings(models.Model):
+    add_location_active = models.BooleanField(default=True)
+    location_details_active = models.BooleanField(default=True)
+    location_list_active = models.BooleanField(default=True)
+    no_location_active = models.BooleanField(default=True)
+
+
+class Settings(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    intro = models.OneToOneField(IntroSettings, on_delete=models.CASCADE)
+
+
 REGION_TYPES = (("BL", "Bundesland"), ("PB", "Bezirk"))
 FUEL_TYPES = (("DIE", "Diesel"), ("SUP", "Super"), ("GAS", "Gas"))
 

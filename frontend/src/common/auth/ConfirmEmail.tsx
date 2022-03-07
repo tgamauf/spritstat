@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 
-import {RouteNames} from "../../common/types";
-import BasePage from "../../common/components/BasePage";
-import {useVerifyEmailMutation} from "./authApiSlice";
-import LoadingError from "../../common/components/LoadingError";
+import {RouteNames} from "../types";
+import BasePage from "../components/BasePage";
+import {useVerifyEmailMutation} from "../apis/spritstatApi";
+import LoadingError from "../components/LoadingError";
 
 export default function ConfirmEmail(): JSX.Element {
   const [confirmEmail] = useVerifyEmailMutation();

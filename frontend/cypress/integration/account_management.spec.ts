@@ -3,6 +3,7 @@ import {RouteNames} from "../../src/common/types";
 describe("Validate settings view", () => {
   it("validate user data is shown", () => {
     cy.mockLoggedIn();
+    cy.mockSettings();
     cy.visit(RouteNames.Settings);
 
     cy.hasBaseStructure(true);
@@ -43,6 +44,7 @@ describe("Validate delete account", () => {
     // Username and password of user in customuser.json
     cy.wrap("test@test.at").as("username");
     cy.wrap("test").as("password");
+    cy.mockSettings();
  });
 
   beforeEach(function() {

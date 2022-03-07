@@ -69,6 +69,7 @@ describe("Validate signup", () => {
  });
 
   it("redirect on logged-in", () => {
+    cy.mockSettings();
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test")
     cy.intercept("/api/v1/users/auth/logout/").as("logout")
@@ -107,6 +108,7 @@ describe("Validate confirm email address", () => {
  });
 
   it("validate success logged in", () => {
+    cy.mockSettings();
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test")
     cy.intercept("/api/v1/users/auth/logout/").as("logout")

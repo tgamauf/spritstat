@@ -2,6 +2,14 @@ import {NamedLocation, Station} from "./types";
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+const INTRO_OPTIONS = {
+  doneLabel: "Fertig",
+  nextLabel: "Weiter",
+  prevLabel: "Zurück",
+  hidePrev: true,
+  tooltipClass: "intro-tooltip"
+}
+
 const MAX_SCREENSIZE_MOBILE = 768;
 
 const INVALID_COORDINATES = {
@@ -23,6 +31,7 @@ const INVALID_STATION: Station = {
 }
 
 export {
+  INTRO_OPTIONS,
   INVALID_COORDINATES,
   INVALID_LOCATION,
   INVALID_STATION,

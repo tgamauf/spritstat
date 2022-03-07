@@ -10,7 +10,8 @@ const MAX_LOCATION_NAME_LENGTH = 200;  // mirrors the length of the model field
 const LOCATION_REQUEST_TIMEOUT_MS = 5000;
 const INVALID_SEARCH_TEXT = "";
 const NO_PREDICTIONS: Prediction[] = [];
-
+const TEXT_LOCATION_ID = "location-text";
+const BTN_CURRENT_LOCATION_ID = "current-location";
 
 interface Props {
   setLocation: (location: NamedLocation) => void;
@@ -189,6 +190,7 @@ export function NamedLocationField({
                 value={displayText}
                 onChange={(e) => changeSearchText(e)}
                 data-test="field-search"
+                id={TEXT_LOCATION_ID}
               />
               <span className="icon is-small is-right">
                 <FontAwesomeIcon icon={faSearch} />
@@ -223,6 +225,7 @@ export function NamedLocationField({
           ref={buttonRef}
           onClick={() => requestLocation()}
           data-test="btn-location"
+          id={BTN_CURRENT_LOCATION_ID}
         >
           <FontAwesomeIcon
             className="icon has-text-primary"
@@ -232,4 +235,6 @@ export function NamedLocationField({
       </div>
     </div>
   );
-};
+}
+
+export {TEXT_LOCATION_ID, BTN_CURRENT_LOCATION_ID};

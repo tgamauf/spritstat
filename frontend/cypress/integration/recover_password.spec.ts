@@ -61,6 +61,7 @@ describe("Validate sending of password recovery email", () => {
  });
 
   it("redirect if logged in", () => {
+    cy.mockSettings();
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test")
 
@@ -74,7 +75,7 @@ describe("Validate sending of password recovery email", () => {
 
 
 describe("Validate reset password flow", () => {
-  // We mock all of the API calls as the tests would require receiving emails
+  // We mock all the API calls as the tests would require receiving emails
   //  and then grepping for the token inside. All of this is tested on the
   //  backend.
 
@@ -142,6 +143,7 @@ describe("Validate reset password flow", () => {
  });
 
   it("redirect if logged in", () => {
+    cy.mockSettings();
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test")
 

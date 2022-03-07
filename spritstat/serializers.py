@@ -1,7 +1,39 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from .models import Price, Station, Location, PriceQuerySet
+from .models import IntroSettings, Location, Price, Settings, Station
+
+
+class IntroSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IntroSettings
+        fields = [
+            "add_location_active",
+            "location_details_active",
+            "location_list_active",
+            "no_location_active",
+        ]
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+    intro = IntroSettingsSerializer()
+
+    class Meta:
+        ordering = ["id"]
+        model = Settings
+        fields = ["intro"]
+        depth = 1
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.user = getattr(self.context.get("request"), "user", None)
+
+    def update(self, instance, validated_data):
+        intro_data = validated_data.pop("intro")
+        self.fields["intro"].update(instance.intro, intro_data)
+
+        return instance
 
 
 class LocationSerializer(serializers.ModelSerializer):

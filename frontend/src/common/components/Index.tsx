@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 import {RouteNames} from "../types";
 import {useAppSelector} from "../utils";
-import {selectIsAuthenticated} from "../../features/auth/accountSlice";
+import {selectIsAuthenticated} from "../auth/accountSlice";
 
 export default function Index() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);

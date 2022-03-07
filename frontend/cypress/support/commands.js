@@ -69,7 +69,7 @@ Cypress.Commands.add(
       "/api/v1/users/account/session/",
       {
         statusCode: 200,
-        body: { isAuthenticated: true, email }
+        body: {isAuthenticated: true, email}
       }
     ).as("isAuthenticated");
   }
@@ -83,9 +83,31 @@ Cypress.Commands.add(
       "/api/v1/users/account/session/",
       {
         statusCode: 200,
-        body: { isAuthenticated: false }
+        body: {isAuthenticated: false}
       }
     ).as("isNotAuthenticated");
+  }
+);
+
+Cypress.Commands.add(
+  "mockSettings",
+  (settings) => {
+    cy.intercept(
+      "GET",
+      "/api/v1/sprit/settings/",
+      {
+        statusCode: 200,
+        body: {
+          // Disable the intro for all pages by default
+          intro: {
+            add_location_active: false,
+            location_details_active: false,
+            location_list_active: false,
+            no_location_active: false
+          }
+        }
+      }
+    ).as("settings");
   }
 );
 

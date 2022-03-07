@@ -7,7 +7,7 @@ import {useAppSelector} from "../utils";
 import {HeaderDropdownItem} from "./HeaderDropdown";
 import {RouteNames} from "../types";
 import Header from "./Header";
-import {selectIsAuthenticated} from "../../features/auth/accountSlice";
+import {selectIsAuthenticated} from "../auth/accountSlice";
 
 
 enum Severity {

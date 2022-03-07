@@ -1,8 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
 
+import {settingsSlice} from "../common/settings/settingsSlice";
 import {eControlApi} from "../common/apis/eControl";
 import {spritstatApi} from "../common/apis/spritstatApi";
-import {accountSlice} from "../features/auth/accountSlice";
+import {accountSlice} from "../common/auth/accountSlice";
 
 
 const store = configureStore({
@@ -10,6 +11,7 @@ const store = configureStore({
     [eControlApi.reducerPath]: eControlApi.reducer,
     [spritstatApi.reducerPath]: spritstatApi.reducer,
     account: accountSlice.reducer,
+    settings: settingsSlice.reducer
  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

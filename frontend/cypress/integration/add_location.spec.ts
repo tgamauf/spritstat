@@ -117,6 +117,7 @@ function mockEControlApi(responseStatus = 200) {
 
 describe("Add location flows", () => {
   beforeEach(() => {
+    cy.mockSettings();
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test");
 
@@ -126,7 +127,6 @@ describe("Add location flows", () => {
   });
 
   it("validate content", () => {
-    cy.mockLoggedIn();
     cy.visit(RouteNames.AddLocation);
 
     cy.hasBaseStructure(true);

@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 
-import CenteredBox from "../../common/components/CenteredBox";
+import CenteredBox from "../components/CenteredBox";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
-import BasePage, {BasePageSeverity} from "../../common/components/BasePage";
-import {OurFormElement, RouteNames} from "../../common/types";
-import {useLoginMutation} from "./authApiSlice";
+import BasePage, {BasePageSeverity} from "../components/BasePage";
+import {OurFormElement, RouteNames} from "../types";
+import {useLoginMutation} from "../apis/spritstatApi";
 import {LocationState} from "./AuthProvider";
 
 function Login(): JSX.Element {

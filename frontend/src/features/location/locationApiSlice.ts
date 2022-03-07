@@ -140,7 +140,7 @@ const extendedApi = spritstatApi.injectEndpoints({
           };
         });
       },
-      providesTags: ["Locations"]
+      providesTags: ["Locations"],
     }),
     getStations: builder.query<StationMap, void>({
       query: () => {

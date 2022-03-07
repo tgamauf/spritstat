@@ -1,28 +1,18 @@
 import React, {useEffect, useRef, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {faKey} from "@fortawesome/free-solid-svg-icons";
+import {useNavigate, useParams} from "react-router-dom";
 
-import CenteredBox from "../../common/components/CenteredBox";
-import PasswordField from "./PasswordField";
+import CenteredBox from "../components/CenteredBox";
 import PasswordWithValidationField from "./PasswordWithValidationField";
-import BasePage from "../../common/components/BasePage";
-import {OurFormElement, RouteNames} from "../../common/types";
-import {SETTINGS_BREADCRUMB} from "../settings/Settings";
-import {useChangePasswordMutation} from "./authApiSlice";
-import {BreadcrumbItem} from "../../common/components/Breadcrumb";
+import BasePage from "../components/BasePage";
+import {OurFormElement, RouteNames} from "../types";
+import {useResetPasswordConfirmMutation} from "../apis/spritstatApi";
 
-const BREADCRUMB: BreadcrumbItem = {
-  name: "Passwort ändern",
-  icon: faKey,
-  destination: RouteNames.ChangePassword,
-};
-
-function ChangePassword(): JSX.Element {
-  const [changePassword, {isLoading}] = useChangePasswordMutation();
+function ResetPassword(): JSX.Element {
+  const [resetPasswordConfirm, {isLoading}] = useResetPasswordConfirmMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordValid, setNewPasswordValid] = useState(false);
+  const {uid, token} = useParams();
+  const [password, setPassword] = useState("");
+  const [passwordValid, setPasswordValid] = useState(false);
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
@@ -31,12 +21,23 @@ function ChangePassword(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
-      changePassword({oldPassword, newPassword}).unwrap()
+      if (!uid || !token || !password) {
+        console.error(
+          "Password reset confirm data not available: " +
+          `uid=${uid}, token=${token}, password=${!password ? "INVALID" : "**********"}`
+        );
+        return;
+     }
+
+      resetPasswordConfirm({uid, token, password}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
-            navigate(-1);
+            navigate(
+              `${RouteNames.Login}?passwordChanged=true`,
+              {replace: true}
+            );
          } else {
-            console.error("Failed to reset password: request status not ok");
+            console.error(`Failed to reset password: request status not ok`);
             setError(true);
          }
        })
@@ -55,7 +56,7 @@ function ChangePassword(): JSX.Element {
  }
 
   let submitDisabled = true;
-  if (oldPassword.length > 1 && newPassword.length > 1 && newPasswordValid) {
+  if (password.length > 1 && passwordValid) {
     submitDisabled = false;
  }
 
@@ -70,24 +71,17 @@ function ChangePassword(): JSX.Element {
   return (
     <div>
       <BasePage
-        breadcrumbItems={[SETTINGS_BREADCRUMB, BREADCRUMB]}
         active={error}
-        message="Passwordänderung ist fehlgeschlagen."
+        message="Password reset ist fehlgeschlagen."
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password ändern</h1>
+          <h1 className="title">Password vergessen?</h1>
           <form onSubmit={onSubmit}>
-            <PasswordField
-              label="Aktuelles Passwort"
-              value={oldPassword}
-              update={setOldPassword}
-            />
             <PasswordWithValidationField
-              label="Neues Passwort"
-              value={newPassword}
-              update={setNewPassword}
-              setPasswordValid={setNewPasswordValid}
+              value={password}
+              update={setPassword}
+              setPasswordValid={setPasswordValid}
             />
             <div className="field is-grouped is-grouped-right">
               <p className="control">
@@ -108,4 +102,4 @@ function ChangePassword(): JSX.Element {
   );
 }
 
-export default ChangePassword;
+export default ResetPassword;

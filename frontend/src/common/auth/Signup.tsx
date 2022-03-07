@@ -1,16 +1,17 @@
-import React, {useEffect, useRef, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import React, {FormEvent, useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-import CenteredBox from "../../common/components/CenteredBox";
+import CenteredBox from "../components/CenteredBox";
+import BasePage from "../components/BasePage";
+import {OurFormElement, RouteNames} from "../types";
+import {useSignupMutation} from "../apis/spritstatApi";
+import EmailField from "./EmailField";
 import PasswordWithValidationField from "./PasswordWithValidationField";
-import BasePage from "../../common/components/BasePage";
-import {OurFormElement, RouteNames} from "../../common/types";
-import {useResetPasswordConfirmMutation} from "./authApiSlice";
 
-function ResetPassword(): JSX.Element {
-  const [resetPasswordConfirm, {isLoading}] = useResetPasswordConfirmMutation();
+function Signup(): JSX.Element {
+  const [signup, {isLoading}] = useSignupMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const {uid, token} = useParams();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(false);
   const [error, setError] = useState(false);
@@ -21,34 +22,30 @@ function ResetPassword(): JSX.Element {
     if (submitted) {
       setSubmitted(false);
 
-      if (!uid || !token || !password) {
+      if (!email || !password) {
         console.error(
-          "Password reset confirm data not available: " +
-          `uid=${uid}, token=${token}, password=${!password ? "INVALID" : "**********"}`
+          `Signup failed: email=${email}, password=${!password ? "INVALID" : "**********"}`
         );
         return;
      }
 
-      resetPasswordConfirm({uid, token, password}).unwrap()
+      signup({email, password}).unwrap()
         .then((isSuccess) => {
           if (isSuccess) {
-            navigate(
-              `${RouteNames.Login}?passwordChanged=true`,
-              {replace: true}
-            );
+            navigate(`${RouteNames.VerifyEmailSent}/${email}`);
          } else {
-            console.error(`Failed to reset password: request status not ok`);
+            console.error(`Failed to register: request status not ok`);
             setError(true);
          }
        })
         .catch((e: any) => {
-          console.error(`Failed to reset password: ${JSON.stringify(e, null, 2)}`);
+          console.error(`Failed to register: ${JSON.stringify(e, null, 2)}`);
           setError(true);
        });
    }
  }, [submitted]);
 
-  function onSubmit(e: React.FormEvent<OurFormElement>) {
+  function onSubmit(e: FormEvent<OurFormElement>) {
     e.preventDefault();
 
     setSubmitted(true);
@@ -56,7 +53,7 @@ function ResetPassword(): JSX.Element {
  }
 
   let submitDisabled = true;
-  if (password.length > 1 && passwordValid) {
+  if (email.length >= 3 && password.length > 1 && passwordValid) {
     submitDisabled = false;
  }
 
@@ -72,15 +69,17 @@ function ResetPassword(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message="Password reset ist fehlgeschlagen."
+        message="Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren."
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password vergessen?</h1>
+          <h1 className="title">Registrieren</h1>
           <form onSubmit={onSubmit}>
+            <EmailField value={email} update={setEmail} />
             <PasswordWithValidationField
               value={password}
               update={setPassword}
+              email={email}
               setPasswordValid={setPasswordValid}
             />
             <div className="field is-grouped is-grouped-right">
@@ -88,7 +87,7 @@ function ResetPassword(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Passwort speichern"
+                  value="Registrieren"
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"
@@ -102,4 +101,4 @@ function ResetPassword(): JSX.Element {
   );
 }
 
-export default ResetPassword;
+export default Signup;

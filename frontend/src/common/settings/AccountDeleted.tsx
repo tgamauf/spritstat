@@ -1,6 +1,6 @@
 import React from "react";
-import CenteredBox from "../../common/components/CenteredBox";
-import BasePage from "../../common/components/BasePage";
+import CenteredBox from "../components/CenteredBox";
+import BasePage from "../components/BasePage";
 
 export default function AccountDeleted() {
   return (

@@ -1,0 +1,74 @@
+[
+  {
+    "model": "spritstat.introsettings",
+    "pk": 1,
+    "fields": {
+      "no_location_active": true,
+      "location_list_active": true,
+      "add_location_active": true,
+      "location_details_active": true
+    }
+  },
+  {
+    "model": "spritstat.introsettings",
+    "pk": 2,
+    "fields": {
+      "no_location_active": true,
+      "location_list_active": true,
+      "add_location_active": true,
+      "location_details_active": true
+    }
+  },
+  {
+    "model": "spritstat.introsettings",
+    "pk": 3,
+    "fields": {
+      "no_location_active": true,
+      "location_list_active": true,
+      "add_location_active": true,
+      "location_details_active": true
+    }
+  },
+  {
+    "model": "spritstat.introsettings",
+    "pk": 4,
+    "fields": {
+      "no_location_active": false,
+      "location_list_active": true,
+      "add_location_active": true,
+      "location_details_active": true
+    }
+  },
+  {
+    "model": "spritstat.settings",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "intro": 1
+    }
+  },
+  {
+    "model": "spritstat.settings",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "intro": 2
+    }
+  },
+  {
+    "model": "spritstat.settings",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "intro": 3
+    }
+  },
+  {
+    "model": "spritstat.settings",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "intro": 4
+    }
+  }
+]

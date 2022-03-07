@@ -5,6 +5,9 @@ import {useGetRegionsQuery} from "./regionsApiSlice";
 
 const POSTAL_CODE_LENGTH = 4;
 const NO_POSTAL_CODE = "";
+const DROPDOWN_STATE_ID = "state";
+const DROPDOWN_DISTRICT_ID = "district";
+const TEXT_POSTAL_CODE_ID = "postal-code"
 
 interface Props {
   setRegion: (region: { code: number, type: RegionType, name: string }) => void;
@@ -127,6 +130,7 @@ export default function RegionLocationField(
                     setPostalCode(NO_POSTAL_CODE);
                   }}
                   data-test="field-state"
+                  id={DROPDOWN_STATE_ID}
                 >
                   <option value="" disabled={true}>
                     Bundesland
@@ -155,6 +159,7 @@ export default function RegionLocationField(
                     setPostalCode(NO_POSTAL_CODE);
                   }}
                   data-test="field-district"
+                  id={DROPDOWN_DISTRICT_ID}
                 >
                   <option value="" disabled={true}>
                     Bezirk
@@ -185,8 +190,11 @@ export default function RegionLocationField(
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
           data-test="field-postal-code"
+          id={TEXT_POSTAL_CODE_ID}
         />
       </div>
     </div>
   );
 };
+
+export {DROPDOWN_STATE_ID, DROPDOWN_DISTRICT_ID, TEXT_POSTAL_CODE_ID};

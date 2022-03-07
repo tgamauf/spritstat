@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import _debuounce from "lodash.debounce";
 
 import PasswordField, {PasswordFieldProps} from "./PasswordField";
-import {PasswordValidationResponse, useValidatePasswordMutation} from "./authApiSlice";
+import {PasswordValidationResponse, useValidatePasswordMutation} from "../apis/spritstatApi";
 
 const DEBOUNCE_TIMEOUT_MS = 200;
 // as defined by Django settings PASSWORD_MINIMUM_SCORE
