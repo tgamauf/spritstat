@@ -269,7 +269,7 @@ export default function PriceHistoryChart(
             <canvas id={chartId} ref={canvasRef}/>
           </div>
           {isInteractive && (
-            <div id={BTN_CHART_HISTORY_DATE_RANGE_ID}>
+            <div className="is-inline-block" id={BTN_CHART_HISTORY_DATE_RANGE_ID}>
               <DateRangeButton
                 items={[
                   {name: "1M", value: DateRange.OneMonth},

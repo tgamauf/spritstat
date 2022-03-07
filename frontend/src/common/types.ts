@@ -1,3 +1,5 @@
+import introJs from "intro.js";
+
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -92,6 +94,22 @@ interface Price {
   amount: number;
 }
 
-export type {Coordinates, Location, OurFormElement, NamedLocation, Price, Station, StationMap};
+// Override the introJs namespace to provide the internal properties we need
+type IntroJs = typeof introJs & {
+  _currentStep: number,
+  _options: introJs.Options,
+  _introItems: introJs.Step[]
+}
+
+export type {
+  Coordinates,
+  IntroJs,
+  Location,
+  OurFormElement,
+  NamedLocation,
+  Price,
+  Station,
+  StationMap
+};
 
 export {DateRange, FuelType, LocationType, RegionType, RouteNames};

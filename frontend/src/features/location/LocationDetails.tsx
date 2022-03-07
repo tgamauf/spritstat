@@ -1,6 +1,7 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {faChartLine, faTrash} from "@fortawesome/free-solid-svg-icons";
+import introJs from "intro.js";
 
 import BasePage from "../../common/components/BasePage";
 import {DateRange, Location, RouteNames} from "../../common/types";
@@ -19,12 +20,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import AveragePriceChart from "./AveragePriceChart";
 import PriceStationFrequencyChart from "./PriceStationFrequencyChart";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
-import {Steps} from "intro.js-react";
 import {INTRO_OPTIONS} from "../../common/constants";
-import {useAppSelector} from "../../common/utils";
+import {updateIntroStepElement, useAppSelector} from "../../common/utils";
 import {selectIntroSettingsLocationDetails} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
-import IntroJs from "intro.js";
 
 
 const FIELD_LOCATION_DETAILS_ID = "field-location-details";
@@ -91,6 +90,64 @@ export default function LocationDetails(): JSX.Element {
         })
     }
   }, [introDone]);
+
+  useEffect(() => {
+    if (location && introActive) {
+      introJs().setOptions({
+        ...INTRO_OPTIONS,
+        steps: [
+          {
+            intro: "Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes "
+              + "angezeigt."
+          },
+          {
+            element: `#${FIELD_LOCATION_DETAILS_ID}`,
+            intro: "Auch hier wird die Beschreibung des Ortes und der aktuelle Preis "
+              + "angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen "
+              + "zu klicken um diese auf Google Maps angezeigt zu bekommen."
+          },
+          {
+            element: `#${CHART_HISTORY_ID}`,
+            intro: "Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten "
+              + "Treibstoffpreises über den gewählten Zeitraum an."
+          },
+          {
+            element: `#${BTN_CHART_HISTORY_DATE_RANGE_ID}`,
+            intro: "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen."
+          },
+          {
+            element: `#${CHART_HOUR_ID}`,
+            intro: "Dieser Grahp zeigt den durchschnittlich niedrigsten Preis pro "
+              + "Tageszeit im gewählten Zeitraum an."
+          },
+          {
+            element: `#${CHART_WEEKDAY_ID}`,
+            intro: "Dieser Grahp zeigt den durchschnittlichen niedrigsten Preis pro "
+              + "Wochentag im gewählten Zeitraum an."
+          },
+          {
+            element: `#${CHART_DAY_OF_MONTH_ID}`,
+            intro: "Dieser Grahp zeigt den durchschnittlichen niedrigsten Preis pro "
+              + "Tag im Monat im gewählten Zeitraum an."
+          },
+          {
+            element: `#${CHART_STATION_ID}`,
+            intro: "Dieser Grahp zeigt an wie häufig eine Tankstelle im gewählten "
+              + "Zeitraum den niedrigsten Preis angeboten hat."
+          },
+          {
+            element: `#${BTN_DELETE_LOCATION_ID}`,
+            intro: "Schlussendlich ist es möglich den Ort zu löschen, falls er nicht "
+              + "mehr relevant für dich ist."
+          }
+        ]
+      }).onexit(
+        () => setIntroDone(true)
+      ).onbeforechange(
+        updateIntroStepElement
+      ).start();
+    }
+  }, [location, introActive]);
 
   let mainComponent;
   if (location) {
@@ -222,67 +279,67 @@ export default function LocationDetails(): JSX.Element {
           {mainComponent}
         </div>
       </div>
-      <Steps
-        enabled={introActive}
-        steps={[
-          {
-            intro: "Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes "
-              + "angezeigt."
-          },
-          {
-            element: `#${FIELD_LOCATION_DETAILS_ID}`,
-            intro: "Auch hier wird die Beschreibung des Ortes und der aktuelle Preis "
-              + "angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen "
-              + "zu klicken um diese auf Google Maps angezeigt zu bekommen."
-          },
-          {
-            element: `#${CHART_HISTORY_ID}`,
-            intro: "Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten "
-              + "Treibstoffpreises über den gewählten Zeitraum an."
-          },
-          {
-            element: `#${BTN_CHART_HISTORY_DATE_RANGE_ID}`,
-            intro: "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen."
-          },
-          {
-            element: `#${CHART_HOUR_ID}`,
-            intro: "Dieser Grahp zeigt den durchschnittlich niedrigsten Preis pro "
-              + "Tageszeit im gewählten Zeitraum an."
-          },
-          {
-            element: `#${CHART_WEEKDAY_ID}`,
-            intro: "Dieser Grahp zeigt den durchschnittlichen niedrigsten Preis pro "
-              + "Wochentag im gewählten Zeitraum an."
-          },
-          {
-            element: `#${CHART_DAY_OF_MONTH_ID}`,
-            intro: "Dieser Grahp zeigt den durchschnittlichen niedrigsten Preis pro "
-              + "Tag im Monat im gewählten Zeitraum an."
-          },
-          {
-            element: `#${CHART_STATION_ID}`,
-            intro: "Dieser Grahp zeigt an wie häufig eine Tankstelle im gewählten "
-              + "Zeitraum den niedrigsten Preis angeboten hat."
-          },
-          {
-            element: `#${BTN_DELETE_LOCATION_ID}`,
-            intro: "Schlussendlich ist es möglich den Ort zu löschen, falls er nicht "
-              + "mehr relevant für dich ist."
-          }
-        ]}
-        initialStep={0}
-        onBeforeChange={(nextStepIndex) => {
-          // Update the step reference as graphs are dynamically rendered
-          if (stepsRef.current) {
-            stepsRef.current.updateStepElement(nextStepIndex);
-          }
-        }}
-        onExit={(stepIndex) => {
-          setIntroDone(true);
-        }}
-        options={INTRO_OPTIONS}
-        ref={stepsRef}
-      />
+      {/*<Steps*/}
+      {/*  enabled={introActive}*/}
+      {/*  steps={[*/}
+      {/*    {*/}
+      {/*      intro: "Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes "*/}
+      {/*        + "angezeigt."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${FIELD_LOCATION_DETAILS_ID}`,*/}
+      {/*      intro: "Auch hier wird die Beschreibung des Ortes und der aktuelle Preis "*/}
+      {/*        + "angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen "*/}
+      {/*        + "zu klicken um diese auf Google Maps angezeigt zu bekommen."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${CHART_HISTORY_ID}`,*/}
+      {/*      intro: "Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten "*/}
+      {/*        + "Treibstoffpreises über den gewählten Zeitraum an."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${BTN_CHART_HISTORY_DATE_RANGE_ID}`,*/}
+      {/*      intro: "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${CHART_HOUR_ID}`,*/}
+      {/*      intro: "Dieser Grahp zeigt den durchschnittlich niedrigsten Preis pro "*/}
+      {/*        + "Tageszeit im gewählten Zeitraum an."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${CHART_WEEKDAY_ID}`,*/}
+      {/*      intro: "Dieser Grahp zeigt den durchschnittlichen niedrigsten Preis pro "*/}
+      {/*        + "Wochentag im gewählten Zeitraum an."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${CHART_DAY_OF_MONTH_ID}`,*/}
+      {/*      intro: "Dieser Grahp zeigt den durchschnittlichen niedrigsten Preis pro "*/}
+      {/*        + "Tag im Monat im gewählten Zeitraum an."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${CHART_STATION_ID}`,*/}
+      {/*      intro: "Dieser Grahp zeigt an wie häufig eine Tankstelle im gewählten "*/}
+      {/*        + "Zeitraum den niedrigsten Preis angeboten hat."*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      element: `#${BTN_DELETE_LOCATION_ID}`,*/}
+      {/*      intro: "Schlussendlich ist es möglich den Ort zu löschen, falls er nicht "*/}
+      {/*        + "mehr relevant für dich ist."*/}
+      {/*    }*/}
+      {/*  ]}*/}
+      {/*  initialStep={0}*/}
+      {/*  onBeforeChange={(nextStepIndex) => {*/}
+      {/*    // Update the step reference as graphs are dynamically rendered*/}
+      {/*    if (stepsRef.current) {*/}
+      {/*      stepsRef.current.updateStepElement(nextStepIndex);*/}
+      {/*    }*/}
+      {/*  }}*/}
+      {/*  onExit={(stepIndex) => {*/}
+      {/*    setIntroDone(true);*/}
+      {/*  }}*/}
+      {/*  options={INTRO_OPTIONS}*/}
+      {/*  ref={stepsRef}*/}
+      {/*/>*/}
     </BasePage>
   );
 };

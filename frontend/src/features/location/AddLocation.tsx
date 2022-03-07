@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
-import {Steps} from "intro.js-react";
-import IntroJs from "intro.js";
+import introJs from "intro.js";
 
 import NamedLocationField from "./NamedLocationField";
 import BasePage from "../../common/components/BasePage";
@@ -11,11 +10,11 @@ import RegionLocationField, {
   DROPDOWN_STATE_ID,
   TEXT_POSTAL_CODE_ID
 } from "./RegionLocationField/RegionLocationField";
-import {FuelType, LocationType, OurFormElement, RegionType, RouteNames} from "../../common/types";
+import {FuelType, IntroJs, LocationType, OurFormElement, RegionType, RouteNames} from "../../common/types";
 import {INTRO_OPTIONS, INVALID_LOCATION} from "../../common/constants";
 import {useAddLocationMutation} from "./locationApiSlice";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
-import {useAppSelector} from "../../common/utils";
+import {updateIntroStepElement, useAppSelector} from "../../common/utils";
 import {selectIntroSettingsAddLocation} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
 import {BTN_CURRENT_LOCATION_ID, TEXT_LOCATION_ID} from "./NamedLocationField/NamedLocationField";
@@ -111,6 +110,83 @@ export default function AddLocation(): JSX.Element {
         })
     }
   }, [introDone]);
+
+  useEffect(() => {
+    if (location && introActive) {
+      introJs().setOptions({
+        ...INTRO_OPTIONS,
+        steps: [
+          {
+            intro: "Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und "
+              + "Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im "
+              + "Allgemeinen exakter als Ergebnisse für Bezirken/Bundesländer."
+          },
+          {
+            element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
+            intro: "Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche "
+              + "nach einem konkreten Ort aktiviert."
+          },
+          {
+            element: `#${TEXT_LOCATION_ID}`,
+            intro: "Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du "
+              + "erhältst die gefundenen Vorschläge angezeigt."
+          },
+          {
+            element: `#${BTN_CURRENT_LOCATION_ID}`,
+            intro: "Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen."
+          },
+          {
+            element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
+            intro: "Wenn du \"Region\" auswählst, kannst du entweder einen Bezirk oder "
+              + "ein Bundesland auswählen."
+          },
+          {
+            element: `#${DROPDOWN_STATE_ID}`,
+            intro: "Wähle hier das gewünschte Bundesland aus."
+          },
+          {
+            element: `#${DROPDOWN_DISTRICT_ID}`,
+            intro: "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen."
+          },
+          {
+            element: `#${TEXT_POSTAL_CODE_ID}`,
+            intro: "Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In "
+              + "diesem Fall wird automatisch der zugehörige Bezirk ausgewählt."
+          },
+          {
+            element: `#${DROPDOWN_FUEL_ID}`,
+            intro: "Zusätzlich zum Ort kann auch der Treibstofftyp ausgewählt werden "
+              + "für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, " +
+              "Super und Gas zur Verfügung."
+          },
+          {
+            element: `#${BTN_ADD_LOCATION_ID}`,
+            intro: "Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden."
+          }
+        ]
+      }).onexit(
+        () => {
+          setLocationType(LocationType.Named);
+          setIntroDone(true);
+        }
+      ).onbeforechange(
+        updateIntroStepElement
+      ).onchange(
+        function(this: IntroJs, targetElement) {
+          // Switch to region location type if we select the location type dropdown
+          //  the second time. While this is still kind of hacky, it should be
+          //  reasonably reliable.
+          if (
+            (this._currentStep >= 2)
+            && targetElement
+            && (targetElement.id === DROPDOWN_LOCATION_TYPE_ID)
+          ) {
+            setLocationType(LocationType.Region);
+          }
+        }
+      ).start();
+    }
+  }, [introActive]);
 
   function changeLocationType(event: React.ChangeEvent<HTMLSelectElement>) {
     event.preventDefault();
@@ -232,80 +308,6 @@ export default function AddLocation(): JSX.Element {
           </div>
         </form>
       </div>
-      <Steps
-        enabled={introActive}
-        steps={[
-          {
-            intro: "Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und "
-              + "Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im "
-              + "Allgemeinen exakter als Ergebnisse für Bezirken/Bundesländer."
-          },
-          {
-            element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
-            intro: "Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche "
-              + "nach einem konkreten Ort aktiviert."
-          },
-          {
-            element: `#${TEXT_LOCATION_ID}`,
-            intro: "Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du "
-              + "erhältst die gefundenen Vorschläge angezeigt."
-          },
-          {
-            element: `#${BTN_CURRENT_LOCATION_ID}`,
-            intro: "Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen."
-          },
-          {
-            element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
-            intro: "Wenn du \"Region\" auswählst, kannst du entweder einen Bezirk oder "
-              + "ein Bundesland auswählen."
-          },
-          {
-            element: `#${DROPDOWN_STATE_ID}`,
-            intro: "Wähle hier das gewünschte Bundesland aus."
-          },
-          {
-            element: `#${DROPDOWN_DISTRICT_ID}`,
-            intro: "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen."
-          },
-          {
-            element: `#${TEXT_POSTAL_CODE_ID}`,
-            intro: "Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In "
-              + "diesem Fall wird automatisch der zugehörige Bezirk ausgewählt."
-          },
-          {
-            element: `#${DROPDOWN_FUEL_ID}`,
-            intro: "Zusätzlich zum Ort kann auch der Treibstofftyp ausgewählt werden "
-              + "für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, " +
-              "Super und Gas zur Verfügung."
-          },
-          {
-            element: `#${BTN_ADD_LOCATION_ID}`,
-            intro: "Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden."
-          }
-        ]}
-        initialStep={0}
-        onChange={(nextStepIndex, nextElement) => {
-          // Switch to region location type if we select the location type dropdown
-          //  the second time. While this is still kind of hacky, it should be
-          //  reasonably reliable.
-          if ((nextElement.id === DROPDOWN_LOCATION_TYPE_ID) && (nextStepIndex > 1)) {
-            setLocationType(LocationType.Region);
-          }
-        }}
-        onBeforeChange={(nextStepIndex) => {
-          // Have to use the step indices here as I currently don't see a way top make
-          //  this resilient against step changes.
-          if ([5, 6, 7].some(value => value === nextStepIndex)) {
-            stepsRef.current.updateStepElement(nextStepIndex);
-          }
-        }}
-        onExit={(stepIndex) => {
-          setLocationType(LocationType.Named);
-          setIntroDone(true);
-        }}
-        options={INTRO_OPTIONS}
-        ref={stepsRef}
-      />
     </BasePage>
   );
 }

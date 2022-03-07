@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
-import {Steps} from "intro.js-react";
 
 import CenteredBox from "../../common/components/CenteredBox";
-import {RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
+import {IntroJs, LocationType, RouteNames} from "../../common/types";
+import {updateIntroStepElement, useAppSelector} from "../../common/utils";
 import {selectIntroSettingsNoLocation} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
 import {INTRO_OPTIONS} from "../../common/constants";
+import introJs from "intro.js";
 
 
 const BTN_ADD_LOCATION_ID = "btn-add";
@@ -29,6 +29,20 @@ export default function NoLocation() {
         })
     }
   }, [introDone]);
+
+  useEffect(() => {
+    if (location && introActive) {
+      introJs().setOptions({
+        ...INTRO_OPTIONS,
+        steps: [{
+          element: `#${BTN_ADD_LOCATION_ID}`,
+          intro: "Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort zu erstellen."
+        }]
+      }).onexit(
+        () => setIntroDone(true)
+      ).start();
+    }
+  }, [introActive]);
 
   return (
     <div>
@@ -57,16 +71,6 @@ export default function NoLocation() {
           </div>
         </div>
       </div>
-      <Steps
-        enabled={introActive}
-        steps={[{
-          element: `#${BTN_ADD_LOCATION_ID}`,
-          intro: "Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort zu erstellen."
-        }]}
-        initialStep={0}
-        onExit={() => setIntroDone(true)}
-        options={INTRO_OPTIONS}
-      />
     </div>
   );
 };

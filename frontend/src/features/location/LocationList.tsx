@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
-import {Steps} from "intro.js-react";
+import introJs from "intro.js";
 
 import {RouteNames} from "../../common/types";
 import LocationCard from "./LocationCard";
@@ -44,6 +44,37 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
     }
   }, [introDone]);
 
+  useEffect(() => {
+    if (introActive) {
+      introJs().setOptions({
+        ...INTRO_OPTIONS,
+        steps: [
+          {
+            intro: "Auf dieser Seite werden alle deine Orte angezeigt."
+          },
+          {
+            element: `#${CARD_LOCATION_ID_PREFIX}0`,
+            intro: "Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den "
+              + "Ort um die detaillierte Statistiken des Ortes zu erhalten."
+          },
+          {
+            element: `#${LOCATION_FIELD_ID}`,
+            intro: "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp."
+          },
+          {
+            element: `#${CURRENT_PRICE_FIELD_ID}`,
+            intro: "Außerdem wird der aktuell niedrigste Preis für den angegebenen "
+              + "Treibstofftyp und die Tankstellen die diesen anbieten angezeigt."
+          },
+          {
+            element: `#${BTN_ADD_LOCATION_ID}`,
+            intro: "Klicke hier um einen neuen Ort hinzuzufügen."
+          }
+        ]
+      }).onexit(() => setIntroDone(true)).start();
+    }
+  }, [introActive]);
+
   return (
     <div data-test="location-list">
       <div className="container">
@@ -81,35 +112,6 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
           );
        })}
       </div>
-      <Steps
-        enabled={introActive}
-        steps={[
-          {
-            intro: "Auf dieser Seite werden alle deine Orte angezeigt."
-          },
-          {
-            element: `#${CARD_LOCATION_ID_PREFIX}0`,
-            intro: "Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den "
-              + "Ort um die detaillierte Statistiken des Ortes zu erhalten."
-          },
-          {
-            element: `#${LOCATION_FIELD_ID}`,
-            intro: "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp."
-          },
-          {
-            element: `#${CURRENT_PRICE_FIELD_ID}`,
-            intro: "Außerdem wird der aktuell niedrigste Preis für den angegebenen "
-              + "Treibstofftyp und die Tankstellen die diesen anbieten angezeigt."
-          },
-          {
-            element: `#${BTN_ADD_LOCATION_ID}`,
-            intro: "Klicke hier um einen neuen Ort hinzuzufügen."
-          }
-        ]}
-        initialStep={0}
-        onExit={() => setIntroDone(true)}
-        options={INTRO_OPTIONS}
-      />
     </div>
   );
 }
