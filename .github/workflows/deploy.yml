@@ -64,8 +64,7 @@ jobs:
           playbook: playbook.yml
           key: ${{ secrets.SSH_KEY }}
           known_hosts:
-            "|1|V8f6Yi23JAJnMazuk85U2nZfzto=|WAWN9BBCx7i8jtH2K2snd14z2M8= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNhvP8JuSP70F1C0sJPHYEXnnggsMcc6yPAKVNdpOtRsv2xWJFFL4HiaT03qHDqg6MtqQYpXN/j4f7xMJZ9jecc=
-            |1|4snRNIYax/BvlZMPa2gJ1TdizyM=|Ewnzp67KA4+aHQZgBOCeG1lTvVA= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNhvP8JuSP70F1C0sJPHYEXnnggsMcc6yPAKVNdpOtRsv2xWJFFL4HiaT03qHDqg6MtqQYpXN/j4f7xMJZ9jecc="
+            "|1|oY9vHZNRPAWe8JjhAVotjI4lUCc=|cD5Kum9LF40EcpWZGpOX2gqDPKo= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOyAdoO9feVTEIOVxrP88XuK/+8gAqh78zAuQJdFDwssUgYC9aPXM6cAEZwjNR4m1DgZR5Cr23twcfCZwug2z5Y="
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
             --user github-actions
