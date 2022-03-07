@@ -59,7 +59,7 @@
         src: nginx/
         dest: /etc/nginx/
 
-    - name: Create a directory
+    - name: Create the app config directory
       file:
         path: /etc/spritstat
         state: directory
