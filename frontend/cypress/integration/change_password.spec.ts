@@ -3,6 +3,7 @@ import {RouteNames} from "../../src/common/types";
 describe("Validate change password view", () => {
   it("validate content", () => {
     cy.mockLoggedIn();
+    cy.mockSettings();
     cy.visit(RouteNames.ChangePassword);
 
     cy.hasBaseStructure(true);
@@ -30,6 +31,7 @@ describe("Validate password change process", () => {
   beforeEach(function() {
     cy.resetDB(["customuser.json", "emailaddress.json"]);
 
+    cy.mockSettings();
     cy.intercept("POST", "/api/v1/users/auth/password/validate/")
       .as("validatePassword");
     cy.intercept("POST", "/api/v1/users/auth/password/change/")

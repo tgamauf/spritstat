@@ -43,10 +43,10 @@ interface PasswordChangeData {
 }
 
 interface IntroSettings {
-  no_location_active: boolean;
-  location_list_active: boolean;
   add_location_active: boolean;
   location_details_active: boolean;
+  location_list_active: boolean;
+  no_location_active: boolean;
 }
 
 interface SettingsData {
@@ -303,4 +303,4 @@ export {
   useLazyGetSettingsQuery,
   useSetSettingMutation,
 };
-export type {PasswordValidationResponse};
+export type {PasswordValidationResponse, SettingsData};

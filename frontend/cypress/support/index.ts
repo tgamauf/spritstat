@@ -1,6 +1,7 @@
 import "cypress-real-events/support";
 
 import './commands'
+import {SettingsData} from "../../src/common/apis/spritstatApi";
 
 
 beforeEach(function () {
@@ -46,6 +47,13 @@ declare global {
        * @example cy.mockLoggedOut();
        */
       mockLoggedOut(): Chainable<Element>;
+
+      /**
+       * Mock settings.
+       * @example cy.mockSettings();
+       * @example cy.mockSettings({intro: {no_location_active: false}});
+       */
+      mockSettings(settings?: SettingsData): Chainable<Element>;
 
       /**
        * Mock the E-Control price API.

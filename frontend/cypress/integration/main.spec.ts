@@ -7,6 +7,7 @@ describe("Validate initial page load", () => {
     cy.url().should("include", RouteNames.Home)
 
     cy.mockLoggedIn();
+    cy.mockSettings();
     cy.visit(RouteNames.Index);
     cy.wait("@isAuthenticated");
     cy.url().should("include", RouteNames.Dashboard);
@@ -36,6 +37,7 @@ describe("Validate initial page load", () => {
 
   it("validate content of homepage if logged in", () => {
     cy.mockLoggedIn();
+    cy.mockSettings();
     cy.visit(RouteNames.Home);
     cy.wait("@isAuthenticated");
     cy.hasBaseStructure(true);
@@ -51,6 +53,7 @@ describe("Validate initial page load", () => {
  });
 
   it("validate header dropdown buttons", () => {
+    cy.mockSettings();
     cy.resetDB(["customuser.json", "emailaddress.json"]);
     cy.login("test@test.at", "test");
 
