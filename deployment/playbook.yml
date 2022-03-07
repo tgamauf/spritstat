@@ -59,6 +59,10 @@
         src: nginx/
         dest: /etc/nginx/
 
+    - name: Create a directory
+      file:
+        path: /etc/spritstat
+        state: directory
     - name: Provide app environment on machine
       copy:
         decrypt: yes
