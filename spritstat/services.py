@@ -183,12 +183,20 @@ def parse_prices(item: Dict) -> Union[Price, None]:
     if not len(item["prices"]):
         return None
 
+    address = item["location"]["address"]
+    postal_code = item["location"]["postalCode"]
+    city = item["location"]["city"]
+    if "name" in item:
+        name = item["name"]
+    else:
+        name = f"{address}, {postal_code} {city}"
+
     station = Station(
         id=item["id"],
-        name=item["name"],
-        address=item["location"]["address"],
-        postal_code=item["location"]["postalCode"],
-        city=item["location"]["city"],
+        name=name,
+        address=address,
+        postal_code=postal_code,
+        city=city,
         latitude=Decimal(round(item["location"]["latitude"], 7)),
         longitude=Decimal(round(item["location"]["longitude"], 7)),
     )

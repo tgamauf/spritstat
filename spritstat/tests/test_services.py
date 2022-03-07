@@ -20,7 +20,7 @@ from users.models import CustomUser
 @dataclass
 class MockAPIResponseEntry:
     id: int
-    name: str
+    name: Optional[str]
     address: str
     postal_code: str
     city: str
@@ -32,7 +32,6 @@ class MockAPIResponseEntry:
     def to_dict(self) -> Dict:
         data = {
             "id": self.id,
-            "name": self.name,
             "location": {
                 "address": self.address,
                 "postalCode": self.postal_code,
@@ -42,6 +41,8 @@ class MockAPIResponseEntry:
             },
             "prices": [],
         }
+        if self.name:
+            data["name"] = self.name
 
         if self.price:
             data["prices"].append({"fuelType": self.fuel_type, "amount": self.price})
@@ -165,7 +166,7 @@ class TestRequestLocationPrices(TestCase):
         )
         check_response_entry_5 = MockAPIResponseEntry(
             id=4000,
-            name="Station 4000",
+            name=None,
             address="Address 4000",
             postal_code="4000",
             city="City 4000",
