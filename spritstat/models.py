@@ -110,21 +110,23 @@ class PriceQuerySet(models.QuerySet):
     ) -> Union["PriceQuerySet", models.QuerySet]:
         now = datetime.now()
 
+        # We use days instead of months here as we always want 31 days per month
+        #  shown, which isn't the case for months.
         if date_range == DateRange.OneWeek:
             data = self.filter(
                 datetime__gte=now - relativedelta(weeks=1),
             )
         elif date_range == DateRange.OneMonth:
             data = self.filter(
-                datetime__gte=now - relativedelta(months=1),
+                datetime__gte=now - relativedelta(days=31),
             )
         elif date_range == DateRange.ThreeMonths:
             data = self.filter(
-                datetime__gte=now - relativedelta(months=3),
+                datetime__gte=now - relativedelta(days=93),
             )
         elif date_range == DateRange.SixMonths:
             data = self.filter(
-                datetime__gte=now - relativedelta(months=6),
+                datetime__gte=now - relativedelta(days=186),
             )
         else:
             data = self.all()
