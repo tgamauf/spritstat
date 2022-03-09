@@ -65,7 +65,7 @@ class MockAPIResponse:
         return response
 
 
-class MockPriceStatistics(services.PriceStatistics):
+class MockPriceStatistics(services.price.PriceStatistics):
     def set_min_amount(self, value):
         object.__setattr__(self, "min_amount", value)
 
