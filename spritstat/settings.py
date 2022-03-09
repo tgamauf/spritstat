@@ -69,7 +69,11 @@ ROOT_URLCONF = "spritstat.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "users" / "templates"],
+        "DIRS": [
+            BASE_DIR / "templates",
+            BASE_DIR / "users" / "templates",
+            BASE_DIR / "spritstat" / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
