@@ -18,8 +18,8 @@ from urllib3 import PoolManager
 from spritstat.models import Location, Price, Station
 from spritstat import services
 from spritstat.services.notification import (
-    schedule_location_notification,
-    LOCATION_REMINDER_DELAY_WEEKS,
+    schedule_create_location_notification,
+    CREATE_LOCATION_REMINDER_DELAY_WEEKS,
 )
 from users.models import CustomUser
 
@@ -416,7 +416,7 @@ class TestNotifications(TestCase):
         datetime_mock = MagicMock(autospec=datetime)
         datetime_mock.now.return_value = mock_now
         with patch("spritstat.services.notification.datetime", new=datetime_mock):
-            schedule_location_notification(self.user)
+            schedule_create_location_notification(self.user)
         self.assertEqual(
             self.user.next_notification.func,
             "spritstat.services.send_location_notification",
@@ -427,12 +427,12 @@ class TestNotifications(TestCase):
         self.assertEqual(self.user.next_notification.schedule_type, Schedule.ONCE)
         self.assertEqual(
             self.user.next_notification.next_run,
-            mock_now + timedelta(weeks=LOCATION_REMINDER_DELAY_WEEKS),
+            mock_now + timedelta(weeks=CREATE_LOCATION_REMINDER_DELAY_WEEKS),
         )
 
     def test_send_location_notification(self):
         # Test if notification is sent
-        services.send_location_notification(self.user.id)
+        services.send_create_location_notification(self.user.id)
         message = mail.outbox[0]
         self.assertEqual(message.to[0], self.user.email)
         self.assertEqual(message.from_email, settings.DEFAULT_FROM_EMAIL)
@@ -442,5 +442,5 @@ class TestNotifications(TestCase):
         # Test if notification is not sent if the user is inactive
         self.user.is_active = False
         self.user.save()
-        services.send_location_notification(self.user.id)
+        services.send_create_location_notification(self.user.id)
         self.assertEqual(len(mail.outbox), 0)

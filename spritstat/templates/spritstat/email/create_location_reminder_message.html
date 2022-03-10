@@ -2,12 +2,12 @@
 {% load i18n %}
 
 {% block title %}{% autoescape off %}{% blocktrans %}
-Schau mal wieder vorbei
+Lege doch einen Ort an
 {% endblocktrans %}{% endautoescape %}{% endblock %}
 
 {% block preview %}{% autoescape off %}
-{% blocktrans %}
-Es sind daten für deinen neuen Ort verfügbar.
+{% blocktrans with site_domain=current_site.domain %}
+Lege einen Ort an um zu sehen wie sich die Spritpreise bei dir entwickeln.
 {% endblocktrans %}{% endautoescape %}{% endblock %}
 
 {% block content %}{% autoescape off %} {% blocktrans with site_domain=current_site.domain %}
@@ -22,9 +22,9 @@ Es sind daten für deinen neuen Ort verfügbar.
     "
   >
     <p style="margin: 0">
-      Du hast vor kurzem einen neuen Ort auf <a href="https://{{ site_domain }}/">SPRITSTAT</a> angelegt.
-      Schau doch mal wieder vorbei, es gibt schon einiges zu sehen. Wen du direkt zu deinen neuen Ort gehen willst,
-      klicke <a href="https://{{ site_domain }}/location-details/{{ location_id }}/">hier</a>.
+      Du hast dich vor kurzem bei <a href="https://{{ site_domain }}/">{{ site_domain }}</a> registriert, aber noch
+      keinen Ort angelegt. Schau doch mal wieder vorbei und lege einen Ort an, dann können wir dir schon bald zeigen
+      wie sich die Spritpreise an deinen Orten entwickeln!
     </p>
   </td>
 </tr>

@@ -1,8 +1,9 @@
-from allauth.account.models import EmailAddress
+from datetime import datetime, timedelta
+from typing import Union, Dict, Optional
+
 from allauth.account.signals import user_signed_up
 from allauth.account.utils import user_pk_to_url_str
 from allauth.utils import build_absolute_uri
-from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives, EmailMessage
@@ -12,8 +13,6 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import salted_hmac
 from django.utils.encoding import force_str
-from typing import Union, Dict
-
 from django_q.models import Schedule
 from django_q.tasks import schedule
 
@@ -22,44 +21,75 @@ from spritstat.signals import location_created
 from users.models import CustomUser
 
 KEY_SALT = "spritstat.services.notification"
-LOCATION_REMINDER_DELAY_WEEKS = 1
+
+CREATE_LOCATION_REMINDER_DELAY_DAYS = 2
+CREATE_LOCATION_REMINDER_TEMPLATE_PREFIX = "spritstat/email/create_location_reminder"
+
+LOCATION_REMINDER_DELAY_WEEKS = 4
 LOCATION_REMINDER_TEMPLATE_PREFIX = "spritstat/email/location_reminder"
 
 
 @receiver(user_signed_up)
-def schedule_location_notification(user: CustomUser, **kwargs) -> None:
-    # Schedule a onetime notification for this user.
+def schedule_create_location_notification(user: CustomUser, **kwargs) -> None:
+    # Schedule a onetime notification after registration for this user.
+
     user.next_notification = schedule(
-        "spritstat.services.send_location_notification",
+        "spritstat.services.send_create_location_notification",
         user.id,
+        schedule_type=Schedule.ONCE,
+        next_run=datetime.now() + timedelta(days=CREATE_LOCATION_REMINDER_DELAY_DAYS),
+    )
+    user.save()
+
+
+@receiver(location_created)
+def schedule_location_reminder_notification(location: Location, **kwargs) -> None:
+    # Schedule a onetime notification after a location was created for this user.
+
+    user = location.user
+
+    if user.next_notification:
+        user.next_notification.delete()
+
+    user.next_notification = schedule(
+        "spritstat.services.send_location_reminder_notification",
+        location.id,
         schedule_type=Schedule.ONCE,
         next_run=datetime.now() + timedelta(weeks=LOCATION_REMINDER_DELAY_WEEKS),
     )
     user.save()
 
 
-@receiver(location_created)
-def location_created(location: Location, **kwargs) -> None:
-    # Remove the "please add location" notification for this user as soon as a
-    #  location is created.
-    if location.user.next_notification:
-        location.user.next_notification.delete()
-        location.user.next_notification = None
-        location.user.save()
-
-
-def send_location_notification(user_id: int) -> None:
+def send_create_location_notification(user_id: int) -> None:
     # Send the "please add location" notification to the provided user.
+
     user = CustomUser.objects.get(id=user_id)
 
     # Skip the notification if the user isn't active anymore.
     if not user.is_active:
         return
 
-    _send_mail(LOCATION_REMINDER_TEMPLATE_PREFIX, user)
+    _send_mail(CREATE_LOCATION_REMINDER_TEMPLATE_PREFIX, user)
 
 
-def _send_mail(email_template_prefix: str, user: CustomUser) -> None:
+def send_location_reminder_notification(location_id: int) -> None:
+    # Send the "have a look at your new location" notification to the user
+    #  owning the provided location.
+
+    user = Location.objects.get(id=location_id).user
+
+    # Skip the notification if the user isn't active anymore.
+    if not user.is_active:
+        return
+
+    _send_mail(LOCATION_REMINDER_TEMPLATE_PREFIX, user, {"location_id": location_id})
+
+
+def _send_mail(
+    email_template_prefix: str,
+    user: CustomUser,
+    additional_context: Optional[Dict] = None,
+) -> None:
     current_site = Site.objects.get_current()
     unsubscribe_url = _get_unsubscribe_url(user)
     context = {
@@ -67,6 +97,8 @@ def _send_mail(email_template_prefix: str, user: CustomUser) -> None:
         "unsubscribe_url": unsubscribe_url,
         "has_unsubscribe": True,
     }
+    if additional_context:
+        context.update(additional_context)
     msg = _render_mail(email_template_prefix, user.email, context)
     msg.send()
 
