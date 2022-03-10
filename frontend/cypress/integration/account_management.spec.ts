@@ -48,7 +48,7 @@ describe("Validate settings change", () => {
   });
 
   beforeEach(function () {
-    cy.resetDB(["customuser.json", "emailaddress.json", "settings.json"]);
+    cy.resetDB(["user.json", "settings.json"]);
     cy.login(this.username, this.password);
     cy.intercept("GET", "/api/v1/sprit/settings/").as("settings");
   });
@@ -93,7 +93,7 @@ describe("Validate delete account", () => {
   });
 
   beforeEach(function () {
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
     cy.login(this.username, this.password);
   });
 

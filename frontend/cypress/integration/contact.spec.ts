@@ -2,7 +2,7 @@ import {RouteNames} from "../../src/common/types";
 
 describe("Validate password change process", () => {
   before(() => {
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
     cy.mockSettings();
     cy.login("test@test.at", "test");
     Cypress.Cookies.defaults({

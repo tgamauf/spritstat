@@ -19,7 +19,7 @@ declare global {
       /**
        * Reset and reseed database.
        * @example cy.resetDB();
-       * @example cy.resetDB(["customuser.json"]);
+       * @example cy.resetDB(["user.json"]);
        */
       resetDB(fixtures?: string[]): Chainable<Element>;
 

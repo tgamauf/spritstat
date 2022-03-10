@@ -32,7 +32,7 @@ describe("Login view", () => {
 
 describe("Login process", () => {
   before(() => {
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
 
     // Username and password of user in customuser.json
     cy.wrap("test@test.at").as("username");

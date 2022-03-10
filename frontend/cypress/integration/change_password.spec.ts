@@ -29,7 +29,7 @@ describe("Validate password change process", () => {
  });
 
   beforeEach(function() {
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
 
     cy.mockSettings();
     cy.intercept("POST", "/api/v1/users/auth/password/validate/")
