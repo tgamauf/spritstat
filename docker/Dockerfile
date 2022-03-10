@@ -56,6 +56,7 @@ USER root:root
 COPY manage.py ${APP_HOME}/
 COPY users/ ${APP_HOME}/users/
 COPY spritstat/ ${APP_HOME}/spritstat/
+COPY templates/ ${APP_HOME}/templates/
 RUN chown -R ${APP_USER}:${APP_USER} $APP_HOME
 
 # Copy frontend build artifacts
