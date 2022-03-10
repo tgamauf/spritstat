@@ -1,4 +1,4 @@
 {% load i18n %}
 {% autoescape off %}
-{% blocktrans %}Du hast noch keinen Ort angelegt{% endblocktrans %}
+{% blocktrans %}Schau mal wieder vorbei, es gibt schon einiges zu sehen{% endblocktrans %}
 {% endautoescape %}

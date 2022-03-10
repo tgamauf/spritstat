@@ -3,7 +3,6 @@
 
 {% block content %}{% autoescape off %}
 {% blocktrans with site_domain=current_site.domain %}
-Du hast dich vor kurzem bei https://{{ site_domain }}/ registriert, aber noch keinen Ort angelegt.
-Schau doch mal wieder vorbei und lege einen Ort an, dann können wir dir schon bald zeigen wie sich
-die Spritpreise an deinen Orten entwickeln!
+Du hast vor kurzem einen neuen Ort auf SPRITSTAT angelegt. Schau doch mal wieder vorbei,
+es gibt schon einiges zu sehen: https://{{ site_domain }}/location-details/{{ location_id }}/
 {% endblocktrans %}{% endautoescape %}{% endblock %}
