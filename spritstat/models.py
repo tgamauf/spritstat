@@ -29,8 +29,9 @@ class IntroSettings(models.Model):
 
 
 class Settings(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     intro = models.OneToOneField(IntroSettings, on_delete=models.CASCADE)
+    notifications_active = models.BooleanField(default=True)
 
 
 REGION_TYPES = (("BL", "Bundesland"), ("PB", "Bezirk"))

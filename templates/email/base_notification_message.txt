@@ -1,0 +1,3 @@
+{% extends "email/base_message.txt" %}
+{% load i18n %}
+{% block footer %}{% blocktrans %}Abmelden: {% endblocktrans %}{{ unsubscribe_url }}{% endblock %}

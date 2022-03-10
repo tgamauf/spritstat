@@ -4,17 +4,18 @@ from typing import Union
 from django.conf import settings
 from django.db.models import Count, QuerySet, F, FloatField
 from django.db.models.functions import Cast
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django_q.tasks import schedule, Schedule
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework import permissions
 from rest_framework.serializers import Serializer
-from rest_framework.views import APIView
+from rest_framework.views import APIView, Response
 
 from . import models
 from . import serializers
 from .permissions import IsOwner
-from .serializers import PriceStationFrequencySerializer
+from .serializers import PriceStationFrequencySerializer, UnsubscribeSerializer
+from .signals import location_created
 
 
 def index(request):
@@ -35,6 +36,32 @@ class Settings(generics.RetrieveUpdateAPIView):
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+
+class UnsubscribeView(generics.GenericAPIView):
+    UNSUBSCRIBE_PATH_TEMPLATE = "/unsubscribe/{uid}/{token}"
+    serializer_class = UnsubscribeSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def get(self, request, *args, **kwargs):
+        # Redirect to frontend URL, so we can display something to the user and
+        #  also use POST instead of GET for the call.
+        uid = kwargs.get("uid")
+        token = kwargs.get("token")
+
+        if uid is None or token is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        return redirect(self.UNSUBSCRIBE_PATH_TEMPLATE.format(uid=uid, token=token))
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class LocationList(generics.ListCreateAPIView):
@@ -66,6 +93,9 @@ class LocationList(generics.ListCreateAPIView):
         location_object = models.Location.objects.get(pk=location_id)
         location_object.schedule = schedule_object
         location_object.save()
+
+        # Send the location created signal
+        location_created.send(self.__class__, location=location_object)
 
         return response
 

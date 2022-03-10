@@ -1,7 +1,15 @@
-from django.conf import settings
-from rest_framework import serializers
+from typing import Dict
 
+from allauth.account.forms import default_token_generator
+from allauth.account.utils import url_str_to_user_pk
+from django.conf import settings
+from django.utils.encoding import force_str
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
+from users.models import CustomUser
 from .models import IntroSettings, Location, Price, Settings, Station
+from .services import Token
 
 
 class IntroSettingsSerializer(serializers.ModelSerializer):
@@ -21,7 +29,7 @@ class SettingsSerializer(serializers.ModelSerializer):
     class Meta:
         ordering = ["id"]
         model = Settings
-        fields = ["intro"]
+        fields = ["intro", "notifications_active"]
         depth = 1
 
     def __init__(self, *args, **kwargs):
@@ -29,11 +37,41 @@ class SettingsSerializer(serializers.ModelSerializer):
 
         self.user = getattr(self.context.get("request"), "user", None)
 
-    def update(self, instance, validated_data):
-        intro_data = validated_data.pop("intro")
-        self.fields["intro"].update(instance.intro, intro_data)
+    def update(self, instance: Settings, validated_data: Dict) -> Settings:
+        intro_data = validated_data.get("intro")
+        if intro_data is not None:
+            self.fields["intro"].update(instance.intro, intro_data)
+
+        notifications_active = validated_data.get("notifications_active")
+        if notifications_active is not None:
+            instance.notifications_active = notifications_active
+        instance.save()
 
         return instance
+
+
+class UnsubscribeSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
+    user: CustomUser
+
+    def validate(self, attrs):
+        # Decode the uidb64 (allauth use base36) to uid to get User object
+        try:
+            uid = force_str(url_str_to_user_pk(attrs["uid"]))
+            self.user = CustomUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+            raise ValidationError({"uid": ["Invalid value"]})
+
+        if not Token(self.user).check(attrs["token"]):
+            raise ValidationError({"token": ["Invalid value"]})
+
+        return attrs
+
+    def save(self, **kwargs):
+        self.user.settings.notifications_active = False
+        self.user.settings.save()
 
 
 class LocationSerializer(serializers.ModelSerializer):

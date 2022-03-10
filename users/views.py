@@ -19,10 +19,6 @@ from .models import CustomUser
 from .serializers import ContactFormSerializer, PasswordValidationSerializer
 
 
-CONFIRM_EMAIL_PATH_TEMPLATE = "/confirm-email/{key}"
-RESET_PASSWORD_PATH_TEMPLATE = "/reset-password/{uid}/{token}"
-
-
 class PasswordValidationView(GenericAPIView):
     serializer_class = PasswordValidationSerializer
 
@@ -40,15 +36,17 @@ class PasswordValidationView(GenericAPIView):
 @api_view(["GET"])
 def dummy_confirm_email_view(request, key):
     # This view really just redirects the call so the frontend can handle it.
-    return redirect(CONFIRM_EMAIL_PATH_TEMPLATE.format(key=key))
+    return redirect(f"/confirm-email/{key}")
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    RESET_PASSWORD_PATH_TEMPLATE = "/reset-password/{uid}/{token}"
+
     def get(self, request, *args, **kwargs):
         uid = kwargs["uid"]
         token = kwargs["token"]
 
-        return redirect(RESET_PASSWORD_PATH_TEMPLATE.format(uid=uid, token=token))
+        return redirect(self.RESET_PASSWORD_PATH_TEMPLATE.format(uid=uid, token=token))
 
 
 class CustomLoginView(LoginView):

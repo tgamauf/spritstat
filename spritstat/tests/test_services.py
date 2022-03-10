@@ -1,19 +1,26 @@
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
+from django.core import mail
 from django.test import TestCase
 from django.utils import timezone
 import json
 from statistics import mean, median
 from typing import List, Dict, Optional
 from unittest.mock import MagicMock, patch
+
+from django_q.models import Schedule
 from urllib3 import PoolManager
 
 from spritstat.models import Location, Price, Station
 from spritstat import services
+from spritstat.services.notification import (
+    schedule_location_notification,
+    LOCATION_REMINDER_DELAY_WEEKS,
+)
 from users.models import CustomUser
 
 
@@ -395,3 +402,45 @@ class TestClearExpiredSessions(TestCase):
         with patch("django.utils.timezone.now", return_value=mock_now):
             services.clear_expired_sessions()
         self.assertEqual(Session.objects.count(), 0)
+
+
+class TestNotifications(TestCase):
+    fixtures = ["customuser.json", "emailaddress.json"]
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = CustomUser.objects.get(pk=2)
+
+    def test_schedule_location_notification(self):
+        mock_now = datetime.strptime("2022-02-02T22:53+0000", "%Y-%m-%dT%H:%M%z")
+        datetime_mock = MagicMock(autospec=datetime)
+        datetime_mock.now.return_value = mock_now
+        with patch("spritstat.services.notification.datetime", new=datetime_mock):
+            schedule_location_notification(None, self.user)
+        self.assertEqual(
+            self.user.next_notification.func,
+            "spritstat.services.send_location_notification",
+        )
+        # Schedule args is the string "(1,)", which is a tuple serialized. So,
+        #  let's take the second character of the string to keep ti simple
+        self.assertEqual(int(self.user.next_notification.args[1]), self.user.id)
+        self.assertEqual(self.user.next_notification.schedule_type, Schedule.ONCE)
+        self.assertEqual(
+            self.user.next_notification.next_run,
+            mock_now + timedelta(weeks=LOCATION_REMINDER_DELAY_WEEKS),
+        )
+
+    def test_send_location_notification(self):
+        # Test if notification is sent
+        services.send_location_notification(self.user.id)
+        message = mail.outbox[0]
+        self.assertEqual(message.to[0], self.user.email)
+        self.assertEqual(message.from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(message.alternatives[0][1], "text/html")
+
+    def test_send_location_notification_user_inactive(self):
+        # Test if notification is not sent if the user is inactive
+        self.user.is_active = False
+        self.user.save()
+        services.send_location_notification(self.user.id)
+        self.assertEqual(len(mail.outbox), 0)

@@ -4,8 +4,4 @@
 {% blocktrans %}
 Dein SPRITSTAT-Team
 {% endblocktrans %}
-{% if has_unsubscribe %}
-
-{% blocktrans %}
-Falls du keine Erinnerungen mehr von uns erhalten willst, kannst du diese mit diesem Link deaktivieren: {% endblocktrans %}
-{{ password_reset_url }}.{% endif %}{% endautoescape %}
+{% block footer %}{% endblock %}{% endautoescape %}

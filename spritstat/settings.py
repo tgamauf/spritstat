@@ -133,12 +133,12 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-STATICFILES_STORAGE = "compress_staticfiles.storage.CompressStaticFilesStorage"
-if Settings.STATIC_ROOT:
-    STATIC_ROOT = Settings.STATIC_ROOT
+# Use StaticFilesStorage as otherwise some tests do not work otherwise
+if DEBUG:
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 else:
-    # This is never used, but required for the storage class somehow
-    STATIC_ROOT = BASE_DIR / "spritstat" / "static"
+    STATICFILES_STORAGE = "compress_staticfiles.storage.CompressStaticFilesStorage"
+STATIC_ROOT = Settings.STATIC_ROOT
 STATIC_URL = "/static/"
 
 # Default primary key field type

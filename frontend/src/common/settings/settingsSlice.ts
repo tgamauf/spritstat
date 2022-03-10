@@ -12,6 +12,7 @@ interface IntroSettingsState {
 
 interface SettingsState {
   intro: IntroSettingsState;
+  notifications_active: boolean;
 }
 
 const INITIAL_INTRO_SETTINGS: IntroSettingsState = {
@@ -21,7 +22,8 @@ const INITIAL_INTRO_SETTINGS: IntroSettingsState = {
   no_location_active: false
 };
 const INITIAL_SETTINGS: SettingsState = {
-  intro: {...INITIAL_INTRO_SETTINGS}
+  intro: {...INITIAL_INTRO_SETTINGS},
+  notifications_active: false,
 }
 
 const initialState: SettingsState = {...INITIAL_SETTINGS};
@@ -45,7 +47,8 @@ const settingsSlice = createSlice({
             location_details_active,
             location_list_active,
             no_location_active
-          }
+          },
+          notifications_active: action.payload.notifications_active
         }
       );
     },
@@ -58,6 +61,7 @@ const selectIntroSettingsLocationDetails = (state: RootState) => state.settings.
 const selectIntroSettingsLocationList = (state: RootState) => state.settings.intro.location_list_active;
 const selectIntroSettingsNoLocation = (state: RootState) => state.settings.intro.no_location_active;
 const selectIntroActive = (state: RootState) => Object.values(state.settings.intro).every(v => v === true);
+const selectNotificationsActive = (state: RootState) => state.settings.notifications_active;
 
 export {
   INITIAL_SETTINGS,
@@ -66,6 +70,7 @@ export {
   selectIntroSettingsLocationDetails,
   selectIntroSettingsLocationList,
   selectIntroSettingsNoLocation,
+  selectNotificationsActive,
   setSettings,
   settingsSlice,
 };

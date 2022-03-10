@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import moment from "moment-timezone";
-import introJs from "intro.js";
 
 import type {RootState, AppDispatch} from "../app/store";
 import {MAX_SCREENSIZE_MOBILE, TIMEZONE} from "./constants";

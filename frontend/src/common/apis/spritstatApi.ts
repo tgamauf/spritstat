@@ -51,6 +51,12 @@ interface IntroSettings {
 
 interface SettingsData {
   intro: IntroSettings;
+  notifications_active: boolean;
+}
+
+interface UnsubscribeData {
+  uid: string;
+  token: string;
 }
 
 const DEFAULT_HEADERS = {
@@ -266,6 +272,20 @@ const spritstatApi = createApi({
         };
       },
       invalidatesTags: ["Settings"]
+    }),
+    unsubscribe: builder.mutation<void, UnsubscribeData>({
+      query: (data) => {
+        return {
+          url: "sprit/unsubscribe/",
+          method: "POST",
+          headers: {
+            ...DEFAULT_HEADERS,
+            "X-CSRFToken": window.csrfToken
+          },
+          body: data
+        };
+      },
+      invalidatesTags: ["Settings"]
     })
   }),
 });
@@ -284,6 +304,7 @@ const {
   useDeleteAccountMutation,
   useLazyGetSettingsQuery,
   useSetSettingMutation,
+  useUnsubscribeMutation,
 } = spritstatApi;
 
 export {
@@ -302,5 +323,6 @@ export {
   useDeleteAccountMutation,
   useLazyGetSettingsQuery,
   useSetSettingMutation,
+  useUnsubscribeMutation,
 };
 export type {PasswordValidationResponse, SettingsData};

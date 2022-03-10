@@ -43,5 +43,18 @@ urlpatterns = [
         views.StationList.as_view(),
         name="stations",
     ),
+    path(
+        "api/v1/sprit/unsubscribe/",
+        views.UnsubscribeView.as_view(),
+        name="unsubscribe",
+    ),
+    # This is really just used to redirect the GET request to the unsubscribe-URL
+    #  to the frontend. Unsubscribe is handled by the POST request to the URL
+    #  above.
+    path(
+        "api/v1/sprit/unsubscribe/<int:uid>/<slug:token>/",
+        views.UnsubscribeView.as_view(),
+        name="unsubscribe",
+    ),
     re_path(r".*", views.index),
 ]
