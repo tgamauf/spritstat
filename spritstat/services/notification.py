@@ -27,7 +27,7 @@ LOCATION_REMINDER_TEMPLATE_PREFIX = "spritstat/email/location_reminder"
 
 
 @receiver(user_signed_up)
-def schedule_location_notification(request, user: CustomUser, **kwargs) -> None:
+def schedule_location_notification(user: CustomUser, **kwargs) -> None:
     # Schedule a onetime notification for this user.
     user.next_notification = schedule(
         "spritstat.services.send_location_notification",
@@ -42,13 +42,14 @@ def schedule_location_notification(request, user: CustomUser, **kwargs) -> None:
 def location_created(location: Location, **kwargs) -> None:
     # Remove the "please add location" notification for this user as soon as a
     #  location is created.
-    location.user.next_notification = None
-    location.user.save()
+    if location.user.next_notification:
+        location.user.next_notification.delete()
+        location.user.next_notification = None
+        location.user.save()
 
 
 def send_location_notification(user_id: int) -> None:
     # Send the "please add location" notification to the provided user.
-
     user = CustomUser.objects.get(id=user_id)
 
     # Skip the notification if the user isn't active anymore.
@@ -59,7 +60,6 @@ def send_location_notification(user_id: int) -> None:
 
 
 def _send_mail(email_template_prefix: str, user: CustomUser) -> None:
-    email = EmailAddress.objects.get_primary(user).email
     current_site = Site.objects.get_current()
     unsubscribe_url = _get_unsubscribe_url(user)
     context = {
@@ -67,7 +67,7 @@ def _send_mail(email_template_prefix: str, user: CustomUser) -> None:
         "unsubscribe_url": unsubscribe_url,
         "has_unsubscribe": True,
     }
-    msg = _render_mail(email_template_prefix, email, context)
+    msg = _render_mail(email_template_prefix, user.email, context)
     msg.send()
 
 
