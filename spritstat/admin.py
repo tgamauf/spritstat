@@ -75,3 +75,22 @@ class StationAdmin(admin.ModelAdmin):
 @admin.register(models.Price)
 class PriceAdmin(admin.ModelAdmin):
     readonly_fields = ("datetime",)
+
+
+@admin.register(models.IntroSettings)
+class IntroSettingsAdmin(admin.ModelAdmin):
+    fields = (
+        "add_location_active",
+        "location_details_active",
+        "location_list_active",
+        "no_location_active",
+    )
+
+
+@admin.register(models.Settings)
+class SettingsAdmin(admin.ModelAdmin):
+    fields = (
+        "user",
+        "intro",
+        "notifications_active",
+    )

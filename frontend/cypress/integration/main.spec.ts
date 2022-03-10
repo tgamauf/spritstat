@@ -54,7 +54,7 @@ describe("Validate initial page load", () => {
 
   it("validate header dropdown buttons", () => {
     cy.mockSettings();
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test");
 
     cy.visit(RouteNames.Home);

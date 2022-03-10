@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import datetime
 from enum import Enum
 from typing import Optional, Union
@@ -11,6 +12,8 @@ from django.db.models.functions import (
     ExtractDay,
     ExtractHour,
 )
+from django.db.models.signals import pre_delete, post_save
+from django.dispatch import receiver
 
 from django_q.models import Schedule
 from users.models import CustomUser
@@ -29,8 +32,21 @@ class IntroSettings(models.Model):
 
 
 class Settings(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     intro = models.OneToOneField(IntroSettings, on_delete=models.CASCADE)
+    notifications_active = models.BooleanField(default=True)
+
+    @staticmethod
+    @receiver(post_save)
+    def create_settings_for_user(
+        instance: CustomUser, created: bool, raw: bool, **kwargs
+    ) -> None:
+        # Ignore saves if this isn't newly created or loaded from fixtures.
+        if not created or raw:
+            return
+
+        if isinstance(instance, CustomUser):
+            Settings.objects.create(user=instance, intro=IntroSettings.objects.create())
 
 
 REGION_TYPES = (("BL", "Bundesland"), ("PB", "Bezirk"))
@@ -57,7 +73,7 @@ class Location(models.Model):
     region_code = models.IntegerField(blank=True, null=True)
     region_type = models.CharField(max_length=2, choices=REGION_TYPES, blank=True)
     fuel_type = models.CharField(max_length=10, choices=FUEL_TYPES)
-    schedule = models.OneToOneField(Schedule, null=True, on_delete=models.CASCADE)
+    schedule = models.OneToOneField(Schedule, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         constraints = [
@@ -82,9 +98,11 @@ class Location(models.Model):
             )
         ]
 
-    def delete(self, *args, **kwargs):
-        self.schedule.delete()
-        return super(self.__class__, self).delete(*args, **kwargs)
+    @staticmethod
+    @receiver(pre_delete)
+    def delete_schedule(instance: Location, **kwargs) -> None:
+        if isinstance(instance, Location):
+            instance.schedule.delete()
 
 
 class Station(models.Model):

@@ -6,7 +6,7 @@ describe("Validate sending of password recovery email", () => {
  });
 
   it("validate success", function() {
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
     cy.logout();
 
     cy.visit(RouteNames.PasswordRecoveryEmail);
@@ -62,7 +62,7 @@ describe("Validate sending of password recovery email", () => {
 
   it("redirect if logged in", () => {
     cy.mockSettings();
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
 
     cy.intercept("POST", "/api/v1/users/auth/logout/")
@@ -144,7 +144,7 @@ describe("Validate reset password flow", () => {
 
   it("redirect if logged in", () => {
     cy.mockSettings();
-    cy.resetDB(["customuser.json", "emailaddress.json"]);
+    cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
 
     cy.intercept("POST", "/api/v1/users/auth/logout/")

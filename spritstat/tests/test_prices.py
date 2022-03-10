@@ -9,7 +9,7 @@ from spritstat.models import DateRange, Price
 
 class TestPriceHistory(APITestCase):
     fixtures = [
-        "customuser.json",
+        "user.json",
         "schedule.json",
         "location.json",
         "test_station.json",
@@ -105,7 +105,7 @@ class TestPriceHistory(APITestCase):
 
 class TestPriceHour(APITestCase):
     fixtures = [
-        "customuser.json",
+        "user.json",
         "schedule.json",
         "location.json",
         "test_station.json",
@@ -208,7 +208,7 @@ class TestPriceHour(APITestCase):
 
 class TestPriceDayOfWeek(APITestCase):
     fixtures = [
-        "customuser.json",
+        "user.json",
         "schedule.json",
         "location.json",
         "test_station.json",
@@ -310,7 +310,7 @@ class TestPriceDayOfWeek(APITestCase):
 
 class TestPriceDayOfMonth(APITestCase):
     fixtures = [
-        "customuser.json",
+        "user.json",
         "schedule.json",
         "location.json",
         "test_station.json",
@@ -418,7 +418,7 @@ class TestPriceDayOfMonth(APITestCase):
 
 class TestPriceStationFrequency(APITestCase):
     fixtures = [
-        "customuser.json",
+        "user.json",
         "schedule.json",
         "location.json",
         "test_station.json",

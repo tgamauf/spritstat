@@ -104,7 +104,8 @@ Cypress.Commands.add(
             location_details_active: false,
             location_list_active: false,
             no_location_active: false
-          }
+          },
+          notifications_active: true
         }
       }
     ).as("settings");

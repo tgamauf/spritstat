@@ -27,6 +27,7 @@ enum RouteNames {
   AddLocation = "/add-location",
   LocationDetails = "/location-details",
   AccountDeleted = "/account-deleted",
+  Unsubscribe = "/unsubscribe"
 }
 
 enum LocationType {

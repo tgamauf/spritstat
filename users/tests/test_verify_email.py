@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 
 @override_settings(ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN=0)
 class TestVerifyEmail(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
 
     @classmethod
     def setUpTestData(cls):

@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {Route, Routes, useLocation} from "react-router-dom";
 import moment from "moment-timezone";
+
 import {RouteNames} from "../common/types";
 import NoMatch from "../common/components/NoMatch";
 import Index from "../common/components/Index";
@@ -22,6 +23,7 @@ import AccountDeleted from "../common/settings/AccountDeleted";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "../common/auth/AuthProvider";
 import LocationDetails from "../features/location/LocationDetails";
 import {SettingsProvider} from "../common/settings/SettingsProvider";
+import Unsubscribe from "../common/settings/Unsubscribe";
 
 
 export default function App() {
@@ -94,6 +96,10 @@ export default function App() {
           <Route
             path={`${RouteNames.LocationDetails}/:locationId`}
             element={<RequireAuth><LocationDetails/></RequireAuth>}
+          />
+          <Route
+            path={`${RouteNames.Unsubscribe}/:uid/:token`}
+            element={<Unsubscribe/>}
           />
         </Routes>
       </SettingsProvider>

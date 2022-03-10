@@ -11,7 +11,7 @@ FROM_EMAIL = "no-reply@spritstat"
 
 @override_settings(DEFAULT_FROM_EMAIL=FROM_EMAIL)
 class TestPasswordReset(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
     url: str
 
     @classmethod

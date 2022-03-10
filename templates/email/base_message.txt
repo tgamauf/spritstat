@@ -3,4 +3,5 @@
 
 {% blocktrans %}
 Dein SPRITSTAT-Team
-{% endblocktrans %}{% endautoescape %}
+{% endblocktrans %}
+{% block footer %}{% endblock %}{% endautoescape %}

@@ -53,7 +53,7 @@ urlpatterns = [
         views.CustomPasswordResetConfirmView.as_view(),
         name="account_password_reset_confirm",
     ),
-    # This is really just used to redirect the GET request to the reset URL to
+    # This is really just used to redirect the GET request to the reset-URL to
     #  the frontend. The real password change is then handled by POST request to
     #  "account_password_reset_confirm" above.
     # The name here must match exactly as well as dj_rest_auth requires it.

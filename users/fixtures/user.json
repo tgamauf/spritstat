@@ -1,5 +1,71 @@
 [
   {
+    "model": "django_q.schedule",
+    "pk": 1000,
+    "fields": {
+      "name": null,
+      "func": "spritstat.services.send_location_notification",
+      "hook": null,
+      "args": "(3,)",
+      "kwargs": "{}",
+      "schedule_type": "O",
+      "minutes": null,
+      "repeats": -1,
+      "next_run": "2021-12-22T18:56:18.383Z",
+      "cron": null,
+      "task": "5a210a76a2794b12aa98c39b998f6d9e",
+      "cluster": null
+    }
+  },
+  {
+    "model": "django_q.schedule",
+    "pk": 1001,
+    "fields": {
+      "name": null,
+      "func": "spritstat.services.send_location_notification",
+      "hook": null,
+      "args": "(3,)",
+      "kwargs": "{}",
+      "schedule_type": "O",
+      "minutes": null,
+      "repeats": -1,
+      "next_run": "2021-12-22T18:56:18.383Z",
+      "cron": null,
+      "task": "5a210a76a2794b12aa98c39b998f6d9e",
+      "cluster": null
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "email": "tom@test.at",
+      "verified": true,
+      "primary": true
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "email": "test@test.at",
+      "verified": true,
+      "primary": true
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "email": "test2@test.at",
+      "verified": true,
+      "primary": true
+    }
+  },
+  {
     "model": "users.customuser",
     "pk": 1,
     "fields": {
@@ -15,6 +81,7 @@
       "has_beta_access": false,
       "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2021-12-22T16:42:29.092Z",
+      "next_notification": null,
       "groups": [],
       "user_permissions": []
     }
@@ -35,6 +102,7 @@
       "has_beta_access": false,
       "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2021-10-10T21:50:24Z",
+      "next_notification": null,
       "groups": [],
       "user_permissions": []
     }
@@ -55,6 +123,7 @@
       "has_beta_access": true,
       "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2022-01-09T18:04:38Z",
+      "next_notification": 1000,
       "groups": [],
       "user_permissions": []
     }
@@ -75,6 +144,7 @@
       "has_beta_access": false,
       "last_activity": "2022-02-02T22:34:00.000Z",
       "date_joined": "2022-01-09T18:04:38Z",
+      "next_notification": 1001,
       "groups": [],
       "user_permissions": []
     }

@@ -44,7 +44,8 @@
     "pk": 1,
     "fields": {
       "user": 1,
-      "intro": 1
+      "intro": 1,
+      "notifications_active": true
     }
   },
   {
@@ -52,7 +53,8 @@
     "pk": 2,
     "fields": {
       "user": 2,
-      "intro": 2
+      "intro": 2,
+      "notifications_active": true
     }
   },
   {
@@ -60,7 +62,8 @@
     "pk": 3,
     "fields": {
       "user": 3,
-      "intro": 3
+      "intro": 3,
+      "notifications_active": true
     }
   },
   {
@@ -68,7 +71,8 @@
     "pk": 4,
     "fields": {
       "user": 4,
-      "intro": 4
+      "intro": 4,
+      "notifications_active": true
     }
   }
 ]

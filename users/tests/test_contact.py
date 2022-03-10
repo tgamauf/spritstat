@@ -15,7 +15,7 @@ SERVER_EMAIL = "no-reply@site.com"
 
 @override_settings(SERVER_EMAIL=SERVER_EMAIL)
 class TestContact(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
     url: str
     user_email: str
     receiver_email: List[str]

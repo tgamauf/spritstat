@@ -13,7 +13,7 @@ from spritstat.models import Location
 
 
 class TestLocationCreate(APITestCase):
-    fixtures = ["customuser.json"]
+    fixtures = ["user.json"]
     global_fields = ["type", "name", "fuel_type"]
     address_type_fields = ["latitude", "longitude"]
     region_type_fields = ["region_code", "region_type"]
@@ -258,7 +258,7 @@ class TestLocationCreate(APITestCase):
 
 
 class TestLocationList(APITestCase):
-    fixtures = ["customuser.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "schedule.json", "location.json"]
     url: str
 
     @classmethod
@@ -298,7 +298,7 @@ class TestLocationList(APITestCase):
 
 
 class TestLocationOther(APITestCase):
-    fixtures = ["customuser.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "schedule.json", "location.json"]
     url: str
 
     @classmethod

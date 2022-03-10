@@ -8,7 +8,7 @@ from spritstat.models import Location
 
 
 class TestLocationDetail(APITestCase):
-    fixtures = ["customuser.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "schedule.json", "location.json"]
 
     def setUp(self):
         if not self.id().endswith("_not_logged_in"):
@@ -44,7 +44,7 @@ class TestLocationDetail(APITestCase):
 
 
 class TestLocationDelete(APITestCase):
-    fixtures = ["customuser.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "schedule.json", "location.json"]
 
     def setUp(self):
         if not self.id().endswith("_not_logged_in"):
@@ -83,7 +83,7 @@ class TestLocationDelete(APITestCase):
 
 
 class TestLocationDetailOther(APITestCase):
-    fixtures = ["customuser.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "schedule.json", "location.json"]
     url: str
 
     @classmethod

@@ -1,25 +1,22 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from django.contrib.sessions.management.commands.clearsessions import (
-    Command as ClearSessionCommand,
-)
 from enum import Enum, unique
 import json
 from statistics import mean, median
 from typing import Dict, List, Tuple, Union
 import urllib3
 
-from . import models
+from spritstat import models
 
 
-BASE_URL = "https://api.e-control.at/sprit/1.0"
-STATION_BASE_URL = f"{BASE_URL}/search/gas-stations"
-STATION_BY_ADDRESS_PARAMS = (
+_BASE_URL = "https://api.e-control.at/sprit/1.0"
+_STATION_BASE_URL = f"{_BASE_URL}/search/gas-stations"
+_STATION_BY_ADDRESS_PARAMS = (
     "latitude={latitude:f}&longitude={longitude:f}&fuelType={fuel_type}"
 )
-STATION_BY_ADDRESS_URL = f"{STATION_BASE_URL}/by-address?{STATION_BY_ADDRESS_PARAMS}"
-STATION_BY_REGION_PARAMS = "code={code}&type={type}&fuelType={fuel_type}"
-STATION_BY_REGION_URL = f"{STATION_BASE_URL}/by-region?{STATION_BY_REGION_PARAMS}"
+_STATION_BY_ADDRESS_URL = f"{_STATION_BASE_URL}/by-address?{_STATION_BY_ADDRESS_PARAMS}"
+_STATION_BY_REGION_PARAMS = "code={code}&type={type}&fuelType={fuel_type}"
+_STATION_BY_REGION_URL = f"{_STATION_BASE_URL}/by-region?{_STATION_BY_REGION_PARAMS}"
 
 
 @unique
@@ -29,7 +26,7 @@ class APIFuelType(str, Enum):
     GAS = "GAS"
 
 
-class APIError(Exception):
+class EControlAPIError(Exception):
     pass
 
 
@@ -38,7 +35,7 @@ class InvalidFuelTypeError(Exception):
 
 
 @dataclass(frozen=True)
-class Station:
+class _Station:
     id: int
     name: str
     address: str
@@ -62,7 +59,7 @@ class Station:
 
 @dataclass(frozen=True)
 class Price:
-    station: Station
+    station: _Station
     fuel_type: APIFuelType
     amount: str
 
@@ -102,32 +99,32 @@ def request_location_prices(location_id: int) -> None:
     location = models.Location.objects.get(pk=location_id)
 
     if location.type == models.LocationType.REGION:
-        url = STATION_BY_REGION_URL.format(
+        url = _STATION_BY_REGION_URL.format(
             code=location.region_code,
             type=location.region_type,
             fuel_type=APIFuelType(location.fuel_type),
         )
     else:
-        url = STATION_BY_ADDRESS_URL.format(
+        url = _STATION_BY_ADDRESS_URL.format(
             latitude=location.latitude,
             longitude=location.longitude,
             fuel_type=APIFuelType(location.fuel_type),
         )
 
-    prices = request_prices(url)
+    prices = _request_prices(url)
 
     if not prices:
         return
 
-    stations, statistics = calculate_statistics(prices)
+    stations, statistics = _calculate_statistics(prices)
 
     if not stations:
-        raise APIError(f"Invalid price object received: {prices}")
+        raise EControlAPIError(f"Invalid price object received: {prices}")
 
-    create_price_if_changed(location, stations, statistics)
+    _create_price_if_changed(location, stations, statistics)
 
 
-def request_prices(url: str) -> Tuple[Price]:
+def _request_prices(url: str) -> Tuple[Price]:
     """
     Execute the price request given the provided URL and return the parsed
     prices.
@@ -136,11 +133,11 @@ def request_prices(url: str) -> Tuple[Price]:
     :return: tuple of parsed prices
     """
 
-    json_data = execute_api_request(url)
+    json_data = _execute_api_request(url)
 
     prices = []
     for item in json_data:
-        result = parse_prices(item)
+        result = _parse_prices(item)
 
         if result:
             prices.append(result)
@@ -148,7 +145,7 @@ def request_prices(url: str) -> Tuple[Price]:
     return tuple(prices)
 
 
-def execute_api_request(url: str) -> Dict:
+def _execute_api_request(url: str) -> Dict:
     """
     Execute API request using the provided URL and return the json data.
     """
@@ -158,7 +155,7 @@ def execute_api_request(url: str) -> Dict:
 
     if r.status != 200:
         json_error = json.loads(r.data.decode("utf-8"))
-        raise APIError(
+        raise EControlAPIError(
             f"API call failed [{json_error['code']} {json_error['name']}]: "
             f"{json_error['exceptionMessage']}"
         )
@@ -168,7 +165,7 @@ def execute_api_request(url: str) -> Dict:
     return json_data
 
 
-def parse_prices(item: Dict) -> Union[Price, None]:
+def _parse_prices(item: Dict) -> Union[Price, None]:
     """
     Parse an item of the price result received via API.
 
@@ -191,7 +188,7 @@ def parse_prices(item: Dict) -> Union[Price, None]:
     else:
         name = f"{address}, {postal_code} {city}"
 
-    station = Station(
+    station = _Station(
         id=item["id"],
         name=name,
         address=address,
@@ -210,9 +207,9 @@ def parse_prices(item: Dict) -> Union[Price, None]:
     return price
 
 
-def calculate_statistics(
+def _calculate_statistics(
     prices: Tuple[Price],
-) -> Tuple[List[Station], PriceStatistics]:
+) -> Tuple[List[_Station], PriceStatistics]:
     """
     Calculate the price statistics from the provided price objects.
 
@@ -239,9 +236,9 @@ def calculate_statistics(
     return stations, statistics
 
 
-def create_price_if_changed(
+def _create_price_if_changed(
     location: models.Location,
-    stations: List[models.Station],
+    stations: List[_Station],
     price_statistics: PriceStatistics,
 ):
     """
@@ -252,7 +249,7 @@ def create_price_if_changed(
     :param price_statistics: objects containing the price statistics
     """
 
-    station_objects = get_or_create_stations(location, stations)
+    station_objects = _get_or_create_stations(location, stations)
     price = models.Price.objects.create(
         location=location,
         min_amount=price_statistics.min_amount,
@@ -263,8 +260,8 @@ def create_price_if_changed(
     price.stations.add(*station_objects)
 
 
-def get_or_create_stations(
-    location: models.Location, stations: List[Station]
+def _get_or_create_stations(
+    location: models.Location, stations: List[_Station]
 ) -> List[models.Station]:
     """
     Create new gas station objects if it is valid and doesn't exist yet.
@@ -291,8 +288,3 @@ def get_or_create_stations(
         objects.append(obj[0])
 
     return objects
-
-
-def clear_expired_sessions():
-    # Clear database backed sessions using the clearsessions command
-    ClearSessionCommand().handle()
