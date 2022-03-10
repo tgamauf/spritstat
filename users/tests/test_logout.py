@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 
 class TestLogout(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
     url: str
 
     @classmethod

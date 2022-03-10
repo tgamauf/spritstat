@@ -7,7 +7,7 @@ from allauth.account.models import EmailAddress
 
 
 class TestLogin(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
     url: str
 
     @classmethod

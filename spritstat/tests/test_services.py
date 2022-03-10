@@ -87,7 +87,7 @@ class MockPriceStatistics(services.price.PriceStatistics):
 
 
 class TestRequestLocationPrices(TestCase):
-    fixtures = ["customuser.json", "test_services.json"]
+    fixtures = ["user.json", "test_services.json"]
 
     def setUp(self):
         self.default_mock_response_entry = MockAPIResponseEntry(
@@ -368,7 +368,7 @@ class TestRequestLocationPrices(TestCase):
 
 
 class TestClearExpiredSessions(TestCase):
-    fixtures = ["customuser.json"]
+    fixtures = ["user.json"]
 
     @staticmethod
     def create_session(expiry: int) -> None:
@@ -405,7 +405,7 @@ class TestClearExpiredSessions(TestCase):
 
 
 class TestNotifications(TestCase):
-    fixtures = ["customuser.json", "emailaddress.json"]
+    fixtures = ["user.json"]
 
     @classmethod
     def setUpTestData(cls):
@@ -416,7 +416,7 @@ class TestNotifications(TestCase):
         datetime_mock = MagicMock(autospec=datetime)
         datetime_mock.now.return_value = mock_now
         with patch("spritstat.services.notification.datetime", new=datetime_mock):
-            schedule_location_notification(None, self.user)
+            schedule_location_notification(self.user)
         self.assertEqual(
             self.user.next_notification.func,
             "spritstat.services.send_location_notification",

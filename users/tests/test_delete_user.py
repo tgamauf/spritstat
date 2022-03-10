@@ -6,7 +6,7 @@ from users.models import CustomUser
 
 
 class TestDeleteUser(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
     url: str
     user: CustomUser
 

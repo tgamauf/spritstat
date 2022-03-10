@@ -1,6 +1,5 @@
 from typing import Dict
 
-from allauth.account.forms import default_token_generator
 from allauth.account.utils import url_str_to_user_pk
 from django.conf import settings
 from django.utils.encoding import force_str
@@ -45,6 +44,10 @@ class SettingsSerializer(serializers.ModelSerializer):
         notifications_active = validated_data.get("notifications_active")
         if notifications_active is not None:
             instance.notifications_active = notifications_active
+
+            # Also delete the currently scheduled notification
+            if not notifications_active:
+                self.user.next_notification.delete()
         instance.save()
 
         return instance
@@ -70,8 +73,13 @@ class UnsubscribeSerializer(serializers.Serializer):
         return attrs
 
     def save(self, **kwargs):
+        # Disable notifications in the settings
         self.user.settings.notifications_active = False
         self.user.settings.save()
+
+        # Delete the currently scheduled notifications
+        if self.user.next_notification:
+            self.user.next_notification.delete()
 
 
 class LocationSerializer(serializers.ModelSerializer):

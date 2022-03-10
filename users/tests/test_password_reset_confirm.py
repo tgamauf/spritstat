@@ -9,7 +9,7 @@ from users.models import CustomUser
 
 
 class TestPasswordResetConfirm(APITestCase):
-    fixtures = ["emailaddress.json", "customuser.json"]
+    fixtures = ["user.json"]
     url: str
 
     @classmethod

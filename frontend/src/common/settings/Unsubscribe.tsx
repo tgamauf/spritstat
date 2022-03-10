@@ -37,7 +37,7 @@ export default function Unsubscribe(): JSX.Element {
       to={RouteNames.Index}
       data-test="link-home"
     >
-      "Homepage"
+      Homepage
     </Link>
   );
 
@@ -58,6 +58,7 @@ export default function Unsubscribe(): JSX.Element {
             />
           </p>
           <p className="mt-3">Du hast dich erfolgreich von Benachrichtigungen abgemeldet.</p>
+          <p className="mt-3">{homeLink}</p>
         </CenteredBox>
       )}
     </BasePage>

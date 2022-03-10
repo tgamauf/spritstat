@@ -9,7 +9,7 @@ from users.models import CustomUser
 
 
 class TestSettings(APITestCase):
-    fixtures = ["customuser.json", "settings.json"]
+    fixtures = ["user.json", "settings.json"]
     url: str
     user: CustomUser
 
@@ -49,13 +49,15 @@ class TestSettings(APITestCase):
         response = self.client.patch(self.url, test_payload)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_ok(self):
-        # Test if we get the correct settings
+    def test_get(self):
+        # Test if we get the correct settings.
+
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
         self.assertEqual(response.data["notifications_active"], True)
 
+    def test_set_all_settings(self):
         # Test if we can set the settings using put
         test_payload = {
             "intro": {
@@ -67,19 +69,41 @@ class TestSettings(APITestCase):
             "notifications_active": False,
         }
         response = self.client.put(self.url, test_payload)
+        self.user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(response.data, test_payload)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
         self.assertEqual(response.data["notifications_active"], False)
+        self.assertIsNone(self.user.next_notification_id)
 
+    def test_set_partial_intro_settings(self):
         # Test if we can set the one of the intro settings using patch
-        test_payload["intro"]["add_location_active"] = True
-        response = self.client.patch(self.url, {"intro": {"add_location_active": True}})
+        test_payload = {
+            "intro": {
+                "no_location_active": False,
+                "location_list_active": True,
+                "add_location_active": False,
+                "location_details_active": True,
+            },
+            "notifications_active": True,
+        }
+        response = self.client.patch(
+            self.url, {"intro": {"add_location_active": False}}
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(response.data, test_payload)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
 
-        test_payload["notifications_active"] = True
+    def test_set_partial_notifications(self):
+        test_payload = {
+            "intro": {
+                "no_location_active": False,
+                "location_list_active": True,
+                "add_location_active": True,
+                "location_details_active": True,
+            },
+            "notifications_active": True,
+        }
         response = self.client.patch(self.url, {"notifications_active": True})
         self.assertDictEqual(response.data, test_payload)
 
@@ -93,38 +117,54 @@ class TestSettings(APITestCase):
 
 
 class TestUnsubscribe(APITestCase):
-    fixtures = ["customuser.json", "settings.json"]
+    fixtures = ["user.json", "settings.json"]
     url: str
 
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse("unsubscribe")
 
-    def test_ok(self):
-        user_1 = CustomUser.objects.get(pk=3)
-        user_2 = CustomUser.objects.get(pk=4)
+    def test_user_logged_out(self):
+        # This is the default case.
 
-        # Test with user logged out
+        user = CustomUser.objects.get(pk=3)
         response = self.client.post(
-            self.url, {"uid": user_pk_to_url_str(user_1), "token": Token(user_1).value}
+            self.url, {"uid": user_pk_to_url_str(user), "token": Token(user).value}
         )
+        user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        settings = Settings.objects.get(user=user_1)
+        settings = Settings.objects.get(user=user)
         self.assertEqual(settings.notifications_active, False)
-        settings.notifications_active = True
-        settings.save()
+        self.assertIsNone(user.next_notification)
 
+    def test_different_user_logged_in(self):
         # Test with a different user logged in, as it must not matter which user
         #  is logged in
+
+        user_1 = CustomUser.objects.get(pk=3)
+        user_2 = CustomUser.objects.get(pk=4)
         self.client.login(username=user_1.email, password="test")
         response = self.client.post(
             self.url, {"uid": user_pk_to_url_str(user_2), "token": Token(user_2).value}
         )
+        user_2.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Settings.objects.get(user=user_2).notifications_active, False)
+        self.assertIsNone(user_2.next_notification)
+
+    def test_no_notification_scheduled(self):
+        # Make sure that unsubscribe doesn't fail if no notification is scheduled.
+
+        user = CustomUser.objects.get(pk=1)
+        response = self.client.post(
+            self.url, {"uid": user_pk_to_url_str(user), "token": Token(user).value}
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        settings = Settings.objects.get(user=user)
+        self.assertEqual(settings.notifications_active, False)
 
     def test_invalid_token(self):
-        user = CustomUser.objects.get(pk=1)
+        user = CustomUser.objects.get(pk=3)
         response = self.client.post(
             self.url, {"uid": user_pk_to_url_str(user), "token": "invalid-token"}
         )
@@ -151,7 +191,7 @@ class TestUnsubscribe(APITestCase):
 
 
 class TestUnsubscribeRedirect(APITestCase):
-    fixtures = ["customuser.json"]
+    fixtures = ["user.json"]
     url: str
 
     @classmethod
