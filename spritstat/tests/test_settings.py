@@ -156,7 +156,7 @@ class TestUnsubscribeRedirect(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.url = reverse("unsubscribe_redirect", args=[3, "test"])
+        cls.url = reverse("unsubscribe", args=[3, "test"])
 
     def test_ok(self):
         # Test not logged in
