@@ -101,7 +101,7 @@ class Location(models.Model):
     @staticmethod
     @receiver(pre_delete)
     def delete_schedule(instance: Location, **kwargs) -> None:
-        if isinstance(instance, Location):
+        if isinstance(instance, Location) and instance.schedule:
             instance.schedule.delete()
 
 

@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
     @staticmethod
     @receiver(pre_delete)
     def delete_next_notification(instance: CustomUser, **kwargs) -> None:
-        if isinstance(instance, CustomUser):
+        if isinstance(instance, CustomUser) and instance.next_notification:
             instance.next_notification.delete()
 
     def __str__(self):
