@@ -12,7 +12,7 @@ from django.db.models.functions import (
     ExtractDay,
     ExtractHour,
 )
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
 from django_q.models import Schedule
@@ -35,6 +35,18 @@ class Settings(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     intro = models.OneToOneField(IntroSettings, on_delete=models.CASCADE)
     notifications_active = models.BooleanField(default=True)
+
+    @staticmethod
+    @receiver(post_save)
+    def create_settings_for_user(
+        instance: CustomUser, created: bool, raw: bool, **kwargs
+    ) -> None:
+        # Ignore saves if this isn't newly created or loaded from fixtures.
+        if not created or raw:
+            return
+
+        if isinstance(instance, CustomUser):
+            Settings.objects.create(user=instance, intro=IntroSettings.objects.create())
 
 
 REGION_TYPES = (("BL", "Bundesland"), ("PB", "Bezirk"))
