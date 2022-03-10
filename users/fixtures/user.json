@@ -4,7 +4,7 @@
     "pk": 1000,
     "fields": {
       "name": null,
-      "func": "spritstat.services.send_location_notification",
+      "func": "spritstat.services.send_create_location_notification",
       "hook": null,
       "args": "(3,)",
       "kwargs": "{}",
@@ -22,9 +22,9 @@
     "pk": 1001,
     "fields": {
       "name": null,
-      "func": "spritstat.services.send_location_notification",
+      "func": "spritstat.services.send_create_location_notification",
       "hook": null,
-      "args": "(3,)",
+      "args": "(4,)",
       "kwargs": "{}",
       "schedule_type": "O",
       "minutes": null,
