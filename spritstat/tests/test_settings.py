@@ -107,6 +107,14 @@ class TestSettings(APITestCase):
         response = self.client.patch(self.url, {"notifications_active": True})
         self.assertDictEqual(response.data, test_payload)
 
+    def test_deactivate_notifications_without_schedule(self):
+        # Check if disabling notifications succeeds if currently no notification
+        #  is scheduled.
+
+        self.user.next_notification.delete()
+        response = self.client.patch(self.url, {"notifications_active": True})
+        self.assertTrue(response.data["notifications_active"])
+
     def test_post(self):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

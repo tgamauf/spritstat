@@ -44,11 +44,11 @@ class SettingsSerializer(serializers.ModelSerializer):
         notifications_active = validated_data.get("notifications_active")
         if notifications_active is not None:
             instance.notifications_active = notifications_active
+            instance.save()
 
-            # Also delete the currently scheduled notification
-            if not notifications_active:
-                self.user.next_notification.delete()
-        instance.save()
+        # Also delete the currently scheduled notification
+        if self.user.next_notification:
+            self.user.next_notification.delete()
 
         return instance
 
