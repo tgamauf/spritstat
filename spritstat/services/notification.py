@@ -15,10 +15,14 @@ from django.utils.crypto import salted_hmac
 from django.utils.encoding import force_str
 from django_q.models import Schedule
 from django_q.tasks import schedule
+import logging
 from typing import Union, Dict, Optional
 
 from spritstat.models import Location
 from users.models import CustomUser
+
+
+LOG = logging.getLogger(__name__)
 
 KEY_SALT = "spritstat.services.notification"
 
@@ -46,6 +50,8 @@ def send_create_location_notification(user_id: int) -> None:
     # Send the "please add location" notification to the provided user.
 
     user = CustomUser.objects.get(id=user_id)
+
+    LOG.debug(f"Send create location notification for user {user_id} ({user.is_active}")
 
     # Skip the notification if the user isn't active anymore.
     if not user.is_active:
@@ -126,6 +132,11 @@ def _send_mail(
     if additional_context:
         context.update(additional_context)
     msg = _render_mail(email_template_prefix, user.email, context)
+
+    LOG.info(
+        f"\nTo: {msg.to}\nFrom: {msg.from_email}\nSubject: {msg.subject}\nBody: {msg.body}"
+    )
+
     msg.send()
 
 
