@@ -33,7 +33,7 @@ class IntroSettings(models.Model):
 
 class Settings(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    intro = models.OneToOneField(IntroSettings, on_delete=models.CASCADE)
+    intro = models.OneToOneField(IntroSettings, null=True, on_delete=models.SET_NULL)
     notifications_active = models.BooleanField(default=True)
 
     @staticmethod
@@ -47,6 +47,12 @@ class Settings(models.Model):
 
         if isinstance(instance, CustomUser):
             Settings.objects.create(user=instance, intro=IntroSettings.objects.create())
+
+    @staticmethod
+    @receiver(pre_delete)
+    def delete_intro(instance: Settings, **kwargs) -> None:
+        if isinstance(instance, Settings) and instance.intro:
+            instance.intro.delete()
 
 
 REGION_TYPES = (("BL", "Bundesland"), ("PB", "Bezirk"))
