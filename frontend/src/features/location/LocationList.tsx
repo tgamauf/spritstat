@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default function LocationList({setErrorMessage}: Props): JSX.Element {
-  const {data: locations} = useGetLocationsQuery();
+  const {data: locations, isFetching} = useGetLocationsQuery();
   const introActive = useAppSelector(selectIntroSettingsLocationList);
   const [setSettings] = useSetSettingMutation();
   const [introDone, setIntroDone] = useState(false);
@@ -101,7 +101,7 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
             </div>
           </div>
         </div>
-        {locations && locations.map((location, index) => {
+        {!isFetching && locations && locations.map((location, index) => {
           return (
             <div key={location.id} id={`${CARD_LOCATION_ID_PREFIX}${index}`}>
               <LocationCard
