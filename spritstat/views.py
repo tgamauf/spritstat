@@ -15,7 +15,6 @@ from . import models
 from . import serializers
 from .permissions import IsOwner
 from .serializers import PriceStationFrequencySerializer, UnsubscribeSerializer
-from .signals import location_created
 
 
 def index(request):
@@ -93,9 +92,6 @@ class LocationList(generics.ListCreateAPIView):
         location_object = models.Location.objects.get(pk=location_id)
         location_object.schedule = schedule_object
         location_object.save()
-
-        # Send the location created signal
-        location_created.send(self.__class__, location=location_object)
 
         return response
 

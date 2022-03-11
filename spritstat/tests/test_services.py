@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+
+from allauth.account.signals import user_signed_up
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
 from django.core import mail
+from django.db.models.signals import post_save, pre_delete
 from django.test import TestCase
 from django.utils import timezone
 import json
@@ -418,16 +421,14 @@ class TestNotifications(TestCase):
         datetime_mock = MagicMock(autospec=datetime)
         datetime_mock.now.return_value = mock_now
         with patch("spritstat.services.notification.timezone", new=datetime_mock):
-            schedule_create_location_notification(self.user)
+            user_signed_up.send(self.__class__, request=None, user=self.user)
         self.user.refresh_from_db()
         next_notification = self.user.next_notification
         self.assertEqual(
             next_notification.func,
             "spritstat.services.send_create_location_notification",
         )
-        # Schedule args is the string "(1,)", which is a tuple serialized. So,
-        #  let's take the second character of the string to keep it simple
-        self.assertEqual(int(next_notification.args[1]), self.user.id)
+        self.assertEqual(eval(next_notification.args)[0], self.user.id)
         self.assertEqual(next_notification.schedule_type, Schedule.ONCE)
         self.assertEqual(
             next_notification.next_run,
@@ -455,22 +456,44 @@ class TestNotifications(TestCase):
         mock_now = datetime.strptime("2022-02-02T22:53+0000", "%Y-%m-%dT%H:%M%z")
         datetime_mock = MagicMock(autospec=datetime)
         datetime_mock.now.return_value = mock_now
+
         with patch("spritstat.services.notification.timezone", new=datetime_mock):
-            schedule_location_reminder_notification(location)
+            post_save.send(Location, instance=location, created=True, raw=False)
         user.refresh_from_db()
         next_notification = user.next_notification
         self.assertEqual(
             next_notification.func,
             "spritstat.services.send_location_reminder_notification",
         )
-        # Schedule args is the string "(3,)", which is a tuple serialized. So,
-        #  let's take the second character of the string to keep it simple
-        self.assertEqual(int(next_notification.args[1]), location.id)
+        self.assertEqual(eval(next_notification.args)[0], location.id)
         self.assertEqual(next_notification.schedule_type, Schedule.ONCE)
         self.assertEqual(
             next_notification.next_run,
             mock_now + timedelta(weeks=LOCATION_REMINDER_DELAY_WEEKS),
         )
+
+        # Test if save signal is called with created=False
+        check_next_notification_id = next_notification.id
+        post_save.send(Location, instance=location, created=False, raw=False)
+        user.refresh_from_db()
+        self.assertEqual(user.next_notification_id, check_next_notification_id)
+
+        # Test if save signal is called with raw=True
+        check_next_notification_id = next_notification.id
+        post_save.send(Location, instance=location, created=False, raw=False)
+        user.refresh_from_db()
+        self.assertEqual(user.next_notification_id, check_next_notification_id)
+
+    def test_delete_location_reminder_notification(self):
+        location = Location.objects.get(id=3)
+        user = location.user
+        pre_delete.send(Location, instance=location)
+        user.refresh_from_db()
+        self.assertIsNone(user.next_notification_id)
+
+        # Test if no notification is scheduled
+        location.refresh_from_db()
+        pre_delete.send(Location, instance=location)
 
     def test_send_location_reminder_notification(self):
         # Test if notification is sent

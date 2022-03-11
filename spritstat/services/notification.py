@@ -5,6 +5,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives, EmailMessage
+from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
@@ -17,7 +18,6 @@ from django_q.tasks import schedule
 from typing import Union, Dict, Optional
 
 from spritstat.models import Location
-from spritstat.signals import location_created
 from users.models import CustomUser
 
 KEY_SALT = "spritstat.services.notification"
@@ -54,23 +54,37 @@ def send_create_location_notification(user_id: int) -> None:
     _send_mail(CREATE_LOCATION_REMINDER_TEMPLATE_PREFIX, user)
 
 
-@receiver(location_created)
-def schedule_location_reminder_notification(location: Location, **kwargs) -> None:
+@receiver(post_save)
+def schedule_location_reminder_notification(
+    instance: Location, created: bool, raw: bool, **kwargs
+) -> None:
     # Schedule a onetime notification after a location was created for this user.
 
-    user = location.user
+    if not isinstance(instance, Location):
+        return
 
+    # Ignore saves if this isn't newly created or loaded from fixtures.
+    if not created or raw:
+        return
+
+    user = instance.user
     if user.next_notification:
         user.next_notification.delete()
 
     next_run = timezone.now() + timedelta(weeks=LOCATION_REMINDER_DELAY_WEEKS)
     user.next_notification = schedule(
         "spritstat.services.send_location_reminder_notification",
-        location.id,
+        instance.id,
         schedule_type=Schedule.ONCE,
         next_run=next_run,
     )
     user.save()
+
+
+@receiver(pre_delete)
+def delete_location_reminder_notification(instance: Location, **kwargs) -> None:
+    if isinstance(instance, Location) and instance.user.next_notification:
+        instance.user.next_notification.delete()
 
 
 def send_location_reminder_notification(location_id: int) -> None:
