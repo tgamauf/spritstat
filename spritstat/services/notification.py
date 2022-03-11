@@ -51,10 +51,11 @@ def send_create_location_notification(user_id: int) -> None:
 
     user = CustomUser.objects.get(id=user_id)
 
-    LOG.debug(f"Send create location notification for user {user_id} ({user.is_active}")
-
     # Skip the notification if the user isn't active anymore.
     if not user.is_active:
+        LOG.info(
+            f"Skip sending create location reminder for {user_id} as user is inactive"
+        )
         return
 
     _send_mail(CREATE_LOCATION_REMINDER_TEMPLATE_PREFIX, user)
@@ -106,12 +107,16 @@ def send_location_reminder_notification(location_id: int) -> None:
 
     # Skip the notification if the user isn't active anymore.
     if not user.is_active:
+        LOG.info(
+            f"Skip sending location reminder for {location_id} as user is inactive"
+        )
         return
 
     # Skip the notification if the user was active after the notification was
     #  scheduled
     datetime_scheduled = timezone.now() - timedelta(weeks=LOCATION_REMINDER_DELAY_WEEKS)
     if user.last_activity > datetime_scheduled:
+        LOG.info(f"Skip sending location reminder for {location_id} due to activity")
         return
 
     _send_mail(LOCATION_REMINDER_TEMPLATE_PREFIX, user, {"location_id": location_id})
@@ -132,11 +137,6 @@ def _send_mail(
     if additional_context:
         context.update(additional_context)
     msg = _render_mail(email_template_prefix, user.email, context)
-
-    LOG.info(
-        f"\nTo: {msg.to}\nFrom: {msg.from_email}\nSubject: {msg.subject}\nBody: {msg.body}"
-    )
-
     msg.send()
 
 
