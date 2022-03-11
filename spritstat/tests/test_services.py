@@ -410,7 +410,7 @@ class TestClearExpiredSessions(TestCase):
 
 
 class TestNotifications(TestCase):
-    fixtures = ["user.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "settings.json", "schedule.json", "location.json"]
 
     @classmethod
     def setUpTestData(cls):
@@ -483,6 +483,16 @@ class TestNotifications(TestCase):
         post_save.send(Location, instance=location, created=False, raw=False)
         user.refresh_from_db()
         self.assertEqual(user.next_notification_id, check_next_notification_id)
+
+        # Ensure that no notification is created if the user has notifications
+        #  disabled.
+        location.refresh_from_db()
+        user.settings.notifications_active = False
+        user.settings.save()
+        user.next_notification.delete()
+        post_save.send(Location, instance=location, created=True, raw=False)
+        user.refresh_from_db()
+        self.assertIsNone(user.next_notification_id)
 
     def test_delete_location_reminder_notification(self):
         location = Location.objects.get(id=3)

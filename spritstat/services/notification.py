@@ -68,6 +68,11 @@ def schedule_location_reminder_notification(
         return
 
     user = instance.user
+
+    # # Do not schedule a notification if the user has notifications deactivated.
+    if not user.settings.notifications_active:
+        return
+
     if user.next_notification:
         user.next_notification.delete()
 
