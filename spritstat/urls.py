@@ -52,7 +52,7 @@ urlpatterns = [
     #  to the frontend. Unsubscribe is handled by the POST request to the URL
     #  above.
     path(
-        "api/v1/sprit/unsubscribe/<int:uid>/<slug:token>/",
+        "api/v1/sprit/unsubscribe/<slug:uid>/<slug:token>/",
         views.UnsubscribeView.as_view(),
         name="unsubscribe",
     ),

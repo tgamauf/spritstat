@@ -94,7 +94,9 @@ class TestSettings(APITestCase):
         self.assertDictEqual(response.data, test_payload)
         self.assertDictEqual(response.data["intro"], self.intro_settings_as_dict())
 
-    def test_set_partial_notifications(self):
+    def test_set_partial_notifications_deactivate(self):
+        # Ensure that the existing notification is deleted if notifications are
+        #  disabled.
         test_payload = {
             "intro": {
                 "no_location_active": False,
@@ -102,12 +104,14 @@ class TestSettings(APITestCase):
                 "add_location_active": True,
                 "location_details_active": True,
             },
-            "notifications_active": True,
+            "notifications_active": False,
         }
-        response = self.client.patch(self.url, {"notifications_active": True})
+        response = self.client.patch(self.url, {"notifications_active": False})
+        self.user.refresh_from_db()
         self.assertDictEqual(response.data, test_payload)
+        self.assertIsNone(self.user.next_notification_id)
 
-    def test_deactivate_notifications_without_schedule(self):
+    def test_activate_notifications_without_schedule(self):
         # Check if disabling notifications succeeds if currently no notification
         #  is scheduled.
 
