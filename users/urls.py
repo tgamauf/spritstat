@@ -58,7 +58,7 @@ urlpatterns = [
     #  "account_password_reset_confirm" above.
     # The name here must match exactly as well as dj_rest_auth requires it.
     path(
-        "auth/password/reset/confirm/<int:uid>/<slug:token>/",
+        "auth/password/reset/confirm/<slug:uid>/<slug:token>/",
         views.CustomPasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
