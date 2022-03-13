@@ -203,7 +203,6 @@ Q_CLUSTER = {
     "timeout": 5,
     "ack_failures": True,
     "max_attempts": 3,
-    "save_limit": 0,
     "catch_up": False,
     "orm": "default",
 }
