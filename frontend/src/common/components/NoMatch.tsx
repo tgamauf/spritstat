@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {Trans} from "@lingui/macro";
 
 import CenteredBox from "./CenteredBox";
 import {RouteNames} from "../types";
@@ -13,10 +14,14 @@ export default function NoMatch() {
           <p className="huge-text">
             4<span className="has-text-info">0</span>4
           </p>
-          <p>Die gewünschte Seite konnte leider nicht gefunden werden.</p>
+          <p>
+            <Trans>
+              Die gewünschte Seite konnte leider nicht gefunden werden.
+            </Trans>
+          </p>
           <p className="mt-4">
             <Link className="has-text-primary is-size-2" to={RouteNames.Index}>
-              Homepage
+              <Trans>Startseite</Trans>
             </Link>
           </p>
         </div>

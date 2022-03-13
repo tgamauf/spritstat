@@ -2,6 +2,7 @@ import React, {FormEvent, useEffect, useRef, useState} from "react";
 
 import {OurFormElement} from "../../common/types";
 import {useSendContactFormMutation} from "./contactApiSlice";
+import {t, Trans} from "@lingui/macro";
 
 // This has to match the message length defined in the send view
 const MAX_MESSAGE_LENGTH = 500;
@@ -72,10 +73,9 @@ export default function ContactForm({
           <p className="control">
             <input
               className="input"
-              title="Dein Name ist optional, aber wir freuen uns wenn du ihn
-              angibst."
+              title={t`Dein Name ist optional, aber wir freuen uns wenn du ihn angibst.`}
               type="text"
-              placeholder="Name"
+              placeholder={t`Name`}
               value={name}
               required={false}
               onChange={(e) => setName(e.target.value)}
@@ -87,14 +87,14 @@ export default function ContactForm({
           {subjects ? (
             <div className="select">
               <select
-                title="Worum geht es bei deiner Anfrage?"
+                title={t`Worum geht es bei deiner Anfrage?`}
                 required={true}
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 data-test="field-select-subject"
               >
                 <option value="" disabled={true}>
-                  Betreff
+                  <Trans>Betreff</Trans>
                 </option>
                 {subjects.map((text, index) => {
                   return <option key={index}>{text}</option>;
@@ -105,7 +105,7 @@ export default function ContactForm({
             <input
               className="input"
               type="text"
-              placeholder="Subject"
+              placeholder={t`Betreff`}
               value={subject}
               required={true}
               onChange={(e) => setSubject(e.target.value)}
@@ -120,7 +120,7 @@ export default function ContactForm({
               rows={10}
               minLength={1}
               maxLength={MAX_MESSAGE_LENGTH}
-              placeholder="Wie können wir dir helfen?"
+              placeholder={t`Wie können wir dir helfen?`}
               value={message}
               required={true}
               onChange={(e) => setMessage(e.target.value)}
@@ -138,7 +138,7 @@ export default function ContactForm({
             <input
               className="button is-primary"
               type="submit"
-              value="Senden"
+              value={t`Senden`}
               disabled={submitDisabled}
               ref={buttonRef}
               data-test="btn-submit"

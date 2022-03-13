@@ -1,11 +1,12 @@
 import {NamedLocation, Station} from "./types";
+import {t} from "@lingui/macro";
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const INTRO_OPTIONS = {
-  doneLabel: "Fertig",
-  nextLabel: "Weiter",
-  prevLabel: "Zurück",
+  doneLabel: t`Fertig`,
+  nextLabel: t`Weiter`,
+  prevLabel: t`Zurück`,
   hidePrev: true,
   tooltipClass: "intro-tooltip"
 }

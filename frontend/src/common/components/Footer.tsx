@@ -23,7 +23,7 @@ export default function Footer() {
           to={RouteNames.PrivacyPolicy}
           data-test={"link-privacy"}
         >
-          <Trans>Datenschutzerklärung</Trans>
+          <Trans id="footer.privacy">Datenschutzerklärung</Trans>
         </Link>
       </div>
       <div className="mt-2">

@@ -13,16 +13,49 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/common/components/PrivacyPolicy.tsx:64
+msgid "<0><1>Besuchte Website</1><2>Uhrzeit zum Zeitpunkt des Zugriffes</2><3>Menge der gesendeten Daten in Byte</3><4>Quelle/Verweis, von welchem Sie auf die Seite gelangten</4><5>Verwendeter Browser</5><6>Verwendetes Betriebssystem</6><7>Verwendete IP-Adresse</7></0>"
+msgstr ""
+
 #: src/common/components/HeaderLoginButton.tsx:15
 msgid "Anmelden"
 msgstr ""
 
-#: src/common/components/Footer.tsx:26
+#: src/features/contact/ContactForm.tsx:97
+#: src/features/contact/ContactForm.tsx:108
+msgid "Betreff"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:88
+msgid "Cookies"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:25
 msgid "Datenschutzerklärung"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:48
+msgid "Definitionen der verwendeten Begriffe (z.B. “personenbezogene Daten” oder “Verarbeitung”) finden Sie in Art. 4 DSGVO."
+msgstr ""
+
+#: src/features/contact/ContactForm.tsx:76
+msgid "Dein Name ist optional, aber wir freuen uns wenn du ihn angibst."
 msgstr ""
 
 #: src/common/components/Home.tsx:53
 msgid "Demo Graph"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:101
+msgid "Der Websitebetreiber erhebt, nutzt und gibt Ihre personenbezogenen Daten nur dann weiter, wenn dies im gesetzlichen Rahmen erlaubt ist oder Sie in die Datenerhebung einwilligen. Als personenbezogene Daten gelten sämtliche Informationen, welche dazu dienen, Ihre Person zu bestimmen und welche zu Ihnen zurückverfolgt werden können – also beispielsweise Ihre E-Mail-Adresse."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:37
+msgid "Der Websitebetreiber nimmt Ihren Datenschutz sehr ernst und behandelt Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Vorschriften. Da durch neue Technologien und die ständige Weiterentwicklung dieser Webseite Änderungen an dieser Datenschutzerklärung vorgenommen werden können, empfehlen wir Ihnen sich die Datenschutzerklärung in regelmäßigen Abständen wieder durchzulesen."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:77
+msgid "Die Server-Logfiles werden für maximal 30 Tage gespeichert und anschließend gelöscht. Die Speicherung der Daten erfolgt aus Sicherheitsgründen, um z. B. Missbrauchsfälle aufklären zu können. Müssen Daten aus Beweisgründen aufgehoben werden, sind sie solange von der Löschung ausgenommen bis der Vorfall endgültig geklärt ist."
 msgstr ""
 
 #: src/common/components/Imprint.tsx:19
@@ -37,6 +70,18 @@ msgstr ""
 #~ msgid "Die Website ist Open Source, der Quellcode ist<0> hier </0>zu finden."
 #~ msgstr ""
 
+#: src/common/components/NoMatch.tsx:18
+msgid "Die gewünschte Seite konnte leider nicht gefunden werden."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:29
+msgid "Diese Datenschutzerklärung soll die Nutzer dieser Website über die Art, den Umfang und den Zweck der Erhebung und Verwendung personenbezogener Daten durch den Websitebetreiber Thomas Gamauf informieren."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:90
+msgid "Diese Website verwendet nur technisch notwendige Cookies die der Authentifizierung und dem Session-Management dienen."
+msgstr ""
+
 #: src/common/components/Imprint.tsx:14
 #~ msgid "Diese Website wird als ein Hobbyprojekt betrieben, daher alle Angaben ohne gewähr."
 #~ msgstr ""
@@ -45,8 +90,32 @@ msgstr ""
 msgid "Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr."
 msgstr ""
 
+#: src/common/components/PrivacyPolicy.tsx:98
+msgid "Erfassung und Verarbeitung personenbezogener Daten"
+msgstr ""
+
+#: src/features/contact/Contact.tsx:40
+msgid "Etwas anderes"
+msgstr ""
+
+#: src/common/constants.ts:7
+msgid "Fertig"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:27
+msgid "Grundlegendes"
+msgstr ""
+
 #: src/common/components/Home.tsx:16
 msgid "Hast du dich schon immer gefragt wie sich der Spritpreis in deiner Gegend über die Zeit entwickelt? Oder an welchen Tagen es wirklich am günstigsten zu tanken ist? Ich auch und deswegen gibt es jetzt<0> SPRITSTAT</0>. Noch nie war es einfacher einen Überblick über die langfristige Preisentwicklung von Treibstoff in deiner Gegend zu bekommen."
+msgstr ""
+
+#: src/features/contact/Contact.tsx:38
+msgid "Ich benötige Hilfe"
+msgstr ""
+
+#: src/features/contact/Contact.tsx:39
+msgid "Ich benötige weitere Informationen"
 msgstr ""
 
 #: src/common/components/Footer.tsx:18
@@ -57,26 +126,115 @@ msgstr ""
 msgid "Inhaber:"
 msgstr ""
 
+#: src/features/contact/Contact.tsx:12
+#: src/features/contact/Contact.tsx:34
+msgid "Kontakt"
+msgstr ""
+
 #: src/common/components/Imprint.tsx:48
 msgid "Kontakt:"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:12
+msgid "Kontaktformular"
 msgstr ""
 
 #: src/common/components/Home.tsx:45
 msgid "Los gehts!"
 msgstr ""
 
+#: src/features/contact/ContactForm.tsx:78
+msgid "Name"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:124
+msgid "Nehmen Sie mit uns als Websitebetreiber durch die angebotenen Kontaktmöglichkeiten Verbindung auf, werden Ihre Angaben gespeichert, damit auf diese zur Bearbeitung und Beantwortung Ihrer Anfrage zurückgegriffen werden kann. Ohne Ihre Einwilligung werden diese Daten nicht an Dritte weitergegeben."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:152
+msgid "Nutzer dieser Webseite können von ihrem Widerspruchsrecht Gebrauch machen und der Verarbeitung ihrer personenbezogenen Daten zu jeder Zeit widersprechen."
+msgstr ""
+
 #: src/common/components/Imprint.tsx:42
 msgid "Ort:"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:134
+msgid "Rechte des Nutzers"
+msgstr ""
+
+#: src/features/contact/ContactForm.tsx:141
+msgid "Senden"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:136
+msgid "Sie haben als Nutzer das Recht, auf Antrag eine kostenlose Auskunft darüber zu erhalten, welche personenbezogenen Daten über Sie gespeichert wurden. Sie haben außerdem das Recht auf Berichtigung falscher Daten und auf die Verarbeitungseinschränkung oder Löschung Ihrer personenbezogenen Daten. Falls zutreffend, können Sie auch Ihr Recht auf Datenportabilität geltend machen. Sollten Sie annehmen, dass Ihre Daten unrechtmäßig verarbeitet wurden, können Sie eine Beschwerde bei der zuständigen Aufsichtsbehörde einreichen."
 msgstr ""
 
 #: src/common/components/Home.tsx:31
 msgid "So gehts - einfach anmelden, einen Ort anlegen und von diesem Zeitpunkt an werden die Spritkosten in deiner Gegend aufgezeichnet."
 msgstr ""
 
+#: src/common/components/NoMatch.tsx:24
+msgid "Startseite"
+msgstr ""
+
+#: src/features/contact/ContactForm.tsx:108
+#~ msgid "Subject"
+#~ msgstr ""
+
+#: src/features/contact/ContactForm.tsx:108
+#~ msgid "Subjekt"
+#~ msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:122
+msgid "Umgang mit Kontaktdaten"
+msgstr ""
+
 #: src/common/components/Home.tsx:37
 msgid "Und das Beste? Das ganze ist gratis!"
 msgstr ""
 
+#: src/common/constants.ts:8
+msgid "Weiter"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:159
+msgid "Wenn Sie eine Berichtigung, Sperrung, Löschung oder Auskunft über die zu Ihrer Person gespeicherten personenbezogenen Daten wünschen oder Fragen bzgl. der Erhebung, Verarbeitung oder Verwendung Ihrer personenbezogenen Daten haben oder erteilte Einwilligungen widerrufen möchten, nutzen Sie bitte das{contactFormLink} das Ihnen nach dem Anmelden zur Verfügung steht."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:150
+msgid "Widerspruchsrecht"
+msgstr ""
+
+#: src/features/contact/ContactForm.tsx:123
+msgid "Wie können wir dir helfen?"
+msgstr ""
+
 #: src/common/components/Imprint.tsx:44
 msgid "Wien"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:112
+msgid "Wir verarbeiten nur die im Zuge der Registrierung angegebene E-Mail-Adresse. Diese wird nur zur Identifikation des Benutzers und zur Zusendung von E-Mails die der Funktionserhaltung dienen (z. B. Passwort-Reset). Alle personenbezogenen Daten werden bei Löschung des Accounts entfernt."
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:57
+msgid "Wir, der Websitebetreiber bzw. Seitenprovider, erheben aufgrund unseres berechtigten Interesses (s. Art. 6 Abs. 1 lit. f. DSGVO) Daten über Zugriffe auf die Website und speichern diese als „Server-Logfiles“ auf dem Server der Website ab. Folgende Daten werden so protokolliert:"
+msgstr ""
+
+#: src/features/contact/ContactForm.tsx:90
+msgid "Worum geht es bei deiner Anfrage?"
+msgstr ""
+
+#: src/common/components/PrivacyPolicy.tsx:55
+msgid "Zugriffsdaten"
+msgstr ""
+
+#: src/common/constants.ts:9
+msgid "Zurück"
+msgstr ""
+
+#: src/common/components/Footer.tsx:26
+msgid "footer.privacy"
 msgstr ""

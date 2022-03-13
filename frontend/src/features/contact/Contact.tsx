@@ -6,9 +6,10 @@ import ContactForm from "./ContactForm";
 import BasePage from "../../common/components/BasePage";
 import {RouteNames} from "../../common/types";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
+import {t, Trans} from "@lingui/macro";
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Kontakt",
+  name: t`Kontakt`,
   icon: faEnvelope,
   destination: RouteNames.Contact,
 };
@@ -30,13 +31,13 @@ export default function Contact(): JSX.Element {
       discardMessage={() => setErrorMessage("")}
     >
       <div className="box">
-        <h1 className="title">Kontakt</h1>
+        <h1 className="title"><Trans>Kontakt</Trans></h1>
         <ContactForm
           id="0"
           subjects={[
-            "Ich benötige Hilfe",
-            "Ich benötige weitere Informationen",
-            "Etwas anderes",
+            t`Ich benötige Hilfe`,
+            t`Ich benötige weitere Informationen`,
+            t`Etwas anderes`,
           ]}
           notifySubmitted={notifySubmitted}
           setErrorMessage={setErrorMessage}
