@@ -8,22 +8,34 @@ export default function Imprint() {
     <BasePage>
       <CenteredBox>
         <h1 className="title">Impressum</h1>
-        <div className="block">
-          <p className="block">
-            Diese Website wird als ein Hobbyprojekt betrieben.
+        <div className="block has-text-left">
+          <p>
+            Diese Website wird als ein Hobbyprojekt betrieben, daher alle Angaben ohne gewähr.
           </p>
-          <table className="table">
+          <p>
+            Die Website ist Open Source, der Quellcode ist
+            <a
+              className="has-text-primary"
+              href="https://github.com/tgamauf/spritstat"
+              target="_blank"
+              rel="noopener noreferrer"
+            > hier </a>
+            zu finden.
+          </p>
+        </div>
+        <div className="block">
+          <table className="table has-no-lines is-fullwidth is-narrow has-text-left">
             <tbody>
               <tr>
-                <th className="has-text-right">Inhaber:</th>
+                <td className="key has-text-weight-medium">Inhaber:</td>
                 <td>Thomas Gamauf</td>
               </tr>
               <tr>
-                <th className="has-text-right">Ort:</th>
+                <td className="key has-text-weight-medium">Ort:</td>
                 <td>Wien</td>
               </tr>
               <tr>
-                <th className="has-text-right">Kontakt:</th>
+                <td className="key has-text-weight-medium">Kontakt:</td>
                 <td>
                   <a
                     className="has-text-primary"

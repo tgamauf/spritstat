@@ -42,16 +42,12 @@ export default function Settings(): JSX.Element {
           <table className="table is-fullwidth">
             <tbody>
               <tr>
-                <td className="has-text-right">
-                  <b>Email</b>
-                </td>
+                <td className="key">Email</td>
                 <td data-test="text-email">{email}</td>
                 <td />
               </tr>
               <tr>
-                <td className="has-text-right">
-                  <b>Password</b>
-                </td>
+                <td className="key">Password</td>
                 <td>************</td>
                 <td>
                   <Link
