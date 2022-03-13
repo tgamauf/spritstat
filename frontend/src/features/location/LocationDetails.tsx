@@ -112,6 +112,13 @@ export default function LocationDetails(): JSX.Element {
               + "Treibstoffpreises über den gewählten Zeitraum an."
           },
           {
+            element: `#${CHART_HISTORY_ID}`,
+            intro: "Es ist möglich den Graphen zu vergrößern. Auf einem Mobiltelefon "
+              + "oder Tablet kann mit Pinch-and-Zoom die Zoomstufe verändert und danach "
+              + "mit zwei Fingern entlang der x-Achse gescrollt werden. Mit einer Maus "
+              + "ist das mit STRG + Mausrad, bzw. durch Klick + Ziehen möglich."
+          },
+          {
             element: `#${BTN_CHART_HISTORY_DATE_RANGE_ID}`,
             intro: "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen."
           },
