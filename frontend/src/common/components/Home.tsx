@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react";
 import React from "react";
 import {Link} from "react-router-dom";
 
@@ -12,12 +13,14 @@ export default function Home() {
         <div className="column is-10 is-8-desktop">
           <div className="block content" data-test="content-text">
             <p className="box has-background-link">
-              Hast du dich schon immer gefragt wie sich der Spritpreis in deiner
-              Gegend über die Zeit entwickelt? Oder an welchen Tagen es wirklich
-              am günstigsten zu tanken ist? Ich auch und deswegen gibt es jetzt{" "}
-              <span className="has-text-primary">SPRITSTAT</span>. Noch nie war
-              es einfacher einen Überblick über die langfristige
-              Preisentwicklung von Treibstoff in deiner Gegend zu bekommen.
+              {/*<Trans>*/}
+                Hast du dich schon immer gefragt wie sich der Spritpreis in deiner
+                Gegend über die Zeit entwickelt? Oder an welchen Tagen es wirklich
+                am günstigsten zu tanken ist? Ich auch und deswegen gibt es jetzt{" "}
+                <span className="has-text-primary">SPRITSTAT</span>. Noch nie war
+                es einfacher einen Überblick über die langfristige
+                Preisentwicklung von Treibstoff in deiner Gegend zu bekommen.
+              {/*</Trans>*/}
             </p>
           </div>
           <div className="columns is-centered">

@@ -10,7 +10,9 @@
     "db:flush": "python ../manage.py flush --noinput",
     "db:seed": "python ../manage.py loaddata",
     "test": "cypress run",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "extract": "lingui extract",
+    "compile": "lingui compile"
   },
   "browserslist": {
     "production": [
@@ -30,7 +32,10 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@lingui/macro": "^3.13.2",
+    "@lingui/react": "^3.13.2",
     "@reduxjs/toolkit": "^1.7.2",
+    "babel-runtime": "^6.26.0",
     "bulma": "^0.9.3",
     "bulma-switch": "^2.0.4",
     "chart.js": "^3.7.0",
@@ -48,12 +53,16 @@
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.16.10",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.16.7",
+    "@lingui/babel-preset-react": "^2.9.2",
+    "@lingui/cli": "^3.13.2",
     "@types/google.maps": "^3.47.3",
     "@types/intro.js": "^3.0.2",
     "@types/lodash.debounce": "^4.0.6",
@@ -62,6 +71,8 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-router-dom": "^5.3.3",
     "babel-loader": "^8.2.3",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
+    "babel-plugin-macros": "^3.1.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.2.1",
     "css-loader": "^6.5.1",
@@ -74,6 +85,7 @@
     "prettier": "^2.5.1",
     "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.8",
     "typescript": "^4.5.5",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.2"

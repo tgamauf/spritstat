@@ -1,0 +1,9 @@
+{
+   "compileNamespace": "ts",
+   "locales": ["de", "en"],
+   "catalogs": [{
+      "path": "src/common/locales/{locale}/messages",
+      "include": ["src"]
+   }],
+   "format": "po"
+}
