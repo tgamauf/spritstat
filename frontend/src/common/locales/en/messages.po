@@ -16,3 +16,55 @@ msgstr ""
 #: src/common/components/HeaderLoginButton.tsx:15
 msgid "Anmelden"
 msgstr "Login"
+
+#: src/common/components/Footer.tsx:26
+msgid "Datenschutzerklärung"
+msgstr "Privacy"
+
+#: src/common/components/Home.tsx:53
+msgid "Demo Graph"
+msgstr "Demo graph"
+
+#: src/common/components/Imprint.tsx:19
+msgid "Die Website ist Open Source und der Quellcode ist<0> hier </0>zu finden - ich freue mich wenn du mir hilfst die Seite besser zu machen! :)"
+msgstr "That said, it is also open source and you can find the code <0> here </0>. So, feel free to help me make it better! :)"
+
+#: src/common/components/Imprint.tsx:14
+msgid "Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr."
+msgstr "This website is operated as a hobby, so no limit or warranty is provided."
+
+#: src/common/components/Home.tsx:16
+msgid "Hast du dich schon immer gefragt wie sich der Spritpreis in deiner Gegend über die Zeit entwickelt? Oder an welchen Tagen es wirklich am günstigsten zu tanken ist? Ich auch und deswegen gibt es jetzt<0> SPRITSTAT</0>. Noch nie war es einfacher einen Überblick über die langfristige Preisentwicklung von Treibstoff in deiner Gegend zu bekommen."
+msgstr "Have you always wondered how the fuel price in your area develops over time? Or on which days it's cheapest to fill up? Me too and that's why I built <0>SPRITSTAT</0>. It has never been easier to learn how fuel-prices develop in your area in the long-term."
+
+#: src/common/components/Footer.tsx:18
+msgid "Impressum"
+msgstr "Imprint"
+
+#: src/common/components/Imprint.tsx:36
+msgid "Inhaber:"
+msgstr "Owner:"
+
+#: src/common/components/Imprint.tsx:48
+msgid "Kontakt:"
+msgstr "Contact:"
+
+#: src/common/components/Home.tsx:45
+msgid "Los gehts!"
+msgstr "Let's go!"
+
+#: src/common/components/Imprint.tsx:42
+msgid "Ort:"
+msgstr "Location:"
+
+#: src/common/components/Home.tsx:31
+msgid "So gehts - einfach anmelden, einen Ort anlegen und von diesem Zeitpunkt an werden die Spritkosten in deiner Gegend aufgezeichnet."
+msgstr "It's really simple, just sign up, create a location and we'll record fuel prices for you."
+
+#: src/common/components/Home.tsx:37
+msgid "Und das Beste? Das ganze ist gratis!"
+msgstr "You know what's best? It's free!"
+
+#: src/common/components/Imprint.tsx:44
+msgid "Wien"
+msgstr "Vienna"

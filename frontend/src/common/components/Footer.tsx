@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
+import {Trans} from "@lingui/macro";
 
 import {RouteNames} from "../types";
 
@@ -14,7 +15,7 @@ export default function Footer() {
           to={RouteNames.Imprint}
           data-test="link-imprint"
         >
-          Impressum
+          <Trans>Impressum</Trans>
         </Link>
         <span> &bull; </span>
         <Link
@@ -22,7 +23,7 @@ export default function Footer() {
           to={RouteNames.PrivacyPolicy}
           data-test={"link-privacy"}
         >
-          Datenschutzerklärung
+          <Trans>Datenschutzerklärung</Trans>
         </Link>
       </div>
       <div className="mt-2">

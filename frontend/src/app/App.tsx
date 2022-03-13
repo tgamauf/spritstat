@@ -4,7 +4,6 @@ import moment from "moment-timezone";
 import {i18n} from '@lingui/core'
 import {I18nProvider} from "@lingui/react";
 
-import { messages } from "../common/locales/en/messages";
 import {RouteNames} from "../common/types";
 import NoMatch from "../common/components/NoMatch";
 import Index from "../common/components/Index";
@@ -27,7 +26,7 @@ import {AuthProvider, RequireAuth, RequireNoAuth} from "../common/auth/AuthProvi
 import LocationDetails from "../features/location/LocationDetails";
 import {SettingsProvider} from "../common/settings/SettingsProvider";
 import Unsubscribe from "../common/settings/Unsubscribe";
-import {defaultLocale, dynamicActivate} from "../common/i18n";
+import {dynamicActivate, getLocale} from "../common/i18n";
 
 
 export default function App() {
@@ -37,7 +36,9 @@ export default function App() {
 
   // Set the locale to german
   useEffect(() => {
-    void dynamicActivate(defaultLocale);
+    const locale = getLocale();
+
+    void dynamicActivate(locale);
     moment.locale("de-at"); //TODO check if still needed or if we can replace it with i18n
   }, []);
 

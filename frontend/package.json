@@ -63,6 +63,7 @@
     "@babel/runtime": "^7.16.7",
     "@lingui/babel-preset-react": "^2.9.2",
     "@lingui/cli": "^3.13.2",
+    "@lingui/loader": "^3.13.2",
     "@types/google.maps": "^3.47.3",
     "@types/intro.js": "^3.0.2",
     "@types/lodash.debounce": "^4.0.6",

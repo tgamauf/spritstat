@@ -1,4 +1,5 @@
 import React from "react";
+import {Trans} from "@lingui/macro";
 
 import CenteredBox from "./CenteredBox";
 import BasePage from "./BasePage";
@@ -10,32 +11,42 @@ export default function Imprint() {
         <h1 className="title">Impressum</h1>
         <div className="block has-text-left">
           <p>
-            Diese Website wird als ein Hobbyprojekt betrieben, daher alle Angaben ohne gewähr.
+            <Trans>
+              Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr.
+            </Trans>
           </p>
           <p>
-            Die Website ist Open Source, der Quellcode ist
-            <a
-              className="has-text-primary"
-              href="https://github.com/tgamauf/spritstat"
-              target="_blank"
-              rel="noopener noreferrer"
-            > hier </a>
-            zu finden.
+            <Trans>
+              Die Website ist Open Source und der Quellcode ist
+              <a
+                className="has-text-primary"
+                href="https://github.com/tgamauf/spritstat"
+                target="_blank"
+                rel="noopener noreferrer"
+              > hier </a>
+              zu finden - ich freue mich wenn du mir hilfst die Seite besser zu machen! :)
+            </Trans>
           </p>
         </div>
         <div className="block">
           <table className="table has-no-lines is-fullwidth is-narrow has-text-left">
             <tbody>
               <tr>
-                <td className="key has-text-weight-medium">Inhaber:</td>
+                <td className="key has-text-weight-medium">
+                  <Trans>Inhaber:</Trans>
+                </td>
                 <td>Thomas Gamauf</td>
               </tr>
               <tr>
-                <td className="key has-text-weight-medium">Ort:</td>
-                <td>Wien</td>
+                <td className="key has-text-weight-medium">
+                  <Trans>Ort:</Trans>
+                </td>
+                <td><Trans>Wien</Trans></td>
               </tr>
               <tr>
-                <td className="key has-text-weight-medium">Kontakt:</td>
+                <td className="key has-text-weight-medium">
+                  <Trans>Kontakt:</Trans>
+                </td>
                 <td>
                   <a
                     className="has-text-primary"
@@ -43,7 +54,7 @@ export default function Imprint() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Linkedin
+                    LinkedIn
                   </a>
                 </td>
               </tr>
