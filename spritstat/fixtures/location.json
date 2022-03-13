@@ -3,7 +3,7 @@
     "model": "spritstat.location",
     "pk": 1,
     "fields": {
-      "user": 2,
+      "user": 200,
       "type": 1,
       "name": "Bruno-Kreisky-Platz 1, 1220 Wien",
       "latitude": "48.23554",
@@ -18,7 +18,7 @@
     "model": "spritstat.location",
     "pk": 2,
     "fields": {
-      "user": 4,
+      "user": 400,
       "type": 1,
       "name": "Am Schlossberg, 8010 Graz",
       "latitude": 47.0737304,
@@ -33,7 +33,7 @@
     "model": "spritstat.location",
     "pk": 3,
     "fields": {
-      "user": 4,
+      "user": 400,
       "type": 2,
       "name": "Klagenfurt Stadt",
       "latitude": null,

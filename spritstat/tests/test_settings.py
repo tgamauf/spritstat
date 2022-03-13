@@ -23,7 +23,7 @@ class TestSettings(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse("settings")
-        cls.user = CustomUser.objects.get(id=4)
+        cls.user = CustomUser.objects.get(id=400)
 
     def setUp(self):
         if not self.id().endswith("_not_logged_in"):
@@ -131,30 +131,32 @@ class TestSettings(APITestCase):
 class TestUnsubscribe(APITestCase):
     fixtures = ["user.json", "settings.json"]
     url: str
+    user: CustomUser
 
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse("unsubscribe")
+        cls.user = CustomUser.objects.get(pk=300)
 
     def test_user_logged_out(self):
         # This is the default case.
 
-        user = CustomUser.objects.get(pk=3)
         response = self.client.post(
-            self.url, {"uid": user_pk_to_url_str(user), "token": Token(user).value}
+            self.url,
+            {"uid": user_pk_to_url_str(self.user), "token": Token(self.user).value},
         )
-        user.refresh_from_db()
+        self.user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        settings = Settings.objects.get(user=user)
+        settings = Settings.objects.get(user=self.user)
         self.assertEqual(settings.notifications_active, False)
-        self.assertIsNone(user.next_notification)
+        self.assertIsNone(self.user.next_notification)
 
     def test_different_user_logged_in(self):
         # Test with a different user logged in, as it must not matter which user
         #  is logged in
 
-        user_1 = CustomUser.objects.get(pk=3)
-        user_2 = CustomUser.objects.get(pk=4)
+        user_1 = self.user
+        user_2 = CustomUser.objects.get(pk=400)
         self.client.login(username=user_1.email, password="test")
         response = self.client.post(
             self.url, {"uid": user_pk_to_url_str(user_2), "token": Token(user_2).value}
@@ -167,7 +169,7 @@ class TestUnsubscribe(APITestCase):
     def test_no_notification_scheduled(self):
         # Make sure that unsubscribe doesn't fail if no notification is scheduled.
 
-        user = CustomUser.objects.get(pk=1)
+        user = CustomUser.objects.get(pk=100)
         response = self.client.post(
             self.url, {"uid": user_pk_to_url_str(user), "token": Token(user).value}
         )
@@ -176,9 +178,8 @@ class TestUnsubscribe(APITestCase):
         self.assertEqual(settings.notifications_active, False)
 
     def test_invalid_token(self):
-        user = CustomUser.objects.get(pk=3)
         response = self.client.post(
-            self.url, {"uid": user_pk_to_url_str(user), "token": "invalid-token"}
+            self.url, {"uid": user_pk_to_url_str(self.user), "token": "invalid-token"}
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -208,7 +209,9 @@ class TestUnsubscribeRedirect(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.url = reverse("unsubscribe", args=[3, "test"])
+        user = CustomUser.objects.get(id=300)
+        uid = user_pk_to_url_str(user)
+        cls.url = reverse("unsubscribe", args=[uid, "test"])
 
     def test_ok(self):
         # Test not logged in

@@ -11,30 +11,32 @@ from users.models import CustomUser
 class TestUserDetail(APITestCase):
     fixtures = ["user.json"]
     url: str
-    email: str
+    user: CustomUser
 
     @classmethod
     def setUpTestData(cls):
-        cls.email = "test@test.at"
         cls.url = reverse("account_user_details")
+        cls.user = CustomUser.objects.get(pk=300)
 
     def setUp(self):
         if not self.id().endswith("_not_logged_in"):
-            self.client.login(username=self.email, password="test")
+            self.client.login(username=self.user.email, password="test")
+
+    @staticmethod
+    def convert_id_to_pk(key: str) -> str:
+        if key == "id":
+            return "pk"
+        return key
 
     def test_get_ok(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertDictEqual(
-            response.data,
-            {
-                "pk": 3,
-                "username": "test",
-                "email": self.email,
-                "first_name": "",
-                "last_name": "",
-            },
-        )
+        check_dict = {
+            self.convert_id_to_pk(key): value
+            for key, value in self.user.__dict__.items()
+            if key in ["id", "username", "email", "first_name", "last_name"]
+        }
+        self.assertDictEqual(response.data, check_dict)
 
     def test_get_not_logged_in(self):
         response = self.client.get(self.url)
@@ -44,11 +46,11 @@ class TestUserDetail(APITestCase):
         response = self.client.put(
             self.url, {"username": "new", "first_name": "First", "last_name": "Last"}
         )
+        self.user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        user = CustomUser.objects.get(email=self.email)
-        self.assertEqual(user.username, "new")
-        self.assertEqual(user.first_name, "First")
-        self.assertEqual(user.last_name, "Last")
+        self.assertEqual(self.user.username, "new")
+        self.assertEqual(self.user.first_name, "First")
+        self.assertEqual(self.user.last_name, "Last")
 
     def test_put_not_logged_in(self):
         response = self.client.put(
@@ -68,23 +70,23 @@ class TestUserDetail(APITestCase):
                 "is_superuser": True,
             },
         )
+        self.user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        user = CustomUser.objects.get(email=self.email)
-        self.assertEqual(user.username, "new")
-        self.assertEqual(user.is_active, True)
-        self.assertEqual(user.is_authenticated, True)
-        self.assertEqual(user.is_staff, False)
-        self.assertEqual(user.is_superuser, False)
+        self.assertEqual(self.user.username, "new")
+        self.assertEqual(self.user.is_active, True)
+        self.assertEqual(self.user.is_authenticated, True)
+        self.assertEqual(self.user.is_staff, False)
+        self.assertEqual(self.user.is_superuser, False)
 
     def test_patch_ok(self):
         response = self.client.patch(
             self.url, {"username": "new", "first_name": "First", "last_name": "Last"}
         )
+        self.user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        user = CustomUser.objects.get(email=self.email)
-        self.assertEqual(user.username, "new")
-        self.assertEqual(user.first_name, "First")
-        self.assertEqual(user.last_name, "Last")
+        self.assertEqual(self.user.username, "new")
+        self.assertEqual(self.user.first_name, "First")
+        self.assertEqual(self.user.last_name, "Last")
 
     def test_patch_not_logged_in(self):
         response = self.client.patch(
@@ -105,12 +107,12 @@ class TestUserDetail(APITestCase):
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        user = CustomUser.objects.get(email=self.email)
-        self.assertEqual(user.username, "new")
-        self.assertEqual(user.is_active, True)
-        self.assertEqual(user.is_authenticated, True)
-        self.assertEqual(user.is_staff, False)
-        self.assertEqual(user.is_superuser, False)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.username, "new")
+        self.assertEqual(self.user.is_active, True)
+        self.assertEqual(self.user.is_authenticated, True)
+        self.assertEqual(self.user.is_staff, False)
+        self.assertEqual(self.user.is_superuser, False)
 
     def test_post(self):
         response = self.client.post(self.url)

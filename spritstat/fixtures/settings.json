@@ -43,7 +43,7 @@
     "model": "spritstat.settings",
     "pk": 1,
     "fields": {
-      "user": 1,
+      "user": 100,
       "intro": 1,
       "notifications_active": true
     }
@@ -52,7 +52,7 @@
     "model": "spritstat.settings",
     "pk": 2,
     "fields": {
-      "user": 2,
+      "user": 200,
       "intro": 2,
       "notifications_active": true
     }
@@ -61,7 +61,7 @@
     "model": "spritstat.settings",
     "pk": 3,
     "fields": {
-      "user": 3,
+      "user": 300,
       "intro": 3,
       "notifications_active": true
     }
@@ -70,7 +70,7 @@
     "model": "spritstat.settings",
     "pk": 4,
     "fields": {
-      "user": 4,
+      "user": 400,
       "intro": 4,
       "notifications_active": true
     }

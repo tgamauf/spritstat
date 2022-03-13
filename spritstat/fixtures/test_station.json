@@ -8,7 +8,10 @@
       "postal_code": "1200",
       "city": "Wien",
       "latitude": "48.2270659",
-      "longitude": "16.3870746"
+      "longitude": "16.3870746",
+      "users": [
+        200
+      ]
     }
   },
   {
@@ -20,7 +23,11 @@
       "postal_code": "1200",
       "city": "Wien",
       "latitude": "48.2430922",
-      "longitude": "16.3843336"
+      "longitude": "16.3843336",
+      "users": [
+        200,
+        400
+      ]
     }
   },
   {
@@ -32,39 +39,10 @@
       "postal_code": "1020",
       "city": "Wien",
       "latitude": "48.2146367",
-      "longitude": "16.3916044"
-    }
-  },
-  {
-    "model": "spritstat.station_users",
-    "pk": 1,
-    "fields": {
-      "station": 1,
-      "customuser": 2
-    }
-  },
-  {
-    "model": "spritstat.station_users",
-    "pk": 2,
-    "fields": {
-      "station": 2,
-      "customuser": 2
-    }
-  },
-  {
-    "model": "spritstat.station_users",
-    "pk": 3,
-    "fields": {
-      "station": 2,
-      "customuser": 4
-    }
-  },
-  {
-    "model": "spritstat.station_users",
-    "pk": 4,
-    "fields": {
-      "station": 3,
-      "customuser": 4
+      "longitude": "16.3916044",
+      "users": [
+        400
+      ]
     }
   }
 ]

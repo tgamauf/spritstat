@@ -25,7 +25,7 @@ class TestContact(APITestCase):
     def setUpTestData(cls):
         cls.url = reverse("account_contact")
         cls.user_email = "test@test.at"
-        cls.receiver_email = CustomUser.objects.get(id=1).email
+        cls.receiver_email = CustomUser.objects.get(id=100).email
         cls.default_message = {
             "contact_form_id": "1",
             "name": "My Name",

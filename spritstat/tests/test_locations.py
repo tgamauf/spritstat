@@ -111,7 +111,7 @@ class TestLocationCreate(APITestCase):
         # Create the maximum allowed limit of locations for a user
         Location.objects.bulk_create(
             [
-                Location(user_id=3, **self.default_address_location_data)
+                Location(user_id=300, **self.default_address_location_data)
                 for _ in range(settings.LOCATION_LIMIT)
             ]
         )

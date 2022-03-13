@@ -414,7 +414,7 @@ class TestNotifications(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = CustomUser.objects.get(pk=2)
+        cls.user = CustomUser.objects.get(pk=200)
 
     def test_schedule_create_location_notification(self):
         mock_now = datetime.strptime("2022-02-02T22:53+0000", "%Y-%m-%dT%H:%M%z")
