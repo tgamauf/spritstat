@@ -23,6 +23,8 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Too
 const BAR_CHART_CONTAINER_NAME = "bar-chart";
 const BAR_COLOR = "#88B04B";
 const BAR_LOWER_BOUND_FRACTION = 0.999;
+const DEFAULT_MAX_TICK_LABEL_LENGTH = 40;
+const MOBILE_MAX_TICK_LABEL_LENGTH = 15;
 
 interface ChartDataProps {
   labels: string[];
@@ -62,6 +64,12 @@ class ChartConfig implements ChartConfiguration {
   public data: ChartData;
 
   constructor(isMobile: boolean, data: ChartData) {
+    let maxStationTickLabelLength: number;
+    if (isMobile) {
+      maxStationTickLabelLength = MOBILE_MAX_TICK_LABEL_LENGTH;
+    } else {
+      maxStationTickLabelLength = DEFAULT_MAX_TICK_LABEL_LENGTH;
+    }
     // As the difference between the weekdays isn't really all too significant
     //  we set the minimum so that the lowest bar is BAR_LOWER_BOUND_FRACTION of
     //  the scale. We ignore 0 as this isn't a valid value, but is added if no
@@ -84,6 +92,22 @@ class ChartConfig implements ChartConfiguration {
         }
       },
       scales: {
+        x: {
+          ticks: {
+            autoSkip: false,
+            callback: function(index) {
+              // Truncated the name of the station, so it doesn't take up most
+              //  of the space of a graph.
+              const label = this.getLabelForValue(index as number);
+              const truncatedLabel = label.substring(0, maxStationTickLabelLength);
+              if (label.length > maxStationTickLabelLength) {
+                return `${truncatedLabel}...`;
+              }
+
+              return label;
+            }
+          }
+        },
         y: {
           min: BAR_LOWER_BOUND_FRACTION * minValue
         }
