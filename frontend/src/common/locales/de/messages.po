@@ -13,17 +13,101 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:114
+msgid "\"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise gesucht werden sollen."
+msgstr ""
+
 #: src/common/components/PrivacyPolicy.tsx:64
 msgid "<0><1>Besuchte Website</1><2>Uhrzeit zum Zeitpunkt des Zugriffes</2><3>Menge der gesendeten Daten in Byte</3><4>Quelle/Verweis, von welchem Sie auf die Seite gelangten</4><5>Verwendeter Browser</5><6>Verwendetes Betriebssystem</6><7>Verwendete IP-Adresse</7></0>"
 msgstr ""
 
+#: src/common/settings/AccountDeleted.tsx:12
+msgid "<0>Es tut uns leid dass du deinen Account gelöscht hast.</0><1>Hoffentlich sehen wir uns trotzdem bald wieder!</1>"
+msgstr ""
+
+#: src/common/auth/EmailVerificationSent.tsx:47
+msgid "<0>Wir haben ein Email an deine Adresse gesendet.</0><1>Bitte klicke auf den Link um die Registrierung abzuschließen!</1>"
+msgstr ""
+
+#: src/common/components/HeaderDropdown.tsx:80
+msgid "Abmelden"
+msgstr ""
+
+#: src/common/settings/Unsubscribe.tsx:49
+msgid "Abmeldung fehlgeschlagen, eventuell ist der Abmeldungslink ungültig."
+msgstr ""
+
+#: src/common/settings/Settings.tsx:85
+msgid "Aktiviere/deaktiviere Benachrichtigungen"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:71
+msgid "Aktiviere/deaktiviere die Einführung"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:83
+msgid "Aktuelles Passwort"
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:162
+msgid ""
+"Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In \n"
+"diesem Fall wird automatisch der zugehörige Bezirk ausgewählt."
+msgstr ""
+
+#: src/common/auth/Login.tsx:148
+msgid "Angemeldet bleiben"
+msgstr ""
+
+#: src/common/auth/Login.tsx:119
 #: src/common/components/HeaderLoginButton.tsx:15
 msgid "Anmelden"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:104
+msgid ""
+"Auch hier wird die Beschreibung des Ortes und der aktuelle Preis \n"
+"angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen \n"
+"zu klicken um diese auf Google Maps angezeigt zu bekommen."
+msgstr ""
+
+#: src/features/location/LocationList.tsx:54
+msgid "Auf dieser Seite werden alle deine Orte angezeigt."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:100
+msgid "Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes angezeigt."
+msgstr ""
+
+#: src/features/location/LocationList.tsx:67
+msgid ""
+"Außerdem wird der aktuell niedrigste Preis für den angegebenen \n"
+"Treibstofftyp und die Tankstellen die diesen anbieten angezeigt."
+msgstr ""
+
+#: src/common/auth/ConfirmEmail.tsx:45
+msgid "Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig."
 msgstr ""
 
 #: src/features/contact/ContactForm.tsx:97
 #: src/features/contact/ContactForm.tsx:108
 msgid "Betreff"
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:164
+msgid "Bezirk"
+msgstr ""
+
+#: src/common/auth/PasswordField.tsx:47
+msgid "Bitte gib dein Passwort an."
+msgstr ""
+
+#: src/common/auth/EmailField.tsx:22
+msgid "Bitte gib deine E-Mail-Adressse an."
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:135
+msgid "Bundesland"
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:88
@@ -38,12 +122,61 @@ msgstr ""
 msgid "Definitionen der verwendeten Begriffe (z.B. “personenbezogene Daten” oder “Verarbeitung”) finden Sie in Art. 4 DSGVO."
 msgstr ""
 
+#: src/common/settings/DeleteAccountModal.tsx:36
+#: src/common/settings/DeleteAccountModal.tsx:41
+msgid "Dein Konto konnte nicht gelöscht werden."
+msgstr ""
+
 #: src/features/contact/ContactForm.tsx:76
 msgid "Dein Name ist optional, aber wir freuen uns wenn du ihn angibst."
 msgstr ""
 
+#: src/features/location/DeleteLocationModal.tsx:37
+#: src/features/location/DeleteLocationModal.tsx:44
+msgid "Dein Ort konnte nicht gelöscht werden."
+msgstr ""
+
+#: src/common/auth/Login.tsx:87
+msgid ""
+"Dein Password wurde geändert, nun kannst du dich mit deinem neuen Password \n"
+"einloggen."
+msgstr ""
+
+#: src/common/auth/Login.tsx:92
+msgid "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen."
+msgstr ""
+
+#: src/features/location/LocationList.tsx:85
+msgid "Deine Orte"
+msgstr ""
+
+#: src/features/location/Dashboard.tsx:52
+msgid "Deine Orte konnten nicht geladen werden."
+msgstr ""
+
 #: src/common/components/Home.tsx:53
 msgid "Demo Graph"
+msgstr ""
+
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:145
+msgid "Der Ort ist aktuell nicht verfügbar."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:98
+#~ msgid "Der Ort konnte nicht angelegt werden"
+#~ msgstr ""
+
+#: src/features/location/AddLocation.tsx:102
+#: src/features/location/AddLocation.tsx:107
+msgid "Der Ort konnte nicht angelegt werden."
+msgstr ""
+
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:86
+msgid "Der Ort konnte nicht gefunden werden."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:261
+msgid "Der Ort konnte nicht geladen werden."
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:101
@@ -52,6 +185,37 @@ msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:37
 msgid "Der Websitebetreiber nimmt Ihren Datenschutz sehr ernst und behandelt Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Vorschriften. Da durch neue Technologien und die ständige Weiterentwicklung dieser Webseite Änderungen an dieser Datenschutzerklärung vorgenommen werden können, empfehlen wir Ihnen sich die Datenschutzerklärung in regelmäßigen Abständen wieder durchzulesen."
+msgstr ""
+
+#: src/common/components/NoGraphDataField.tsx:8
+msgid "Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten vorhanden."
+msgstr ""
+
+#: src/features/location/LocationList.tsx:63
+msgid "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp."
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:58
+msgid "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
+msgstr ""
+
+#: src/features/location/PriceHistoryChart.tsx:198
+#: src/features/location/PriceStationFrequencyChart.tsx:158
+msgid ""
+"Die Preise für diesen Ort konnten nicht abgerufen werden, bitte \n"
+"probier es nochmal."
+msgstr ""
+
+#: src/features/location/AveragePriceChart.tsx:139
+msgid "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal."
+msgstr ""
+
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:143
+msgid "Die Seite hat nicht das Erlaubnis den Ort abzurufen."
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:30
+msgid "Die Seite konnte nicht vollständig geladen werden, bitte lade sie neu und versuche es nochmal."
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:77
@@ -74,6 +238,10 @@ msgstr ""
 msgid "Die gewünschte Seite konnte leider nicht gefunden werden."
 msgstr ""
 
+#: src/common/auth/PasswordWithValidationField.tsx:89
+msgid "Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes Passwort an, Gelb ein mäßiges und Grün ein gutes. {suggestions}"
+msgstr ""
+
 #: src/common/components/PrivacyPolicy.tsx:29
 msgid "Diese Datenschutzerklärung soll die Nutzer dieser Website über die Art, den Umfang und den Zweck der Erhebung und Verwendung personenbezogener Daten durch den Websitebetreiber Thomas Gamauf informieren."
 msgstr ""
@@ -90,16 +258,154 @@ msgstr ""
 msgid "Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr."
 msgstr ""
 
+#: src/features/location/LocationDetails.tsx:141
+msgid ""
+"Dieser Graph zeigt an wie häufig eine Tankstelle im gewählten \n"
+"Zeitraum den niedrigsten Preis angeboten hat."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:126
+msgid ""
+"Dieser Graph zeigt den durchschnittlich niedrigsten Preis pro \n"
+"Tageszeit im gewählten Zeitraum an."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:136
+msgid ""
+"Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro \n"
+"Tag im Monat im gewählten Zeitraum an."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:131
+msgid ""
+"Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro \n"
+"Wochentag im gewählten Zeitraum an."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:110
+msgid ""
+"Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten \n"
+"Treibstoffpreises über den gewählten Zeitraum an."
+msgstr ""
+
+#: src/common/settings/Unsubscribe.tsx:62
+msgid "Du hast dich erfolgreich von Benachrichtigungen abgemeldet."
+msgstr ""
+
+#: src/features/location/NoLocation.tsx:40
+msgid ""
+"Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort \n"
+"zu erstellen."
+msgstr ""
+
+#: src/features/location/AveragePriceChart.tsx:47
+msgid "Durchschnittlich geringster Preis"
+msgstr ""
+
+#: src/common/auth/Login.tsx:160
+msgid "Einloggen"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:39
+msgid "Einstellungen"
+msgstr ""
+
+#: src/common/auth/EmailField.tsx:24
+#: src/common/settings/Settings.tsx:46
+msgid "Email"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:173
+msgid "Entferne diesen Ort."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:179
+msgid "Entfernen"
+msgstr ""
+
 #: src/common/components/PrivacyPolicy.tsx:98
 msgid "Erfassung und Verarbeitung personenbezogener Daten"
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:129
+msgid ""
+"Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und \n"
+"Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im\n"
+"Allgemeinen exakter als Ergebnisse für Bezirke/Bundesländer."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:120
+#~ msgid ""
+#~ "Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und \n"
+#~ "Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im\n"
+#~ "Allgemeinen exakter als Ergebnisse für Bezirken/Bundesländer."
+#~ msgstr ""
+
+#: src/features/location/LocationDetails.tsx:115
+msgid ""
+"Es ist möglich den Graphen zu vergrößern. Auf einem Mobiltelefon \n"
+"oder Tablet kann mit Pinch-and-Zoom die Zoomstufe verändert und danach \n"
+"mit zwei Fingern entlang der x-Achse gescrollt werden. Mit einer Maus \n"
+"ist das mit STRG + Mausrad, bzw. durch Klick + Ziehen möglich."
+msgstr ""
+
+#: src/common/auth/Login.tsx:78
+msgid "Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen."
+msgstr ""
+
+#: src/common/auth/Signup.tsx:73
+msgid "Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren."
 msgstr ""
 
 #: src/features/contact/Contact.tsx:40
 msgid "Etwas anderes"
 msgstr ""
 
+#: src/common/auth/Login.tsx:82
+msgid ""
+"Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze \n"
+"einen Password-Reset-Link zugesendet."
+msgstr ""
+
 #: src/common/constants.ts:7
 msgid "Fertig"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:67
+msgid "Funktionen"
+msgstr ""
+
+#: src/features/location/LocationList.tsx:94
+msgid ""
+"Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet \n"
+"werden sollen."
+msgstr ""
+
+#: src/features/location/NoLocation.tsx:55
+msgid "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen."
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:122
+msgid "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen."
+msgstr ""
+
+#: src/features/location/LocationList.tsx:58
+msgid ""
+"Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den \n"
+"Ort um die detaillierte Statistiken des Ortes zu erhalten."
+msgstr ""
+
+#: src/features/location/PriceHistoryChart.tsx:60
+#: src/features/location/PriceHistoryChart.tsx:113
+msgid "Geringster Preis"
+msgstr ""
+
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:187
+msgid "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen."
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:185
+msgid "Gib eine Postleitzahl ein um die zugehörige Region zu suchen."
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:27
@@ -110,6 +416,21 @@ msgstr ""
 msgid "Hast du dich schon immer gefragt wie sich der Spritpreis in deiner Gegend über die Zeit entwickelt? Oder an welchen Tagen es wirklich am günstigsten zu tanken ist? Ich auch und deswegen gibt es jetzt<0> SPRITSTAT</0>. Noch nie war es einfacher einen Überblick über die langfristige Preisentwicklung von Treibstoff in deiner Gegend zu bekommen."
 msgstr ""
 
+#: src/features/location/AddLocation.tsx:308
+#: src/features/location/LocationList.tsx:101
+msgid "Hinzufügen"
+msgstr ""
+
+#: src/common/auth/ConfirmEmail.tsx:52
+#: src/common/settings/Unsubscribe.tsx:41
+msgid "Homepage"
+msgstr ""
+
+#: src/features/location/PriceStationFrequencyChart.tsx:49
+#: src/features/location/PriceStationFrequencyChart.tsx:93
+msgid "Häufigkeit niedrigster Preis pro Tankstelle"
+msgstr ""
+
 #: src/features/contact/Contact.tsx:38
 msgid "Ich benötige Hilfe"
 msgstr ""
@@ -118,7 +439,7 @@ msgstr ""
 msgid "Ich benötige weitere Informationen"
 msgstr ""
 
-#: src/common/components/Footer.tsx:18
+#: src/common/components/Footer.tsx:21
 msgid "Impressum"
 msgstr ""
 
@@ -126,7 +447,28 @@ msgstr ""
 msgid "Inhaber:"
 msgstr ""
 
-#: src/features/contact/Contact.tsx:12
+#: src/common/auth/PasswordField.tsx:39
+msgid "Klicke hier um dein Passwort anzuzeigen."
+msgstr ""
+
+#: src/common/auth/PasswordField.tsx:37
+msgid "Klicke hier um dein Passwort zu verstecken."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:135
+msgid ""
+"Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche \n"
+"nach einem konkreten Ort aktiviert."
+msgstr ""
+
+#: src/features/location/LocationList.tsx:72
+msgid "Klicke hier um einen neuen Ort hinzuzufügen."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:145
+msgid "Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen."
+msgstr ""
+
 #: src/features/contact/Contact.tsx:34
 msgid "Kontakt"
 msgstr ""
@@ -139,11 +481,30 @@ msgstr ""
 msgid "Kontaktformular"
 msgstr ""
 
+#: src/common/settings/Settings.tsx:91
+msgid "Konto löschen"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:41
+msgid "Kontodetails"
+msgstr ""
+
 #: src/common/components/Home.tsx:45
 msgid "Los gehts!"
 msgstr ""
 
+#: src/common/settings/DeleteAccountModal.tsx:76
+#: src/common/settings/Settings.tsx:105
+#: src/features/location/DeleteLocationModal.tsx:87
+msgid "Löschen"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:94
+msgid "Nach dem Löschen kann das Konto nicht mehr wiederhergestellt werden. Bitte klicke nur wenn du dir sicher bist!"
+msgstr ""
+
 #: src/features/contact/ContactForm.tsx:78
+#: src/features/location/LocationField.tsx:21
 msgid "Name"
 msgstr ""
 
@@ -151,20 +512,123 @@ msgstr ""
 msgid "Nehmen Sie mit uns als Websitebetreiber durch die angebotenen Kontaktmöglichkeiten Verbindung auf, werden Ihre Angaben gespeichert, damit auf diese zur Bearbeitung und Beantwortung Ihrer Anfrage zurückgegriffen werden kann. Ohne Ihre Einwilligung werden diese Daten nicht an Dritte weitergegeben."
 msgstr ""
 
+#: src/features/location/Dashboard.tsx:55
+msgid "Neu laden"
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:252
+#: src/features/location/NoLocation.tsx:71
+msgid "Neuen Ort hinzufügen"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:88
+msgid "Neues Passwort"
+msgstr ""
+
+#: src/common/auth/EmailVerificationSent.tsx:58
+msgid "Nicht erhalten?"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:205
+msgid "Niedrigster Preis pro Stunde"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:233
+msgid "Niedrigster Preis pro Tag im Monat"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:221
+msgid "Niedrigster Preis pro Wochentag"
+msgstr ""
+
 #: src/common/components/PrivacyPolicy.tsx:152
 msgid "Nutzer dieser Webseite können von ihrem Widerspruchsrecht Gebrauch machen und der Verarbeitung ihrer personenbezogenen Daten zu jeder Zeit widersprechen."
 msgstr ""
 
+#: src/features/location/AddLocation.tsx:158
+msgid "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen."
+msgstr ""
+
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:189
+msgid "Ort"
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:25
+#~ msgid "Ort hinzufügen"
+#~ msgstr ""
+
 #: src/common/components/Imprint.tsx:42
 msgid "Ort:"
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:188
+msgid "PLZ"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:51
+msgid "Password"
+msgstr ""
+
+#: src/common/auth/PasswordRecoveryEmail.tsx:63
+#: src/common/auth/ResetPassword.tsx:76
+msgid "Password reset ist fehlgeschlagen."
+msgstr ""
+
+#: src/common/auth/Login.tsx:177
+#: src/common/auth/PasswordRecoveryEmail.tsx:67
+#: src/common/auth/ResetPassword.tsx:80
+msgid "Password vergessen?"
+msgstr ""
+
+#: src/common/auth/PasswordRecoveryEmail.tsx:75
+msgid "Password zurücksetzen"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:80
+#: src/common/settings/Settings.tsx:59
+msgid "Password ändern"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:76
+msgid "Passwordänderung ist fehlgeschlagen."
+msgstr ""
+
+#: src/common/auth/PasswordField.tsx:16
+msgid "Passwort"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:98
+#: src/common/auth/ResetPassword.tsx:92
+msgid "Passwort speichern"
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:134
 msgid "Rechte des Nutzers"
 msgstr ""
 
+#: src/features/location/AddLocation.tsx:266
+#: src/features/location/LocationField.tsx:21
+msgid "Region"
+msgstr ""
+
+#: src/common/auth/Login.tsx:129
+#: src/common/auth/Signup.tsx:77
+#: src/common/auth/Signup.tsx:91
+msgid "Registrieren"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:146
+msgid ""
+"Schlussendlich ist es möglich den Ort zu löschen, falls er nicht \n"
+"mehr relevant für dich ist."
+msgstr ""
+
 #: src/features/contact/ContactForm.tsx:141
 msgid "Senden"
+msgstr ""
+
+#: src/features/contact/ContactForm.tsx:10
+msgid "Senden der Nachricht ist fehlgeschlagen, bitte probiere es erneut."
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:136
@@ -173,6 +637,10 @@ msgstr ""
 
 #: src/common/components/Home.tsx:31
 msgid "So gehts - einfach anmelden, einen Ort anlegen und von diesem Zeitpunkt an werden die Spritkosten in deiner Gegend aufgezeichnet."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:173
+msgid "Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden."
 msgstr ""
 
 #: src/common/components/NoMatch.tsx:24
@@ -186,6 +654,24 @@ msgstr ""
 #: src/features/contact/ContactForm.tsx:108
 #~ msgid "Subjekt"
 #~ msgstr ""
+
+#: src/features/location/AddLocation.tsx:265
+msgid "Suche"
+msgstr ""
+
+#: src/features/location/CurrentPriceField.tsx:73
+msgid "Tankstellen"
+msgstr ""
+
+#: src/features/location/PriceHistoryChart.tsx:228
+msgid "Tankstellen:"
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:140
+msgid ""
+"Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du \n"
+"erhältst die gefundenen Vorschläge angezeigt."
+msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:122
 msgid "Umgang mit Kontaktdaten"
@@ -203,6 +689,12 @@ msgstr ""
 msgid "Wenn Sie eine Berichtigung, Sperrung, Löschung oder Auskunft über die zu Ihrer Person gespeicherten personenbezogenen Daten wünschen oder Fragen bzgl. der Erhebung, Verarbeitung oder Verwendung Ihrer personenbezogenen Daten haben oder erteilte Einwilligungen widerrufen möchten, nutzen Sie bitte das{contactFormLink} das Ihnen nach dem Anmelden zur Verfügung steht."
 msgstr ""
 
+#: src/features/location/AddLocation.tsx:149
+msgid ""
+"Wenn du \"Region\" auswählst, kannst du entweder einen Bezirk oder \n"
+"ein Bundesland auswählen."
+msgstr ""
+
 #: src/common/components/PrivacyPolicy.tsx:150
 msgid "Widerspruchsrecht"
 msgstr ""
@@ -213,6 +705,14 @@ msgstr ""
 
 #: src/common/components/Imprint.tsx:44
 msgid "Wien"
+msgstr ""
+
+#: src/common/settings/DeleteAccountModal.tsx:67
+msgid "Willst du dein Konto wirklich löschen?"
+msgstr ""
+
+#: src/features/location/DeleteLocationModal.tsx:79
+msgid "Willst du den Ort wirklich löschen?"
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:112
@@ -227,6 +727,18 @@ msgstr ""
 msgid "Worum geht es bei deiner Anfrage?"
 msgstr ""
 
+#: src/features/location/AddLocation.tsx:259
+msgid "Wähle den Typ von Ortsangabe aus."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:279
+msgid "Wähle den Typ von Treibstoff aus für den Preise aufgezeichnet werden sollen."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:154
+msgid "Wähle hier das gewünschte Bundesland aus."
+msgstr ""
+
 #: src/common/components/PrivacyPolicy.tsx:55
 msgid "Zugriffsdaten"
 msgstr ""
@@ -235,6 +747,77 @@ msgstr ""
 msgid "Zurück"
 msgstr ""
 
-#: src/common/components/Footer.tsx:26
+#: src/features/location/AddLocation.tsx:167
+msgid ""
+"Zusätzlich zum Ort kann auch der Treibstofftyp ausgewählt werden \n"
+"für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, Super und \n"
+"Gas zur Verfügung."
+msgstr ""
+
+#: src/features/location/AddLocation.tsx:34
+msgid "breadcrumb.addLocation"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:16
+msgid "breadcrumb.changePassword"
+msgstr ""
+
+#: src/features/contact/Contact.tsx:12
+msgid "breadcrumb.contact"
+msgstr ""
+
+#: src/features/location/Dashboard.tsx:16
+msgid "breadcrumb.dashboard"
+msgstr ""
+
+#: src/features/location/LocationDetails.tsx:39
+msgid "breadcrumb.locationDetails"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:16
+msgid "breadcrumb.settings"
+msgstr ""
+
+#: src/common/types.ts:90
+msgid "dateRange.1m"
+msgstr ""
+
+#: src/common/types.ts:89
+msgid "dateRange.1w"
+msgstr ""
+
+#: src/common/types.ts:91
+msgid "dateRange.3m"
+msgstr ""
+
+#: src/common/types.ts:92
+msgid "dateRange.6m"
+msgstr ""
+
+#: src/common/types.ts:88
+msgid "dateRange.all"
+msgstr ""
+
+#: src/common/components/Footer.tsx:29
 msgid "footer.privacy"
+msgstr ""
+
+#: src/common/types.ts:53
+msgid "fuelType.diesel"
+msgstr ""
+
+#: src/common/types.ts:55
+msgid "fuelType.gas"
+msgstr ""
+
+#: src/common/types.ts:54
+msgid "fuelType.super"
+msgstr ""
+
+#: src/common/components/BasePage.tsx:30
+msgid "headerDropdown.contact"
+msgstr ""
+
+#: src/common/components/BasePage.tsx:22
+msgid "headerDropdown.settings"
 msgstr ""

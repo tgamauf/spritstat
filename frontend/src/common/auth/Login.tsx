@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
+import {t, Trans} from "@lingui/macro";
 
 import CenteredBox from "../components/CenteredBox";
 import EmailField from "./EmailField";
@@ -74,22 +75,21 @@ function Login(): JSX.Element {
   if (isError) {
     notificationSeverity = BasePageSeverity.Error;
     notificationText =
-      "Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen.";
+      t`Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen.`;
  } else if (passwordRecovered) {
     notificationSeverity = BasePageSeverity.Info;
     notificationText =
-      "Falls deine Email-Adresse bei uns gespeichert ist, " +
-      "erhältst du in Kürze einen Password-Reset-Link zugesendet.";
+      t`Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze 
+      einen Password-Reset-Link zugesendet.`;
  } else if (passwordChanged) {
     notificationSeverity = BasePageSeverity.Info;
     notificationText =
-      "Dein Password wurder geändert, nun kannst du dich " +
-      "mit deinem neuen Password einloggen.";
+      t`Dein Password wurde geändert, nun kannst du dich mit deinem neuen Password 
+      einloggen.`;
  } else if (emailVerified) {
     notificationSeverity = BasePageSeverity.Info;
     notificationText =
-      "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich " +
-      "einloggen.";
+      t`Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen.`;
  }
 
   let submitDisabled = true;
@@ -116,7 +116,7 @@ function Login(): JSX.Element {
         <div className="level">
           <div className="level-left">
             <div className="level-item">
-              <h1 className="title">Anmelden</h1>
+              <h1 className="title"><Trans>Anmelden</Trans></h1>
             </div>
           </div>
           <div className="level-right">
@@ -126,7 +126,7 @@ function Login(): JSX.Element {
                 to={RouteNames.Signup}
                 data-test="link-register"
               >
-                Registrieren
+                <Trans>Registrieren</Trans>
               </Link>
             </div>
           </div>
@@ -144,7 +144,9 @@ function Login(): JSX.Element {
                       onChange={() => setRemember(!remember)}
                       data-test="field-checkbox-remember"
                     />
-                    <span className="content pl-1">Angemeldet bleiben</span>
+                    <span className="content pl-1">
+                      <Trans>Angemeldet bleiben</Trans>
+                    </span>
                   </label>
                 </p>
               </div>
@@ -155,7 +157,7 @@ function Login(): JSX.Element {
                   <input
                     className="button is-primary"
                     type="submit"
-                    value="Einloggen"
+                    value={t`Einloggen`}
                     disabled={submitDisabled}
                     ref={buttonRef}
                     data-test="btn-submit"
@@ -172,7 +174,7 @@ function Login(): JSX.Element {
             to={RouteNames.PasswordRecoveryEmail}
             data-test="link-recovery-email"
           >
-            Password vergessen?
+            <Trans>Password vergessen?</Trans>
           </Link>
         </p>
       </CenteredBox>

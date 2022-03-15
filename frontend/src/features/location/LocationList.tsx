@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 import introJs from "intro.js";
+import {t, Trans} from "@lingui/macro";
 
 import {RouteNames} from "../../common/types";
 import LocationCard from "./LocationCard";
@@ -50,25 +51,25 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
         ...INTRO_OPTIONS,
         steps: [
           {
-            intro: "Auf dieser Seite werden alle deine Orte angezeigt."
+            intro: t`Auf dieser Seite werden alle deine Orte angezeigt.`
           },
           {
             element: `#${CARD_LOCATION_ID_PREFIX}0`,
-            intro: "Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den "
-              + "Ort um die detaillierte Statistiken des Ortes zu erhalten."
+            intro: t`Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den 
+            Ort um die detaillierte Statistiken des Ortes zu erhalten.`
           },
           {
             element: `#${LOCATION_FIELD_ID}`,
-            intro: "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp."
+            intro: t`Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp.`
           },
           {
             element: `#${CURRENT_PRICE_FIELD_ID}`,
-            intro: "Außerdem wird der aktuell niedrigste Preis für den angegebenen "
-              + "Treibstofftyp und die Tankstellen die diesen anbieten angezeigt."
+            intro: t`Außerdem wird der aktuell niedrigste Preis für den angegebenen 
+            Treibstofftyp und die Tankstellen die diesen anbieten angezeigt.`
           },
           {
             element: `#${BTN_ADD_LOCATION_ID}`,
-            intro: "Klicke hier um einen neuen Ort hinzuzufügen."
+            intro: t`Klicke hier um einen neuen Ort hinzuzufügen.`
           }
         ]
       }).onexit(() => setIntroDone(true)).start();
@@ -81,7 +82,7 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
         <div className="level">
           <div className="level-left">
             <div className="level-item">
-              <h1 className="title">Deine Orte</h1>
+              <h1 className="title"><Trans>Deine Orte</Trans></h1>
             </div>
           </div>
           <div className="level-right">
@@ -89,13 +90,15 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
               <Link to={RouteNames.AddLocation}>
                 <button
                   className="button is-primary is-outlined is-small"
-                  title="Fügen einen neuen Ort hinzu für den Spritpreise
-                    aufgezeichnet werden sollen."
+                  title={
+                    t`Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet 
+                    werden sollen.`
+                  }
                   data-test="btn-add-location-small"
                   id={BTN_ADD_LOCATION_ID}
                 >
                   <FontAwesomeIcon className="icon" icon={faMapMarkerAlt} />
-                  <span>Hinzufügen</span>
+                  <span><Trans>Hinzufügen</Trans></span>
                 </button>
               </Link>
             </div>

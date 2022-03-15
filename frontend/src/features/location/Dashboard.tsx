@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
+import {defineMessage, t, Trans} from "@lingui/macro";
 
 import NoLocation from "./NoLocation";
 import BasePage from "../../common/components/BasePage";
@@ -12,7 +13,7 @@ import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Startseite",
+  name: defineMessage({id: "breadcrumb.dashboard", message: "Startseite"}),
   icon: faHome,
   destination: RouteNames.Dashboard,
 };
@@ -48,10 +49,10 @@ export default function Dashboard() {
     mainComponent = (
       <LoadingError
         loading={isFetching}
-        message="Deine Orte konnten nicht geladen werden."
+        message={t`Deine Orte konnten nicht geladen werden.`}
         children={
           <Link className="has-text-primary" to="" onClick={() => refetch()}>
-            Neu laden
+            <Trans>Neu laden</Trans>
           </Link>
        }
       />

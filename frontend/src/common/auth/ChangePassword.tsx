@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {faKey} from "@fortawesome/free-solid-svg-icons";
+import {defineMessage, t, Trans} from "@lingui/macro";
 
 import CenteredBox from "../components/CenteredBox";
 import PasswordField from "./PasswordField";
@@ -12,7 +13,7 @@ import {useChangePasswordMutation} from "../apis/spritstatApi";
 import {BreadcrumbItem} from "../components/Breadcrumb";
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Passwort ändern",
+  name: defineMessage({id: "breadcrumb.changePassword", message: "Passwort ändern"}),
   icon: faKey,
   destination: RouteNames.ChangePassword,
 };
@@ -72,19 +73,19 @@ function ChangePassword(): JSX.Element {
       <BasePage
         breadcrumbItems={[SETTINGS_BREADCRUMB, BREADCRUMB]}
         active={error}
-        message="Passwordänderung ist fehlgeschlagen."
+        message={t`Passwordänderung ist fehlgeschlagen.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password ändern</h1>
+          <h1 className="title"><Trans>Password ändern</Trans></h1>
           <form onSubmit={onSubmit}>
             <PasswordField
-              label="Aktuelles Passwort"
+              label={t`Aktuelles Passwort`}
               value={oldPassword}
               update={setOldPassword}
             />
             <PasswordWithValidationField
-              label="Neues Passwort"
+              label={t`Neues Passwort`}
               value={newPassword}
               update={setNewPassword}
               setPasswordValid={setNewPasswordValid}
@@ -94,7 +95,7 @@ function ChangePassword(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Passwort speichern"
+                  value={t`Passwort speichern`}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

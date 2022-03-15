@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Route, Routes, useLocation} from "react-router-dom";
 import moment from "moment-timezone";
-import {i18n} from '@lingui/core'
+import {i18n as i18nLib} from '@lingui/core'
 import {I18nProvider} from "@lingui/react";
 
 import {RouteNames} from "../common/types";
@@ -26,24 +26,27 @@ import {AuthProvider, RequireAuth, RequireNoAuth} from "../common/auth/AuthProvi
 import LocationDetails from "../features/location/LocationDetails";
 import {SettingsProvider} from "../common/settings/SettingsProvider";
 import Unsubscribe from "../common/settings/Unsubscribe";
-import {dynamicActivate, getLocale} from "../common/i18n";
+import {useAppSelector} from "../common/utils";
+import {selectLocale, activateLocale} from "../common/i18n";
 
 
 export default function App() {
   const location = useLocation();
+  const locale = useAppSelector(selectLocale);
 
   console.debug(`Navigating to location ${JSON.stringify(location)}`);
 
-  // Set the locale to german
   useEffect(() => {
-    const locale = getLocale();
-
-    void dynamicActivate(locale);
+    // Activate the currently stored locale.
+    activateLocale(locale)
+      .catch((e) => {
+        console.error(`Failed to activate initial locale '${locale}': ${e}`);
+      })
     moment.locale("de-at"); //TODO check if still needed or if we can replace it with i18n
   }, []);
 
   return (
-    <I18nProvider i18n={i18n}>
+    <I18nProvider i18n={i18nLib}>
       <AuthProvider>
         <SettingsProvider>
           <Routes>

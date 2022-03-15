@@ -5,11 +5,14 @@ import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
 import {Trans} from "@lingui/macro";
 
 import {RouteNames} from "../types";
+import LanguageButton from "./LanguageButton";
 
 export default function Footer() {
   return (
     <div className="hero-foot has-text-centered" data-test="footer">
       <div>
+        <LanguageButton />
+        <span> &bull; </span>
         <Link
           className="has-text-primary"
           to={RouteNames.Imprint}

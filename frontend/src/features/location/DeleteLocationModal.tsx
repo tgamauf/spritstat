@@ -1,4 +1,5 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {t, Trans} from "@lingui/macro";
 
 import {useDeleteLocationMutation} from "./locationApiSlice";
 
@@ -33,14 +34,14 @@ export default function DeleteLocationModal({
       .then((success) => {
         if (!success) {
           console.error(`Failed to delete location ${locationId}: request failed`);
-          setErrorMessage("Dein Ort konnte nicht gelöscht werden.");
+          setErrorMessage(t`Dein Ort konnte nicht gelöscht werden.`);
        }
      })
       .catch((e) => {
         console.error(
           `Failed to delete location ${locationId}: ${JSON.stringify(e, null, 2)}`
         );
-        setErrorMessage("Dein Ort konnte nicht gelöscht werden.");
+        setErrorMessage(t`Dein Ort konnte nicht gelöscht werden.`);
      })
       .finally(() => {
         notifyDeleted();
@@ -75,7 +76,7 @@ export default function DeleteLocationModal({
       <div className="modal-content">
         <div className="box has-text-centered">
           <p className="text has-text-weight-bold is-size-5 mb-3">
-            Willst du den Ort wirklich löschen?
+            <Trans>Willst du den Ort wirklich löschen?</Trans>
           </p>
           <button
             className="button is-danger"
@@ -83,7 +84,7 @@ export default function DeleteLocationModal({
             ref={deleteButtonRef}
             data-test="btn-delete"
           >
-            Löschen
+            <Trans>Löschen</Trans>
           </button>
         </div>
       </div>

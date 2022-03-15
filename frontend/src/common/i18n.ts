@@ -1,39 +1,76 @@
-import {i18n} from "@lingui/core";
-import {de, en} from "make-plural/plurals";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {i18n as i18nLib} from "@lingui/core";
+import {de, en} from 'make-plural/plurals'
 
-enum Locales {
+import {RootState} from "../app/store";
+
+
+// Initial plurals
+i18nLib.loadLocaleData({
+  de: { plurals: de },
+  en: { plurals: en },
+})
+
+enum Locale {
   DE = "de",
   EN = "en"
 }
 
-const defaultLocale = Locales.DE;
+const localeNames = new Map<Locale, string>([
+  [Locale.DE, "Deutsch"], [Locale.EN, "English"]
+]);
 
-i18n.loadLocaleData({
-  de: {plurals: de},
-  en: {plurals: en},
-})
+const defaultLocale = Locale.DE;
 
-async function dynamicActivate(locale: Locales) {
-  try {
-    const {messages} = await import(`@lingui/loader!./locales/${locale}/messages.po`);//TODO
-    i18n.load(locale, messages);
-    i18n.activate(locale);
-  } catch (e) {
-    console.error(`Failed to load locale "${locale}": ${e}`);
-  }
+interface I18nState {
+  locale: Locale
 }
 
-function getLocale(): Locales {
+async function activateLocale(locale: Locale) {
+    const {messages} = await import(`@lingui/loader!./locales/${locale}/messages.po`);//TODO
+    i18nLib.load(locale, messages);
+    i18nLib.activate(locale);
+}
+
+const setLocale = createAsyncThunk<Locale, Locale>(
+  "locale/activate",
+  async (locale) => {
+    try {
+      await activateLocale(locale)
+
+      return locale;
+    } catch (e) {
+      throw new Error(`Failed to load locale "${locale}": ${e}`);
+    }
+  }
+)
+
+function initialState(): I18nState {
   let locale;
   if (/^de\b/.test(navigator.language)) {
-    locale = Locales.DE
+    locale = Locale.DE
   } else if (/^en\b/.test(navigator.language)) {
-    locale = Locales.EN;
+    locale = Locale.EN;
   } else {
     locale = defaultLocale;
   }
 
-  return locale;
+  return {locale};
 }
 
-export {defaultLocale, dynamicActivate, getLocale, Locales}
+const i18n = createSlice({
+  name: "i18n",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(
+      setLocale.fulfilled,
+      (state, action) => {
+      state.locale = action.payload;
+    })
+  }
+});
+
+const selectLocale = (state: RootState): Locale => state.i18n.locale;
+
+export {activateLocale, Locale, localeNames, i18n, selectLocale, setLocale};

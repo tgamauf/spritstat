@@ -4,6 +4,7 @@ import {settingsSlice} from "../common/settings/settingsSlice";
 import {eControlApi} from "../common/apis/eControl";
 import {spritstatApi} from "../common/apis/spritstatApi";
 import {accountSlice} from "../common/auth/accountSlice";
+import {i18n} from "../common/i18n";
 
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     [eControlApi.reducerPath]: eControlApi.reducer,
     [spritstatApi.reducerPath]: spritstatApi.reducer,
     account: accountSlice.reducer,
+    i18n: i18n.reducer,
     settings: settingsSlice.reducer
  },
   middleware: (getDefaultMiddleware) =>
@@ -18,7 +20,7 @@ const store = configureStore({
       serializableCheck: false
    }).concat(
       eControlApi.middleware,
-      spritstatApi.middleware
+      spritstatApi.middleware,
     ),
 });
 

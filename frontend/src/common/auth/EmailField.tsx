@@ -1,6 +1,7 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
+import {t} from "@lingui/macro";
 
 interface Props {
   value: string;
@@ -18,9 +19,9 @@ export default function EmailField({
       <p className="control has-icons-left">
         <input
           className="input"
-          title="Bitte gib deine E-Mail-Adressse an."
+          title={t`Bitte gib deine E-Mail-Adressse an.`}
           type="email"
-          placeholder="Email"
+          placeholder={t`Email`}
           value={value}
           required={true}
           autoComplete={autoComplete}

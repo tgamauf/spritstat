@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt, faSearch} from "@fortawesome/free-solid-svg-icons";
+import {t} from "@lingui/macro";
 
 import {Prediction, GoogleMapsAPI, loadGoogleMapsAPI, INVALID_PREDICTION} from "./google";
 import {INVALID_COORDINATES, INVALID_LOCATION} from "../../../common/constants";
@@ -82,7 +83,7 @@ export function NamedLocationField({
     googleMapsAPI?.selectPrediction(selectedPrediction)
       .then((location) => {
         if (location === INVALID_LOCATION) {
-          setErrorMessage("Der Ort konnte nicht gefunden werden.");
+          setErrorMessage(t`Der Ort konnte nicht gefunden werden.`);
           return;
        }
 
@@ -139,9 +140,9 @@ export function NamedLocationField({
   function setPositionError(error: GeolocationPositionError) {
     console.error(`Failed to get position: ${error.message}`);
     if (error.code === GeolocationPositionError.PERMISSION_DENIED) {
-      setErrorMessage("Die Seite hat nicht das Erlaubnis den Ort abzurufen.");
+      setErrorMessage(t`Die Seite hat nicht das Erlaubnis den Ort abzurufen.`);
    } else {
-      setErrorMessage("Der Ort ist aktuell nicht verfügbar.");
+      setErrorMessage(t`Der Ort ist aktuell nicht verfügbar.`);
    }
  }
 
@@ -183,9 +184,9 @@ export function NamedLocationField({
             <p className="control has-icons-right">
               <input
                 className="input"
-                title="Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen."
+                title={t`Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.`}
                 type="text"
-                placeholder="Ort"
+                placeholder={t`Ort`}
                 maxLength={MAX_LOCATION_NAME_LENGTH}
                 value={displayText}
                 onChange={(e) => changeSearchText(e)}
@@ -221,7 +222,7 @@ export function NamedLocationField({
       <div className="control">
         <a
           className="button is-ghost"
-          title="Übernimm deinen aktuellen Ort."
+          title={`Übernimm deinen aktuellen Ort.`}
           ref={buttonRef}
           onClick={() => requestLocation()}
           data-test="btn-location"

@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import introJs from "intro.js";
+import {i18n, MessageDescriptor} from "@lingui/core";
+import {defineMessage, t, Trans} from "@lingui/macro";
 
 import NamedLocationField from "./NamedLocationField";
 import BasePage from "../../common/components/BasePage";
@@ -10,7 +12,15 @@ import RegionLocationField, {
   DROPDOWN_STATE_ID,
   TEXT_POSTAL_CODE_ID
 } from "./RegionLocationField/RegionLocationField";
-import {FuelType, IntroJs, LocationType, OurFormElement, RegionType, RouteNames} from "../../common/types";
+import {
+  FuelType,
+  fuelTypeNames,
+  IntroJs,
+  LocationType,
+  OurFormElement,
+  RegionType,
+  RouteNames
+} from "../../common/types";
 import {INTRO_OPTIONS, INVALID_LOCATION} from "../../common/constants";
 import {useAddLocationMutation} from "./locationApiSlice";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
@@ -21,7 +31,7 @@ import {BTN_CURRENT_LOCATION_ID, TEXT_LOCATION_ID} from "./NamedLocationField/Na
 
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Ort hinzufügen",
+  name: defineMessage({id: "breadcrumb.addLocation", message: "Ort hinzufügen"}),
   icon: faPlusSquare,
   destination: RouteNames.AddLocation,
 };
@@ -46,7 +56,6 @@ export default function AddLocation(): JSX.Element {
   const [addLocation, {isLoading}] = useAddLocationMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   // @ts-ignore this is a fluke caused somehow by intro.js-react typing
-  const stepsRef = useRef() as React.MutableRefObject<IntroJs>;
   const [errorMessage, setErrorMessage] = useState("");
   const [locationType, setLocationType] = useState<LocationType>(LocationType.Named);
   const [fuelType, setFuelType] = useState<FuelType>(FuelType.Diesel);
@@ -90,12 +99,12 @@ export default function AddLocation(): JSX.Element {
             navigate(RouteNames.Dashboard);
           } else {
             console.error(`Failed to add location: request status not ok`);
-            setErrorMessage("Der Ort konnte nicht angelegt werden.");
+            setErrorMessage(t`Der Ort konnte nicht angelegt werden.`);
           }
         })
         .catch((e: any) => {
           console.error(`Failed to add location: ${JSON.stringify(e, null, 2)}`);
-          setErrorMessage("Der Ort konnte nicht angelegt werden");
+          setErrorMessage(t`Der Ort konnte nicht angelegt werden.`);
         });
     }
   }, [submitted]);
@@ -117,51 +126,51 @@ export default function AddLocation(): JSX.Element {
         ...INTRO_OPTIONS,
         steps: [
           {
-            intro: "Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und "
-              + "Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im "
-              + "Allgemeinen exakter als Ergebnisse für Bezirken/Bundesländer."
+            intro: t`Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und 
+            Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im
+            Allgemeinen exakter als Ergebnisse für Bezirke/Bundesländer.`
           },
           {
             element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
-            intro: "Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche "
-              + "nach einem konkreten Ort aktiviert."
+            intro: t`Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche 
+            nach einem konkreten Ort aktiviert.`
           },
           {
             element: `#${TEXT_LOCATION_ID}`,
-            intro: "Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du "
-              + "erhältst die gefundenen Vorschläge angezeigt."
+            intro: t`Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du 
+            erhältst die gefundenen Vorschläge angezeigt.`
           },
           {
             element: `#${BTN_CURRENT_LOCATION_ID}`,
-            intro: "Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen."
+            intro: t`Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen.`
           },
           {
             element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
-            intro: "Wenn du \"Region\" auswählst, kannst du entweder einen Bezirk oder "
-              + "ein Bundesland auswählen."
+            intro: t`Wenn du "Region" auswählst, kannst du entweder einen Bezirk oder 
+            ein Bundesland auswählen.`
           },
           {
             element: `#${DROPDOWN_STATE_ID}`,
-            intro: "Wähle hier das gewünschte Bundesland aus."
+            intro: t`Wähle hier das gewünschte Bundesland aus.`
           },
           {
             element: `#${DROPDOWN_DISTRICT_ID}`,
-            intro: "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen."
+            intro: t`Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen.`
           },
           {
             element: `#${TEXT_POSTAL_CODE_ID}`,
-            intro: "Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In "
-              + "diesem Fall wird automatisch der zugehörige Bezirk ausgewählt."
+            intro: t`Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In 
+            diesem Fall wird automatisch der zugehörige Bezirk ausgewählt.`
           },
           {
             element: `#${DROPDOWN_FUEL_ID}`,
-            intro: "Zusätzlich zum Ort kann auch der Treibstofftyp ausgewählt werden "
-              + "für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, " +
-              "Super und Gas zur Verfügung."
+            intro: t`Zusätzlich zum Ort kann auch der Treibstofftyp ausgewählt werden 
+            für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, Super und 
+            Gas zur Verfügung.`
           },
           {
             element: `#${BTN_ADD_LOCATION_ID}`,
-            intro: "Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden."
+            intro: t`Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden.`
           }
         ]
       }).onexit(
@@ -240,21 +249,21 @@ export default function AddLocation(): JSX.Element {
       discardMessage={() => setErrorMessage("")}
     >
       <div className="box">
-        <h1 className="title">Neuen Ort hinzufügen</h1>
+        <h1 className="title"><Trans>Neuen Ort hinzufügen</Trans></h1>
         <form onSubmit={onSubmit}>
           <div className="block">
             <div className="field is-grouped is-grouped-right">
               <div className="control">
                 <p className="select is-primary">
                   <select
-                    title="Wähle den Typ von Ortsangabe aus."
+                    title={t`Wähle den Typ von Ortsangabe aus.`}
                     value={locationType}
                     onChange={(e) => changeLocationType(e)}
                     data-test="field-location-type"
                     id={DROPDOWN_LOCATION_TYPE_ID}
                   >
-                    <option value={LocationType.Named}>Suche</option>
-                    <option value={LocationType.Region}>Region</option>
+                    <option value={LocationType.Named}><Trans>Suche</Trans></option>
+                    <option value={LocationType.Region}><Trans>Region</Trans></option>
                   </select>
                 </p>
               </div>
@@ -266,23 +275,24 @@ export default function AddLocation(): JSX.Element {
               <div className="control">
                 <div className="select is-primary">
                   <select
-                    title="Wähle den Typ von Treibstoff aus für den Preise
-                    aufgezeichnet werden sollen."
-                    value={fuelType}
+                    title={
+                      t`Wähle den Typ von Treibstoff aus für den Preise aufgezeichnet werden sollen.`
+                    }
+                    value={i18n._(fuelTypeNames.get(fuelType) as MessageDescriptor)}
                     onChange={(e) => setFuelType(
-                      e.target.value as FuelType
+                      e.target.value as unknown as FuelType
                     )}
                     data-test="field-fuel-type"
                     id={DROPDOWN_FUEL_ID}
                   >
                     <option value={FuelType.Diesel}>
-                      {FuelType.Diesel}
+                      {i18n._(fuelTypeNames.get(FuelType.Diesel) as MessageDescriptor)}
                     </option>
                     <option value={FuelType.Super}>
-                      {FuelType.Super}
+                      {i18n._(fuelTypeNames.get(FuelType.Super) as MessageDescriptor)}
                     </option>
                     <option value={FuelType.Gas}>
-                      {FuelType.Gas}
+                      {i18n._(fuelTypeNames.get(FuelType.Gas) as MessageDescriptor)}
                     </option>
                   </select>
                 </div>
@@ -295,7 +305,7 @@ export default function AddLocation(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Hinzufügen"
+                  value={t`Hinzufügen`}
                   disabled={
                     (namedLocation === INVALID_LOCATION)
                     && (region === INVALID_REGION)

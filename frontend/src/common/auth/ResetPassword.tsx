@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import {t, Trans} from "@lingui/macro";
 
 import CenteredBox from "../components/CenteredBox";
 import PasswordWithValidationField from "./PasswordWithValidationField";
@@ -72,11 +73,11 @@ function ResetPassword(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message="Password reset ist fehlgeschlagen."
+        message={t`Password reset ist fehlgeschlagen.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password vergessen?</h1>
+          <h1 className="title"><Trans>Password vergessen?</Trans></h1>
           <form onSubmit={onSubmit}>
             <PasswordWithValidationField
               value={password}
@@ -88,7 +89,7 @@ function ResetPassword(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Passwort speichern"
+                  value={t`Passwort speichern`}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

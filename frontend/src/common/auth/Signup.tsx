@@ -7,6 +7,7 @@ import {OurFormElement, RouteNames} from "../types";
 import {useSignupMutation} from "../apis/spritstatApi";
 import EmailField from "./EmailField";
 import PasswordWithValidationField from "./PasswordWithValidationField";
+import {t, Trans} from "@lingui/macro";
 
 function Signup(): JSX.Element {
   const [signup, {isLoading}] = useSignupMutation();
@@ -69,11 +70,11 @@ function Signup(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message="Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren."
+        message={t`Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Registrieren</h1>
+          <h1 className="title"><Trans>Registrieren</Trans></h1>
           <form onSubmit={onSubmit}>
             <EmailField value={email} update={setEmail} />
             <PasswordWithValidationField
@@ -87,7 +88,7 @@ function Signup(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Registrieren"
+                  value={t`Registrieren`}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

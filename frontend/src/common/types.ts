@@ -1,4 +1,6 @@
 import introJs from "intro.js";
+import {defineMessage} from "@lingui/macro";
+import {MessageDescriptor} from "@lingui/core";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -42,10 +44,16 @@ enum RegionType {
 }
 
 enum FuelType {
-  Diesel = "Diesel",
-  Super = "Super",
-  Gas = "Gas",
+  Diesel,
+  Super,
+  Gas,
 }
+
+const fuelTypeNames = new Map<FuelType, MessageDescriptor>([
+  [FuelType.Diesel, defineMessage({id: "fuelType.diesel", message: "Diesel"})],
+  [FuelType.Super, defineMessage({id: "fuelType.super", message: "Super"})],
+  [FuelType.Gas, defineMessage({id: "fuelType.gas", message: "Gas"})],
+]);
 
 interface Coordinates {
   latitude: number;
@@ -75,6 +83,14 @@ enum DateRange {
   ThreeMonths,
   SixMonths,
 }
+
+const dateRangeNames = new Map<DateRange, MessageDescriptor>([
+  [DateRange.All, defineMessage({id: "dateRange.all", message: "Alle"})],
+  [DateRange.OneWeek, defineMessage({id: "dateRange.1w", message: "1W"})],
+  [DateRange.OneMonth, defineMessage({id: "dateRange.1m", message: "1M"})],
+  [DateRange.ThreeMonths, defineMessage({id: "dateRange.3m", message: "3M"})],
+  [DateRange.SixMonths, defineMessage({id: "dateRange.6m", message: "6M"})],
+]);
 
 interface Station {
   id: number;
@@ -113,4 +129,12 @@ export type {
   StationMap
 };
 
-export {DateRange, FuelType, LocationType, RegionType, RouteNames};
+export {
+  DateRange,
+  dateRangeNames,
+  FuelType,
+  fuelTypeNames,
+  LocationType,
+  RegionType,
+  RouteNames
+};

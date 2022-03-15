@@ -14,6 +14,7 @@ import {
   TooltipItem,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
+import {t, Trans} from "@lingui/macro";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
@@ -21,6 +22,7 @@ import {formatDatetime, useIsMobile} from "../../common/utils";
 import {useLazyGetPriceHistoryDataQuery, useGetStationsQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 import {useGetCurrentPriceQuery} from "./priceApiSlice";
+import NoGraphDataField from "../../common/components/NoGraphDataField";
 
 Chart.register(
   CategoryScale,
@@ -45,7 +47,7 @@ interface ChartDataProps {
 class ChartData {
   public labels: string[];
   public datasets: {
-    label: "Geringster Preis";
+    label: string;
     borderColor: string;
     data: number[];
     stationsMap: number[][];
@@ -55,7 +57,7 @@ class ChartData {
     this.labels = [];
     this.datasets = [
       {
-        label: "Geringster Preis",
+        label: t`Geringster Preis`,
         borderColor: "#88B04B",
         data: [],
         stationsMap: []
@@ -108,7 +110,7 @@ class ChartConfig implements ChartConfiguration {
       plugins: {
         title: {
           display: isInteractive,
-          text: "Niedrigster Preis"
+          text: t`Geringster Preis`
         },
         tooltip: {
           callbacks: {
@@ -193,8 +195,8 @@ export default function PriceHistoryChart(
       .catch((e) => {
         console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(
-          "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-          "probier es nochmal."
+          t`Die Preise für diesen Ort konnten nicht abgerufen werden, bitte 
+          probier es nochmal.`
         );
      });
  }, [location, selectedDateRange, isSuccess]);
@@ -223,7 +225,7 @@ export default function PriceHistoryChart(
     const stationNames = [];
     if (stationIds.length > 0) {
       // Only show the header if there is at least one station
-      stationNames.push("Tankstellen:");
+      stationNames.push(t`Tankstellen:`);
       for (const id of stationIds) {
         const station = stations[id];
         if (typeof station === "undefined") {
@@ -256,12 +258,7 @@ export default function PriceHistoryChart(
   let mainComponent;
   if (!isPriceFetching && chartData) {
     if (chartData.labels.length === 0) {
-      mainComponent = (
-        <span>
-          Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-          vorhanden. In ein paar Stunden gibt es aber schon etwas zu sehen!
-        </span>
-      );
+      mainComponent = <NoGraphDataField />;
    } else {
       mainComponent = (
         <div className="chart-container">
@@ -272,10 +269,10 @@ export default function PriceHistoryChart(
             <div className="is-inline-block" id={BTN_CHART_HISTORY_DATE_RANGE_ID}>
               <DateRangeButton
                 items={[
-                  {name: "1M", value: DateRange.OneMonth},
-                  {name: "3M", value: DateRange.ThreeMonths},
-                  {name: "6M", value: DateRange.SixMonths},
-                  {name: "Alles", value: DateRange.All},
+                  DateRange.OneMonth,
+                  DateRange.ThreeMonths,
+                  DateRange.SixMonths,
+                  DateRange.All
                 ]}
                 selectedValue={selectedDateRange}
                 setSelectedValue={setSelectedDateRange}

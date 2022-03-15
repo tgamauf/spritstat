@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {t, Trans} from "@lingui/macro";
 
 import {RouteNames} from "../types";
 import {useDeleteAccountMutation} from "../apis/spritstatApi";
@@ -32,12 +33,12 @@ export default function DeleteAccountModal(
           navigate(RouteNames.AccountDeleted, {replace: true});
        } else {
           console.error(`Failed to delete account: request failed`);
-          setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
+          setErrorMessage(t`Dein Konto konnte nicht gelöscht werden.`);
        }
      })
       .catch((e) => {
         console.error(`Failed to delete account: ${JSON.stringify(e, null, 2)}`);
-        setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
+        setErrorMessage(t`Dein Konto konnte nicht gelöscht werden.`);
      });
  }, [doDelete]);
 
@@ -63,7 +64,7 @@ export default function DeleteAccountModal(
       <div className="modal-content">
         <div className="box has-text-centered">
           <p className="text has-text-weight-bold is-size-5 mb-3">
-            Willst du dein Konto wirklich löschen?
+            <Trans>Willst du dein Konto wirklich löschen?</Trans>
           </p>
           <button
             className="button is-danger"
@@ -72,7 +73,7 @@ export default function DeleteAccountModal(
             ref={deleteButtonRef}
             data-test="btn-delete"
           >
-            Löschen
+            <Trans>Löschen</Trans>
           </button>
         </div>
       </div>

@@ -7,7 +7,7 @@ import {t, Trans} from "@lingui/macro";
 // This has to match the message length defined in the send view
 const MAX_MESSAGE_LENGTH = 500;
 const ERROR_MESSAGE =
-  "Senden der Nachricht ist fehlgeschlagen, bitte probiere es erneut.";
+  t`Senden der Nachricht ist fehlgeschlagen, bitte probiere es erneut.`;
 
 interface Props {
   id: string;
@@ -94,7 +94,7 @@ export default function ContactForm({
                 data-test="field-select-subject"
               >
                 <option value="" disabled={true}>
-                  <Trans>Betreff</Trans>
+                  {t`Betreff`}
                 </option>
                 {subjects.map((text, index) => {
                   return <option key={index}>{text}</option>;

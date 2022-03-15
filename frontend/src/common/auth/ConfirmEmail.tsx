@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
+import {t, Trans} from "@lingui/macro";
 
 import {RouteNames} from "../types";
 import BasePage from "../components/BasePage";
@@ -41,14 +42,14 @@ export default function ConfirmEmail(): JSX.Element {
     <BasePage>
       <LoadingError
         loading={loading}
-        message="Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig."
+        message={t`Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig.`}
         children={
           <Link
             className="has-text-primary"
             to={RouteNames.Index}
             data-test="link-home"
           >
-            "Homepage"
+            <Trans>Homepage</Trans>
           </Link>
        }
       />

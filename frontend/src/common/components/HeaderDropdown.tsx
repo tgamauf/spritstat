@@ -7,10 +7,12 @@ import {RouteNames} from "../types";
 import {useLogoutMutation} from "../apis/spritstatApi";
 import {useAppDispatch} from "../utils";
 import {INVALID_ACCOUNT, setAccount} from "../auth/accountSlice";
+import {Trans} from "@lingui/macro";
+import {i18n, MessageDescriptor} from "@lingui/core";
 
 
 interface Item {
-  name: string;
+  name: MessageDescriptor;
   route: RouteNames;
   "data-test": string;
 }
@@ -19,7 +21,7 @@ interface Props {
   items: Item[];
 }
 
-export default function HeaderDropdown({items,}: Props): JSX.Element {
+export default function HeaderDropdown({items}: Props): JSX.Element {
   const navigate = useNavigate();
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
@@ -62,7 +64,7 @@ export default function HeaderDropdown({items,}: Props): JSX.Element {
                 to={item.route}
                 data-test={item["data-test"]}
               >
-                {item.name}
+                {i18n._(item.name)}
               </Link>
             </div>
           );
@@ -75,7 +77,7 @@ export default function HeaderDropdown({items,}: Props): JSX.Element {
             onClick={() => setDoLogout(true)}
             data-test="link-logout"
           >
-            Abmelden
+            <Trans>Abmelden</Trans>
           </Link>
         </div>
       </div>

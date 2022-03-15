@@ -11,12 +11,14 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import {t, Trans} from "@lingui/macro";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
 import {PriceDayQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
+import NoGraphDataField from "../../common/components/NoGraphDataField";
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip);
 
@@ -32,7 +34,7 @@ interface ChartDataProps {
 class ChartData {
   public labels: string[];
   public datasets: {
-    label: "Durchschnittlich geringster Preis";
+    label: string;
     data: number[];
     backgroundColor: string;
     borderColor: string;
@@ -42,7 +44,7 @@ class ChartData {
     this.labels = [];
     this.datasets = [
       {
-        label: "Durchschnittlich geringster Preis",
+        label: t`Durchschnittlich geringster Preis`,
         data: [],
         backgroundColor: BAR_COLOR,
         borderColor: BAR_COLOR
@@ -94,16 +96,11 @@ class ChartConfig implements ChartConfiguration {
   }
 }
 
-interface DateRangeItem {
-  name: string;
-  value: DateRange;
-}
-
 interface Props {
   name: string;
   location: Location;
   queryHook: PriceDayQuery,
-  dateRangeItems?: DateRangeItem[];
+  dateRangeItems?: DateRange[];
   initialDateRange?: DateRange;
   setErrorMessage: (msg: string) => void;
 }
@@ -114,11 +111,11 @@ export default function AveragePriceChart(
     location,
     queryHook,
     dateRangeItems = [
-      {name: "1M", value: DateRange.OneMonth},
-      {name: "3M", value: DateRange.ThreeMonths},
-      {name: "6M", value: DateRange.SixMonths},
-      {name: "Alles", value: DateRange.All},
-    ],
+      DateRange.OneMonth,
+      DateRange.ThreeMonths,
+      DateRange.SixMonths,
+      DateRange.All
+      ],
     initialDateRange = DateRange.OneMonth,
     setErrorMessage
   }: Props
@@ -139,8 +136,7 @@ export default function AveragePriceChart(
       .catch((e) => {
         console.error(`[${name}] failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(
-          "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-          "probier es nochmal."
+          t`Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.`
         );
       });
   }, [location, selectedDateRange]);
@@ -164,12 +160,7 @@ export default function AveragePriceChart(
   let mainComponent;
   if (!isFetching && chartData) {
     if (chartData.datasets[0].data.length === 0) {
-      mainComponent = (
-        <span>
-          Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-          vorhanden.
-        </span>
-      );
+      mainComponent = <NoGraphDataField />;
     } else {
       mainComponent = (
         <div className="chart-container">

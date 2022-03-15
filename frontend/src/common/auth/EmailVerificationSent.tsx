@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
+import {Trans} from "@lingui/macro";
 
 import CenteredBox from "../components/CenteredBox";
 import BasePage from "../components/BasePage";
@@ -43,8 +44,10 @@ function EmailVerificationSent(): JSX.Element {
   return (
     <BasePage>
       <CenteredBox>
-        <p>Wir haben ein Email an deine Adresse gesendet.</p>
-        <p>Bitte klicke auf den Link um die Registrierung abzuschließen!</p>
+        <Trans>
+          <p>Wir haben ein Email an deine Adresse gesendet.</p>
+          <p>Bitte klicke auf den Link um die Registrierung abzuschließen!</p>
+        </Trans>
         <p className="mt-3">
           <button
             className="button is-primary is-ghost"
@@ -52,7 +55,7 @@ function EmailVerificationSent(): JSX.Element {
             ref={buttonRef}
             data-test="btn-resend"
           >
-            Nicht erhalten?
+            <Trans>Nicht erhalten?</Trans>
           </button>
         </p>
       </CenteredBox>

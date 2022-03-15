@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {defineMessage, t, Trans} from "@lingui/macro";
 
 import DeleteAccountModal from "./DeleteAccountModal";
 import BasePage from "../components/BasePage";
@@ -12,7 +13,7 @@ import {selectIntroActive, selectNotificationsActive} from "./settingsSlice";
 import SettingsSwitch from "./SettingsSwitch";
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Einstellungen",
+  name: defineMessage({id: "breadcrumb.settings", message: "Einstellungen"}),
   icon: faCog,
   destination: RouteNames.Settings,
 };
@@ -35,19 +36,19 @@ export default function Settings(): JSX.Element {
         setErrorMessage={setErrorMessage}
       />
       <section className="section">
-        <h1 className="title">Einstellungen</h1>
+        <h1 className="title"><Trans>Einstellungen</Trans></h1>
         <div className="settings-block">
-          <h2 className="subtitle">Kontodetails</h2>
+          <h2 className="subtitle"><Trans>Kontodetails</Trans></h2>
           <hr />
           <table className="table is-fullwidth">
             <tbody>
               <tr>
-                <td className="key">Email</td>
+                <td className="key"><Trans>Email</Trans></td>
                 <td data-test="text-email">{email}</td>
                 <td />
               </tr>
               <tr>
-                <td className="key">Password</td>
+                <td className="key"><Trans>Password</Trans></td>
                 <td>************</td>
                 <td>
                   <Link
@@ -55,7 +56,7 @@ export default function Settings(): JSX.Element {
                     to={RouteNames.ChangePassword}
                     data-test="link-change-password"
                   >
-                    Password ändern
+                    <Trans>Password ändern</Trans>
                   </Link>
                 </td>
               </tr>
@@ -63,11 +64,11 @@ export default function Settings(): JSX.Element {
           </table>
         </div>
         <div className="settings-block">
-          <h2 className="subtitle">Funktionen</h2>
+          <h2 className="subtitle"><Trans>Funktionen</Trans></h2>
           <hr />
           <SettingsSwitch
             id="intro"
-            label="Aktiviere/deaktiviere die Einführung"
+            label={t`Aktiviere/deaktiviere die Einführung`}
             selectorFn={selectIntroActive}
             settingsFn={(value) => ({
               intro: {
@@ -81,17 +82,19 @@ export default function Settings(): JSX.Element {
           />
           <SettingsSwitch
             id="notifications"
-            label="Aktiviere/deaktiviere Benachrichtigungen"
+            label={t`Aktiviere/deaktiviere Benachrichtigungen`}
             selectorFn={selectNotificationsActive}
             settingsFn={(value) => ({notifications_active: value})}
           />
         </div>
         <div className="settings-block">
-          <h2 className="subtitle has-text-danger">Konto löschen</h2>
+          <h2 className="subtitle has-text-danger"><Trans>Konto löschen</Trans></h2>
           <hr />
           <p>
-            Nach dem Löschen kann das Konto nicht mehr wiederhergestellt
-            werden. Bitte klicke nur wenn du dir sicher bist!
+            <Trans>
+              Nach dem Löschen kann das Konto nicht mehr wiederhergestellt
+              werden. Bitte klicke nur wenn du dir sicher bist!
+            </Trans>
           </p>
           <p className="mt-2">
             <button
@@ -99,7 +102,7 @@ export default function Settings(): JSX.Element {
               onClick={() => setShowDeleteAccount(true)}
               data-test="btn-open-delete-account"
             >
-              Löschen
+              <Trans>Löschen</Trans>
             </button>
           </p>
         </div>

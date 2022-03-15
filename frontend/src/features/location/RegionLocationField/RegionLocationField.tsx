@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {t} from "@lingui/macro";
 
 import {RegionType} from "../../../common/types";
 import {useGetRegionsQuery} from "./regionsApiSlice";
@@ -26,8 +27,7 @@ export default function RegionLocationField(
     if (error) {
       console.error(`Failed to get region map: ${JSON.stringify(error, null, 2)}`);
       setErrorMessage(
-        "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
-        "neu und versuche es nochmal."
+        t`Die Seite konnte nicht vollständig geladen werden, bitte lade sie neu und versuche es nochmal.`
       );
     }
   }, [error]);
@@ -55,7 +55,7 @@ export default function RegionLocationField(
       setSelectedDistrict(null);
 
       setErrorMessage(
-        "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
+        t`Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal.`
       );
     }
   }, [postalCode, isLoading]);
@@ -111,8 +111,7 @@ export default function RegionLocationField(
   }
 
   const dropdownTitle =
-    "Wähle ein Bundesland und optional einen Bezirk aus für den " +
-    "Spritpreise gesucht werden sollen.";
+    t`"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise gesucht werden sollen.`;
   return (
     <div className="field" data-test="location-add-region">
       <div className="field is-horizontal">
@@ -133,7 +132,7 @@ export default function RegionLocationField(
                   id={DROPDOWN_STATE_ID}
                 >
                   <option value="" disabled={true}>
-                    Bundesland
+                    {t`Bundesland`}
                   </option>
                   {states.map((entry, index) => {
                     return (
@@ -162,7 +161,7 @@ export default function RegionLocationField(
                   id={DROPDOWN_DISTRICT_ID}
                 >
                   <option value="" disabled={true}>
-                    Bezirk
+                    {t`Bezirk`}
                   </option>
                   {districts.map((entry, index) => {
                     return (
@@ -183,10 +182,10 @@ export default function RegionLocationField(
       <div className="control">
         <input
           className="input"
-          title="Gib eine Postleitzahl ein um die zugehörige Region zu suchen."
+          title={t`Gib eine Postleitzahl ein um die zugehörige Region zu suchen.`}
           type="text"
           maxLength={4}
-          placeholder="PLZ"
+          placeholder={t`PLZ`}
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
           data-test="field-postal-code"

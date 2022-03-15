@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import _debuounce from "lodash.debounce";
+import {t} from "@lingui/macro";
 
 import PasswordField, {PasswordFieldProps} from "./PasswordField";
 import {PasswordValidationResponse, useValidatePasswordMutation} from "../apis/spritstatApi";
@@ -85,7 +86,7 @@ export default function PasswordWithValidationField({
     >
       <progress
         className={`progress is-small ${passwordIndicatorColor}`}
-        title={`Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes Passwort an, Gelb ein mäßiges und Grün ein gutes. ${suggestions}`}
+        title={t`Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes Passwort an, Gelb ein mäßiges und Grün ein gutes. ${suggestions}`}
         max={MAX_PASSWORD_SCORE}
         value={score}
         data-test="field-new-password-progress"

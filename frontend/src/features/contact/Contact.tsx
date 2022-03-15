@@ -6,10 +6,10 @@ import ContactForm from "./ContactForm";
 import BasePage from "../../common/components/BasePage";
 import {RouteNames} from "../../common/types";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
-import {t, Trans} from "@lingui/macro";
+import {defineMessage, t, Trans} from "@lingui/macro";
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: t`Kontakt`,
+  name: defineMessage({id: "breadcrumb.contact", message: "Kontakt"}),
   icon: faEnvelope,
   destination: RouteNames.Contact,
 };

@@ -8,6 +8,7 @@ import {HeaderDropdownItem} from "./HeaderDropdown";
 import {RouteNames} from "../types";
 import Header from "./Header";
 import {selectIsAuthenticated} from "../auth/accountSlice";
+import {defineMessage, t} from "@lingui/macro";
 
 
 enum Severity {
@@ -18,12 +19,18 @@ enum Severity {
 
 const headerDropdownItems: HeaderDropdownItem[] = [
   {
-    name: "Einstellungen",
+    name: defineMessage({
+      id: "headerDropdown.settings",
+      message: "Einstellungen"
+    }),
     route: RouteNames.Settings,
     "data-test": "link-settings"
  },
   {
-    name: "Kontakt",
+    name: defineMessage({
+        id: "headerDropdown.contact",
+        message: "Kontakt"
+    }),
     route: RouteNames.Contact,
     "data-test": "link-contact"
  },
@@ -72,7 +79,8 @@ export default function BasePage({
         {breadcrumbItems && <Breadcrumb items={breadcrumbItems} />}
         {active && discardMessage && (
           <div
-            className={`notification ${severityModifier}`}
+            className={`
+    }notification ${severityModifier}`}
             data-test="notification"
           >
             <button className="delete" onClick={() => discardMessage()} />

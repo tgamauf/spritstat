@@ -11,12 +11,14 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import {t, Trans} from "@lingui/macro";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
 import {useGetStationsQuery, useLazyGetPriceStationFrequencyQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
+import NoGraphDataField from "../../common/components/NoGraphDataField";
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip);
 
@@ -34,7 +36,7 @@ interface ChartDataProps {
 class ChartData {
   public labels: string[];
   public datasets: {
-    label: "Häufigkeit günstigste Tankstelle";
+    label: string;
     data: number[];
     backgroundColor: string;
     borderColor: string;
@@ -44,7 +46,7 @@ class ChartData {
     this.labels = [];
     this.datasets = [
       {
-        label: "Häufigkeit günstigste Tankstelle",
+        label: t`Häufigkeit niedrigster Preis pro Tankstelle`,
         data: [],
         backgroundColor: BAR_COLOR,
         borderColor: BAR_COLOR
@@ -88,7 +90,7 @@ class ChartConfig implements ChartConfiguration {
       plugins: {
         title: {
           display: true,
-          text: "Häufigkeit niedrigster Preis pro Tankstelle"
+          text: t`Häufigkeit niedrigster Preis pro Tankstelle`
         }
       },
       scales: {
@@ -151,10 +153,10 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
   useEffect(() => {
     getPriceStationFrequency({locationId: location.id, dateRange: selectedDateRange}).unwrap()
       .catch((e) => {
-        console.error(`[${name}] failed to get price data: ${JSON.stringify(e, null, 2)}`);
+        console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(
-          "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-          "probier es nochmal."
+          t`Die Preise für diesen Ort konnten nicht abgerufen werden, bitte 
+          probier es nochmal.`
         );
       });
   }, [location, selectedDateRange, isStationsSuccess]);
@@ -204,12 +206,7 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
   let mainComponent;
   if (!isStationsFetching && !isStationFrequencyFetching && chartData) {
     if (chartData.datasets[0].data.length === 0) {
-      mainComponent = (
-        <span>
-          Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-          vorhanden.
-        </span>
-      );
+      mainComponent = <NoGraphDataField />;
     } else {
       mainComponent = (
         <div className="chart-container">
@@ -218,10 +215,10 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
           </div>
           <DateRangeButton
             items={[
-              {name: "1M", value: DateRange.OneMonth},
-              {name: "3M", value: DateRange.ThreeMonths},
-              {name: "6M", value: DateRange.SixMonths},
-              {name: "Alles", value: DateRange.All},
+              DateRange.OneMonth,
+              DateRange.ThreeMonths,
+              DateRange.SixMonths,
+              DateRange.All,
             ]}
             selectedValue={selectedDateRange}
             setSelectedValue={setSelectedDateRange}

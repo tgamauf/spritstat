@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
+import {Trans} from "@lingui/macro";
 
 import {Location, Station} from "../../common/types";
 import {useGetCurrentPriceQuery} from "./priceApiSlice";
-import exp from "constants";
 
 
 const MAPS_URL = "https://www.google.com/maps/search";
@@ -70,7 +70,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
           </div>
           {stations && stations.length > 0 && (
             <div className="tile is-child content">
-              <span className="card-key">Tankstellen</span>
+              <span className="card-key"><Trans>Tankstellen</Trans></span>
               <div className="card-value mt-0">
                 {stations.map((item, index) => {
                   return (

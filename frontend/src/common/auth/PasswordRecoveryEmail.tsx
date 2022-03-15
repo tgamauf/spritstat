@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {t, Trans} from "@lingui/macro";
 
 import CenteredBox from "../components/CenteredBox";
 import EmailField from "./EmailField";
@@ -59,11 +60,11 @@ function PasswordRecoveryEmail(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message="Password reset ist fehlgeschlagen."
+        message={t`Password reset ist fehlgeschlagen.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password vergessen?</h1>
+          <h1 className="title"><Trans>Password vergessen?</Trans></h1>
           <form onSubmit={onSubmit}>
             <EmailField value={email} update={setEmail} />
             <div className="field is-grouped is-grouped-right">
@@ -71,7 +72,7 @@ function PasswordRecoveryEmail(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Password zurücksetzen"
+                  value={t`Password zurücksetzen`}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

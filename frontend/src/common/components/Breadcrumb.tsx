@@ -2,9 +2,11 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
+import {i18n, MessageDescriptor} from "@lingui/core";
+
 
 interface Item {
-  name: string;
+  name: MessageDescriptor;
   icon: IconDefinition;
   destination: string;
 }
@@ -27,7 +29,7 @@ export default function Breadcrumb({items}: Props) {
                     to={item.destination}
                   >
                     <FontAwesomeIcon className="icon" icon={item.icon} />
-                    <span>{item.name}</span>
+                    <span>{i18n._(item.name)}</span>
                   </Link>
                 </li>
               );
