@@ -27,7 +27,7 @@ interface I18nState {
 }
 
 async function activateLocale(locale: Locale) {
-    const {messages} = await import(`./locales/${locale}/messages.po`);//TODO
+    const {messages} = await import(`../../locales/${locale}/messages.po`)
     i18nLib.load(locale, messages);
     i18nLib.activate(locale);
 }

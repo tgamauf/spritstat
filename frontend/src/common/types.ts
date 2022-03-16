@@ -1,6 +1,5 @@
 import introJs from "intro.js";
-import {defineMessage} from "@lingui/macro";
-import {MessageDescriptor} from "@lingui/core";
+import {defineMessage, MessageDescriptor} from "react-intl";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -50,9 +49,18 @@ enum FuelType {
 }
 
 const fuelTypeNames = new Map<FuelType, MessageDescriptor>([
-  [FuelType.Diesel, defineMessage({id: "fuelType.diesel", message: "Diesel"})],
-  [FuelType.Super, defineMessage({id: "fuelType.super", message: "Super"})],
-  [FuelType.Gas, defineMessage({id: "fuelType.gas", message: "Gas"})],
+  [
+    FuelType.Diesel,
+    defineMessage({description: "Fuel type diesel", defaultMessage: "Diesel"})
+  ],
+  [
+    FuelType.Super,
+    defineMessage({description: "Fuel type gasoline", defaultMessage: "Super"})
+  ],
+  [
+    FuelType.Gas,
+    defineMessage({description: " Fuel type autogas", defaultMessage: "Gas"})
+  ],
 ]);
 
 interface Coordinates {

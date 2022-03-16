@@ -1,4 +1,5 @@
 import React, {PropsWithChildren} from "react";
+import {defineMessage} from "react-intl";
 
 import Breadcrumb, {BreadcrumbItem} from "./Breadcrumb";
 import {DASHBOARD_BREADCRUMB} from "../../features/location/Dashboard";
@@ -8,7 +9,6 @@ import {HeaderDropdownItem} from "./HeaderDropdown";
 import {RouteNames} from "../types";
 import Header from "./Header";
 import {selectIsAuthenticated} from "../auth/accountSlice";
-import {defineMessage, t} from "@lingui/macro";
 
 
 enum Severity {
@@ -20,16 +20,16 @@ enum Severity {
 const headerDropdownItems: HeaderDropdownItem[] = [
   {
     name: defineMessage({
-      id: "headerDropdown.settings",
-      message: "Einstellungen"
+      description: "BasePage header dropdown settings item",
+      defaultMessage: "Einstellungen"
     }),
     route: RouteNames.Settings,
     "data-test": "link-settings"
  },
   {
     name: defineMessage({
-        id: "headerDropdown.contact",
-        message: "Kontakt"
+      description: "BasePage header dropdown contact item",
+      defaultMessage: "Kontakt"
     }),
     route: RouteNames.Contact,
     "data-test": "link-contact"
@@ -79,8 +79,7 @@ export default function BasePage({
         {breadcrumbItems && <Breadcrumb items={breadcrumbItems} />}
         {active && discardMessage && (
           <div
-            className={`
-    }notification ${severityModifier}`}
+            className={`notification ${severityModifier}`}
             data-test="notification"
           >
             <button className="delete" onClick={() => discardMessage()} />

@@ -2,12 +2,14 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
-import {Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import {RouteNames} from "../types";
 import LanguageButton from "./LanguageButton";
 
 export default function Footer() {
+  const intl = useIntl();
+
   return (
     <div className="hero-foot has-text-centered" data-test="footer">
       <div>
@@ -18,7 +20,10 @@ export default function Footer() {
           to={RouteNames.Imprint}
           data-test="link-imprint"
         >
-          <Trans>Impressum</Trans>
+          {intl.formatMessage({
+            description: "Footer imprint",
+            defaultMessage: "Impressum"
+          })}
         </Link>
         <span> &bull; </span>
         <Link
@@ -26,7 +31,10 @@ export default function Footer() {
           to={RouteNames.PrivacyPolicy}
           data-test={"link-privacy"}
         >
-          <Trans id="footer.privacy">Datenschutzerklärung</Trans>
+          {intl.formatMessage({
+            description: "Footer privacy policy",
+            defaultMessage: "Datenschutzerklärung"
+          })}
         </Link>
       </div>
       <div className="mt-2">

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import {DateRange, dateRangeNames} from "../types";
-import {i18n, MessageDescriptor} from "@lingui/core/esm";
+import {useIntl} from "react-intl";
 
 interface Props {
   items: DateRange[];
@@ -11,6 +11,7 @@ interface Props {
 export default function DateRangeButton(
   {items, selectedValue, setSelectedValue}: Props
 ): JSX.Element {
+  const intl = useIntl();
   const itemRefs: React.MutableRefObject<HTMLButtonElement>[] = [];
   for (const _ in items) {
     itemRefs.push(useRef() as React.MutableRefObject<HTMLButtonElement>)
@@ -41,7 +42,7 @@ export default function DateRangeButton(
             ref={itemRefs[index]}
             onClick={() => setSelectedValue(value)}
           >
-            {i18n._(dateRangeNames.get(value) as MessageDescriptor)}
+            {intl.formatMessage(dateRangeNames.get(value))}
           </button>
         );
       })

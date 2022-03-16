@@ -1,14 +1,17 @@
 import React from "react";
-import {Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 
 export default function NoGraphDataField(): JSX.Element {
+  const intl = useIntl();
+
   return (
     <span>
-      <Trans>
-        Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-        vorhanden.
-      </Trans>
+      {intl.formatMessage({
+        description: "NoGraphDataField",
+        defaultMessage: "Die Aufzeichnung hat gerade erst begonnen, daher sind noch " +
+          "keine Daten vorhanden."
+      })}
     </span>
   );
 }

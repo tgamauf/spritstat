@@ -1,31 +1,39 @@
 import React from "react";
-import {Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "./CenteredBox";
 import BasePage from "./BasePage";
 
 export default function Imprint() {
+  const intl = useIntl();
+
   return (
     <BasePage>
       <CenteredBox>
         <h1 className="title">Impressum</h1>
         <div className="block has-text-left">
           <p>
-            <Trans>
-              Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr.
-            </Trans>
+            {intl.formatMessage({
+              description: "Imprint block 1",
+              defaultMessage: "Diese Website wird als ein Hobbyprojekt betrieben, " +
+                "daher sind alle Angaben ohne gewähr."
+            })}
           </p>
           <p>
-            <Trans>
-              Die Website ist Open Source und der Quellcode ist
-              <a
-                className="has-text-primary"
-                href="https://github.com/tgamauf/spritstat"
-                target="_blank"
-                rel="noopener noreferrer"
-              > hier </a>
-              zu finden - ich freue mich wenn du mir hilfst die Seite besser zu machen! :)
-            </Trans>
+            {intl.formatMessage({
+              description: "Imprint block 2",
+              defaultMessage: "Die Website ist Open Source und der Quellcode ist " +
+                "<link>hier</link> zu finden - ich freue mich, wenn du mir hilfst die " +
+                "Seite besser zu machen! :)"
+              },
+              {link: str => <a
+                  className="has-text-primary"
+                  href="https://github.com/tgamauf/spritstat"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{str}</a>
+              }
+            )}
           </p>
         </div>
         <div className="block">
@@ -33,19 +41,33 @@ export default function Imprint() {
             <tbody>
               <tr>
                 <td className="key has-text-weight-medium">
-                  <Trans>Inhaber:</Trans>
+                  {intl.formatMessage({
+                    description: "Imprint owner label",
+                    defaultMessage: "Inhaber:"
+                  })}
                 </td>
                 <td>Thomas Gamauf</td>
               </tr>
               <tr>
                 <td className="key has-text-weight-medium">
-                  <Trans>Ort:</Trans>
+                  {intl.formatMessage({
+                    description: "Imprint location label",
+                    defaultMessage: "Ort:"
+                  })}
                 </td>
-                <td><Trans>Wien</Trans></td>
+                <td>
+                  {intl.formatMessage({
+                    description: "Imprint location value",
+                    defaultMessage: "Wien"
+                  })}
+                </td>
               </tr>
               <tr>
                 <td className="key has-text-weight-medium">
-                  <Trans>Kontakt:</Trans>
+                  {intl.formatMessage({
+                    description: "Imprint contact label",
+                    defaultMessage: "Kontakt:"
+                  })}
                 </td>
                 <td>
                   <a

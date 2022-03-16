@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es5",
     "module": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "es2017.intl",
+      "es2018.intl"
     ],
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,8 +18,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
-    "jsx": "preserve"
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
     "src/**/*",

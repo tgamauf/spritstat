@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {t, Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import {RouteNames} from "../types";
 import BasePage from "../components/BasePage";
@@ -12,6 +12,7 @@ export default function ConfirmEmail(): JSX.Element {
   const {key} = useParams();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (!key) {
@@ -42,14 +43,21 @@ export default function ConfirmEmail(): JSX.Element {
     <BasePage>
       <LoadingError
         loading={loading}
-        message={t`Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig.`}
+        message={intl.formatMessage({
+          description: "ConfirmEmail error",
+          defaultMessage: "Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink " +
+            "ungültig."
+        })}
         children={
           <Link
             className="has-text-primary"
             to={RouteNames.Index}
             data-test="link-home"
           >
-            <Trans>Homepage</Trans>
+            {intl.formatMessage({
+              description: "ConfirmEmail homepage button",
+              defaultMessage: "Homepage"
+            })}
           </Link>
        }
       />

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {t, Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "../components/CenteredBox";
 import PasswordWithValidationField from "./PasswordWithValidationField";
@@ -17,6 +17,7 @@ function ResetPassword(): JSX.Element {
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (submitted) {
@@ -73,11 +74,19 @@ function ResetPassword(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message={t`Passwort reset ist fehlgeschlagen.`}
+        message={intl.formatMessage({
+          description: "ResetPassword error",
+          defaultMessage: "Passwort reset ist fehlgeschlagen."
+        })}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title"><Trans>Passwort vergessen?</Trans></h1>
+          <h1 className="title">
+            {intl.formatMessage({
+              description: "ResetPassword title",
+              defaultMessage: "Passwort vergessen?"
+            })}
+          </h1>
           <form onSubmit={onSubmit}>
             <PasswordWithValidationField
               value={password}
@@ -89,7 +98,10 @@ function ResetPassword(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value={t`Passwort speichern`}
+                  value={intl.formatMessage({
+                    description: "ResetPassword",
+                    defaultMessage: "Passwort speichern"
+                  })}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

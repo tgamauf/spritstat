@@ -1,0 +1,56 @@
+{
+  "4W7MoD": {
+    "defaultMessage": "Aktuelles Passwort",
+    "description": "ChangePassword current password field label"
+  },
+  "IWJ0+9": {
+    "defaultMessage": "Passwort ändern",
+    "description": "ChangePassword breadcrumb"
+  },
+  "Ywx8az": {
+    "defaultMessage": "Speichern",
+    "description": "ChangePassword submit label"
+  },
+  "aiuoiM": {
+    "defaultMessage": "Neues Passwort",
+    "description": "ChangePassword new password field label"
+  },
+  "breadcrumb.addLocation": {
+  },
+  "breadcrumb.contact": {
+  },
+  "breadcrumb.dashboard": {
+  },
+  "breadcrumb.locationDetails": {
+  },
+  "breadcrumb.settings": {
+  },
+  "dateRange.1m": {
+  },
+  "dateRange.1w": {
+  },
+  "dateRange.3m": {
+  },
+  "dateRange.6m": {
+  },
+  "dateRange.all": {
+  },
+  "fuelType.diesel": {
+  },
+  "fuelType.gas": {
+  },
+  "fuelType.super": {
+  },
+  "headerDropdown.contact": {
+  },
+  "headerDropdown.settings": {
+  },
+  "oSsjU/": {
+    "defaultMessage": "Passwort ändern",
+    "description": "ChangePassword title"
+  },
+  "xi+2kU": {
+    "defaultMessage": "Passwortänderung ist fehlgeschlagen.",
+    "description": "ChangePassword error message"
+  }
+}

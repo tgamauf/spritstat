@@ -2,13 +2,12 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
+import {MessageDescriptor, useIntl} from "react-intl";
 
 import {RouteNames} from "../types";
 import {useLogoutMutation} from "../apis/spritstatApi";
 import {useAppDispatch} from "../utils";
 import {INVALID_ACCOUNT, setAccount} from "../auth/accountSlice";
-import {Trans} from "@lingui/macro";
-import {i18n, MessageDescriptor} from "@lingui/core";
 
 
 interface Item {
@@ -26,6 +25,7 @@ export default function HeaderDropdown({items}: Props): JSX.Element {
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
   const [doLogout, setDoLogout] = useState(false);
+  const intl = useIntl();
 
   useEffect(() => {
     if (doLogout) {
@@ -64,7 +64,7 @@ export default function HeaderDropdown({items}: Props): JSX.Element {
                 to={item.route}
                 data-test={item["data-test"]}
               >
-                {i18n._(item.name)}
+                {intl.formatMessage(item.name)}
               </Link>
             </div>
           );
@@ -77,7 +77,10 @@ export default function HeaderDropdown({items}: Props): JSX.Element {
             onClick={() => setDoLogout(true)}
             data-test="link-logout"
           >
-            <Trans>Abmelden</Trans>
+            {intl.formatMessage({
+              description: "HeaderDropdown logout link",
+              defaultMessage: "Abmelden"
+            })}
           </Link>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import _debuounce from "lodash.debounce";
-import {t} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import PasswordField, {PasswordFieldProps} from "./PasswordField";
 import {PasswordValidationResponse, useValidatePasswordMutation} from "../apis/spritstatApi";
@@ -33,6 +33,7 @@ export default function PasswordWithValidationField({
   const [apiValidatePassword] = useValidatePasswordMutation();
   const [score, setScore] = useState(0);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const intl = useIntl();
 
   useEffect(() => {
     // Ignore email if it isn't valid
@@ -86,7 +87,13 @@ export default function PasswordWithValidationField({
     >
       <progress
         className={`progress is-small ${passwordIndicatorColor}`}
-        title={t`Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes Passwort an, Gelb ein mäßiges und Grün ein gutes. ${suggestions}`}
+        title={intl.formatMessage({
+            description: "PasswordWithValidationField progress title",
+            defaultMessage: "Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes " +
+              "Passwort an, Gelb ein mäßiges und Grün ein gutes. {suggestions}"
+          },
+          {suggestions: suggestions.join(",")}
+        )}
         max={MAX_PASSWORD_SCORE}
         value={score}
         data-test="field-new-password-progress"

@@ -1,7 +1,8 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
-import {t} from "@lingui/macro";
+import {useIntl} from "react-intl";
+
 
 interface Props {
   value: string;
@@ -14,14 +15,22 @@ export default function EmailField({
   update,
   autoComplete = "username",
 }: Props): JSX.Element {
+  const intl = useIntl();
+
   return (
     <div className="field" data-test="field-username">
       <p className="control has-icons-left">
         <input
           className="input"
-          title={t`Bitte gib deine E-Mail-Adresse an.`}
+          title={intl.formatMessage({
+            description: "EmailField title",
+            defaultMessage: "Bitte gib deine E-Mail-Adresse an."
+          })}
           type="email"
-          placeholder={t`Email`}
+          placeholder={intl.formatMessage({
+            description: "EmailField placeholder",
+            defaultMessage: "Email."
+          })}
           value={value}
           required={true}
           autoComplete={autoComplete}
