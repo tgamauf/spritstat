@@ -60,11 +60,11 @@ function PasswordRecoveryEmail(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message={t`Password reset ist fehlgeschlagen.`}
+        message={t`Passwort reset ist fehlgeschlagen.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title"><Trans>Password vergessen?</Trans></h1>
+          <h1 className="title"><Trans>Passwort vergessen?</Trans></h1>
           <form onSubmit={onSubmit}>
             <EmailField value={email} update={setEmail} />
             <div className="field is-grouped is-grouped-right">
@@ -72,7 +72,7 @@ function PasswordRecoveryEmail(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value={t`Password zurücksetzen`}
+                  value={t`Passwort zurücksetzen`}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

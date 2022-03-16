@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/features/location/RegionLocationField/RegionLocationField.tsx:114
-msgid "\"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise gesucht werden sollen."
-msgstr ""
+#~ msgid "\"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise gesucht werden sollen."
+#~ msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:64
 msgid "<0><1>Besuchte Website</1><2>Uhrzeit zum Zeitpunkt des Zugriffes</2><3>Menge der gesendeten Daten in Byte</3><4>Quelle/Verweis, von welchem Sie auf die Seite gelangten</4><5>Verwendeter Browser</5><6>Verwendetes Betriebssystem</6><7>Verwendete IP-Adresse</7></0>"
@@ -34,8 +34,12 @@ msgid "Abmelden"
 msgstr ""
 
 #: src/common/settings/Unsubscribe.tsx:49
-msgid "Abmeldung fehlgeschlagen, eventuell ist der Abmeldungslink ungültig."
+msgid "Abmeldung fehlgeschlagen, eventuell ist der Abmeldelink ungültig."
 msgstr ""
+
+#: src/common/settings/Unsubscribe.tsx:49
+#~ msgid "Abmeldung fehlgeschlagen, eventuell ist der Abmeldungslink ungültig."
+#~ msgstr ""
 
 #: src/common/settings/Settings.tsx:85
 msgid "Aktiviere/deaktiviere Benachrichtigungen"
@@ -94,7 +98,7 @@ msgstr ""
 msgid "Betreff"
 msgstr ""
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:164
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:165
 msgid "Bezirk"
 msgstr ""
 
@@ -103,10 +107,14 @@ msgid "Bitte gib dein Passwort an."
 msgstr ""
 
 #: src/common/auth/EmailField.tsx:22
-msgid "Bitte gib deine E-Mail-Adressse an."
+msgid "Bitte gib deine E-Mail-Adresse an."
 msgstr ""
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:135
+#: src/common/auth/EmailField.tsx:22
+#~ msgid "Bitte gib deine E-Mail-Adressse an."
+#~ msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:136
 msgid "Bundesland"
 msgstr ""
 
@@ -137,8 +145,14 @@ msgid "Dein Ort konnte nicht gelöscht werden."
 msgstr ""
 
 #: src/common/auth/Login.tsx:87
+#~ msgid ""
+#~ "Dein Password wurde geändert, nun kannst du dich mit deinem neuen Password \n"
+#~ "einloggen."
+#~ msgstr ""
+
+#: src/common/auth/Login.tsx:87
 msgid ""
-"Dein Password wurde geändert, nun kannst du dich mit deinem neuen Password \n"
+"Dein Passwort wurde geändert, nun kannst du dich mit deinem neuen Passwort \n"
 "einloggen."
 msgstr ""
 
@@ -158,7 +172,7 @@ msgstr ""
 msgid "Demo Graph"
 msgstr ""
 
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:145
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:147
 msgid "Der Ort ist aktuell nicht verfügbar."
 msgstr ""
 
@@ -201,18 +215,20 @@ msgstr ""
 
 #: src/features/location/PriceHistoryChart.tsx:198
 #: src/features/location/PriceStationFrequencyChart.tsx:158
-msgid ""
-"Die Preise für diesen Ort konnten nicht abgerufen werden, bitte \n"
-"probier es nochmal."
-msgstr ""
+#~ msgid ""
+#~ "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte \n"
+#~ "probier es nochmal."
+#~ msgstr ""
 
 #: src/features/location/AveragePriceChart.tsx:139
+#: src/features/location/PriceHistoryChart.tsx:198
+#: src/features/location/PriceStationFrequencyChart.tsx:158
 msgid "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal."
 msgstr ""
 
 #: src/features/location/NamedLocationField/NamedLocationField.tsx:143
-msgid "Die Seite hat nicht das Erlaubnis den Ort abzurufen."
-msgstr ""
+#~ msgid "Die Seite hat nicht das Erlaubnis den Ort abzurufen."
+#~ msgstr ""
 
 #: src/features/location/RegionLocationField/RegionLocationField.tsx:30
 msgid "Die Seite konnte nicht vollständig geladen werden, bitte lade sie neu und versuche es nochmal."
@@ -292,6 +308,10 @@ msgstr ""
 msgid "Du hast dich erfolgreich von Benachrichtigungen abgemeldet."
 msgstr ""
 
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:144
+msgid "Du hast leider nicht die erforderlichen Berechtigungen um diesen Ort abzurufen."
+msgstr ""
+
 #: src/features/location/NoLocation.tsx:40
 msgid ""
 "Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort \n"
@@ -362,9 +382,15 @@ msgid "Etwas anderes"
 msgstr ""
 
 #: src/common/auth/Login.tsx:82
+#~ msgid ""
+#~ "Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze \n"
+#~ "einen Password-Reset-Link zugesendet."
+#~ msgstr ""
+
+#: src/common/auth/Login.tsx:82
 msgid ""
 "Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze \n"
-"einen Password-Reset-Link zugesendet."
+"einen Passwort-Reset-Link zugesendet."
 msgstr ""
 
 #: src/common/constants.ts:7
@@ -372,15 +398,20 @@ msgid "Fertig"
 msgstr ""
 
 #: src/common/settings/Settings.tsx:67
-msgid "Funktionen"
+msgid "Funktionalität"
 msgstr ""
+
+#: src/common/settings/Settings.tsx:67
+#~ msgid "Funktionen"
+#~ msgstr ""
 
 #: src/features/location/LocationList.tsx:94
-msgid ""
-"Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet \n"
-"werden sollen."
-msgstr ""
+#~ msgid ""
+#~ "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet \n"
+#~ "werden sollen."
+#~ msgstr ""
 
+#: src/features/location/LocationList.tsx:94
 #: src/features/location/NoLocation.tsx:55
 msgid "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen."
 msgstr ""
@@ -400,13 +431,17 @@ msgstr ""
 msgid "Geringster Preis"
 msgstr ""
 
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:187
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:189
 msgid "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen."
 msgstr ""
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:185
-msgid "Gib eine Postleitzahl ein um die zugehörige Region zu suchen."
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:186
+msgid "Gib eine Postleitzahl ein um den zugehörigen Bezirk zu suchen."
 msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:185
+#~ msgid "Gib eine Postleitzahl ein um die zugehörige Region zu suchen."
+#~ msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:27
 msgid "Grundlegendes"
@@ -417,7 +452,7 @@ msgid "Hast du dich schon immer gefragt wie sich der Spritpreis in deiner Gegend
 msgstr ""
 
 #: src/features/location/AddLocation.tsx:308
-#: src/features/location/LocationList.tsx:101
+#: src/features/location/LocationList.tsx:100
 msgid "Hinzufügen"
 msgstr ""
 
@@ -486,8 +521,12 @@ msgid "Konto löschen"
 msgstr ""
 
 #: src/common/settings/Settings.tsx:41
-msgid "Kontodetails"
+msgid "Kontodaten"
 msgstr ""
+
+#: src/common/settings/Settings.tsx:41
+#~ msgid "Kontodetails"
+#~ msgstr ""
 
 #: src/common/components/Home.tsx:45
 msgid "Los gehts!"
@@ -549,7 +588,7 @@ msgstr ""
 msgid "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen."
 msgstr ""
 
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:189
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:191
 msgid "Ort"
 msgstr ""
 
@@ -561,45 +600,68 @@ msgstr ""
 msgid "Ort:"
 msgstr ""
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:188
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:189
 msgid "PLZ"
 msgstr ""
 
 #: src/common/settings/Settings.tsx:51
-msgid "Password"
-msgstr ""
+#~ msgid "Password"
+#~ msgstr ""
 
-#: src/common/auth/PasswordRecoveryEmail.tsx:63
 #: src/common/auth/ResetPassword.tsx:76
-msgid "Password reset ist fehlgeschlagen."
-msgstr ""
+#~ msgid "Password reset ist fehlgeschlagen."
+#~ msgstr ""
 
 #: src/common/auth/Login.tsx:177
 #: src/common/auth/PasswordRecoveryEmail.tsx:67
 #: src/common/auth/ResetPassword.tsx:80
-msgid "Password vergessen?"
-msgstr ""
+#~ msgid "Password vergessen?"
+#~ msgstr ""
 
 #: src/common/auth/PasswordRecoveryEmail.tsx:75
-msgid "Password zurücksetzen"
-msgstr ""
+#~ msgid "Password zurücksetzen"
+#~ msgstr ""
 
 #: src/common/auth/ChangePassword.tsx:80
 #: src/common/settings/Settings.tsx:59
-msgid "Password ändern"
-msgstr ""
+#~ msgid "Password ändern"
+#~ msgstr ""
 
 #: src/common/auth/ChangePassword.tsx:76
-msgid "Passwordänderung ist fehlgeschlagen."
-msgstr ""
+#~ msgid "Passwordänderung ist fehlgeschlagen."
+#~ msgstr ""
 
 #: src/common/auth/PasswordField.tsx:16
+#: src/common/settings/Settings.tsx:51
 msgid "Passwort"
+msgstr ""
+
+#: src/common/auth/PasswordRecoveryEmail.tsx:63
+#: src/common/auth/ResetPassword.tsx:76
+msgid "Passwort reset ist fehlgeschlagen."
 msgstr ""
 
 #: src/common/auth/ChangePassword.tsx:98
 #: src/common/auth/ResetPassword.tsx:92
 msgid "Passwort speichern"
+msgstr ""
+
+#: src/common/auth/Login.tsx:177
+#: src/common/auth/PasswordRecoveryEmail.tsx:67
+#: src/common/auth/ResetPassword.tsx:80
+msgid "Passwort vergessen?"
+msgstr ""
+
+#: src/common/auth/PasswordRecoveryEmail.tsx:75
+msgid "Passwort zurücksetzen"
+msgstr ""
+
+#: src/common/settings/Settings.tsx:59
+msgid "Passwort ändern"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:76
+msgid "Passwortänderung ist fehlgeschlagen."
 msgstr ""
 
 #: src/common/components/PrivacyPolicy.tsx:134
@@ -612,7 +674,6 @@ msgid "Region"
 msgstr ""
 
 #: src/common/auth/Login.tsx:129
-#: src/common/auth/Signup.tsx:77
 #: src/common/auth/Signup.tsx:91
 msgid "Registrieren"
 msgstr ""
@@ -663,7 +724,7 @@ msgstr ""
 msgid "Tankstellen"
 msgstr ""
 
-#: src/features/location/PriceHistoryChart.tsx:228
+#: src/features/location/PriceHistoryChart.tsx:227
 msgid "Tankstellen:"
 msgstr ""
 
@@ -735,6 +796,16 @@ msgstr ""
 msgid "Wähle den Typ von Treibstoff aus für den Preise aufgezeichnet werden sollen."
 msgstr ""
 
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:114
+msgid ""
+"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise \n"
+"aufgezeichnet werden sollen."
+msgstr ""
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:114
+#~ msgid "Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise gesucht werden sollen."
+#~ msgstr ""
+
 #: src/features/location/AddLocation.tsx:154
 msgid "Wähle hier das gewünschte Bundesland aus."
 msgstr ""
@@ -776,6 +847,10 @@ msgstr ""
 
 #: src/common/settings/Settings.tsx:16
 msgid "breadcrumb.settings"
+msgstr ""
+
+#: src/common/auth/ChangePassword.tsx:80
+msgid "changePassword.title"
 msgstr ""
 
 #: src/common/types.ts:90
@@ -820,4 +895,8 @@ msgstr ""
 
 #: src/common/components/BasePage.tsx:22
 msgid "headerDropdown.settings"
+msgstr ""
+
+#: src/common/auth/Signup.tsx:77
+msgid "register.title"
 msgstr ""

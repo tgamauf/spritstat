@@ -19,7 +19,7 @@ export default function EmailField({
       <p className="control has-icons-left">
         <input
           className="input"
-          title={t`Bitte gib deine E-Mail-Adressse an.`}
+          title={t`Bitte gib deine E-Mail-Adresse an.`}
           type="email"
           placeholder={t`Email`}
           value={value}

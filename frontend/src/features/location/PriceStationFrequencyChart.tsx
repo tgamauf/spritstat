@@ -155,8 +155,7 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
       .catch((e) => {
         console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(
-          t`Die Preise für diesen Ort konnten nicht abgerufen werden, bitte 
-          probier es nochmal.`
+          t`Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.`
         );
       });
   }, [location, selectedDateRange, isStationsSuccess]);

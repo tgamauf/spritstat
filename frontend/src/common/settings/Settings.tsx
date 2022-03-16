@@ -38,7 +38,7 @@ export default function Settings(): JSX.Element {
       <section className="section">
         <h1 className="title"><Trans>Einstellungen</Trans></h1>
         <div className="settings-block">
-          <h2 className="subtitle"><Trans>Kontodetails</Trans></h2>
+          <h2 className="subtitle"><Trans>Kontodaten</Trans></h2>
           <hr />
           <table className="table is-fullwidth">
             <tbody>
@@ -48,7 +48,7 @@ export default function Settings(): JSX.Element {
                 <td />
               </tr>
               <tr>
-                <td className="key"><Trans>Password</Trans></td>
+                <td className="key"><Trans>Passwort</Trans></td>
                 <td>************</td>
                 <td>
                   <Link
@@ -56,7 +56,7 @@ export default function Settings(): JSX.Element {
                     to={RouteNames.ChangePassword}
                     data-test="link-change-password"
                   >
-                    <Trans>Password ändern</Trans>
+                    <Trans>Passwort ändern</Trans>
                   </Link>
                 </td>
               </tr>
@@ -64,7 +64,7 @@ export default function Settings(): JSX.Element {
           </table>
         </div>
         <div className="settings-block">
-          <h2 className="subtitle"><Trans>Funktionen</Trans></h2>
+          <h2 className="subtitle"><Trans>Funktionalität</Trans></h2>
           <hr />
           <SettingsSwitch
             id="intro"

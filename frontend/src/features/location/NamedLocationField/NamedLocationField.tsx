@@ -140,7 +140,9 @@ export function NamedLocationField({
   function setPositionError(error: GeolocationPositionError) {
     console.error(`Failed to get position: ${error.message}`);
     if (error.code === GeolocationPositionError.PERMISSION_DENIED) {
-      setErrorMessage(t`Die Seite hat nicht das Erlaubnis den Ort abzurufen.`);
+      setErrorMessage(
+        t`Du hast leider nicht die erforderlichen Berechtigungen um diesen Ort abzurufen.`
+      );
    } else {
       setErrorMessage(t`Der Ort ist aktuell nicht verfügbar.`);
    }

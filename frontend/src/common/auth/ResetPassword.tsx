@@ -73,11 +73,11 @@ function ResetPassword(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message={t`Password reset ist fehlgeschlagen.`}
+        message={t`Passwort reset ist fehlgeschlagen.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title"><Trans>Password vergessen?</Trans></h1>
+          <h1 className="title"><Trans>Passwort vergessen?</Trans></h1>
           <form onSubmit={onSubmit}>
             <PasswordWithValidationField
               value={password}

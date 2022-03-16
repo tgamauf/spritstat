@@ -91,8 +91,7 @@ export default function LocationList({setErrorMessage}: Props): JSX.Element {
                 <button
                   className="button is-primary is-outlined is-small"
                   title={
-                    t`Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet 
-                    werden sollen.`
+                    t`Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen.`
                   }
                   data-test="btn-add-location-small"
                   id={BTN_ADD_LOCATION_ID}

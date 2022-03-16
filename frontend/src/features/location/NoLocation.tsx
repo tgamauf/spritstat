@@ -53,8 +53,8 @@ export default function NoLocation() {
           <div className="tile is-child is-4">
             <p className="box has-background-info has-text-centered is-family-monospace">
               <Trans>
-                Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden
-                sollen.
+                Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet
+                werden sollen.
               </Trans>
             </p>
           </div>

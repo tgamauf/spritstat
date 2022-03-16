@@ -73,11 +73,11 @@ function ChangePassword(): JSX.Element {
       <BasePage
         breadcrumbItems={[SETTINGS_BREADCRUMB, BREADCRUMB]}
         active={error}
-        message={t`Passwordänderung ist fehlgeschlagen.`}
+        message={t`Passwortänderung ist fehlgeschlagen.`}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title"><Trans>Password ändern</Trans></h1>
+          <h1 className="title"><Trans id="changePassword.title">Passwort ändern</Trans></h1>
           <form onSubmit={onSubmit}>
             <PasswordField
               label={t`Aktuelles Passwort`}

@@ -13,51 +13,49 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:114
-msgid "\"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise gesucht werden sollen."
-msgstr ""
-
 #: src/common/components/PrivacyPolicy.tsx:64
 msgid "<0><1>Besuchte Website</1><2>Uhrzeit zum Zeitpunkt des Zugriffes</2><3>Menge der gesendeten Daten in Byte</3><4>Quelle/Verweis, von welchem Sie auf die Seite gelangten</4><5>Verwendeter Browser</5><6>Verwendetes Betriebssystem</6><7>Verwendete IP-Adresse</7></0>"
 msgstr "<0><1>visited website</1><2>time of access</2><3>amount of data sent in byte</3><4>referrer</4><5>browser</5><6>operating system</6><7>ip address</7></0>"
 
 #: src/common/settings/AccountDeleted.tsx:12
 msgid "<0>Es tut uns leid dass du deinen Account gelöscht hast.</0><1>Hoffentlich sehen wir uns trotzdem bald wieder!</1>"
-msgstr ""
+msgstr "<0>We are sorry to see you go.</0><1>Hopefully you'll join us again soon!</1>"
 
 #: src/common/auth/EmailVerificationSent.tsx:47
 msgid "<0>Wir haben ein Email an deine Adresse gesendet.</0><1>Bitte klicke auf den Link um die Registrierung abzuschließen!</1>"
-msgstr ""
+msgstr "<0>We have sent an email to your address.</0><1>Please klick on the link to finish registration!</1>"
 
 #: src/common/components/HeaderDropdown.tsx:80
 msgid "Abmelden"
 msgstr "Logout"
 
 #: src/common/settings/Unsubscribe.tsx:49
-msgid "Abmeldung fehlgeschlagen, eventuell ist der Abmeldungslink ungültig."
-msgstr ""
+msgid "Abmeldung fehlgeschlagen, eventuell ist der Abmeldelink ungültig."
+msgstr "We could not unsubscribe your email address, is the unsubscribe link valid?"
 
 #: src/common/settings/Settings.tsx:85
 msgid "Aktiviere/deaktiviere Benachrichtigungen"
-msgstr ""
+msgstr "Enable/disable notifications"
 
 #: src/common/settings/Settings.tsx:71
 msgid "Aktiviere/deaktiviere die Einführung"
-msgstr ""
+msgstr "Enable/disable intro"
 
 #: src/common/auth/ChangePassword.tsx:83
 msgid "Aktuelles Passwort"
-msgstr ""
+msgstr "Current password"
 
 #: src/features/location/AddLocation.tsx:162
 msgid ""
 "Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In \n"
 "diesem Fall wird automatisch der zugehörige Bezirk ausgewählt."
 msgstr ""
+"As an alternative you can also input the postal code of the location. \n"
+"In this case the corresponding district is selected directly."
 
 #: src/common/auth/Login.tsx:148
 msgid "Angemeldet bleiben"
-msgstr ""
+msgstr "Remember me"
 
 #: src/common/auth/Login.tsx:119
 #: src/common/components/HeaderLoginButton.tsx:15
@@ -70,45 +68,50 @@ msgid ""
 "angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen \n"
 "zu klicken um diese auf Google Maps angezeigt zu bekommen."
 msgstr ""
+"You can find the description of your location and the current price \n"
+"her as well. If you click a gas station name you will be forwarded \n"
+"to the station on Google Maps."
 
 #: src/features/location/LocationList.tsx:54
 msgid "Auf dieser Seite werden alle deine Orte angezeigt."
-msgstr ""
+msgstr "You can find an overview of all of your locations here."
 
 #: src/features/location/LocationDetails.tsx:100
 msgid "Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes angezeigt."
-msgstr ""
+msgstr "The details page gives you detailed information about the selected location"
 
 #: src/features/location/LocationList.tsx:67
 msgid ""
 "Außerdem wird der aktuell niedrigste Preis für den angegebenen \n"
 "Treibstofftyp und die Tankstellen die diesen anbieten angezeigt."
 msgstr ""
+"In addition, the currently lowest price, the fuel type and the \n"
+"gas stations offering this price for this location is shown."
 
 #: src/common/auth/ConfirmEmail.tsx:45
 msgid "Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig."
-msgstr ""
+msgstr "Confirmation failed, please make sure the confirmation link is correct."
 
 #: src/features/contact/ContactForm.tsx:97
 #: src/features/contact/ContactForm.tsx:108
 msgid "Betreff"
 msgstr "Subject"
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:164
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:165
 msgid "Bezirk"
-msgstr ""
+msgstr "District"
 
 #: src/common/auth/PasswordField.tsx:47
 msgid "Bitte gib dein Passwort an."
-msgstr ""
+msgstr "Please provide your password here."
 
 #: src/common/auth/EmailField.tsx:22
-msgid "Bitte gib deine E-Mail-Adressse an."
-msgstr ""
+msgid "Bitte gib deine E-Mail-Adresse an."
+msgstr "Please provide your email address here."
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:135
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:136
 msgid "Bundesland"
-msgstr ""
+msgstr "State"
 
 #: src/common/components/PrivacyPolicy.tsx:88
 msgid "Cookies"
@@ -125,7 +128,7 @@ msgstr "GDPR, Art. 4 defines the terms used in this text (for instance \"persona
 #: src/common/settings/DeleteAccountModal.tsx:36
 #: src/common/settings/DeleteAccountModal.tsx:41
 msgid "Dein Konto konnte nicht gelöscht werden."
-msgstr ""
+msgstr "Sorry, we couldn't delete your account."
 
 #: src/features/contact/ContactForm.tsx:76
 msgid "Dein Name ist optional, aber wir freuen uns wenn du ihn angibst."
@@ -134,46 +137,48 @@ msgstr "You do not have to provide a name, but it makes us happy if we get to kn
 #: src/features/location/DeleteLocationModal.tsx:37
 #: src/features/location/DeleteLocationModal.tsx:44
 msgid "Dein Ort konnte nicht gelöscht werden."
-msgstr ""
+msgstr "Sorry, we couldn't delete your location."
 
 #: src/common/auth/Login.tsx:87
 msgid ""
-"Dein Password wurde geändert, nun kannst du dich mit deinem neuen Password \n"
+"Dein Passwort wurde geändert, nun kannst du dich mit deinem neuen Passwort \n"
 "einloggen."
 msgstr ""
+"We have changed your password, it is now possible to login using the \n"
+"new password."
 
 #: src/common/auth/Login.tsx:92
 msgid "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen."
-msgstr ""
+msgstr "We have confirmed your email address, you can now continue to login."
 
 #: src/features/location/LocationList.tsx:85
 msgid "Deine Orte"
-msgstr ""
+msgstr "Your Locations"
 
 #: src/features/location/Dashboard.tsx:52
 msgid "Deine Orte konnten nicht geladen werden."
-msgstr ""
+msgstr "Sorry, we couldn't load your locations."
 
 #: src/common/components/Home.tsx:53
 msgid "Demo Graph"
 msgstr "Demo graph"
 
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:145
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:147
 msgid "Der Ort ist aktuell nicht verfügbar."
-msgstr ""
+msgstr "Sorry, your location is currently not available."
 
 #: src/features/location/AddLocation.tsx:102
 #: src/features/location/AddLocation.tsx:107
 msgid "Der Ort konnte nicht angelegt werden."
-msgstr ""
+msgstr "Sorry, we couldn't create your location."
 
 #: src/features/location/NamedLocationField/NamedLocationField.tsx:86
 msgid "Der Ort konnte nicht gefunden werden."
-msgstr ""
+msgstr "Sorry, the location wasn't found."
 
 #: src/features/location/LocationDetails.tsx:261
 msgid "Der Ort konnte nicht geladen werden."
-msgstr ""
+msgstr "Sorry, we couldn't load your location."
 
 #: src/common/components/PrivacyPolicy.tsx:101
 msgid "Der Websitebetreiber erhebt, nutzt und gibt Ihre personenbezogenen Daten nur dann weiter, wenn dies im gesetzlichen Rahmen erlaubt ist oder Sie in die Datenerhebung einwilligen. Als personenbezogene Daten gelten sämtliche Informationen, welche dazu dienen, Ihre Person zu bestimmen und welche zu Ihnen zurückverfolgt werden können – also beispielsweise Ihre E-Mail-Adresse."
@@ -185,34 +190,27 @@ msgstr "Data protection is a serious concern of the website operator, so your pe
 
 #: src/common/components/NoGraphDataField.tsx:8
 msgid "Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten vorhanden."
-msgstr ""
+msgstr "We only started data collection, so there is nothing to see here yet."
 
 #: src/features/location/LocationList.tsx:63
 msgid "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp."
 msgstr ""
+"The location description contains the name and fuel type stored for \n"
+"the location."
 
 #: src/features/location/RegionLocationField/RegionLocationField.tsx:58
 msgid "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
-msgstr ""
-
-#: src/features/location/PriceHistoryChart.tsx:198
-#: src/features/location/PriceStationFrequencyChart.tsx:158
-msgid ""
-"Die Preise für diesen Ort konnten nicht abgerufen werden, bitte \n"
-"probier es nochmal."
-msgstr ""
+msgstr "Sorry, the postal code couldn't be found. Please make sure that it is correct."
 
 #: src/features/location/AveragePriceChart.tsx:139
+#: src/features/location/PriceHistoryChart.tsx:198
+#: src/features/location/PriceStationFrequencyChart.tsx:158
 msgid "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal."
-msgstr ""
-
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:143
-msgid "Die Seite hat nicht das Erlaubnis den Ort abzurufen."
-msgstr ""
+msgstr "We couldn't load the price data for this location, please try again."
 
 #: src/features/location/RegionLocationField/RegionLocationField.tsx:30
 msgid "Die Seite konnte nicht vollständig geladen werden, bitte lade sie neu und versuche es nochmal."
-msgstr ""
+msgstr "Loading the page failed, please try reloading."
 
 #: src/common/components/PrivacyPolicy.tsx:77
 msgid "Die Server-Logfiles werden für maximal 30 Tage gespeichert und anschließend gelöscht. Die Speicherung der Daten erfolgt aus Sicherheitsgründen, um z. B. Missbrauchsfälle aufklären zu können. Müssen Daten aus Beweisgründen aufgehoben werden, sind sie solange von der Löschung ausgenommen bis der Vorfall endgültig geklärt ist."
@@ -228,7 +226,7 @@ msgstr "Sorry, we couldn't find the page you are looking for."
 
 #: src/common/auth/PasswordWithValidationField.tsx:89
 msgid "Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes Passwort an, Gelb ein mäßiges und Grün ein gutes. {suggestions}"
-msgstr ""
+msgstr "This field shows you the strength of your password. Red indicates a bad, yellow a medium strength, and green a good password. {suggestions}"
 
 #: src/common/components/PrivacyPolicy.tsx:29
 msgid "Diese Datenschutzerklärung soll die Nutzer dieser Website über die Art, den Umfang und den Zweck der Erhebung und Verwendung personenbezogener Daten durch den Websitebetreiber Thomas Gamauf informieren."
@@ -247,48 +245,60 @@ msgid ""
 "Dieser Graph zeigt an wie häufig eine Tankstelle im gewählten \n"
 "Zeitraum den niedrigsten Preis angeboten hat."
 msgstr ""
+"This graph shows you how often a gas station offered the lowest \n"
+"price in the selected time frame."
 
 #: src/features/location/LocationDetails.tsx:126
 msgid ""
 "Dieser Graph zeigt den durchschnittlich niedrigsten Preis pro \n"
 "Tageszeit im gewählten Zeitraum an."
 msgstr ""
+"This graph visualizes the average lowest price per time of day \n"
+"in the selected period."
 
 #: src/features/location/LocationDetails.tsx:136
 msgid ""
 "Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro \n"
 "Tag im Monat im gewählten Zeitraum an."
 msgstr ""
+"This graph shows the average lowest price per day of month in the \n"
+"selected time frame."
 
 #: src/features/location/LocationDetails.tsx:131
 msgid ""
 "Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro \n"
 "Wochentag im gewählten Zeitraum an."
 msgstr ""
+"This graph displays the average lowest price per day of week in \n"
+"the selected period."
 
 #: src/features/location/LocationDetails.tsx:110
 msgid ""
 "Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten \n"
 "Treibstoffpreises über den gewählten Zeitraum an."
-msgstr ""
+msgstr "This graph visualizes the fuel price history in the selected period."
 
 #: src/common/settings/Unsubscribe.tsx:62
 msgid "Du hast dich erfolgreich von Benachrichtigungen abgemeldet."
-msgstr ""
+msgstr "Success, you won't get any notifications from us anymore."
+
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:144
+msgid "Du hast leider nicht die erforderlichen Berechtigungen um diesen Ort abzurufen."
+msgstr "You do not have the required permissions to request this location."
 
 #: src/features/location/NoLocation.tsx:40
 msgid ""
 "Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort \n"
 "zu erstellen."
-msgstr ""
+msgstr "You haven't no locations yet. Click here to create your first one."
 
 #: src/features/location/AveragePriceChart.tsx:47
 msgid "Durchschnittlich geringster Preis"
-msgstr ""
+msgstr "Average lowest price"
 
 #: src/common/auth/Login.tsx:160
 msgid "Einloggen"
-msgstr ""
+msgstr "Login"
 
 #: src/common/settings/Settings.tsx:39
 msgid "Einstellungen"
@@ -297,15 +307,15 @@ msgstr "Settings"
 #: src/common/auth/EmailField.tsx:24
 #: src/common/settings/Settings.tsx:46
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: src/features/location/LocationDetails.tsx:173
 msgid "Entferne diesen Ort."
-msgstr ""
+msgstr "Delete this location."
 
 #: src/features/location/LocationDetails.tsx:179
 msgid "Entfernen"
-msgstr ""
+msgstr "Delete"
 
 #: src/common/components/PrivacyPolicy.tsx:98
 msgid "Erfassung und Verarbeitung personenbezogener Daten"
@@ -328,14 +338,18 @@ msgid ""
 "mit zwei Fingern entlang der x-Achse gescrollt werden. Mit einer Maus \n"
 "ist das mit STRG + Mausrad, bzw. durch Klick + Ziehen möglich."
 msgstr ""
+"It is possible to enlarge the graph. On a mobile phone or tablet you \n"
+"can use pinch-and-zoom to change the zoom level and then scroll along \n"
+"the x-axis with two fingers. With a mouse, you have to use CTRL + mouse \n"
+"wheel to zoom and then click and drag to move the graph."
 
 #: src/common/auth/Login.tsx:78
 msgid "Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen."
-msgstr ""
+msgstr "It is not possible to login with these credentials."
 
 #: src/common/auth/Signup.tsx:73
 msgid "Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren."
-msgstr ""
+msgstr "It wasn't possible to create an account with these credentials."
 
 #: src/features/contact/Contact.tsx:40
 msgid "Etwas anderes"
@@ -344,49 +358,48 @@ msgstr "Other"
 #: src/common/auth/Login.tsx:82
 msgid ""
 "Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze \n"
-"einen Password-Reset-Link zugesendet."
+"einen Passwort-Reset-Link zugesendet."
 msgstr ""
+"You will receive an password reset link via email soon, if your email \n"
+"address is saved with us."
 
 #: src/common/constants.ts:7
 msgid "Fertig"
 msgstr "Done"
 
 #: src/common/settings/Settings.tsx:67
-msgid "Funktionen"
-msgstr ""
+msgid "Funktionalität"
+msgstr "Functionality"
 
 #: src/features/location/LocationList.tsx:94
-msgid ""
-"Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet \n"
-"werden sollen."
-msgstr ""
-
 #: src/features/location/NoLocation.tsx:55
 msgid "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen."
-msgstr ""
+msgstr "Add a new location for which fuel prices should be recorded."
 
 #: src/features/location/LocationDetails.tsx:122
 msgid "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen."
-msgstr ""
+msgstr "It is possible to select a time frame to display for all graphs."
 
 #: src/features/location/LocationList.tsx:58
 msgid ""
 "Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den \n"
 "Ort um die detaillierte Statistiken des Ortes zu erhalten."
 msgstr ""
+"An overview is shown for each of your locations. Click on any of them \n"
+"to get detailed statistics."
 
 #: src/features/location/PriceHistoryChart.tsx:60
 #: src/features/location/PriceHistoryChart.tsx:113
 msgid "Geringster Preis"
-msgstr ""
+msgstr "Lowest price"
 
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:187
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:189
 msgid "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen."
-msgstr ""
+msgstr "Please provide the location we should record fuel prices for."
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:185
-msgid "Gib eine Postleitzahl ein um die zugehörige Region zu suchen."
-msgstr ""
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:186
+msgid "Gib eine Postleitzahl ein um den zugehörigen Bezirk zu suchen."
+msgstr "Please provide a postal code to search for the corresponding district."
 
 #: src/common/components/PrivacyPolicy.tsx:27
 msgid "Grundlegendes"
@@ -397,19 +410,19 @@ msgid "Hast du dich schon immer gefragt wie sich der Spritpreis in deiner Gegend
 msgstr "Have you always wondered how the fuel price in your area develops over time? Or on which days it's cheapest to fill up? Me too and that's why I built <0>SPRITSTAT</0>. It has never been easier to learn how fuel-prices develop in your area in the long-term."
 
 #: src/features/location/AddLocation.tsx:308
-#: src/features/location/LocationList.tsx:101
+#: src/features/location/LocationList.tsx:100
 msgid "Hinzufügen"
-msgstr ""
+msgstr "Add"
 
 #: src/common/auth/ConfirmEmail.tsx:52
 #: src/common/settings/Unsubscribe.tsx:41
 msgid "Homepage"
-msgstr ""
+msgstr "Homepage"
 
 #: src/features/location/PriceStationFrequencyChart.tsx:49
 #: src/features/location/PriceStationFrequencyChart.tsx:93
 msgid "Häufigkeit niedrigster Preis pro Tankstelle"
-msgstr ""
+msgstr "Frequency of lowest price per gas station"
 
 #: src/features/contact/Contact.tsx:38
 msgid "Ich benötige Hilfe"
@@ -429,25 +442,27 @@ msgstr "Owner:"
 
 #: src/common/auth/PasswordField.tsx:39
 msgid "Klicke hier um dein Passwort anzuzeigen."
-msgstr ""
+msgstr "Click here to show your password."
 
 #: src/common/auth/PasswordField.tsx:37
 msgid "Klicke hier um dein Passwort zu verstecken."
-msgstr ""
+msgstr "Click here to hide your password."
 
 #: src/features/location/AddLocation.tsx:135
 msgid ""
 "Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche \n"
 "nach einem konkreten Ort aktiviert."
 msgstr ""
+"Click here to select the type of location. By default you can search \n"
+"for a location."
 
 #: src/features/location/LocationList.tsx:72
 msgid "Klicke hier um einen neuen Ort hinzuzufügen."
-msgstr ""
+msgstr "Click here to add a new location."
 
 #: src/features/location/AddLocation.tsx:145
 msgid "Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen."
-msgstr ""
+msgstr "Click here to get suggestions for the current location."
 
 #: src/features/contact/Contact.tsx:34
 msgid "Kontakt"
@@ -463,11 +478,11 @@ msgstr "Contact form"
 
 #: src/common/settings/Settings.tsx:91
 msgid "Konto löschen"
-msgstr ""
+msgstr "Delete account"
 
 #: src/common/settings/Settings.tsx:41
-msgid "Kontodetails"
-msgstr ""
+msgid "Kontodaten"
+msgstr "Account details"
 
 #: src/common/components/Home.tsx:45
 msgid "Los gehts!"
@@ -477,11 +492,11 @@ msgstr "Let's go!"
 #: src/common/settings/Settings.tsx:105
 #: src/features/location/DeleteLocationModal.tsx:87
 msgid "Löschen"
-msgstr ""
+msgstr "Delete"
 
 #: src/common/settings/Settings.tsx:94
 msgid "Nach dem Löschen kann das Konto nicht mehr wiederhergestellt werden. Bitte klicke nur wenn du dir sicher bist!"
-msgstr ""
+msgstr "Once deleted, the account cannot be restored. Please only click if you are sure!"
 
 #: src/features/contact/ContactForm.tsx:78
 #: src/features/location/LocationField.tsx:21
@@ -494,32 +509,32 @@ msgstr "If you contact us through the contact options offered, your details will
 
 #: src/features/location/Dashboard.tsx:55
 msgid "Neu laden"
-msgstr ""
+msgstr "Reload"
 
 #: src/features/location/AddLocation.tsx:252
 #: src/features/location/NoLocation.tsx:71
 msgid "Neuen Ort hinzufügen"
-msgstr ""
+msgstr "Add Location"
 
 #: src/common/auth/ChangePassword.tsx:88
 msgid "Neues Passwort"
-msgstr ""
+msgstr "New password"
 
 #: src/common/auth/EmailVerificationSent.tsx:58
 msgid "Nicht erhalten?"
-msgstr ""
+msgstr "No email received?"
 
 #: src/features/location/LocationDetails.tsx:205
 msgid "Niedrigster Preis pro Stunde"
-msgstr ""
+msgstr "Lowest price per hour"
 
 #: src/features/location/LocationDetails.tsx:233
 msgid "Niedrigster Preis pro Tag im Monat"
-msgstr ""
+msgstr "Lowest price per day of month"
 
 #: src/features/location/LocationDetails.tsx:221
 msgid "Niedrigster Preis pro Wochentag"
-msgstr ""
+msgstr "Lowest price per day of week"
 
 #: src/common/components/PrivacyPolicy.tsx:152
 msgid "Nutzer dieser Webseite können von ihrem Widerspruchsrecht Gebrauch machen und der Verarbeitung ihrer personenbezogenen Daten zu jeder Zeit widersprechen."
@@ -527,60 +542,52 @@ msgstr "Users of this website can exercise their right to object to the processi
 
 #: src/features/location/AddLocation.tsx:158
 msgid "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen."
-msgstr ""
+msgstr "Optionally, you can select the desired district after selecting the state."
 
-#: src/features/location/NamedLocationField/NamedLocationField.tsx:189
+#: src/features/location/NamedLocationField/NamedLocationField.tsx:191
 msgid "Ort"
-msgstr ""
-
-#: src/features/location/AddLocation.tsx:25
-#~ msgid "Ort hinzufügen"
-#~ msgstr ""
+msgstr "Location"
 
 #: src/common/components/Imprint.tsx:42
 msgid "Ort:"
 msgstr "Location:"
 
-#: src/features/location/RegionLocationField/RegionLocationField.tsx:188
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:189
 msgid "PLZ"
-msgstr ""
+msgstr "Postal code"
 
+#: src/common/auth/PasswordField.tsx:16
 #: src/common/settings/Settings.tsx:51
-msgid "Password"
-msgstr ""
+msgid "Passwort"
+msgstr "Password"
 
 #: src/common/auth/PasswordRecoveryEmail.tsx:63
 #: src/common/auth/ResetPassword.tsx:76
-msgid "Password reset ist fehlgeschlagen."
-msgstr ""
-
-#: src/common/auth/Login.tsx:177
-#: src/common/auth/PasswordRecoveryEmail.tsx:67
-#: src/common/auth/ResetPassword.tsx:80
-msgid "Password vergessen?"
-msgstr ""
-
-#: src/common/auth/PasswordRecoveryEmail.tsx:75
-msgid "Password zurücksetzen"
-msgstr ""
-
-#: src/common/auth/ChangePassword.tsx:80
-#: src/common/settings/Settings.tsx:59
-msgid "Password ändern"
-msgstr ""
-
-#: src/common/auth/ChangePassword.tsx:76
-msgid "Passwordänderung ist fehlgeschlagen."
-msgstr ""
-
-#: src/common/auth/PasswordField.tsx:16
-msgid "Passwort"
-msgstr ""
+msgid "Passwort reset ist fehlgeschlagen."
+msgstr "Password reset failed."
 
 #: src/common/auth/ChangePassword.tsx:98
 #: src/common/auth/ResetPassword.tsx:92
 msgid "Passwort speichern"
-msgstr ""
+msgstr "Save password"
+
+#: src/common/auth/Login.tsx:177
+#: src/common/auth/PasswordRecoveryEmail.tsx:67
+#: src/common/auth/ResetPassword.tsx:80
+msgid "Passwort vergessen?"
+msgstr "Forgot password?"
+
+#: src/common/auth/PasswordRecoveryEmail.tsx:75
+msgid "Passwort zurücksetzen"
+msgstr "Reset password"
+
+#: src/common/settings/Settings.tsx:59
+msgid "Passwort ändern"
+msgstr "Change password"
+
+#: src/common/auth/ChangePassword.tsx:76
+msgid "Passwortänderung ist fehlgeschlagen."
+msgstr "Changing password failed."
 
 #: src/common/components/PrivacyPolicy.tsx:134
 msgid "Rechte des Nutzers"
@@ -589,19 +596,20 @@ msgstr "User Rights"
 #: src/features/location/AddLocation.tsx:266
 #: src/features/location/LocationField.tsx:21
 msgid "Region"
-msgstr ""
+msgstr "Region"
 
 #: src/common/auth/Login.tsx:129
-#: src/common/auth/Signup.tsx:77
 #: src/common/auth/Signup.tsx:91
 msgid "Registrieren"
-msgstr ""
+msgstr "Sign up"
 
 #: src/features/location/LocationDetails.tsx:146
 msgid ""
 "Schlussendlich ist es möglich den Ort zu löschen, falls er nicht \n"
 "mehr relevant für dich ist."
 msgstr ""
+"It is also possible to delete the location if you don't need it \n"
+"anymore."
 
 #: src/features/contact/ContactForm.tsx:141
 msgid "Senden"
@@ -621,7 +629,7 @@ msgstr "It's really simple, just sign up, create a location and we'll record fue
 
 #: src/features/location/AddLocation.tsx:173
 msgid "Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden."
-msgstr ""
+msgstr "You can create the location as soon as you have selected a valid location proposal."
 
 #: src/common/components/NoMatch.tsx:24
 msgid "Startseite"
@@ -629,21 +637,23 @@ msgstr "Dashboard"
 
 #: src/features/location/AddLocation.tsx:265
 msgid "Suche"
-msgstr ""
+msgstr "Search"
 
 #: src/features/location/CurrentPriceField.tsx:73
 msgid "Tankstellen"
-msgstr ""
+msgstr "Gas stations"
 
-#: src/features/location/PriceHistoryChart.tsx:228
+#: src/features/location/PriceHistoryChart.tsx:227
 msgid "Tankstellen:"
-msgstr ""
+msgstr "Gas stations:"
 
 #: src/features/location/AddLocation.tsx:140
 msgid ""
 "Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du \n"
 "erhältst die gefundenen Vorschläge angezeigt."
 msgstr ""
+"Just type in a search term (for instance an address or location name) \n"
+"and we will show you suggested locations."
 
 #: src/common/components/PrivacyPolicy.tsx:122
 msgid "Umgang mit Kontaktdaten"
@@ -666,6 +676,8 @@ msgid ""
 "Wenn du \"Region\" auswählst, kannst du entweder einen Bezirk oder \n"
 "ein Bundesland auswählen."
 msgstr ""
+"If you want to create a location based on region, you can select \n"
+"either a district or federal state."
 
 #: src/common/components/PrivacyPolicy.tsx:150
 msgid "Widerspruchsrecht"
@@ -681,11 +693,11 @@ msgstr "Vienna"
 
 #: src/common/settings/DeleteAccountModal.tsx:67
 msgid "Willst du dein Konto wirklich löschen?"
-msgstr ""
+msgstr "Are you sure you want to delete your account?"
 
 #: src/features/location/DeleteLocationModal.tsx:79
 msgid "Willst du den Ort wirklich löschen?"
-msgstr ""
+msgstr "Are you sure you want to delete your location?"
 
 #: src/common/components/PrivacyPolicy.tsx:112
 msgid "Wir verarbeiten nur die im Zuge der Registrierung angegebene E-Mail-Adresse. Diese wird nur zur Identifikation des Benutzers und zur Zusendung von E-Mails die der Funktionserhaltung dienen (z. B. Passwort-Reset). Alle personenbezogenen Daten werden bei Löschung des Accounts entfernt."
@@ -701,15 +713,23 @@ msgstr "What is the purpose of your request?"
 
 #: src/features/location/AddLocation.tsx:259
 msgid "Wähle den Typ von Ortsangabe aus."
-msgstr ""
+msgstr "Please select the type of location."
 
 #: src/features/location/AddLocation.tsx:279
 msgid "Wähle den Typ von Treibstoff aus für den Preise aufgezeichnet werden sollen."
+msgstr "Please select the type of fuel for which prices should be recorded."
+
+#: src/features/location/RegionLocationField/RegionLocationField.tsx:114
+msgid ""
+"Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise \n"
+"aufgezeichnet werden sollen."
 msgstr ""
+"Please select a federal state and optional a district for which fuel \n"
+"prices should be recorded."
 
 #: src/features/location/AddLocation.tsx:154
 msgid "Wähle hier das gewünschte Bundesland aus."
-msgstr ""
+msgstr "Select the desired federal state here."
 
 #: src/common/components/PrivacyPolicy.tsx:55
 msgid "Zugriffsdaten"
@@ -725,50 +745,57 @@ msgid ""
 "für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, Super und \n"
 "Gas zur Verfügung."
 msgstr ""
+"The fuel type for which prices should be recorded can be selected in \n"
+"addition to the location. You can select between diesel, gasoline (Super), \n"
+"and autogas (Gas)."
 
 #: src/features/location/AddLocation.tsx:34
 msgid "breadcrumb.addLocation"
-msgstr ""
+msgstr "Add Location"
 
 #: src/common/auth/ChangePassword.tsx:16
 msgid "breadcrumb.changePassword"
-msgstr ""
+msgstr "Change Password"
 
 #: src/features/contact/Contact.tsx:12
 msgid "breadcrumb.contact"
-msgstr ""
+msgstr "Contact"
 
 #: src/features/location/Dashboard.tsx:16
 msgid "breadcrumb.dashboard"
-msgstr ""
+msgstr "Startseite"
 
 #: src/features/location/LocationDetails.tsx:39
 msgid "breadcrumb.locationDetails"
-msgstr ""
+msgstr "Location"
 
 #: src/common/settings/Settings.tsx:16
 msgid "breadcrumb.settings"
-msgstr ""
+msgstr "Settings"
+
+#: src/common/auth/ChangePassword.tsx:80
+msgid "changePassword.title"
+msgstr "Change Password"
 
 #: src/common/types.ts:90
 msgid "dateRange.1m"
-msgstr ""
+msgstr "1m"
 
 #: src/common/types.ts:89
 msgid "dateRange.1w"
-msgstr ""
+msgstr "1w"
 
 #: src/common/types.ts:91
 msgid "dateRange.3m"
-msgstr ""
+msgstr "3m"
 
 #: src/common/types.ts:92
 msgid "dateRange.6m"
-msgstr ""
+msgstr "6m"
 
 #: src/common/types.ts:88
 msgid "dateRange.all"
-msgstr ""
+msgstr "all"
 
 #: src/common/components/Footer.tsx:29
 msgid "footer.privacy"
@@ -776,20 +803,24 @@ msgstr "Privacy"
 
 #: src/common/types.ts:53
 msgid "fuelType.diesel"
-msgstr ""
+msgstr "Diesel"
 
 #: src/common/types.ts:55
 msgid "fuelType.gas"
-msgstr ""
+msgstr "Autogas"
 
 #: src/common/types.ts:54
 msgid "fuelType.super"
-msgstr ""
+msgstr "Super"
 
 #: src/common/components/BasePage.tsx:30
 msgid "headerDropdown.contact"
-msgstr ""
+msgstr "Contact"
 
 #: src/common/components/BasePage.tsx:22
 msgid "headerDropdown.settings"
-msgstr ""
+msgstr "Einstellungen"
+
+#: src/common/auth/Signup.tsx:77
+msgid "register.title"
+msgstr "Create Account"

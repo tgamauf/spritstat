@@ -74,7 +74,7 @@ function Signup(): JSX.Element {
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title"><Trans>Registrieren</Trans></h1>
+          <h1 className="title"><Trans id="register.title">Registrieren</Trans></h1>
           <form onSubmit={onSubmit}>
             <EmailField value={email} update={setEmail} />
             <PasswordWithValidationField

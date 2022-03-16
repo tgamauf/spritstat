@@ -80,11 +80,11 @@ function Login(): JSX.Element {
     notificationSeverity = BasePageSeverity.Info;
     notificationText =
       t`Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze 
-      einen Password-Reset-Link zugesendet.`;
+      einen Passwort-Reset-Link zugesendet.`;
  } else if (passwordChanged) {
     notificationSeverity = BasePageSeverity.Info;
     notificationText =
-      t`Dein Password wurde geändert, nun kannst du dich mit deinem neuen Password 
+      t`Dein Passwort wurde geändert, nun kannst du dich mit deinem neuen Passwort 
       einloggen.`;
  } else if (emailVerified) {
     notificationSeverity = BasePageSeverity.Info;
@@ -174,7 +174,7 @@ function Login(): JSX.Element {
             to={RouteNames.PasswordRecoveryEmail}
             data-test="link-recovery-email"
           >
-            <Trans>Password vergessen?</Trans>
+            <Trans>Passwort vergessen?</Trans>
           </Link>
         </p>
       </CenteredBox>

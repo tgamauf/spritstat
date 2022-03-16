@@ -46,7 +46,7 @@ export default function Unsubscribe(): JSX.Element {
     <BasePage>
       {error ? (
         <LoadingError
-          message={t`Abmeldung fehlgeschlagen, eventuell ist der Abmeldungslink ungültig.`}
+          message={t`Abmeldung fehlgeschlagen, eventuell ist der Abmeldelink ungültig.`}
           children={homeLink}
         />
       ) : (
