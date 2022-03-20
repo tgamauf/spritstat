@@ -241,7 +241,10 @@ export function NamedLocationField({
       <div className="control">
         <a
           className="button is-ghost"
-          title={`Übernimm deinen aktuellen Ort.`}
+          title={intl.formatMessage({
+            description: "NamedLocationField title button current location",
+            defaultMessage: "Übernimm deinen aktuellen Ort."
+          })}
           ref={buttonRef}
           onClick={() => requestLocation()}
           data-test="btn-location"

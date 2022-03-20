@@ -1,15 +1,7 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {i18n as i18nLib} from "@lingui/core";
-import {de, en} from 'make-plural/plurals'
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 import {RootState} from "../app/store";
 
-
-// Initial plurals
-i18nLib.loadLocaleData({
-  de: { plurals: de },
-  en: { plurals: en },
-})
 
 enum Locale {
   DE = "de",
@@ -26,24 +18,14 @@ interface I18nState {
   locale: Locale
 }
 
-async function activateLocale(locale: Locale) {
-    const {messages} = await import(`../../locales/${locale}/messages.po`)
-    i18nLib.load(locale, messages);
-    i18nLib.activate(locale);
-}
-
-const setLocale = createAsyncThunk<Locale, Locale>(
-  "locale/activate",
-  async (locale) => {
-    try {
-      await activateLocale(locale)
-
-      return locale;
-    } catch (e) {
-      throw new Error(`Failed to load locale "${locale}": ${e}`);
-    }
+async function loadMessages(locale: Locale) {
+  switch (locale) {
+    case Locale.EN:
+      return await import("../locales/en.json");
+    default:
+      return;
   }
-)
+}
 
 function initialState(): I18nState {
   let locale;
@@ -61,16 +43,14 @@ function initialState(): I18nState {
 const i18n = createSlice({
   name: "i18n",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(
-      setLocale.fulfilled,
-      (state, action) => {
-      state.locale = action.payload;
-    })
-  }
+  reducers: {
+    setLocale: (state, action: PayloadAction<I18nState>) => {
+      state.locale = action.payload.locale;
+   }
+  },
 });
 
+const {setLocale} = i18n.actions;
 const selectLocale = (state: RootState): Locale => state.i18n.locale;
 
-export {activateLocale, Locale, localeNames, i18n, selectLocale, setLocale};
+export {i18n, Locale, localeNames, loadMessages, selectLocale, setLocale};

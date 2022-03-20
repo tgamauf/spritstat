@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import {Location, Station} from "../../common/types";
 import {useGetCurrentPriceQuery} from "./priceApiSlice";
@@ -26,6 +26,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
   const {data, error, isLoading} = useGetCurrentPriceQuery(location);
   const [currentPrice, setCurrentPrice] = useState<number>(NO_CURRENT_PRICE);
   const [stations, setStations] = useState<Stations>([]);
+  const intl = useIntl();
 
   useEffect(() => {
     function createMapsURL(station: Station): string {
@@ -63,14 +64,24 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
       {currentPrice ? (
         <div>
           <div className="tile is-child content mb-5">
-            <p className="card-key mb-0">Aktuell niedrigster Preis</p>
+            <p className="card-key mb-0">
+                {intl.formatMessage({
+                  description: "CurrentPriceField price title",
+                  defaultMessage: "Aktuell niedrigster Preis"
+                })}
+            </p>
             {currentPrice !== NO_CURRENT_PRICE && (
               <p className="card-value">{currentPrice} €</p>
             )}
           </div>
           {stations && stations.length > 0 && (
             <div className="tile is-child content">
-              <span className="card-key"><Trans>Tankstellen</Trans></span>
+              <span className="card-key">
+                {intl.formatMessage({
+                  description: "CurrentPriceField stations title",
+                  defaultMessage: "Tankstellen"
+                })}
+              </span>
               <div className="card-value mt-0">
                 {stations.map((item, index) => {
                   return (

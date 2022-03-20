@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
-import {defineMessage, t, Trans} from "@lingui/macro";
+import {defineMessage, useIntl} from "react-intl";
 
 import NoLocation from "./NoLocation";
 import BasePage from "../../common/components/BasePage";
@@ -13,7 +13,10 @@ import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: defineMessage({id: "breadcrumb.dashboard", message: "Startseite"}),
+  name: defineMessage({
+    description: "Dashboard breadcrumb",
+    defaultMessage: "Startseite"
+  }),
   icon: faHome,
   destination: RouteNames.Dashboard,
 };
@@ -29,6 +32,7 @@ export default function Dashboard() {
     refetch
  } = useGetLocationsQuery();
   const [errorMessage, setErrorMessage] = useState("");
+  const intl = useIntl();
 
   useEffect(() => {
     if (isError) {
@@ -49,10 +53,16 @@ export default function Dashboard() {
     mainComponent = (
       <LoadingError
         loading={isFetching}
-        message={t`Deine Orte konnten nicht geladen werden.`}
+        message={intl.formatMessage({
+          description: "Dashboard error",
+          defaultMessage: "Deine Orte konnten nicht geladen werden."
+        })}
         children={
           <Link className="has-text-primary" to="" onClick={() => refetch()}>
-            <Trans>Neu laden</Trans>
+            {intl.formatMessage({
+              description: "Dashboard reload button",
+              defaultMessage: "Neu laden"
+            })}
           </Link>
        }
       />

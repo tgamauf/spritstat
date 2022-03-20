@@ -3,14 +3,13 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 import introJs from "intro.js";
-import {t, Trans} from "@lingui/macro";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "../../common/components/CenteredBox";
 import {RouteNames} from "../../common/types";
-import {useAppSelector} from "../../common/utils";
+import {getFormattedIntroOption, useAppSelector} from "../../common/utils";
 import {selectIntroSettingsNoLocation} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
-import {INTRO_OPTIONS} from "../../common/constants";
 
 
 const BTN_ADD_LOCATION_ID = "btn-add";
@@ -19,6 +18,7 @@ export default function NoLocation() {
   const introActive = useAppSelector(selectIntroSettingsNoLocation);
   const [setSettings] = useSetSettingMutation();
   const [introDone, setIntroDone] = useState(false);
+  const intl = useIntl();
 
   useEffect(() => {
     if (introDone) {
@@ -34,11 +34,14 @@ export default function NoLocation() {
   useEffect(() => {
     if (location && introActive) {
       introJs().setOptions({
-        ...INTRO_OPTIONS,
+        ...getFormattedIntroOption(intl),
         steps: [{
           element: `#${BTN_ADD_LOCATION_ID}`,
-          intro: t`Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort 
-          zu erstellen.`
+          intro: intl.formatMessage({
+            description: "NoLocation intro 1",
+            defaultMessage: "Du hast noch keinen Ort angelegt. Klicke hier um deinen " +
+              "ersten Ort zu erstellen."
+          })
         }]
       }).onexit(
         () => setIntroDone(true)
@@ -52,10 +55,11 @@ export default function NoLocation() {
         <div className="tile is-parent is-vertical is-align-items-center">
           <div className="tile is-child is-4">
             <p className="box has-background-info has-text-centered is-family-monospace">
-              <Trans>
-                Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet
-                werden sollen.
-              </Trans>
+              {intl.formatMessage({
+                description: "NoLocation text",
+                defaultMessage: "Fügen einen neuen Ort hinzu für den Spritpreise " +
+                  "aufgezeichnet werden sollen."
+              })}
             </p>
           </div>
           <div className="tile is-child" id={BTN_ADD_LOCATION_ID}>
@@ -68,7 +72,12 @@ export default function NoLocation() {
                       icon={faMapMarkerAlt}
                     />
                   </p>
-                  <p className="mt-3"><Trans>Neuen Ort hinzufügen</Trans></p>
+                  <p className="mt-3">
+                    {intl.formatMessage({
+                      description: "NoLocation button text",
+                      defaultMessage: "Neuen Ort hinzufügen"
+                    })}
+                  </p>
                 </div>
               </Link>
             </CenteredBox>

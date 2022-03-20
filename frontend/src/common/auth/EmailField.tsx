@@ -29,7 +29,7 @@ export default function EmailField({
           type="email"
           placeholder={intl.formatMessage({
             description: "EmailField placeholder",
-            defaultMessage: "Email."
+            defaultMessage: "Email"
           })}
           value={value}
           required={true}

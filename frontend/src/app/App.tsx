@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Route, Routes, useLocation} from "react-router-dom";
-import moment from "moment-timezone";
+import {IntlProvider} from "react-intl";
 
 import {RouteNames} from "../common/types";
 import NoMatch from "../common/components/NoMatch";
@@ -25,18 +25,33 @@ import LocationDetails from "../features/location/LocationDetails";
 import {SettingsProvider} from "../common/settings/SettingsProvider";
 import Unsubscribe from "../common/settings/Unsubscribe";
 import {useAppSelector} from "../common/utils";
-import {Locale, selectLocale} from "../common/i18n";
-import {IntlProvider} from "react-intl";
+import {loadMessages, Locale, selectLocale} from "../common/i18n";
 
 
 export default function App() {
   const location = useLocation();
   const locale = useAppSelector(selectLocale);
+  const [messagesLocale, setMessagesLocale] = useState(Locale.DE);
+  const [messages, setMessages] = useState();
+
+  useEffect(() => {
+    loadMessages(locale)
+      .then((messages) => {
+        console.log(`Set locale to '${locale}': ${JSON.stringify(messages)}`);
+        setMessagesLocale(locale);
+        setMessages(messages);
+      })
+      .catch((e) => console.error(`Failed to load locale '${locale}': ${e}`))
+  }, [locale]);
 
   console.debug(`Navigating to location ${JSON.stringify(location)}`);
-
   return (
-    <IntlProvider defaultLocale={Locale.DE} locale={locale} key={locale}>
+    <IntlProvider
+      defaultLocale={Locale.DE}
+      locale={messagesLocale}
+      messages={messages}
+      key={messagesLocale}
+    >
       <AuthProvider>
         <SettingsProvider>
           <Routes>

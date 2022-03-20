@@ -10,7 +10,12 @@ export default function Imprint() {
   return (
     <BasePage>
       <CenteredBox>
-        <h1 className="title">Impressum</h1>
+        <h1 className="title">
+          {intl.formatMessage({
+            description: "Imprint title",
+            defaultMessage: "Impressum"
+          })}
+        </h1>
         <div className="block has-text-left">
           <p>
             {intl.formatMessage({

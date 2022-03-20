@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {faChartLine, faTrash} from "@fortawesome/free-solid-svg-icons";
 import introJs from "intro.js";
-import {defineMessage, t, Trans} from "@lingui/macro";
+import {defineMessage, useIntl} from "react-intl";
 
 import BasePage from "../../common/components/BasePage";
 import {DateRange, Location, RouteNames} from "../../common/types";
@@ -21,10 +21,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import AveragePriceChart from "./AveragePriceChart";
 import PriceStationFrequencyChart from "./PriceStationFrequencyChart";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
-import {INTRO_OPTIONS} from "../../common/constants";
-import {updateIntroStepElement, useAppSelector} from "../../common/utils";
+import {getFormattedIntroOption, updateIntroStepElement, useAppSelector} from "../../common/utils";
 import {selectIntroSettingsLocationDetails} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
+import AveragePriceDayOfWeekChart from "./AveragePriceDayOfWeekChart";
 
 
 const FIELD_LOCATION_DETAILS_ID = "field-location-details";
@@ -36,7 +36,10 @@ const CHART_STATION_ID = "chart-station";
 const BTN_DELETE_LOCATION_ID = "btn-delete-location";
 
 const breadcrumb: BreadcrumbItem = {
-  name: defineMessage({id: "breadcrumb.locationDetails", message: "Ort"}),
+  name: defineMessage({
+    description: "LocationDetails breadcrumb",
+    defaultMessage: "Ort"
+  }),
   icon: faChartLine,
   destination: RouteNames.LocationDetails,
 };
@@ -62,6 +65,7 @@ export default function LocationDetails(): JSX.Element {
   const introActive = useAppSelector(selectIntroSettingsLocationDetails);
   const [setSettings] = useSetSettingMutation();
   const [introDone, setIntroDone] = useState(false);
+  const intl = useIntl();
 
   useLayoutEffect(() => {
     if (!isSuccess || !locations) {
@@ -94,57 +98,91 @@ export default function LocationDetails(): JSX.Element {
   useEffect(() => {
     if (location && introActive) {
       introJs().setOptions({
-        ...INTRO_OPTIONS,
+        ...getFormattedIntroOption(intl),
         steps: [
           {
-            intro: t`Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes angezeigt.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 1",
+              defaultMessage: "Auf dieser Seite werden detaillierte Preisdaten des " +
+                "gewählten Ortes angezeigt."
+            })
           },
           {
             element: `#${FIELD_LOCATION_DETAILS_ID}`,
-            intro: t`Auch hier wird die Beschreibung des Ortes und der aktuelle Preis 
-            angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen 
-            zu klicken um diese auf Google Maps angezeigt zu bekommen.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 2",
+              defaultMessage: "Auch hier wird die Beschreibung des Ortes und der " +
+                "aktuelle Preis angezeigt. Zusätzlich ist es möglich direkt auf den " +
+                "Tankstellennamen zu klicken um diese auf Google Maps angezeigt zu " +
+                "bekommen."
+            })
           },
           {
             element: `#${CHART_HISTORY_ID}`,
-            intro: t`Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten 
-            Treibstoffpreises über den gewählten Zeitraum an.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 3",
+              defaultMessage: "Dieser Graph zeigt den zeitlichen Verlauf des " +
+                "niedrigsten Treibstoffpreises über den gewählten Zeitraum an."
+            })
           },
           {
             element: `#${CHART_HISTORY_ID}`,
-            intro: t`Es ist möglich den Graphen zu vergrößern. Auf einem Mobiltelefon 
-            oder Tablet kann mit Pinch-and-Zoom die Zoomstufe verändert und danach 
-            mit zwei Fingern entlang der x-Achse gescrollt werden. Mit einer Maus 
-            ist das mit STRG + Mausrad, bzw. durch Klick + Ziehen möglich.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 4",
+              defaultMessage: "Es ist möglich den Graphen zu vergrößern. Auf einem " +
+                "Mobiltelefon oder Tablet kann mit Pinch-and-Zoom die Zoomstufe " +
+                "verändert und danach mit zwei Fingern entlang der x-Achse gescrollt " +
+                "werden. Mit einer Maus ist das mit STRG + Mausrad, bzw. durch Klick " +
+                "+ Ziehen möglich."
+            })
           },
           {
             element: `#${BTN_CHART_HISTORY_DATE_RANGE_ID}`,
-            intro: t`Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 5",
+              defaultMessage: "Für alle Graphen ist es möglich den angezeigten " +
+                "Zeitraum zu wählen."
+            })
           },
           {
             element: `#${CHART_HOUR_ID}`,
-            intro: t`Dieser Graph zeigt den durchschnittlich niedrigsten Preis pro 
-            Tageszeit im gewählten Zeitraum an.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 6",
+              defaultMessage: "Dieser Graph zeigt den durchschnittlich niedrigsten " +
+                "Preis pro Tageszeit im gewählten Zeitraum an."
+            })
           },
           {
             element: `#${CHART_WEEKDAY_ID}`,
-            intro: t`Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro 
-            Wochentag im gewählten Zeitraum an.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 7",
+              defaultMessage: "Dieser Graph zeigt den durchschnittlichen niedrigsten " +
+                "Preis pro Wochentag im gewählten Zeitraum an."
+            })
           },
           {
             element: `#${CHART_DAY_OF_MONTH_ID}`,
-            intro: t`Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro 
-            Tag im Monat im gewählten Zeitraum an.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 8",
+              defaultMessage: "Dieser Graph zeigt den durchschnittlichen niedrigsten " +
+                "Preis pro Tag im Monat im gewählten Zeitraum an."
+            })
           },
           {
             element: `#${CHART_STATION_ID}`,
-            intro: t`Dieser Graph zeigt an wie häufig eine Tankstelle im gewählten 
-            Zeitraum den niedrigsten Preis angeboten hat.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 9",
+              defaultMessage: "Dieser Graph zeigt an wie häufig eine Tankstelle im " +
+                "gewählten Zeitraum den niedrigsten Preis angeboten hat."
+            })
           },
           {
             element: `#${BTN_DELETE_LOCATION_ID}`,
-            intro: t`Schlussendlich ist es möglich den Ort zu löschen, falls er nicht 
-            mehr relevant für dich ist.`
+            intro: intl.formatMessage({
+              description: "LocationDetails intro 10",
+              defaultMessage: "Schlussendlich ist es möglich den Ort zu löschen, " +
+                "falls er nicht mehr relevant für dich ist."
+            })
           }
         ]
       }).onexit(
@@ -170,13 +208,19 @@ export default function LocationDetails(): JSX.Element {
         <div className="has-content-right">
           <button
             className="button is-primary is-outlined is-small is-right"
-            title={t`Entferne diesen Ort.`}
+            title={intl.formatMessage({
+              description: "LocationDetails delete button title",
+              defaultMessage: "Entferne diesen Ort."
+            })}
             data-test="btn-delete-location-small"
             onClick={() => setDeleteModalActive(true)}
             id={BTN_DELETE_LOCATION_ID}
           >
             <FontAwesomeIcon className="icon" icon={faTrash}/>
-            <span><Trans>Entfernen</Trans></span>
+            <span>{intl.formatMessage({
+              description: "LocationDetails delete button text",
+              defaultMessage: "Entfernen"
+            })}</span>
           </button>
         </div>
         <div className="tile is-ancestor">
@@ -202,7 +246,10 @@ export default function LocationDetails(): JSX.Element {
             </div>
             <div className="tile box" data-test="price-hour" id={CHART_HOUR_ID}>
               <AveragePriceChart
-                name={t`Niedrigster Preis pro Stunde`}
+                name={defineMessage({
+                  description: "LocationDetails lowest price per hour graph title",
+                  defaultMessage: "Niedrigster Preis pro Stunde"
+                })}
                 location={location}
                 queryHook={useLazyGetPriceHourDataQuery}
                 dateRangeItems={[
@@ -217,10 +264,8 @@ export default function LocationDetails(): JSX.Element {
               />
             </div>
             <div className="tile box" data-test="price-day-of-week" id={CHART_WEEKDAY_ID}>
-              <AveragePriceChart
-                name={t`Niedrigster Preis pro Wochentag`}
+              <AveragePriceDayOfWeekChart
                 location={location}
-                queryHook={useLazyGetPriceDayOfWeekDataQuery}
                 setErrorMessage={setErrorMessage}
               />
             </div>
@@ -230,7 +275,10 @@ export default function LocationDetails(): JSX.Element {
               id={CHART_DAY_OF_MONTH_ID}
             >
               <AveragePriceChart
-                name={t`Niedrigster Preis pro Tag im Monat`}
+                name={defineMessage({
+                  description: "LocationDetails lowest price per day of month graph title",
+                  defaultMessage: "Niedrigster Preis pro Tag im Monat"
+                })}
                 location={location}
                 queryHook={useLazyGetPriceDayOfMonthDataQuery}
                 setErrorMessage={setErrorMessage}
@@ -258,7 +306,10 @@ export default function LocationDetails(): JSX.Element {
     mainComponent = (
       <LoadingError
         loading={isFetching && !isLocationError}
-        message={t`Der Ort konnte nicht geladen werden.`}
+        message={intl.formatMessage({
+          description: "LocationDetails error",
+          defaultMessage: "Der Ort konnte nicht geladen werden."
+        })}
       >
         <Link
           className="has-text-primary"
@@ -266,7 +317,10 @@ export default function LocationDetails(): JSX.Element {
           onClick={() => refetch()}
           data-test="btn-reload-location"
         >
-          Neu laden
+          {intl.formatMessage({
+            description: "LocationDetails reload button",
+            defaultMessage: "Neu laden"
+          })}
         </Link>
       </LoadingError>
     );

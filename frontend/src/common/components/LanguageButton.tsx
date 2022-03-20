@@ -48,7 +48,7 @@ export default function LanguageButton(
                   href="#"
                   className="dropdown-item"
                   key={index}
-                  onClick={() => dispatch(setLocale(value))}
+                  onClick={() => dispatch(setLocale({locale: value}))}
                 >
                   {name}
                 </a>

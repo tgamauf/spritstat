@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import {DateRange, dateRangeNames} from "../types";
-import {useIntl} from "react-intl";
+import {MessageDescriptor, useIntl} from "react-intl";
 
 interface Props {
   items: DateRange[];
@@ -13,7 +13,7 @@ export default function DateRangeButton(
 ): JSX.Element {
   const intl = useIntl();
   const itemRefs: React.MutableRefObject<HTMLButtonElement>[] = [];
-  for (const _ in items) {
+  for (const _ of items) {
     itemRefs.push(useRef() as React.MutableRefObject<HTMLButtonElement>)
   }
 
@@ -42,7 +42,7 @@ export default function DateRangeButton(
             ref={itemRefs[index]}
             onClick={() => setSelectedValue(value)}
           >
-            {intl.formatMessage(dateRangeNames.get(value))}
+            {intl.formatMessage(dateRangeNames.get(value) as MessageDescriptor)}
           </button>
         );
       })

@@ -44,12 +44,12 @@ export default function PasswordField({
   if (passwordVisible) {
     showButtonTitle = intl.formatMessage({
       description: "PasswordField hide message",
-      defaultMessage: "Klicke hier um dein Passwort zu verstecken."
+      defaultMessage: "Passwort verstecken."
     });
  } else {
     showButtonTitle = intl.formatMessage({
       description: "PasswordField show message",
-      defaultMessage: "Klicke hier um dein Passwort anzuzeigen."
+      defaultMessage: "Passwort anzeigen."
     });
  }
   return (

@@ -93,11 +93,26 @@ enum DateRange {
 }
 
 const dateRangeNames = new Map<DateRange, MessageDescriptor>([
-  [DateRange.All, defineMessage({id: "dateRange.all", message: "Alle"})],
-  [DateRange.OneWeek, defineMessage({id: "dateRange.1w", message: "1W"})],
-  [DateRange.OneMonth, defineMessage({id: "dateRange.1m", message: "1M"})],
-  [DateRange.ThreeMonths, defineMessage({id: "dateRange.3m", message: "3M"})],
-  [DateRange.SixMonths, defineMessage({id: "dateRange.6m", message: "6M"})],
+  [
+    DateRange.All,
+    defineMessage({description: "DateRange all", defaultMessage: "Alle"})
+  ],
+  [
+    DateRange.OneWeek,
+    defineMessage({description: "DateRange 1w", defaultMessage: "1W"})
+  ],
+  [
+    DateRange.OneMonth,
+    defineMessage({description: "DateRange 1m", defaultMessage: "1M"})
+  ],
+  [
+    DateRange.ThreeMonths,
+    defineMessage({description: "DateRange 3m", defaultMessage: "3M"})
+  ],
+  [
+    DateRange.SixMonths,
+    defineMessage({description: "DateRange 6m", defaultMessage: "6M"})
+  ],
 ]);
 
 interface Station {

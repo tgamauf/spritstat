@@ -15,11 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|js)x?$/,
-        include: [
-          path.join(__dirname, 'node_modules/react-intl'),
-          path.join(__dirname, 'node_modules/intl-messageformat'),
-          path.join(__dirname, 'node_modules/@formatjs/icu-messageformat-parser'),
-        ],
+
         exclude: /node_modules/,
         use: ["babel-loader"],
       },

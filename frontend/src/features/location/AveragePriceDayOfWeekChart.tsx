@@ -11,12 +11,12 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import {IntlShape, MessageDescriptor, useIntl} from "react-intl";
+import {defineMessage, IntlShape, MessageDescriptor, useIntl} from "react-intl";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
-import {PriceDayQuery} from "./locationApiSlice";
+import {useLazyGetPriceDayOfWeekDataQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 import NoGraphDataField from "../../common/components/NoGraphDataField";
 
@@ -25,6 +25,37 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Too
 const BAR_CHART_CONTAINER_NAME = "bar-chart";
 const BAR_COLOR = "#88B04B";
 const BAR_LOWER_BOUND_FRACTION = 0.999;
+const DAY_OF_WEEK_MAPPING: {[key: string]: MessageDescriptor} = {
+  "0": defineMessage({
+    description: "AveragePriceDayOfWeekChart Sunday",
+    defaultMessage: "Sonntag"
+  }),
+  "1": defineMessage({
+    description: "AveragePriceDayOfWeekChart Monday",
+    defaultMessage: "Montag"
+  }),
+  "2": defineMessage({
+    description: "AveragePriceDayOfWeekChart Tuesday",
+    defaultMessage: "Dienstag"
+  }),
+  "3": defineMessage({
+    description: "AveragePriceDayOfWeekChart Wednesday",
+    defaultMessage: "Mittwoch"
+  }),
+  "4": defineMessage({
+    description: "AveragePriceDayOfWeekChart Thursday",
+    defaultMessage: "Donnerstag"
+  }),
+  "5": defineMessage({
+    description: "AveragePriceDayOfWeekChart Friday",
+    defaultMessage: "Freitag"
+  }),
+  "6": defineMessage({
+    description: "AveragePriceDayOfWeekChart Saturday",
+    defaultMessage: "Samstag"
+  }),
+}
+
 
 interface ChartDataProps {
   intl: IntlShape;
@@ -58,11 +89,13 @@ class ChartData {
 }
 
 class ChartConfig implements ChartConfiguration {
+  private intl: IntlShape;
+
   public type: ChartType = "bar";
   public options: ChartOptions<"bar">;
   public data: ChartData;
 
-  constructor(name: MessageDescriptor, isMobile: boolean, intl: IntlShape, data: ChartData) {
+  constructor(isMobile: boolean, intl: IntlShape, data: ChartData) {
     // As the difference between the weekdays isn't really all too significant
     //  we set the minimum so that the lowest bar is BAR_LOWER_BOUND_FRACTION of
     //  the scale. We ignore 0 as this isn't a valid value, but is added if no
@@ -70,6 +103,7 @@ class ChartConfig implements ChartConfiguration {
     const minValue = Math.min(...data.datasets[0].data.filter(
       (value) => value > 0)
     );
+    this.intl = intl;
     this.options = {
       interaction: {
         mode: "nearest",
@@ -81,7 +115,10 @@ class ChartConfig implements ChartConfiguration {
       plugins: {
         title: {
           display: true,
-          text: intl.formatMessage(name)
+          text: intl.formatMessage({
+            description: "AveragePriceDayOfWeekChart graph title",
+            defaultMessage: "Niedrigster Preis pro Wochentag"
+          })
         },
         tooltip: {
           callbacks: {
@@ -89,9 +126,19 @@ class ChartConfig implements ChartConfiguration {
             //  a few bars, so this is information that doesn't add anything
             title: () => ""
           },
+          footerFont: {
+            weight: "normal"
+          }
         }
       },
       scales: {
+        x: {
+          ticks: {
+            callback: (value) => {
+              return this.intl.formatMessage(DAY_OF_WEEK_MAPPING[value]);
+            }
+          }
+        },
         y: {
           min: BAR_LOWER_BOUND_FRACTION * minValue
         }
@@ -103,35 +150,17 @@ class ChartConfig implements ChartConfiguration {
 }
 
 interface Props {
-  name: MessageDescriptor;
   location: Location;
-  queryHook: PriceDayQuery,
-  dateRangeItems?: DateRange[];
-  initialDateRange?: DateRange;
   setErrorMessage: (msg: string) => void;
 }
 
-export default function AveragePriceChart(
-  {
-    name,
-    location,
-    queryHook,
-    dateRangeItems = [
-      DateRange.OneMonth,
-      DateRange.ThreeMonths,
-      DateRange.SixMonths,
-      DateRange.All
-    ],
-    initialDateRange = DateRange.OneMonth,
-    setErrorMessage
-  }: Props
-) {
-  const [getPriceData, {isFetching}] = queryHook();
+export default function AveragePriceDayOfWeekChart({location, setErrorMessage}: Props) {
+  const [getPriceData, {isFetching}] = useLazyGetPriceDayOfWeekDataQuery();
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const isMobile = useIsMobile();
   const chartId = `${BAR_CHART_CONTAINER_NAME}-${location.id}`;
-  const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
+  const [selectedDateRange, setSelectedDateRange] = useState(DateRange.OneMonth);
   const [chartData, setChartData] = useState<ChartData>();
   const intl = useIntl();
 
@@ -141,9 +170,9 @@ export default function AveragePriceChart(
         setChartData(new ChartData({intl, ...data}));
       })
       .catch((e) => {
-        console.error(`[${name}] failed to get price data: ${JSON.stringify(e, null, 2)}`);
+        console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(intl.formatMessage({
-          description: "AveragePriceChart error",
+          description: "AveragePriceDayOfWeekChart error",
           defaultMessage: "Die Preise für diesen Ort konnten nicht abgerufen werden, " +
             "bitte probier es nochmal."
         }));
@@ -161,7 +190,7 @@ export default function AveragePriceChart(
     }
 
     chartRef.current?.destroy();
-    const config = new ChartConfig(name, isMobile, intl, chartData);
+    const config = new ChartConfig(isMobile, intl, chartData);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
   }, [chartData, isMobile, intl]);
@@ -177,7 +206,12 @@ export default function AveragePriceChart(
             <canvas id={chartId} ref={canvasRef}/>
           </div>
           <DateRangeButton
-            items={dateRangeItems}
+            items={[
+              DateRange.OneMonth,
+              DateRange.ThreeMonths,
+              DateRange.SixMonths,
+              DateRange.All,
+            ]}
             selectedValue={selectedDateRange}
             setSelectedValue={setSelectedDateRange}
           />

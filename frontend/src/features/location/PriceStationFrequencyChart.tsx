@@ -11,7 +11,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import {t, Trans} from "@lingui/macro";
+import {IntlShape, useIntl} from "react-intl";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
@@ -29,6 +29,7 @@ const DEFAULT_MAX_TICK_LABEL_LENGTH = 40;
 const MOBILE_MAX_TICK_LABEL_LENGTH = 15;
 
 interface ChartDataProps {
+  intl: IntlShape;
   labels: string[];
   data: number[];
 }
@@ -42,30 +43,30 @@ class ChartData {
     borderColor: string;
   }[];
 
-  constructor(props?: ChartDataProps) {
-    this.labels = [];
+  constructor({intl, labels, data}: ChartDataProps) {
+    this.labels = labels;
     this.datasets = [
       {
-        label: t`Häufigkeit niedrigster Preis pro Tankstelle`,
-        data: [],
+        label: intl.formatMessage({
+          description: "PriceStationFrequencyChart title",
+          defaultMessage: "Häufigkeit niedrigster Preis pro Tankstelle"
+        }),
+        data,
         backgroundColor: BAR_COLOR,
         borderColor: BAR_COLOR
       },
     ];
-
-    if (props) {
-      this.labels = [...props.labels];
-      this.datasets[0].data = [...props.data];
-    }
   }
 }
 
 class ChartConfig implements ChartConfiguration {
+  private intl: IntlShape;
+
   public type: ChartType = "bar";
   public options: ChartOptions<"bar">;
   public data: ChartData;
 
-  constructor(isMobile: boolean, data: ChartData) {
+  constructor(isMobile: boolean, intl: IntlShape, data: ChartData) {
     let maxStationTickLabelLength: number;
     if (isMobile) {
       maxStationTickLabelLength = MOBILE_MAX_TICK_LABEL_LENGTH;
@@ -79,6 +80,7 @@ class ChartConfig implements ChartConfiguration {
     const minValue = Math.min(...data.datasets[0].data.filter(
       (value) => value > 0)
     );
+    this.intl = intl;
     this.options = {
       interaction: {
         mode: "nearest",
@@ -90,7 +92,17 @@ class ChartConfig implements ChartConfiguration {
       plugins: {
         title: {
           display: true,
-          text: t`Häufigkeit niedrigster Preis pro Tankstelle`
+          text: intl.formatMessage({
+            description: "PriceStationFrequencyChart title",
+            defaultMessage: "Häufigkeit niedrigster Preis"
+          })
+        },
+        tooltip: {
+          callbacks: {
+            // Remove reprinting of the label in the tooltip - we only have
+            //  a few bars, so this is information that doesn't add anything
+            title: () => ""
+          },
         }
       },
       scales: {
@@ -149,14 +161,17 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
     DateRange.OneMonth
   );
   const [chartData, setChartData] = useState<ChartData>();
+  const intl = useIntl();
 
   useEffect(() => {
     getPriceStationFrequency({locationId: location.id, dateRange: selectedDateRange}).unwrap()
       .catch((e) => {
         console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
-        setErrorMessage(
-          t`Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.`
-        );
+        setErrorMessage(intl.formatMessage({
+          description: "PriceStationFrequencyChart error",
+          defaultMessage: "Die Preise für diesen Ort konnten nicht abgerufen werden, " +
+            "bitte probier es nochmal."
+        }));
       });
   }, [location, selectedDateRange, isStationsSuccess]);
 
@@ -182,7 +197,9 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
         return stationName;
       });
 
-      setChartData(new ChartData({labels, data: stationFrequencyData.data}));
+      setChartData(
+        new ChartData({intl, labels, data: stationFrequencyData.data})
+      );
     }
   }, [isStationsFetching, isStationFrequencyFetching]);
 
@@ -197,10 +214,10 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
     }
 
     chartRef.current?.destroy();
-    const config = new ChartConfig(isMobile, chartData);
+    const config = new ChartConfig(isMobile, intl, chartData);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
-  }, [chartData, isMobile]);
+  }, [chartData, isMobile, intl]);
 
   let mainComponent;
   if (!isStationsFetching && !isStationFrequencyFetching && chartData) {

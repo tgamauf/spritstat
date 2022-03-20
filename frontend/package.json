@@ -11,8 +11,10 @@
     "db:seed": "python ../manage.py loaddata",
     "test": "cypress run",
     "cy:open": "cypress open",
-    "extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file lang/de.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'",
-    "compile": "formatjs compile lang/en.json --ast --out-file compiled-lang/en.json"
+    "trans:extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file translation/locales/de.json",
+    "trans:manage": "babel-node -x .ts -- translation/manageTranslations.ts",
+    "trans": "npm run trans:extract && npm run trans:manage",
+    "trans:compile": "formatjs compile 'translation/locales/en.json' --ast --out-file 'src/locales/en.json'"
   },
   "browserslist": {
     "production": [
@@ -52,6 +54,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
     "@babel/plugin-transform-runtime": "^7.16.10",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",

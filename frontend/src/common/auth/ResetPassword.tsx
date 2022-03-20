@@ -84,7 +84,7 @@ function ResetPassword(): JSX.Element {
           <h1 className="title">
             {intl.formatMessage({
               description: "ResetPassword title",
-              defaultMessage: "Passwort vergessen?"
+              defaultMessage: "Passwort wiederherstellen"
             })}
           </h1>
           <form onSubmit={onSubmit}>
@@ -100,7 +100,7 @@ function ResetPassword(): JSX.Element {
                   type="submit"
                   value={intl.formatMessage({
                     description: "ResetPassword",
-                    defaultMessage: "Passwort speichern"
+                    defaultMessage: "Speichern"
                   })}
                   disabled={submitDisabled}
                   ref={buttonRef}

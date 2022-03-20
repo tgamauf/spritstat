@@ -138,6 +138,10 @@ function Login(): JSX.Element {
               <Link
                 className="has-text-primary"
                 to={RouteNames.Signup}
+                title={intl.formatMessage({
+                  description: "Login register link title",
+                  defaultMessage: "Klicke hier um einen neuen Account anzulegen."
+                })}
                 data-test="link-register"
               >
                 {intl.formatMessage({

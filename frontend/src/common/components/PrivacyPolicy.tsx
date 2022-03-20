@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
                   defaultMessage: "Zugriffsdaten"
                 })}
               </h4>
-              <div>
+              <p>
                 {intl.formatMessage({
                   description: "PrivacyPolicy account data paragraph 1",
                   defaultMessage: "Wir, der Websitebetreiber bzw. Seitenprovider, " +
@@ -84,7 +84,7 @@ export default function PrivacyPolicy() {
                     li: str => <li>{str}</li>
                   }
                 )}
-              </div>
+              </p>
               <p>
                 {intl.formatMessage({
                   description: "PrivacyPolicy account data paragraph 2",
@@ -117,7 +117,7 @@ export default function PrivacyPolicy() {
               <h4 className="subtitle">
                 {intl.formatMessage({
                   description: "PrivacyPolicy personal data subtitle",
-                  defaultMessage: "Erfassung und Verarbeitung personenbezogener Daten."
+                  defaultMessage: "Erfassung und Verarbeitung personenbezogener Daten"
                 })}
               </h4>
               <p>
@@ -129,7 +129,7 @@ export default function PrivacyPolicy() {
                     "einwilligen. Als personenbezogene Daten gelten sämtliche " +
                     "Informationen, welche dazu dienen, Ihre Person zu bestimmen und " +
                     "welche zu Ihnen zurückverfolgt werden können – also " +
-                    "beispielsweise Ihre E-Mail-Adresse.."
+                    "beispielsweise Ihre E-Mail-Adresse."
                 })}
               </p>
               <p>
