@@ -4,7 +4,7 @@ describe("Validate settings view", () => {
   it("validate content", () => {
     cy.mockLoggedIn();
     cy.mockSettings();
-    cy.visit(RouteNames.Settings);
+    cy.visitWithLocale(RouteNames.Settings);
 
     cy.hasBaseStructure(true);
     cy.getBySelLike("breadcrumb-")
@@ -35,7 +35,7 @@ describe("Validate settings view", () => {
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
-    cy.visit("/settings");
+    cy.visitWithLocale("/settings");
     cy.url().should("include", RouteNames.Login);
   });
 });
@@ -54,7 +54,7 @@ describe("Validate settings change", () => {
   });
 
   it("set intro settings", () => {
-    cy.visit(RouteNames.Settings);
+    cy.visitWithLocale(RouteNames.Settings);
 
     // Make sure that we have the correct state before we begin.
     // The bulma-switch component consists of two parts: the checkbox and the
@@ -69,7 +69,7 @@ describe("Validate settings change", () => {
   });
 
   it("set notification settings", () => {
-    cy.visit(RouteNames.Settings);
+    cy.visitWithLocale(RouteNames.Settings);
 
     // Make sure that we have the correct state before we begin.
     // The bulma-switch component consists of two parts: the checkbox and the
@@ -101,7 +101,7 @@ describe("Validate delete account", () => {
     cy.intercept("DELETE", "/api/v1/users/account/delete/")
       .as("deleteRequest");
 
-    cy.visit(RouteNames.Settings);
+    cy.visitWithLocale(RouteNames.Settings);
 
     cy.getBySel("btn-open-delete-account").click();
     cy.getBySel("btn-close").click();

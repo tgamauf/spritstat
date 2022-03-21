@@ -2,7 +2,7 @@ import {RouteNames} from "../../src/common/types";
 
 describe("Validate signup", () => {
   it("validate content of signup view", () => {
-    cy.visit(RouteNames.Signup);
+    cy.visitWithLocale(RouteNames.Signup);
 
     cy.hasBaseStructure(false);
     cy.getBySel("field-username").should("be.visible");
@@ -13,7 +13,7 @@ describe("Validate signup", () => {
  });
 
   it("signup success", () => {
-    cy.visit(RouteNames.Signup);
+    cy.visitWithLocale(RouteNames.Signup);
 
     cy.resetDB();
     cy.intercept("POST", "/api/v1/users/auth/register/").as("signup");
@@ -34,7 +34,7 @@ describe("Validate signup", () => {
 
   it("validate email verification mail sent view", () => {
     cy.logout();
-    cy.visit(`${RouteNames.VerifyEmailSent}/test@test.at`);
+    cy.visitWithLocale(`${RouteNames.VerifyEmailSent}/test@test.at`);
 
     cy.intercept("POST", "/api/v1/users/auth/resend-email/")
       .as("resendRequest");
@@ -50,7 +50,7 @@ describe("Validate signup", () => {
  });
 
   it("signup failed", () => {
-    cy.visit(RouteNames.Signup);
+    cy.visitWithLocale(RouteNames.Signup);
 
     cy.intercept(
       "POST",
@@ -73,7 +73,7 @@ describe("Validate signup", () => {
     cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
     cy.intercept("/api/v1/users/auth/logout/").as("logout")
-    cy.visit(RouteNames.Signup);
+    cy.visitWithLocale(RouteNames.Signup);
     cy.wait("@logout")
     cy.url().should("include", RouteNames.Signup);
  });
@@ -91,7 +91,7 @@ describe("Validate confirm email address", () => {
       {statusCode: 200, body: {detail: "Ok"}}
     ).as("verifyRequest");
 
-    cy.visit(`${RouteNames.ConfirmEmail}/key/`);
+    cy.visitWithLocale(`${RouteNames.ConfirmEmail}/key/`);
 
     // Ensure that the progress bar is shown while the API request is processed
     cy.getBySel("loading").should("exist");
@@ -118,7 +118,7 @@ describe("Validate confirm email address", () => {
       {statusCode: 200, body: {detail: "Ok"}}
     ).as("verifyRequest");
 
-    cy.visit(`${RouteNames.ConfirmEmail}/key/`);
+    cy.visitWithLocale(`${RouteNames.ConfirmEmail}/key/`);
 
     // Ensure that the progress bar is shown while the API request is processed
     cy.getBySel("loading").should("exist");
@@ -136,7 +136,7 @@ describe("Validate confirm email address", () => {
       {statusCode: 400}
     ).as("verifyRequest");
 
-    cy.visit(`${RouteNames.ConfirmEmail}/key/`);
+    cy.visitWithLocale(`${RouteNames.ConfirmEmail}/key/`);
 
     cy.wait("@verifyRequest");
     cy.hasBaseStructure(false);

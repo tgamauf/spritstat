@@ -15,7 +15,7 @@ describe("Validate password change process", () => {
   });
 
   it("validate content", () => {
-    cy.visit(RouteNames.Contact);
+    cy.visitWithLocale(RouteNames.Contact);
 
     cy.hasBaseStructure(true);
     cy.getBySelLike("breadcrumb-")
@@ -38,8 +38,8 @@ describe("Validate password change process", () => {
   it("validate send message", () => {
     // Navigate to "Home" first as we simply go back after sending the message
     //  and otherwise this would fail
-    cy.visit(RouteNames.Home);
-    cy.visit(RouteNames.Contact);
+    cy.visitWithLocale(RouteNames.Home);
+    cy.visitWithLocale(RouteNames.Contact);
 
     const name = "My Name";
     const message = "My Message";
@@ -65,7 +65,7 @@ describe("Validate password change process", () => {
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
-    cy.visit(RouteNames.Contact);
+    cy.visitWithLocale(RouteNames.Contact);
     cy.url().should("include", RouteNames.Login);
   });
 });

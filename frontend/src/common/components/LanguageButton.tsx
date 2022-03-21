@@ -28,12 +28,13 @@ export default function LanguageButton(
   }
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
+    <div className="dropdown" ref={dropdownRef} data-test="dropdown-language">
       <div className="dropdown-trigger">
         <Link
           className={className}
           to=""
           onClick={() => setDropdownActive(!dropdownActive)}
+          data-test="dropdown-language-trigger"
         >
           <FontAwesomeIcon icon={faGlobe}/>
           <span className="ml-1">{localeNames.get(locale)}</span>

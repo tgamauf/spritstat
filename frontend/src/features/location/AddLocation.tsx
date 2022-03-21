@@ -340,7 +340,7 @@ export default function AddLocation(): JSX.Element {
                       defaultMessage: "Wähle den Typ von Treibstoff aus für den " +
                         "Preise aufgezeichnet werden sollen."
                     })}
-                    value={intl.formatMessage(fuelTypeNames.get(fuelType) as MessageDescriptor)}
+                    value={fuelType}
                     onChange={(e) => setFuelType(
                       e.target.value as unknown as FuelType
                     )}

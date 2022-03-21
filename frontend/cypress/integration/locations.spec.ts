@@ -16,7 +16,7 @@ describe("Validate location page content", () => {
         delay: 100
       }
     ).as("locationRequest");
-    cy.visit(RouteNames.Dashboard);
+    cy.visitWithLocale(RouteNames.Dashboard);
 
     // Verify that the spinner is shown while loading the locations
     cy.getBySel("breadcrumb-0")
@@ -76,7 +76,7 @@ describe("Validate location page content", () => {
       }
     ).as("priceRequest");
 
-    cy.visit(RouteNames.Dashboard);
+    cy.visitWithLocale(RouteNames.Dashboard);
     cy.wait(["@locationRequest", "@priceRequest", "@econtrolPriceRequest"]);
     cy.getBySel("loading").should("not.exist");
     cy.getBySel("no-location").should("not.exist");
@@ -94,7 +94,7 @@ describe("Validate location page content", () => {
       }
     ).as("locationRequest");
 
-    cy.visit(RouteNames.Dashboard);
+    cy.visitWithLocale(RouteNames.Dashboard);
     cy.wait("@locationRequest");
     cy.getBySel("loading").should("not.exist");
     cy.getBySel("no-location").should("not.exist");
@@ -188,7 +188,7 @@ describe("Validate location page content", () => {
         body: [{station_id: 1, frequency: 0.9}]
       }
     ).as("priceStationFrequencyRequest");
-    cy.visit(`${RouteNames.LocationDetails}/${locationId}`);
+    cy.visitWithLocale(`${RouteNames.LocationDetails}/${locationId}`);
 
     cy.getBySel("loading").should("exist");
 
@@ -219,7 +219,7 @@ describe("Validate location page content", () => {
       }
     ).as("locationRequest");
 
-    cy.visit(`${RouteNames.LocationDetails}/${locationId}`);
+    cy.visitWithLocale(`${RouteNames.LocationDetails}/${locationId}`);
     cy.wait("@locationRequest");
     cy.getBySel("block-error").should("exist");
     cy.getBySel("btn-reload-location").should("exist");
@@ -251,7 +251,7 @@ describe("Validate location page content", () => {
       cy.intercept("GET", "/api/v1/sprit/").as("locationRequest");
       cy.intercept("DELETE", "/api/v1/sprit/*").as("deleteRequest");
 
-      cy.visit(RouteNames.Dashboard);
+      cy.visitWithLocale(RouteNames.Dashboard);
 
 
       const locationId = 2;
@@ -262,10 +262,10 @@ describe("Validate location page content", () => {
     it("redirect if not logged in", () => {
       cy.mockLoggedOut();
 
-      cy.visit(RouteNames.Dashboard);
+      cy.visitWithLocale(RouteNames.Dashboard);
       cy.url().should("include", RouteNames.Login);
 
-      cy.visit(`${RouteNames.LocationDetails}/1`);
+      cy.visitWithLocale(`${RouteNames.LocationDetails}/1`);
       cy.url().should("include", RouteNames.Login);
     });
   });

@@ -93,7 +93,7 @@ const extendedApi = spritstatApi.injectEndpoints({
             longitude,
             region_code: regionCode,
             region_type: regionTypeMap.get(regionType as RegionType),
-            fuel_type: fuelTypeMap.get(fuelType as FuelType)
+            fuel_type: fuelTypeMap.get(Number(fuelType) as FuelType)
           }
         };
       },

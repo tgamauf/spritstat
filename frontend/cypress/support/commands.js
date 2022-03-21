@@ -18,6 +18,19 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "visitWithLocale",
+  (url, locale = "de", options) => {
+    cy.visit(url, {
+      onBeforeLoad: (window) => {
+        Object.defineProperty(window.navigator, "language", {value: locale});
+        Object.defineProperty(window.navigator, "languages", [locale]);
+      },
+      ...options
+    });
+  }
+);
+
+Cypress.Commands.add(
   "login",
   (username, password) => {
     cy.visit("/");
