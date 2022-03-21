@@ -95,4 +95,13 @@ describe("Validate initial page load", () => {
     });
     cy.getBySel("header-btn-login").contains("Login");
  });
+
+  it("validate English as browser language", () => {
+    cy.visitWithLocale(RouteNames.Home, "en");
+
+    // Just check a few items on the page for the english version
+    cy.getBySel("header-btn-login").contains("Login");
+    cy.getBySel("link-imprint").contains("Imprint");
+    cy.getBySel("link-privacy").contains("Privacy");
+  });
 });
