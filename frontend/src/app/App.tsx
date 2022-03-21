@@ -32,12 +32,11 @@ export default function App() {
   const location = useLocation();
   const locale = useAppSelector(selectLocale);
   const [messagesLocale, setMessagesLocale] = useState(Locale.DE);
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState<any>();  // type isn't exported by react-intl
 
   useEffect(() => {
     loadMessages(locale)
       .then((messages) => {
-        console.log(`Set locale to '${locale}': ${JSON.stringify(messages)}`);
         setMessagesLocale(locale);
         setMessages(messages);
       })
@@ -46,12 +45,12 @@ export default function App() {
 
   console.debug(`Navigating to location ${JSON.stringify(location)}`);
   return (
-    <IntlProvider
-      defaultLocale={Locale.DE}
-      locale={messagesLocale}
-      messages={messages}
-      key={messagesLocale}
-    >
+      <IntlProvider
+        defaultLocale={Locale.DE}
+        locale={messagesLocale}
+        messages={messages}
+        key={messagesLocale}
+      >
       <AuthProvider>
         <SettingsProvider>
           <Routes>

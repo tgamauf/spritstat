@@ -58,6 +58,8 @@ class ChartData {
 }
 
 class ChartConfig implements ChartConfiguration {
+  private intl: IntlShape;
+
   public type: ChartType = "bar";
   public options: ChartOptions<"bar">;
   public data: ChartData;
@@ -70,6 +72,7 @@ class ChartConfig implements ChartConfiguration {
     const minValue = Math.min(...data.datasets[0].data.filter(
       (value) => value > 0)
     );
+    this.intl = intl;
     this.options = {
       interaction: {
         mode: "nearest",
@@ -87,13 +90,27 @@ class ChartConfig implements ChartConfiguration {
           callbacks: {
             // Remove reprinting of the label in the tooltip - we only have
             //  a few bars, so this is information that doesn't add anything
-            title: () => ""
+            title: () => "",
+            label: (item) => {
+              return this.intl.formatNumber(
+                item.parsed.y,
+                {style: "currency", currency: "EUR"}
+              )
+            },
           },
         }
       },
       scales: {
         y: {
-          min: BAR_LOWER_BOUND_FRACTION * minValue
+          min: BAR_LOWER_BOUND_FRACTION * minValue,
+          ticks: {
+            callback: (value) => {
+              return this.intl.formatNumber(
+                value as number,
+                {style: "currency", currency: "EUR"}
+              )
+            }
+          }
         }
       },
     };

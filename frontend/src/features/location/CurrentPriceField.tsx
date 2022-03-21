@@ -71,7 +71,12 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
                 })}
             </p>
             {currentPrice !== NO_CURRENT_PRICE && (
-              <p className="card-value">{currentPrice} €</p>
+              <p className="card-value">
+                {intl.formatNumber(
+                  currentPrice,
+                  {style: "currency", currency: "EUR"}
+                )}
+              </p>
             )}
           </div>
           {stations && stations.length > 0 && (

@@ -58,8 +58,6 @@ function mergeChanges(
 ): TranslationData {
   translatedData = updateChanged(defaultData, translatedData);
   translatedData = updateDescription(defaultData, translatedData);
-
-  // TODO sort by default data
   return translatedData
 }
 

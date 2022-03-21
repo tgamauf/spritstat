@@ -125,6 +125,12 @@ class ChartConfig implements ChartConfiguration {
               const time = this.intl.formatTime(items[0].label);
               return `${date} ${time}`;
             },
+            label: (item) => {
+              return this.intl.formatNumber(
+                item.parsed.y,
+                {style: "currency", currency: "EUR"}
+              )
+            },
             footer: tooltipFooterCallback,
           },
           footerFont: {
@@ -156,6 +162,16 @@ class ChartConfig implements ChartConfiguration {
               const date = this.intl.formatDate(label);
               const time = this.intl.formatTime(label);
               return `${date} ${time}`;
+            }
+          }
+        },
+        y: {
+          ticks: {
+            callback: (value) => {
+              return this.intl.formatNumber(
+                value as number,
+                {style: "currency", currency: "EUR"}
+              )
             }
           }
         }
