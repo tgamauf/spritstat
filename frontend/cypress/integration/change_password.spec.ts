@@ -4,7 +4,7 @@ describe("Validate change password view", () => {
   it("validate content", () => {
     cy.mockLoggedIn();
     cy.mockSettings();
-    cy.visit(RouteNames.ChangePassword);
+    cy.visitWithLocale(RouteNames.ChangePassword);
 
     cy.hasBaseStructure(true);
     cy.getBySelLike("breadcrumb-")
@@ -41,7 +41,7 @@ describe("Validate password change process", () => {
  });
 
   it("change password success", function() {
-    cy.visit(RouteNames.ChangePassword);
+    cy.visitWithLocale(RouteNames.ChangePassword);
     const newPassword = "S7SJp7\"2mxg#*)Qg";
 
     cy.getBySel("field-current-password").type(this.currentPassword);
@@ -55,12 +55,12 @@ describe("Validate password change process", () => {
     cy.logout();
     cy.url().should("include", RouteNames.Home);
     cy.login(this.username, newPassword);
-    cy.visit("/");
+    cy.visitWithLocale("/");
     cy.url().should("include", RouteNames.Dashboard);
  });
 
   it("invalid current password", () => {
-    cy.visit(RouteNames.ChangePassword);
+    cy.visitWithLocale(RouteNames.ChangePassword);
 
     cy.getBySel("field-current-password").type("invalid");
     cy.getBySel("field-new-password").type("S7SJp7\"2mxg#*)Qg");
@@ -75,7 +75,7 @@ describe("Validate password change process", () => {
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
-    cy.visit(RouteNames.ChangePassword);
+    cy.visitWithLocale(RouteNames.ChangePassword);
     cy.url().should("include", RouteNames.Login);
  });
 });

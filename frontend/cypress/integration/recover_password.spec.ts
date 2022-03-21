@@ -9,7 +9,7 @@ describe("Validate sending of password recovery email", () => {
     cy.resetDB(["user.json"]);
     cy.logout();
 
-    cy.visit(RouteNames.PasswordRecoveryEmail);
+    cy.visitWithLocale(RouteNames.PasswordRecoveryEmail);
 
     cy.hasBaseStructure(false);
     cy.getBySel("field-username")
@@ -38,7 +38,7 @@ describe("Validate sending of password recovery email", () => {
   it("validate error", function() {
     cy.mockLoggedOut();
 
-    cy.visit(RouteNames.PasswordRecoveryEmail);
+    cy.visitWithLocale(RouteNames.PasswordRecoveryEmail);
 
     cy.intercept(
       "POST",
@@ -67,7 +67,7 @@ describe("Validate sending of password recovery email", () => {
 
     cy.intercept("POST", "/api/v1/users/auth/logout/")
       .as("logout");
-    cy.visit(RouteNames.PasswordRecoveryEmail);
+    cy.visitWithLocale(RouteNames.PasswordRecoveryEmail);
     cy.wait("@logout");
     cy.url().should("include", RouteNames.PasswordRecoveryEmail);
  });
@@ -96,7 +96,7 @@ describe("Validate reset password flow", () => {
       {statusCode: 200, body: {detail: "ok"}}
     ).as("verifyRequest");
 
-    cy.visit(`${RouteNames.ResetPassword}/${uid}/${token}/`);
+    cy.visitWithLocale(`${RouteNames.ResetPassword}/${uid}/${token}/`);
 
     cy.hasBaseStructure(false);
     cy.getBySel("field-new-password").should("be.visible");
@@ -130,7 +130,7 @@ describe("Validate reset password flow", () => {
       "/api/v1/users/auth/password/reset/confirm/",
     ).as("verifyRequest");
 
-    cy.visit(`${RouteNames.ResetPassword}/99/token/`);
+    cy.visitWithLocale(`${RouteNames.ResetPassword}/99/token/`);
     cy.getBySel("field-new-password").type("S7SJp7\"2mxg#*)Qg");
     cy.wait("@validatePassword");
     cy.getBySel("btn-submit").click();
@@ -150,7 +150,7 @@ describe("Validate reset password flow", () => {
     cy.intercept("POST", "/api/v1/users/auth/logout/")
       .as("logout");
     const route = `${RouteNames.ResetPassword}/99/token/`;
-    cy.visit(`${RouteNames.ResetPassword}/99/token/`);
+    cy.visitWithLocale(`${RouteNames.ResetPassword}/99/token/`);
     cy.wait("@logout");
     cy.url().should("include", `${RouteNames.ResetPassword}/99/token/`);
  });

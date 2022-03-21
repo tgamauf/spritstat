@@ -1,6 +1,7 @@
 import React, {PropsWithChildren, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash, faLock} from "@fortawesome/free-solid-svg-icons";
+import {useIntl} from "react-intl";
 
 interface OwnProps {
   label?: string;
@@ -12,7 +13,7 @@ interface OwnProps {
 type Props = PropsWithChildren<OwnProps>;
 
 export default function PasswordField({
-  label = "Passwort",
+  label,
   value,
   update,
   autoComplete = "current-password",
@@ -20,6 +21,14 @@ export default function PasswordField({
   children,
 }: Props): JSX.Element {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const intl = useIntl();
+
+  if (!label) {
+    label = intl.formatMessage({
+      description: "PasswordField default label",
+      defaultMessage: "Passwort"
+    })
+  }
 
   let passwordFieldType;
   let passwordVisibleIcon;
@@ -33,9 +42,15 @@ export default function PasswordField({
 
   let showButtonTitle;
   if (passwordVisible) {
-    showButtonTitle = "Klicke hier um dein Passwort zu verstecken.";
+    showButtonTitle = intl.formatMessage({
+      description: "PasswordField hide message",
+      defaultMessage: "Passwort verstecken."
+    });
  } else {
-    showButtonTitle = "Klicke hier um dein Passwort anzuzeigen.";
+    showButtonTitle = intl.formatMessage({
+      description: "PasswordField show message",
+      defaultMessage: "Passwort anzeigen."
+    });
  }
   return (
     <div className="field" data-test={dataTest}>
@@ -43,7 +58,10 @@ export default function PasswordField({
         <p className="control has-icons-left is-expanded">
           <input
             className="input"
-            title="Bitte gib dein Passwort an."
+            title={intl.formatMessage({
+              description: "PasswordField password field title",
+              defaultMessage: "Bitte gib dein Passwort an."
+            })}
             type={passwordFieldType}
             placeholder={label}
             value={value}

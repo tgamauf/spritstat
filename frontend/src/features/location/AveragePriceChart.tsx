@@ -11,12 +11,14 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import {IntlShape, MessageDescriptor, useIntl} from "react-intl";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
 import {PriceDayQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
+import NoGraphDataField from "../../common/components/NoGraphDataField";
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip);
 
@@ -25,6 +27,7 @@ const BAR_COLOR = "#88B04B";
 const BAR_LOWER_BOUND_FRACTION = 0.999;
 
 interface ChartDataProps {
+  intl: IntlShape;
   labels: string[];
   data: number[];
 }
@@ -32,36 +35,36 @@ interface ChartDataProps {
 class ChartData {
   public labels: string[];
   public datasets: {
-    label: "Durchschnittlich geringster Preis";
+    label: string;
     data: number[];
     backgroundColor: string;
     borderColor: string;
   }[];
 
-  constructor(props?: ChartDataProps) {
-    this.labels = [];
+  constructor({intl, labels, data}: ChartDataProps) {
+    this.labels = labels;
     this.datasets = [
       {
-        label: "Durchschnittlich geringster Preis",
-        data: [],
+        label: intl.formatMessage({
+          description: "AveragePriceChart tooltip label",
+          defaultMessage: "Durchschnittlich geringster Preis"
+        }),
+        data,
         backgroundColor: BAR_COLOR,
         borderColor: BAR_COLOR
       },
     ];
-
-    if (props) {
-      this.labels = [...props.labels];
-      this.datasets[0].data = [...props.data];
-    }
   }
 }
 
 class ChartConfig implements ChartConfiguration {
+  private intl: IntlShape;
+
   public type: ChartType = "bar";
   public options: ChartOptions<"bar">;
   public data: ChartData;
 
-  constructor(name: string, isMobile: boolean, data: ChartData) {
+  constructor(name: MessageDescriptor, isMobile: boolean, intl: IntlShape, data: ChartData) {
     // As the difference between the weekdays isn't really all too significant
     //  we set the minimum so that the lowest bar is BAR_LOWER_BOUND_FRACTION of
     //  the scale. We ignore 0 as this isn't a valid value, but is added if no
@@ -69,6 +72,7 @@ class ChartConfig implements ChartConfiguration {
     const minValue = Math.min(...data.datasets[0].data.filter(
       (value) => value > 0)
     );
+    this.intl = intl;
     this.options = {
       interaction: {
         mode: "nearest",
@@ -80,30 +84,46 @@ class ChartConfig implements ChartConfiguration {
       plugins: {
         title: {
           display: true,
-          text: name
+          text: intl.formatMessage(name)
+        },
+        tooltip: {
+          callbacks: {
+            // Remove reprinting of the label in the tooltip - we only have
+            //  a few bars, so this is information that doesn't add anything
+            title: () => "",
+            label: (item) => {
+              return this.intl.formatNumber(
+                item.parsed.y,
+                {style: "currency", currency: "EUR"}
+              )
+            },
+          },
         }
       },
       scales: {
         y: {
-          min: BAR_LOWER_BOUND_FRACTION * minValue
+          min: BAR_LOWER_BOUND_FRACTION * minValue,
+          ticks: {
+            callback: (value) => {
+              return this.intl.formatNumber(
+                value as number,
+                {style: "currency", currency: "EUR"}
+              )
+            }
+          }
         }
-      }
+      },
     };
 
     this.data = data;
   }
 }
 
-interface DateRangeItem {
-  name: string;
-  value: DateRange;
-}
-
 interface Props {
-  name: string;
+  name: MessageDescriptor;
   location: Location;
   queryHook: PriceDayQuery,
-  dateRangeItems?: DateRangeItem[];
+  dateRangeItems?: DateRange[];
   initialDateRange?: DateRange;
   setErrorMessage: (msg: string) => void;
 }
@@ -114,10 +134,10 @@ export default function AveragePriceChart(
     location,
     queryHook,
     dateRangeItems = [
-      {name: "1M", value: DateRange.OneMonth},
-      {name: "3M", value: DateRange.ThreeMonths},
-      {name: "6M", value: DateRange.SixMonths},
-      {name: "Alles", value: DateRange.All},
+      DateRange.OneMonth,
+      DateRange.ThreeMonths,
+      DateRange.SixMonths,
+      DateRange.All
     ],
     initialDateRange = DateRange.OneMonth,
     setErrorMessage
@@ -130,18 +150,20 @@ export default function AveragePriceChart(
   const chartId = `${BAR_CHART_CONTAINER_NAME}-${location.id}`;
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const [chartData, setChartData] = useState<ChartData>();
+  const intl = useIntl();
 
   useEffect(() => {
     getPriceData({locationId: location.id, dateRange: selectedDateRange}).unwrap()
       .then((data) => {
-        setChartData(new ChartData(data));
+        setChartData(new ChartData({intl, ...data}));
       })
       .catch((e) => {
         console.error(`[${name}] failed to get price data: ${JSON.stringify(e, null, 2)}`);
-        setErrorMessage(
-          "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-          "probier es nochmal."
-        );
+        setErrorMessage(intl.formatMessage({
+          description: "AveragePriceChart error",
+          defaultMessage: "Die Preise für diesen Ort konnten nicht abgerufen werden, " +
+            "bitte probier es nochmal."
+        }));
       });
   }, [location, selectedDateRange]);
 
@@ -156,20 +178,15 @@ export default function AveragePriceChart(
     }
 
     chartRef.current?.destroy();
-    const config = new ChartConfig(name, isMobile, chartData);
+    const config = new ChartConfig(name, isMobile, intl, chartData);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
-  }, [chartData, isMobile]);
+  }, [chartData, isMobile, intl]);
 
   let mainComponent;
   if (!isFetching && chartData) {
     if (chartData.datasets[0].data.length === 0) {
-      mainComponent = (
-        <span>
-          Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-          vorhanden.
-        </span>
-      );
+      mainComponent = <NoGraphDataField/>;
     } else {
       mainComponent = (
         <div className="chart-container">

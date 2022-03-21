@@ -2,7 +2,7 @@ import {RouteNames} from "../../src/common/types";
 
 describe("Login view", () => {
   it("validate content", () => {
-    cy.visit(RouteNames.Login);
+    cy.visitWithLocale(RouteNames.Login);
 
     cy.hasBaseStructure(false);
     cy.getBySel("field-username").should("be.visible");
@@ -47,7 +47,7 @@ describe("Login process", () => {
  });
 
   it("login without remember checked", function() {
-    cy.visit(RouteNames.Login);
+    cy.visitWithLocale(RouteNames.Login);
 
     cy.getBySel("field-username").type(this.username);
     cy.getBySel("btn-submit").should("not.be.enabled");
@@ -64,7 +64,7 @@ describe("Login process", () => {
  });
 
   it("login with remember checked", function() {
-    cy.visit(RouteNames.Login);
+    cy.visitWithLocale(RouteNames.Login);
 
     cy.getBySel("field-username").type(this.username);
     cy.getBySel("field-current-password").type(this.password);
@@ -89,7 +89,7 @@ describe("Login process", () => {
       "/api/v1/users/auth/login/",
       {statusCode: 400}
     ).as("login");
-    cy.visit(RouteNames.Login);
+    cy.visitWithLocale(RouteNames.Login);
 
     cy.getBySel("field-username").type("invalid@test.at");
     cy.getBySel("field-current-password").type("invalid");

@@ -5,6 +5,7 @@ import moment from "moment-timezone";
 import type {RootState, AppDispatch} from "../app/store";
 import {MAX_SCREENSIZE_MOBILE, TIMEZONE} from "./constants";
 import {IntroJs} from "./types";
+import {IntlShape} from "react-intl";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -31,8 +32,24 @@ function reverseMap<Key, Value>(map: Map<Key, Value>): Map<Value, Key> {
   );
 }
 
-function formatDatetime(datetime?: string): string {
-  return moment.tz(datetime, TIMEZONE).format("DD.MM.YY HH:mm")
+function getFormattedIntroOption(intl: IntlShape, options?: object): object {
+  return {
+    ...options,
+    doneLabel: intl.formatMessage({
+      description: "Intro done label",
+      defaultMessage: "Fertig"
+    }),
+    nextLabel: intl.formatMessage({
+      description: "Intro next label",
+      defaultMessage: "Weiter"
+    }),
+    prevLabel: intl.formatMessage({
+      description: "Intro previous label",
+      defaultMessage: "Zurück"
+    }),
+    hidePrev: true,
+    tooltipClass: "intro-tooltip"
+  }
 }
 
 function updateIntroStepElement(this: IntroJs, element: HTMLElement) {
@@ -65,7 +82,7 @@ function updateIntroStepElement(this: IntroJs, element: HTMLElement) {
 }
 
 export {
-  formatDatetime,
+  getFormattedIntroOption,
   reverseMap,
   updateIntroStepElement,
   useAppDispatch,

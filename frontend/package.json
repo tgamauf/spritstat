@@ -2,7 +2,7 @@
   "name": "spritstat",
   "version": "0.1.0",
   "homepage": ".",
-  "main": "webpack.config.js",
+  "browser": "webpack.config.js",
   "scripts": {
     "start": "webpack --mode=development --watch",
     "build:dev": "webpack --mode=development",
@@ -10,7 +10,11 @@
     "db:flush": "python ../manage.py flush --noinput",
     "db:seed": "python ../manage.py loaddata",
     "test": "cypress run",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "trans:extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file translation/locales/de.json",
+    "trans:manage": "babel-node -x .ts -- translation/manageTranslations.ts",
+    "trans": "npm run trans:extract && npm run trans:manage",
+    "trans:compile": "formatjs compile 'translation/locales/en.json' --ast --out-file 'src/locales/en.json'"
   },
   "browserslist": {
     "production": [
@@ -43,17 +47,20 @@
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
+    "react-intl": "^5.24.7",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
     "@babel/plugin-transform-runtime": "^7.16.10",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.16.7",
+    "@formatjs/cli": "^4.8.2",
     "@types/google.maps": "^3.47.3",
     "@types/intro.js": "^3.0.2",
     "@types/lodash.debounce": "^4.0.6",
@@ -62,6 +69,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-router-dom": "^5.3.3",
     "babel-loader": "^8.2.3",
+    "babel-plugin-formatjs": "^10.3.18",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.2.1",
     "css-loader": "^6.5.1",

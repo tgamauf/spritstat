@@ -1,4 +1,5 @@
 import React, {PropsWithChildren} from "react";
+import {defineMessage} from "react-intl";
 
 import Breadcrumb, {BreadcrumbItem} from "./Breadcrumb";
 import {DASHBOARD_BREADCRUMB} from "../../features/location/Dashboard";
@@ -18,12 +19,18 @@ enum Severity {
 
 const headerDropdownItems: HeaderDropdownItem[] = [
   {
-    name: "Einstellungen",
+    name: defineMessage({
+      description: "BasePage header dropdown settings item",
+      defaultMessage: "Einstellungen"
+    }),
     route: RouteNames.Settings,
     "data-test": "link-settings"
  },
   {
-    name: "Kontakt",
+    name: defineMessage({
+      description: "BasePage header dropdown contact item",
+      defaultMessage: "Kontakt"
+    }),
     route: RouteNames.Contact,
     "data-test": "link-contact"
  },

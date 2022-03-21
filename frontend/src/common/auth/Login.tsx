@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "../components/CenteredBox";
 import EmailField from "./EmailField";
@@ -31,6 +32,7 @@ function Login(): JSX.Element {
   const [isError, setIsError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (submitted) {
@@ -73,23 +75,30 @@ function Login(): JSX.Element {
   let notificationText = "";
   if (isError) {
     notificationSeverity = BasePageSeverity.Error;
-    notificationText =
-      "Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen.";
+    notificationText = intl.formatMessage({
+      description: "Login error",
+      defaultMessage: "Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen."
+    });
  } else if (passwordRecovered) {
     notificationSeverity = BasePageSeverity.Info;
-    notificationText =
-      "Falls deine Email-Adresse bei uns gespeichert ist, " +
-      "erhältst du in Kürze einen Password-Reset-Link zugesendet.";
+    notificationText = intl.formatMessage({
+      description: "Login notification 1",
+      defaultMessage: "Falls deine Email-Adresse bei uns gespeichert ist, erhältst " +
+        "du in Kürze einen Passwort-Reset-Link zugesendet."
+    });
  } else if (passwordChanged) {
     notificationSeverity = BasePageSeverity.Info;
-    notificationText =
-      "Dein Password wurder geändert, nun kannst du dich " +
-      "mit deinem neuen Password einloggen.";
+    notificationText = intl.formatMessage({
+      description: "Login notification 2",
+      defaultMessage: "Dein Passwort wurde geändert, nun kannst du dich mit deinem " +
+        "neuen Passwort einloggen."
+    });
  } else if (emailVerified) {
     notificationSeverity = BasePageSeverity.Info;
-    notificationText =
-      "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich " +
-      "einloggen.";
+    notificationText = intl.formatMessage({
+      description: "Login notification 3",
+      defaultMessage: "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen."
+    });
  }
 
   let submitDisabled = true;
@@ -116,7 +125,12 @@ function Login(): JSX.Element {
         <div className="level">
           <div className="level-left">
             <div className="level-item">
-              <h1 className="title">Anmelden</h1>
+              <h1 className="title">
+                {intl.formatMessage({
+                  description: "Login title",
+                  defaultMessage: "Anmelden"
+                })}
+              </h1>
             </div>
           </div>
           <div className="level-right">
@@ -124,9 +138,16 @@ function Login(): JSX.Element {
               <Link
                 className="has-text-primary"
                 to={RouteNames.Signup}
+                title={intl.formatMessage({
+                  description: "Login register link title",
+                  defaultMessage: "Klicke hier um einen neuen Account anzulegen."
+                })}
                 data-test="link-register"
               >
-                Registrieren
+                {intl.formatMessage({
+                  description: "Login register link",
+                  defaultMessage: "Registrieren"
+                })}
               </Link>
             </div>
           </div>
@@ -144,7 +165,12 @@ function Login(): JSX.Element {
                       onChange={() => setRemember(!remember)}
                       data-test="field-checkbox-remember"
                     />
-                    <span className="content pl-1">Angemeldet bleiben</span>
+                    <span className="content pl-1">
+                      {intl.formatMessage({
+                        description: "Login remember checkbox",
+                        defaultMessage: "Angemeldet bleiben"
+                      })}
+                    </span>
                   </label>
                 </p>
               </div>
@@ -155,7 +181,10 @@ function Login(): JSX.Element {
                   <input
                     className="button is-primary"
                     type="submit"
-                    value="Einloggen"
+                    value={intl.formatMessage({
+                      description: "Login submit",
+                      defaultMessage: "Einloggen"
+                    })}
                     disabled={submitDisabled}
                     ref={buttonRef}
                     data-test="btn-submit"
@@ -172,7 +201,10 @@ function Login(): JSX.Element {
             to={RouteNames.PasswordRecoveryEmail}
             data-test="link-recovery-email"
           >
-            Password vergessen?
+            {intl.formatMessage({
+              description: "Login password recovery link",
+              defaultMessage: "Passwort vergessen?"
+            })}
           </Link>
         </p>
       </CenteredBox>

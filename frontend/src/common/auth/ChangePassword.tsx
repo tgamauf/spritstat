@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {faKey} from "@fortawesome/free-solid-svg-icons";
+import {defineMessage, useIntl} from "react-intl";
 
 import CenteredBox from "../components/CenteredBox";
 import PasswordField from "./PasswordField";
@@ -12,7 +13,10 @@ import {useChangePasswordMutation} from "../apis/spritstatApi";
 import {BreadcrumbItem} from "../components/Breadcrumb";
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Passwort ändern",
+  name: defineMessage({
+    description: "ChangePassword breadcrumb",
+    defaultMessage: "Passwort ändern"
+  }),
   icon: faKey,
   destination: RouteNames.ChangePassword,
 };
@@ -26,6 +30,7 @@ function ChangePassword(): JSX.Element {
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (submitted) {
@@ -72,19 +77,35 @@ function ChangePassword(): JSX.Element {
       <BasePage
         breadcrumbItems={[SETTINGS_BREADCRUMB, BREADCRUMB]}
         active={error}
-        message="Passwordänderung ist fehlgeschlagen."
+        message={intl.formatMessage(
+          {
+            description: "ChangePassword error message",
+            defaultMessage: "Passwortänderung ist fehlgeschlagen."
+          })
+        }
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password ändern</h1>
+          <h1 className="title">
+            {intl.formatMessage({
+              description: "ChangePassword title",
+              defaultMessage: "Passwort ändern"
+            })}
+          </h1>
           <form onSubmit={onSubmit}>
             <PasswordField
-              label="Aktuelles Passwort"
+              label={intl.formatMessage({
+                description: "ChangePassword current password field label",
+                defaultMessage: "Aktuelles Passwort"
+              })}
               value={oldPassword}
               update={setOldPassword}
             />
             <PasswordWithValidationField
-              label="Neues Passwort"
+              label={intl.formatMessage({
+                description: "ChangePassword new password field label",
+                defaultMessage: "Neues Passwort"
+              })}
               value={newPassword}
               update={setNewPassword}
               setPasswordValid={setNewPasswordValid}
@@ -94,7 +115,10 @@ function ChangePassword(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Passwort speichern"
+                  value={intl.formatMessage({
+                    description: "ChangePassword submit label",
+                    defaultMessage: "Speichern"
+                  })}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

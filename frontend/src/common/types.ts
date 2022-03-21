@@ -1,4 +1,5 @@
 import introJs from "intro.js";
+import {defineMessage, MessageDescriptor} from "react-intl";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -42,10 +43,25 @@ enum RegionType {
 }
 
 enum FuelType {
-  Diesel = "Diesel",
-  Super = "Super",
-  Gas = "Gas",
+  Diesel,
+  Super,
+  Gas,
 }
+
+const fuelTypeNames = new Map<FuelType, MessageDescriptor>([
+  [
+    FuelType.Diesel,
+    defineMessage({description: "Fuel type diesel", defaultMessage: "Diesel"})
+  ],
+  [
+    FuelType.Super,
+    defineMessage({description: "Fuel type gasoline", defaultMessage: "Super"})
+  ],
+  [
+    FuelType.Gas,
+    defineMessage({description: " Fuel type autogas", defaultMessage: "Gas"})
+  ],
+]);
 
 interface Coordinates {
   latitude: number;
@@ -75,6 +91,29 @@ enum DateRange {
   ThreeMonths,
   SixMonths,
 }
+
+const dateRangeNames = new Map<DateRange, MessageDescriptor>([
+  [
+    DateRange.All,
+    defineMessage({description: "DateRange all", defaultMessage: "Alle"})
+  ],
+  [
+    DateRange.OneWeek,
+    defineMessage({description: "DateRange 1w", defaultMessage: "1W"})
+  ],
+  [
+    DateRange.OneMonth,
+    defineMessage({description: "DateRange 1m", defaultMessage: "1M"})
+  ],
+  [
+    DateRange.ThreeMonths,
+    defineMessage({description: "DateRange 3m", defaultMessage: "3M"})
+  ],
+  [
+    DateRange.SixMonths,
+    defineMessage({description: "DateRange 6m", defaultMessage: "6M"})
+  ],
+]);
 
 interface Station {
   id: number;
@@ -113,4 +152,12 @@ export type {
   StationMap
 };
 
-export {DateRange, FuelType, LocationType, RegionType, RouteNames};
+export {
+  DateRange,
+  dateRangeNames,
+  FuelType,
+  fuelTypeNames,
+  LocationType,
+  RegionType,
+  RouteNames
+};

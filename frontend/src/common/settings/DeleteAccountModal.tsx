@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {defineMessage, useIntl} from "react-intl";
 
 import {RouteNames} from "../types";
 import {useDeleteAccountMutation} from "../apis/spritstatApi";
@@ -18,6 +19,7 @@ export default function DeleteAccountModal(
   const deleteButtonRef = useRef() as React.MutableRefObject<HTMLButtonElement>;
   const [doDelete, setDoDelete] = useState(false);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (!doDelete) {
@@ -26,18 +28,22 @@ export default function DeleteAccountModal(
 
     setDoDelete(false);
 
+    const error = intl.formatMessage({
+      description: "DeleteAccountModal error",
+      defaultMessage: "Dein Konto konnte nicht gelöscht werden."
+    });
     deleteAccount().unwrap()
       .then((success) => {
         if (success) {
           navigate(RouteNames.AccountDeleted, {replace: true});
        } else {
           console.error(`Failed to delete account: request failed`);
-          setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
+          setErrorMessage(error);
        }
      })
       .catch((e) => {
         console.error(`Failed to delete account: ${JSON.stringify(e, null, 2)}`);
-        setErrorMessage("Dein Konto konnte nicht gelöscht werden.");
+        setErrorMessage(error);
      });
  }, [doDelete]);
 
@@ -63,7 +69,10 @@ export default function DeleteAccountModal(
       <div className="modal-content">
         <div className="box has-text-centered">
           <p className="text has-text-weight-bold is-size-5 mb-3">
-            Willst du dein Konto wirklich löschen?
+            {intl.formatMessage({
+              description: "DeleteAccountModal check text",
+              defaultMessage: "Willst du dein Konto wirklich löschen?"
+            })}
           </p>
           <button
             className="button is-danger"
@@ -72,7 +81,10 @@ export default function DeleteAccountModal(
             ref={deleteButtonRef}
             data-test="btn-delete"
           >
-            Löschen
+            {intl.formatMessage({
+              description: "DeleteAccountModal delete button",
+              defaultMessage: "Löschen"
+            })}
           </button>
         </div>
       </div>

@@ -24,6 +24,16 @@ declare global {
       resetDB(fixtures?: string[]): Chainable<Element>;
 
       /**
+       * Call visit, but with the changed locale. The default locale is "de".
+       * @example cy.visitWithLocale("/");
+       * @example cy.visitWithLocale("/", "en");
+       * @example cy.visitWithLocale("/", "en", {someKey: "someValue"});
+       */
+      visitWithLocale(
+        url: string, locale?: string, options?: Partial<VisitOptions>
+      ): Chainable<Element>;
+
+      /**
        * Login while bypassing the UI.
        * @example cy.login("test@test.at", "test");
        */

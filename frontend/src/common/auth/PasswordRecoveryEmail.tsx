@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "../components/CenteredBox";
 import EmailField from "./EmailField";
@@ -14,6 +15,7 @@ function PasswordRecoveryEmail(): JSX.Element {
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (submitted) {
@@ -59,11 +61,19 @@ function PasswordRecoveryEmail(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message="Password reset ist fehlgeschlagen."
+        message={intl.formatMessage({
+          description: "PasswordRecoveryEmail error",
+          defaultMessage: "Passwort reset ist fehlgeschlagen."
+        })}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Password vergessen?</h1>
+          <h1 className="title">
+            {intl.formatMessage({
+              description: "PasswordRecoveryEmail title",
+              defaultMessage: "Passwort vergessen?"
+            })}
+            </h1>
           <form onSubmit={onSubmit}>
             <EmailField value={email} update={setEmail} />
             <div className="field is-grouped is-grouped-right">
@@ -71,7 +81,10 @@ function PasswordRecoveryEmail(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Password zurücksetzen"
+                  value={intl.formatMessage({
+                    description: "PasswordRecoveryEmail submit",
+                    defaultMessage: "Passwort zurücksetzen"
+                  })}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

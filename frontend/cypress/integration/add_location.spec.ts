@@ -127,7 +127,7 @@ describe("Add location flows", () => {
   });
 
   it("validate content", () => {
-    cy.visit(RouteNames.AddLocation);
+    cy.visitWithLocale(RouteNames.AddLocation);
 
     cy.hasBaseStructure(true);
     cy.getBySelLike("breadcrumb-")
@@ -281,7 +281,7 @@ describe("Add location flows", () => {
   });
 
   it("create location from region success", () => {
-    cy.visit(RouteNames.AddLocation);
+    cy.visitWithLocale(RouteNames.AddLocation);
 
     cy.getBySel("field-location-type")
       .select(LocationType.Region.toString())
@@ -308,7 +308,7 @@ describe("Add location flows", () => {
       {statusCode: 400}
     ).as("addLocationRequest");
 
-    cy.visit(RouteNames.AddLocation);
+    cy.visitWithLocale(RouteNames.AddLocation);
 
     cy.getBySel("field-location-type")
       .select(LocationType.Region.toString())
@@ -347,7 +347,7 @@ describe("Add location flows", () => {
   it("get regions failed", () => {
     mockEControlApi(400);
 
-    cy.visit(RouteNames.AddLocation);
+    cy.visitWithLocale(RouteNames.AddLocation);
 
     cy.getBySel("field-location-type")
       .select(LocationType.Region.toString())
@@ -360,7 +360,7 @@ describe("Add location flows", () => {
 
   it("redirect if not logged in", () => {
     cy.mockLoggedOut();
-    cy.visit(RouteNames.AddLocation);
+    cy.visitWithLocale(RouteNames.AddLocation);
     cy.url().should("include", RouteNames.Login);
   });
 });

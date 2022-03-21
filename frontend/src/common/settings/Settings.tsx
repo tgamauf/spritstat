@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {defineMessage, useIntl} from "react-intl";
 
 import DeleteAccountModal from "./DeleteAccountModal";
 import BasePage from "../components/BasePage";
@@ -12,7 +13,10 @@ import {selectIntroActive, selectNotificationsActive} from "./settingsSlice";
 import SettingsSwitch from "./SettingsSwitch";
 
 const BREADCRUMB: BreadcrumbItem = {
-  name: "Einstellungen",
+  name: defineMessage({
+    description: "Settings breadcrumb",
+    defaultMessage: "Einstellungen"
+  }),
   icon: faCog,
   destination: RouteNames.Settings,
 };
@@ -21,6 +25,7 @@ export default function Settings(): JSX.Element {
   const email = useAppSelector(selectEmail);
   const [errorMessage, setErrorMessage] = useState("");
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+  const intl = useIntl();
 
   return (
     <BasePage
@@ -35,19 +40,39 @@ export default function Settings(): JSX.Element {
         setErrorMessage={setErrorMessage}
       />
       <section className="section">
-        <h1 className="title">Einstellungen</h1>
+        <h1 className="title">
+          {intl.formatMessage({
+            description: "Settings title",
+            defaultMessage: "Einstellungen"
+          })}
+        </h1>
         <div className="settings-block">
-          <h2 className="subtitle">Kontodetails</h2>
+          <h2 className="subtitle">
+            {intl.formatMessage({
+              description: "Settings account data subtitle",
+              defaultMessage: "Kontodaten"
+            })}
+          </h2>
           <hr />
           <table className="table is-fullwidth">
             <tbody>
               <tr>
-                <td className="key">Email</td>
+                <td className="key">
+                  {intl.formatMessage({
+                    description: "Settings key email",
+                    defaultMessage: "Email"
+                  })}
+                </td>
                 <td data-test="text-email">{email}</td>
                 <td />
               </tr>
               <tr>
-                <td className="key">Password</td>
+                <td className="key">
+                  {intl.formatMessage({
+                    description: "Settings key password",
+                    defaultMessage: "Passwort"
+                  })}
+                </td>
                 <td>************</td>
                 <td>
                   <Link
@@ -55,7 +80,10 @@ export default function Settings(): JSX.Element {
                     to={RouteNames.ChangePassword}
                     data-test="link-change-password"
                   >
-                    Password ändern
+                    {intl.formatMessage({
+                      description: "Settings link password change",
+                      defaultMessage: "Passwort ändern"
+                    })}
                   </Link>
                 </td>
               </tr>
@@ -63,11 +91,21 @@ export default function Settings(): JSX.Element {
           </table>
         </div>
         <div className="settings-block">
-          <h2 className="subtitle">Funktionen</h2>
+          <h2 className="subtitle">
+            {intl.formatMessage({
+              description: "Settings functionality subtitle",
+              defaultMessage: "Funktionalität"
+            })}
+          </h2>
           <hr />
           <SettingsSwitch
             id="intro"
-            label="Aktiviere/deaktiviere die Einführung"
+            label={
+              intl.formatMessage({
+                description: "Settings switch intro",
+                defaultMessage: "Aktiviere/deaktiviere die Einführung"
+              })
+            }
             selectorFn={selectIntroActive}
             settingsFn={(value) => ({
               intro: {
@@ -81,17 +119,30 @@ export default function Settings(): JSX.Element {
           />
           <SettingsSwitch
             id="notifications"
-            label="Aktiviere/deaktiviere Benachrichtigungen"
+            label={
+              intl.formatMessage({
+                description: "Settings switch notifications",
+                defaultMessage: "Aktiviere/deaktiviere Benachrichtigungen"
+              })
+            }
             selectorFn={selectNotificationsActive}
             settingsFn={(value) => ({notifications_active: value})}
           />
         </div>
         <div className="settings-block">
-          <h2 className="subtitle has-text-danger">Konto löschen</h2>
+          <h2 className="subtitle has-text-danger">
+            {intl.formatMessage({
+              description: "Settings delete account subtitle",
+              defaultMessage: "Konto löschen"
+            })}
+          </h2>
           <hr />
           <p>
-            Nach dem Löschen kann das Konto nicht mehr wiederhergestellt
-            werden. Bitte klicke nur wenn du dir sicher bist!
+            {intl.formatMessage({
+              description: "Settings delete account check text",
+              defaultMessage: "Nach dem Löschen kann das Konto nicht mehr " +
+                "wiederhergestellt werden. Bitte klicke nur wenn du dir sicher bist!"
+            })}
           </p>
           <p className="mt-2">
             <button
@@ -99,7 +150,10 @@ export default function Settings(): JSX.Element {
               onClick={() => setShowDeleteAccount(true)}
               data-test="btn-open-delete-account"
             >
-              Löschen
+            {intl.formatMessage({
+              description: "Settings delete account button",
+              defaultMessage: "Löschen"
+            })}
             </button>
           </p>
         </div>

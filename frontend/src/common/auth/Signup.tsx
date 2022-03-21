@@ -1,5 +1,6 @@
 import React, {FormEvent, useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "../components/CenteredBox";
 import BasePage from "../components/BasePage";
@@ -17,6 +18,7 @@ function Signup(): JSX.Element {
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const intl = useIntl();
 
   useEffect(() => {
     if (submitted) {
@@ -69,11 +71,20 @@ function Signup(): JSX.Element {
     <div>
       <BasePage
         active={error}
-        message="Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren."
+        message={intl.formatMessage({
+          description: "Signup error",
+          defaultMessage: "Es war nicht möglich ein Konto mit diesen Benutzerdaten " +
+            "zu registrieren."
+        })}
         discardMessage={() => setError(false)}
       >
         <CenteredBox>
-          <h1 className="title">Registrieren</h1>
+          <h1 className="title">
+            {intl.formatMessage({
+              description: "Signup title",
+              defaultMessage: "Registrieren"
+            })}
+          </h1>
           <form onSubmit={onSubmit}>
             <EmailField value={email} update={setEmail} />
             <PasswordWithValidationField
@@ -87,7 +98,10 @@ function Signup(): JSX.Element {
                 <input
                   className="button is-primary"
                   type="submit"
-                  value="Registrieren"
+                  value={intl.formatMessage({
+                    description: "Signup submit",
+                    defaultMessage: "Registrieren"
+                  })}
                   disabled={submitDisabled}
                   ref={buttonRef}
                   data-test="btn-submit"

@@ -11,12 +11,12 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import {IntlShape, useIntl} from "react-intl";
+import {defineMessage, IntlShape, MessageDescriptor, useIntl} from "react-intl";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
 import {useIsMobile} from "../../common/utils";
-import {useGetStationsQuery, useLazyGetPriceStationFrequencyQuery} from "./locationApiSlice";
+import {useLazyGetPriceDayOfWeekDataQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 import NoGraphDataField from "../../common/components/NoGraphDataField";
 
@@ -25,8 +25,37 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Too
 const BAR_CHART_CONTAINER_NAME = "bar-chart";
 const BAR_COLOR = "#88B04B";
 const BAR_LOWER_BOUND_FRACTION = 0.999;
-const DEFAULT_MAX_TICK_LABEL_LENGTH = 40;
-const MOBILE_MAX_TICK_LABEL_LENGTH = 15;
+const DAY_OF_WEEK_MAPPING: {[key: string]: MessageDescriptor} = {
+  "0": defineMessage({
+    description: "AveragePriceDayOfWeekChart Sunday",
+    defaultMessage: "Sonntag"
+  }),
+  "1": defineMessage({
+    description: "AveragePriceDayOfWeekChart Monday",
+    defaultMessage: "Montag"
+  }),
+  "2": defineMessage({
+    description: "AveragePriceDayOfWeekChart Tuesday",
+    defaultMessage: "Dienstag"
+  }),
+  "3": defineMessage({
+    description: "AveragePriceDayOfWeekChart Wednesday",
+    defaultMessage: "Mittwoch"
+  }),
+  "4": defineMessage({
+    description: "AveragePriceDayOfWeekChart Thursday",
+    defaultMessage: "Donnerstag"
+  }),
+  "5": defineMessage({
+    description: "AveragePriceDayOfWeekChart Friday",
+    defaultMessage: "Freitag"
+  }),
+  "6": defineMessage({
+    description: "AveragePriceDayOfWeekChart Saturday",
+    defaultMessage: "Samstag"
+  }),
+}
+
 
 interface ChartDataProps {
   intl: IntlShape;
@@ -48,8 +77,8 @@ class ChartData {
     this.datasets = [
       {
         label: intl.formatMessage({
-          description: "PriceStationFrequencyChart title",
-          defaultMessage: "Häufigkeit niedrigster Preis pro Tankstelle"
+          description: "AveragePriceChart tooltip label",
+          defaultMessage: "Durchschnittlich geringster Preis"
         }),
         data,
         backgroundColor: BAR_COLOR,
@@ -67,12 +96,6 @@ class ChartConfig implements ChartConfiguration {
   public data: ChartData;
 
   constructor(isMobile: boolean, intl: IntlShape, data: ChartData) {
-    let maxStationTickLabelLength: number;
-    if (isMobile) {
-      maxStationTickLabelLength = MOBILE_MAX_TICK_LABEL_LENGTH;
-    } else {
-      maxStationTickLabelLength = DEFAULT_MAX_TICK_LABEL_LENGTH;
-    }
     // As the difference between the weekdays isn't really all too significant
     //  we set the minimum so that the lowest bar is BAR_LOWER_BOUND_FRACTION of
     //  the scale. We ignore 0 as this isn't a valid value, but is added if no
@@ -93,8 +116,8 @@ class ChartConfig implements ChartConfiguration {
         title: {
           display: true,
           text: intl.formatMessage({
-            description: "PriceStationFrequencyChart title",
-            defaultMessage: "Häufigkeit niedrigster Preis"
+            description: "AveragePriceDayOfWeekChart graph title",
+            defaultMessage: "Niedrigster Preis pro Wochentag"
           })
         },
         tooltip: {
@@ -109,22 +132,16 @@ class ChartConfig implements ChartConfiguration {
               )
             },
           },
+          footerFont: {
+            weight: "normal"
+          }
         }
       },
       scales: {
         x: {
           ticks: {
-            autoSkip: false,
-            callback: function(index) {
-              // Truncated the name of the station, so it doesn't take up most
-              //  of the space of a graph.
-              const label = this.getLabelForValue(index as number);
-              const truncatedLabel = label.substring(0, maxStationTickLabelLength);
-              if (label.length > maxStationTickLabelLength) {
-                return `${truncatedLabel}...`;
-              }
-
-              return label;
+            callback: (value) => {
+              return this.intl.formatMessage(DAY_OF_WEEK_MAPPING[value]);
             }
           }
         },
@@ -139,7 +156,7 @@ class ChartConfig implements ChartConfiguration {
             }
           }
         }
-      }
+      },
     };
 
     this.data = data;
@@ -151,74 +168,33 @@ interface Props {
   setErrorMessage: (msg: string) => void;
 }
 
-export default function PriceStationFrequencyChart({location, setErrorMessage}: Props) {
-  const {
-    data: stations,
-    error: stationsError,
-    isError: isStationsError,
-    isFetching: isStationsFetching,
-    isSuccess: isStationsSuccess
- } = useGetStationsQuery();
-  const [
-    getPriceStationFrequency,
-    {
-      data: stationFrequencyData,
-      isFetching: isStationFrequencyFetching,
-      isSuccess: isStationFrequencySuccess
-    }
-  ] = useLazyGetPriceStationFrequencyQuery();
+export default function AveragePriceDayOfWeekChart({location, setErrorMessage}: Props) {
+  const [getPriceData, {isFetching}] = useLazyGetPriceDayOfWeekDataQuery();
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
   const chartRef = useRef<Chart | null>();
   const isMobile = useIsMobile();
   const chartId = `${BAR_CHART_CONTAINER_NAME}-${location.id}`;
-  const [selectedDateRange, setSelectedDateRange] = useState(
-    DateRange.OneMonth
-  );
+  const [selectedDateRange, setSelectedDateRange] = useState(DateRange.OneMonth);
   const [chartData, setChartData] = useState<ChartData>();
   const intl = useIntl();
 
   useEffect(() => {
-    getPriceStationFrequency({locationId: location.id, dateRange: selectedDateRange}).unwrap()
+    getPriceData({locationId: location.id, dateRange: selectedDateRange}).unwrap()
+      .then((data) => {
+        setChartData(new ChartData({intl, ...data}));
+      })
       .catch((e) => {
         console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
         setErrorMessage(intl.formatMessage({
-          description: "PriceStationFrequencyChart error",
+          description: "AveragePriceDayOfWeekChart error",
           defaultMessage: "Die Preise für diesen Ort konnten nicht abgerufen werden, " +
             "bitte probier es nochmal."
         }));
       });
-  }, [location, selectedDateRange, isStationsSuccess]);
+  }, [location, selectedDateRange]);
 
   useEffect(() => {
-    if (isStationsError) {
-      console.error(`Failed to get stations: ${
-        JSON.stringify(stationsError, null, 2)}`);
-   }
- }, [isStationsError]);
-
-  useEffect(() => {
-    if (
-      !isStationsFetching && isStationsSuccess && stations &&
-      !isStationFrequencyFetching && isStationFrequencySuccess && stationFrequencyData
-    ) {
-      const labels = stationFrequencyData.stationIds.map((id) => {
-        let stationName = stations[id].name;
-        if (typeof stationName === "undefined") {
-          console.error(`Station id ${id} not found in stations ${JSON.stringify(stations, null, 2)}`);
-          stationName = String(id);
-        }
-
-        return stationName;
-      });
-
-      setChartData(
-        new ChartData({intl, labels, data: stationFrequencyData.data})
-      );
-    }
-  }, [isStationsFetching, isStationFrequencyFetching]);
-
-  useEffect(() => {
-    if (isStationsFetching || isStationFrequencyFetching || !chartData) {
+    if (isFetching || !chartData) {
       return;
     }
 
@@ -234,9 +210,9 @@ export default function PriceStationFrequencyChart({location, setErrorMessage}: 
   }, [chartData, isMobile, intl]);
 
   let mainComponent;
-  if (!isStationsFetching && !isStationFrequencyFetching && chartData) {
+  if (!isFetching && chartData) {
     if (chartData.datasets[0].data.length === 0) {
-      mainComponent = <NoGraphDataField />;
+      mainComponent = <NoGraphDataField/>;
     } else {
       mainComponent = (
         <div className="chart-container">

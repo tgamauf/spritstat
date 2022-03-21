@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarkerAlt, faSearch} from "@fortawesome/free-solid-svg-icons";
+import {useIntl} from "react-intl";
 
 import {Prediction, GoogleMapsAPI, loadGoogleMapsAPI, INVALID_PREDICTION} from "./google";
 import {INVALID_COORDINATES, INVALID_LOCATION} from "../../../common/constants";
@@ -30,6 +31,7 @@ export function NamedLocationField({
   const [predictions, setPredictions] = useState(NO_PREDICTIONS);
   const [selectedPrediction, setSelectedPrediction] = useState(INVALID_PREDICTION);
   const [displayText, setDisplayText] = useState("");
+  const intl = useIntl();
 
   const escapePressed = useCallback((event) => {
     if(event.key === "Escape") {
@@ -82,7 +84,11 @@ export function NamedLocationField({
     googleMapsAPI?.selectPrediction(selectedPrediction)
       .then((location) => {
         if (location === INVALID_LOCATION) {
-          setErrorMessage("Der Ort konnte nicht gefunden werden.");
+          setErrorMessage(intl.formatMessage({
+              description: "NamedLocationField error 1",
+              defaultMessage: "Der Ort konnte nicht gefunden werden."
+            })
+          );
           return;
        }
 
@@ -139,9 +145,16 @@ export function NamedLocationField({
   function setPositionError(error: GeolocationPositionError) {
     console.error(`Failed to get position: ${error.message}`);
     if (error.code === GeolocationPositionError.PERMISSION_DENIED) {
-      setErrorMessage("Die Seite hat nicht das Erlaubnis den Ort abzurufen.");
+      setErrorMessage(intl.formatMessage({
+        description: "NamedLocationField error 2",
+        defaultMessage: "Du hast leider nicht die erforderlichen Berechtigungen " +
+          "um diesen Ort abzurufen."
+      }));
    } else {
-      setErrorMessage("Der Ort ist aktuell nicht verfügbar.");
+      setErrorMessage(intl.formatMessage({
+        description: "NamedLocationField error 3",
+        defaultMessage: "Der Ort ist aktuell nicht verfügbar."
+      }));
    }
  }
 
@@ -183,9 +196,16 @@ export function NamedLocationField({
             <p className="control has-icons-right">
               <input
                 className="input"
-                title="Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen."
+                title={intl.formatMessage({
+                  description: "NamedLocationField title location",
+                  defaultMessage: "Gib den Ort ein, für den Spritpreise aufgezeichnet " +
+                    "werden sollen."
+                })}
                 type="text"
-                placeholder="Ort"
+                placeholder={intl.formatMessage({
+                  description: "NamedLocationField placeholder location",
+                  defaultMessage: "Ort"
+                })}
                 maxLength={MAX_LOCATION_NAME_LENGTH}
                 value={displayText}
                 onChange={(e) => changeSearchText(e)}
@@ -221,7 +241,10 @@ export function NamedLocationField({
       <div className="control">
         <a
           className="button is-ghost"
-          title="Übernimm deinen aktuellen Ort."
+          title={intl.formatMessage({
+            description: "NamedLocationField title button current location",
+            defaultMessage: "Übernimm deinen aktuellen Ort."
+          })}
           ref={buttonRef}
           onClick={() => requestLocation()}
           data-test="btn-location"

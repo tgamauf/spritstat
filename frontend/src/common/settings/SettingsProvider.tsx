@@ -1,9 +1,8 @@
-import React, {useEffect, useLayoutEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect} from "react";
 
 import {useLazyGetSettingsQuery} from "../apis/spritstatApi";
 import {useAppDispatch, useAppSelector} from "../utils";
 import {setSettings} from "./settingsSlice";
-import LoadingPage from "../components/LoadingPage";
 import {selectIsAuthenticated} from "../auth/accountSlice";
 
 

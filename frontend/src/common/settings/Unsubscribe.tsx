@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons";
+import {useIntl} from "react-intl";
 
 import BasePage from "../components/BasePage";
 import {useUnsubscribeMutation} from "../apis/spritstatApi";
@@ -14,6 +15,7 @@ export default function Unsubscribe(): JSX.Element {
   const {uid, token} = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const intl = useIntl();
 
   useEffect(() => {
     if (!uid || !token) {
@@ -37,7 +39,10 @@ export default function Unsubscribe(): JSX.Element {
       to={RouteNames.Index}
       data-test="link-home"
     >
-      Homepage
+      {intl.formatMessage({
+        description: "Unsubscribe link home",
+        defaultMessage: "Homepage"
+      })}
     </Link>
   );
 
@@ -45,7 +50,12 @@ export default function Unsubscribe(): JSX.Element {
     <BasePage>
       {error ? (
         <LoadingError
-          message="Abmeldung fehlgeschlagen, eventuell ist der Abmeldungslink ungültig."
+          message={intl.formatMessage({
+              description: "Unsubscribe error",
+              defaultMessage: "Abmeldung fehlgeschlagen, eventuell ist der " +
+                "Abmeldelink ungültig."
+            })
+          }
           children={homeLink}
         />
       ) : (
@@ -57,7 +67,12 @@ export default function Unsubscribe(): JSX.Element {
               size="lg"
             />
           </p>
-          <p className="mt-3">Du hast dich erfolgreich von Benachrichtigungen abgemeldet.</p>
+          <p className="mt-3">
+            {intl.formatMessage({
+              description: "Unsubscribe message success",
+              defaultMessage: "Du hast dich erfolgreich von Benachrichtigungen abgemeldet."
+            })}
+          </p>
           <p className="mt-3">{homeLink}</p>
         </CenteredBox>
       )}

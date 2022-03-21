@@ -14,13 +14,17 @@ import {
   TooltipItem,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
+import {IntlShape, useIntl} from "react-intl";
 
 import {DateRange, Location} from "../../common/types";
 import Spinner from "../../common/components/Spinner";
-import {formatDatetime, useIsMobile} from "../../common/utils";
-import {useLazyGetPriceHistoryDataQuery, useGetStationsQuery} from "./locationApiSlice";
+import {useIsMobile} from "../../common/utils";
+import {useGetStationsQuery, useLazyGetPriceHistoryDataQuery} from "./locationApiSlice";
 import DateRangeButton from "../../common/components/DateRangeButton";
 import {useGetCurrentPriceQuery} from "./priceApiSlice";
+import NoGraphDataField from "../../common/components/NoGraphDataField";
+import moment from "moment-timezone";
+import {TIMEZONE} from "../../common/constants";
 
 Chart.register(
   CategoryScale,
@@ -37,6 +41,7 @@ const CHART_CONTAINER_NAME = "line-chart";
 const BTN_CHART_HISTORY_DATE_RANGE_ID = "btn-chart-history-date-range-id";
 
 interface ChartDataProps {
+  intl: IntlShape;
   labels: string[];
   data: number[];
   stationsMap: number[][];
@@ -45,29 +50,26 @@ interface ChartDataProps {
 class ChartData {
   public labels: string[];
   public datasets: {
-    label: "Geringster Preis";
+    label: string;
     borderColor: string;
     data: number[];
     stationsMap: number[][];
- }[];
+  }[];
 
-  constructor(props?: ChartDataProps) {
-    this.labels = [];
+  constructor({intl, labels, data, stationsMap}: ChartDataProps) {
+    this.labels = labels;
     this.datasets = [
       {
-        label: "Geringster Preis",
+        label: intl.formatMessage({
+          description: "PriceHistoryChart tooltip label",
+          defaultMessage: "Geringster Preis"
+        }),
         borderColor: "#88B04B",
-        data: [],
-        stationsMap: []
-     },
+        data,
+        stationsMap
+      },
     ];
-
-    if (props) {
-      this.labels = [...props.labels];
-      this.datasets[0].data = [...props.data];
-      this.datasets[0].stationsMap = [...props.stationsMap];
-   }
- }
+  }
 }
 
 type TooltipFooterCallback = (items: TooltipItem<"line">[]) => string | string[];
@@ -76,6 +78,7 @@ class ChartConfig implements ChartConfiguration {
   // If only a few data points exist in the dataset show the points itself and
   //  not only the line
   private static readonly POINT_SHOW_LIMIT = 20;
+  private intl: IntlShape;
 
   public type: ChartType = "line";
   public options: ChartOptions<"line">;
@@ -84,45 +87,61 @@ class ChartConfig implements ChartConfiguration {
   constructor(
     isMobile: boolean,
     isInteractive: boolean,
-    data: ChartData,
-    tooltipFooterCallback: TooltipFooterCallback
+    intl: IntlShape,
+    tooltipFooterCallback: TooltipFooterCallback,
+    data: ChartData
   ) {
     let pointRadius = 0;
     if (data.labels.length < ChartConfig.POINT_SHOW_LIMIT) {
       pointRadius = 3;
-   }
+    }
 
+    this.intl = intl;
     this.options = {
       elements: {
         point: {
           radius: pointRadius,
-       },
-     },
+        },
+      },
       interaction: {
         mode: "nearest",
         intersect: false,
-     },
+      },
       maintainAspectRatio: !isMobile,
       aspectRatio: isMobile ? 1 : 2,
       normalized: true,
       plugins: {
         title: {
           display: isInteractive,
-          text: "Niedrigster Preis"
+          text: intl.formatMessage({
+            description: "PriceHistoryChart title",
+            defaultMessage: "Geringster Preis"
+          })
         },
         tooltip: {
           callbacks: {
+            title: (items) => {
+              const date = this.intl.formatDate(items[0].label);
+              const time = this.intl.formatTime(items[0].label);
+              return `${date} ${time}`;
+            },
+            label: (item) => {
+              return this.intl.formatNumber(
+                item.parsed.y,
+                {style: "currency", currency: "EUR"}
+              )
+            },
             footer: tooltipFooterCallback,
-         },
+          },
           footerFont: {
             weight: "normal"
-         }
-       },
+          }
+        },
         zoom: {
           pan: {
             enabled: isInteractive,
             mode: "x",
-         },
+          },
           zoom: {
             mode: "x",
             pinch: {
@@ -135,11 +154,33 @@ class ChartConfig implements ChartConfiguration {
           },
         },
       },
+      scales: {
+        x: {
+          ticks: {
+            callback: (_, index) => {
+              const label = this.data.labels[index];
+              const date = this.intl.formatDate(label);
+              const time = this.intl.formatTime(label);
+              return `${date} ${time}`;
+            }
+          }
+        },
+        y: {
+          ticks: {
+            callback: (value) => {
+              return this.intl.formatNumber(
+                value as number,
+                {style: "currency", currency: "EUR"}
+              )
+            }
+          }
+        }
+      },
       spanGaps: true,
-   };
+    };
 
     this.data = data;
- }
+  }
 }
 
 interface Props {
@@ -158,7 +199,7 @@ export default function PriceHistoryChart(
     isError: isStationsError,
     isFetching: isStationsFetching,
     isSuccess: isStationsSuccess
- } = useGetStationsQuery();
+  } = useGetStationsQuery();
   const [
     getPriceData,
     {isFetching: isPriceFetching}
@@ -171,14 +212,16 @@ export default function PriceHistoryChart(
     DateRange.OneMonth
   );
   const [chartData, setChartData] = useState<ChartData>();
+  const intl = useIntl();
 
   useEffect(() => {
     getPriceData({locationId: location.id, dateRange: selectedDateRange}).unwrap()
       .then((data) => {
         let finalData;
         if (isSuccess && currentPriceData) {
+          // Add current datapoint
           finalData = {
-            labels: [...data.labels, formatDatetime()],   // Add current timestamp
+            labels: [...data.labels, moment.tz(TIMEZONE).toISOString()],
             data: [...data.data, currentPriceData.amount],
             // There is a small chance that one of the stations hasn't been seen
             //  yet, which would mean that it wouldn't be shown in the tooltip. We
@@ -188,81 +231,80 @@ export default function PriceHistoryChart(
         } else {
           finalData = data;
         }
-        setChartData(new ChartData(finalData));
-     })
+        setChartData(new ChartData({intl, ...finalData}));
+      })
       .catch((e) => {
         console.error(`Failed to get price data: ${JSON.stringify(e, null, 2)}`);
-        setErrorMessage(
-          "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte " +
-          "probier es nochmal."
-        );
-     });
- }, [location, selectedDateRange, isSuccess]);
+        setErrorMessage(intl.formatMessage({
+          description: "PriceHistoryChart error",
+          defaultMessage: "Die Preise für diesen Ort konnten nicht abgerufen werden, " +
+            "bitte probier es nochmal."
+        }));
+      });
+  }, [location, selectedDateRange, isSuccess]);
 
   useEffect(() => {
     if (isStationsError) {
       console.error(`Failed to get stations: ${
         JSON.stringify(stationsError, null, 2)}`);
-   }
- }, [isStationsError]);
+    }
+  }, [isStationsError]);
 
   const getStation = useCallback((items: TooltipItem<"line">[]): string[] => {
     if (isStationsFetching || !isStationsSuccess || !stations) {
       return [];
-   }
+    }
 
     // We should always only get a single item as we only have a single graph
     if (!items || (items.length > 1)) {
       console.error(`Invalid tooltip items received, length=${items.length}`);
-   }
+    }
 
     const dataIndex = items[0].dataIndex;
-    const dataset = items[0].dataset as unknown as {stationsMap: number[][]}
+    const dataset = items[0].dataset as unknown as { stationsMap: number[][] }
     const stationIds = dataset.stationsMap[dataIndex];
 
     const stationNames = [];
     if (stationIds.length > 0) {
       // Only show the header if there is at least one station
-      stationNames.push("Tankstellen:");
+      stationNames.push(intl.formatMessage({
+        description: "AveragePriceChart stations title",
+        defaultMessage: "Tankstellen:"
+      }));
       for (const id of stationIds) {
         const station = stations[id];
         if (typeof station === "undefined") {
           continue;
-       }
+        }
 
         stationNames.push(`\t- ${station.name}`);
-     }
-   }
+      }
+    }
 
     return stationNames;
- }, [isStationsFetching])
+  }, [isStationsFetching, intl])
 
   useEffect(() => {
     if (isPriceFetching || !chartData) {
       return;
-   }
+    }
 
     const chartCanvas = canvasRef.current?.getContext("2d");
     if (!chartCanvas) {
       return;
-   }
+    }
 
     chartRef.current?.destroy();
-    const config = new ChartConfig(isMobile, isInteractive, chartData, getStation);
+    const config = new ChartConfig(isMobile, isInteractive, intl, getStation, chartData);
     // @ts-ignore type incompatibility seems to be a fluke
     chartRef.current = new Chart(chartCanvas, config);
- }, [chartData, isMobile]);
+  }, [chartData, isMobile, intl]);
 
   let mainComponent;
   if (!isPriceFetching && chartData) {
     if (chartData.labels.length === 0) {
-      mainComponent = (
-        <span>
-          Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten
-          vorhanden. In ein paar Stunden gibt es aber schon etwas zu sehen!
-        </span>
-      );
-   } else {
+      mainComponent = <NoGraphDataField/>;
+    } else {
       mainComponent = (
         <div className="chart-container">
           <div className="content">
@@ -272,10 +314,10 @@ export default function PriceHistoryChart(
             <div className="is-inline-block" id={BTN_CHART_HISTORY_DATE_RANGE_ID}>
               <DateRangeButton
                 items={[
-                  {name: "1M", value: DateRange.OneMonth},
-                  {name: "3M", value: DateRange.ThreeMonths},
-                  {name: "6M", value: DateRange.SixMonths},
-                  {name: "Alles", value: DateRange.All},
+                  DateRange.OneMonth,
+                  DateRange.ThreeMonths,
+                  DateRange.SixMonths,
+                  DateRange.All
                 ]}
                 selectedValue={selectedDateRange}
                 setSelectedValue={setSelectedDateRange}
@@ -284,10 +326,10 @@ export default function PriceHistoryChart(
           )}
         </div>
       );
-   }
- } else {
-    mainComponent = <Spinner />;
- }
+    }
+  } else {
+    mainComponent = <Spinner/>;
+  }
 
   return mainComponent;
 }

@@ -2,8 +2,7 @@ import moment from "moment-timezone";
 
 import {DEFAULT_HEADERS, spritstatApi} from "../../common/apis/spritstatApi"
 import {DateRange, FuelType, Location, LocationType, RegionType, Station, StationMap} from "../../common/types";
-import {formatDatetime, reverseMap} from "../../common/utils";
-
+import {reverseMap} from "../../common/utils";
 
 const locationTypeMap = new Map<LocationType, number>([
   [LocationType.Named, 1], [LocationType.Region, 2]
@@ -94,7 +93,7 @@ const extendedApi = spritstatApi.injectEndpoints({
             longitude,
             region_code: regionCode,
             region_type: regionTypeMap.get(regionType as RegionType),
-            fuel_type: fuelTypeMap.get(fuelType as FuelType)
+            fuel_type: fuelTypeMap.get(Number(fuelType) as FuelType)
           }
         };
       },
@@ -177,7 +176,7 @@ const extendedApi = spritstatApi.injectEndpoints({
         const chartData: PriceHistoryData = {labels: [], data: [], stationsMap: []};
         for (let i = 0; i < data.length; i++) {
           const entry = data[i];
-          chartData.labels.push(formatDatetime(entry.datetime));
+          chartData.labels.push(entry.datetime);
           chartData.data.push(entry.min_amount);
           chartData.stationsMap.push(entry.stations);
         }

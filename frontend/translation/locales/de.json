@@ -1,0 +1,834 @@
+{
+  "+PCTV5": {
+    "defaultMessage": "Passwort vergessen?",
+    "description": "Login password recovery link"
+  },
+  "+sH1SQ": {
+    "defaultMessage": "Bitte gib dein Passwort an.",
+    "description": "PasswordField password field title"
+  },
+  "/t42tE": {
+    "defaultMessage": "Anmelden",
+    "description": "HeaderLoginButton link"
+  },
+  "0pfaHj": {
+    "defaultMessage": "Gib eine Postleitzahl ein um den zugehörigen Bezirk zu suchen.",
+    "description": "RegionLocationField title postal code"
+  },
+  "0vzGfC": {
+    "defaultMessage": "Dies zeigt die Passwortstärke an. Rot zeigt ein schlechtes Passwort an, Gelb ein mäßiges und Grün ein gutes. {suggestions}",
+    "description": "PasswordWithValidationField progress title"
+  },
+  "11unjv": {
+    "defaultMessage": "Willst du den Ort wirklich löschen?",
+    "description": "DeleteLocationModal check text"
+  },
+  "1aweZl": {
+    "defaultMessage": "Deine Orte",
+    "description": "LocationList title"
+  },
+  "2/LS9d": {
+    "defaultMessage": "Region",
+    "description": "LocationField type region"
+  },
+  "2NGsyL": {
+    "defaultMessage": "Email",
+    "description": "Settings key email"
+  },
+  "2yJagg": {
+    "defaultMessage": "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.",
+    "description": "AveragePriceDayOfWeekChart error"
+  },
+  "3kYiHE": {
+    "defaultMessage": "Diese Datenschutzerklärung soll die Nutzer dieser Website über die Art, den Umfang und den Zweck der Erhebung und Verwendung personenbezogener Daten durch den Websitebetreiber Thomas Gamauf informieren.",
+    "description": "PrivacyPolicy basic paragraph 1"
+  },
+  "3u5Qy+": {
+    "defaultMessage": "Niedrigster Preis pro Stunde",
+    "description": "LocationDetails lowest price per hour graph title"
+  },
+  "418AZN": {
+    "defaultMessage": "Neu laden",
+    "description": "LocationDetails reload button"
+  },
+  "4Awz1L": {
+    "defaultMessage": "Bitte klicke auf den Link um die Registrierung abzuschließen!",
+    "description": "EmailVerificationSent text paragraph 2"
+  },
+  "4W7MoD": {
+    "defaultMessage": "Aktuelles Passwort",
+    "description": "ChangePassword current password field label"
+  },
+  "4fZBmw": {
+    "defaultMessage": "Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten vorhanden.",
+    "description": "NoGraphDataField"
+  },
+  "4zX9Z0": {
+    "defaultMessage": "Aktiviere/deaktiviere die Einführung",
+    "description": "Settings switch intro"
+  },
+  "52RBUw": {
+    "defaultMessage": "Geringster Preis",
+    "description": "PriceHistoryChart title"
+  },
+  "5Bafah": {
+    "defaultMessage": "Löschen",
+    "description": "DeleteLocationModal delete button"
+  },
+  "5FU+Jr": {
+    "defaultMessage": "Löschen",
+    "description": "DeleteAccountModal delete button"
+  },
+  "5J36C0": {
+    "defaultMessage": "Die Seite konnte nicht vollständig geladen werden, bitte lade sie neu und versuche es nochmal.",
+    "description": "RegionLocationField error 1"
+  },
+  "6JRMbK": {
+    "defaultMessage": "Optional kannst du auch den gewünschten Bezirk im Bundesland auswählen.",
+    "description": "AddLocation intro 7"
+  },
+  "6Ks01J": {
+    "defaultMessage": "Niedrigster Preis pro Tag im Monat",
+    "description": "LocationDetails lowest price per day of month graph title"
+  },
+  "6Nfdm3": {
+    "defaultMessage": "Rechte des Nutzers",
+    "description": "PrivacyPolicy user rights subtitle"
+  },
+  "6dsoqq": {
+    "defaultMessage": "Ich benötige Hilfe",
+    "description": "Contact subject 1"
+  },
+  "6xrYOg": {
+    "defaultMessage": "Die Website ist Open Source und der Quellcode ist <link>hier</link> zu finden - ich freue mich, wenn du mir hilfst die Seite besser zu machen! :)",
+    "description": "Imprint block 2"
+  },
+  "7CYicM": {
+    "defaultMessage": "Funktionalität",
+    "description": "Settings functionality subtitle"
+  },
+  "7k8jbY": {
+    "defaultMessage": "Einstellungen",
+    "description": "BasePage header dropdown settings item"
+  },
+  "8/8vQK": {
+    "defaultMessage": "Und das Beste? Das ganze ist gratis!",
+    "description": "Home paragraph 3"
+  },
+  "89A4Ut": {
+    "defaultMessage": "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal.",
+    "description": "RegionLocationField error 2"
+  },
+  "8EdkD1": {
+    "defaultMessage": "Startseite",
+    "description": "Dashboard breadcrumb"
+  },
+  "8RAU7e": {
+    "defaultMessage": "Worum geht es bei deiner Anfrage?",
+    "description": "ContactForm subject title"
+  },
+  "8YSztz": {
+    "defaultMessage": "Auf dieser Seite werden detaillierte Preisdaten des gewählten Ortes angezeigt.",
+    "description": "LocationDetails intro 1"
+  },
+  "94x2p7": {
+    "defaultMessage": "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen.",
+    "description": "NoLocation text"
+  },
+  "95ZtQ/": {
+    "defaultMessage": "Der Ort konnte nicht geladen werden.",
+    "description": "LocationDetails error"
+  },
+  "99ZETT": {
+    "defaultMessage": "Löschen",
+    "description": "Settings delete account button"
+  },
+  "9C/bsl": {
+    "defaultMessage": "Nicht erhalten?",
+    "description": "EmailVerificationSent button"
+  },
+  "9syg5d": {
+    "defaultMessage": "Dieser Graph zeigt den zeitlichen Verlauf des niedrigsten Treibstoffpreises über den gewählten Zeitraum an.",
+    "description": "LocationDetails intro 3"
+  },
+  "B0dAOm": {
+    "defaultMessage": "Passwort verstecken.",
+    "description": "PasswordField hide message"
+  },
+  "BShINp": {
+    "defaultMessage": "Montag",
+    "description": "AveragePriceDayOfWeekChart Monday"
+  },
+  "BhidOa": {
+    "defaultMessage": "Übernimm deinen aktuellen Ort.",
+    "description": "NamedLocationField title button current location"
+  },
+  "BkNRbt": {
+    "defaultMessage": "Passwort ändern",
+    "description": "Settings link password change"
+  },
+  "C3q8Sq": {
+    "defaultMessage": "Falls deine Email-Adresse bei uns gespeichert ist, erhältst du in Kürze einen Passwort-Reset-Link zugesendet.",
+    "description": "Login notification 1"
+  },
+  "CMfPy3": {
+    "defaultMessage": "Passwort anzeigen.",
+    "description": "PasswordField show message"
+  },
+  "COVuEO": {
+    "defaultMessage": "Wir haben ein Email an deine Adresse gesendet.",
+    "description": "EmailVerificationSent text paragraph 1"
+  },
+  "DAdgwc": {
+    "defaultMessage": "Wien",
+    "description": "Imprint location value"
+  },
+  "DB+WgZ": {
+    "defaultMessage": "Abmeldung fehlgeschlagen, eventuell ist der Abmeldelink ungültig.",
+    "description": "Unsubscribe error"
+  },
+  "DhmzZq": {
+    "defaultMessage": "So gehts - einfach anmelden, einen Ort anlegen und von diesem Zeitpunkt an werden die Spritkosten in deiner Gegend aufgezeichnet.",
+    "description": "Home paragraph 2"
+  },
+  "DwMbP5": {
+    "defaultMessage": "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen.",
+    "description": "Login notification 3"
+  },
+  "EKcJXR": {
+    "defaultMessage": "Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr.",
+    "description": "Imprint block 1"
+  },
+  "EMlxA/": {
+    "defaultMessage": "Du hast leider nicht die erforderlichen Berechtigungen um diesen Ort abzurufen.",
+    "description": "NamedLocationField error 2"
+  },
+  "Ejhe0U": {
+    "defaultMessage": "Wir, der Websitebetreiber bzw. Seitenprovider, erheben aufgrund unseres berechtigten Interesses (s. Art. 6 Abs. 1 lit. f. DSGVO) Daten über Zugriffe auf die Website und speichern diese als „Server-Logfiles“ auf dem Server der Website ab. Folgende Daten werden so protokolliert: <ul> <li>Besuchte Website</li> <li>Uhrzeit zum Zeitpunkt des Zugriffes</li> <li>Menge der gesendeten Daten in Byte</li> <li>Quelle/Verweis, von welchem Sie auf die Seite gelangten</li> <li>Verwendeter Browser</li> <li>Verwendetes Betriebssystem</li> <li>Verwendete IP-Adresse</li> </ul>",
+    "description": "PrivacyPolicy account data paragraph 1"
+  },
+  "Et0wru": {
+    "defaultMessage": "Impressum",
+    "description": "Imprint title"
+  },
+  "FA5qMb": {
+    "defaultMessage": "Einloggen",
+    "description": "Login submit"
+  },
+  "FBMiN9": {
+    "defaultMessage": "Gib den Ort ein, für den Spritpreise aufgezeichnet werden sollen.",
+    "description": "NamedLocationField title location"
+  },
+  "FTaJMq": {
+    "defaultMessage": "Der Ort konnte nicht gefunden werden.",
+    "description": "NamedLocationField error 1"
+  },
+  "FauOZF": {
+    "defaultMessage": "Dein Ort konnte nicht gelöscht werden.",
+    "description": "DeleteLocationModal error"
+  },
+  "Fho1uj": {
+    "defaultMessage": "Häufigkeit niedrigster Preis pro Tankstelle",
+    "description": "PriceStationFrequencyChart title"
+  },
+  "Fm2PMb": {
+    "defaultMessage": "Grundlegendes",
+    "description": "PrivacyPolicy basic subtitle"
+  },
+  "FscJhF": {
+    "defaultMessage": "Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro Wochentag im gewählten Zeitraum an.",
+    "description": "LocationDetails intro 7"
+  },
+  "GOAC5J": {
+    "defaultMessage": "Ich benötige weitere Informationen",
+    "description": "Contact subject 2"
+  },
+  "HEV5Uu": {
+    "defaultMessage": "PLZ",
+    "description": "RegionLocationField placeholder postal code"
+  },
+  "HJqAR2": {
+    "defaultMessage": "Ort:",
+    "description": "Imprint location label"
+  },
+  "HNzIhO": {
+    "defaultMessage": "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.",
+    "description": "AveragePriceChart error"
+  },
+  "HsSFTU": {
+    "defaultMessage": "Es gibt zwei unterschiedliche Ortstypen: konkrete Positionen und Bezirke/Bundesländer. Ergebnisse für eine konkrete Position sind im Allgemeinen exakter als Ergebnisse für Bezirke/Bundesländer.",
+    "description": "AddLocation intro 1"
+  },
+  "Hvm1wk": {
+    "defaultMessage": "Wähle hier das gewünschte Bundesland aus.",
+    "description": "AddLocation intro 6"
+  },
+  "Hy/cV0": {
+    "defaultMessage": "Du hast noch keinen Ort angelegt. Klicke hier um deinen ersten Ort zu erstellen.",
+    "description": "NoLocation intro 1"
+  },
+  "IWJ0+9": {
+    "defaultMessage": "Passwort ändern",
+    "description": "ChangePassword breadcrumb"
+  },
+  "JHYmpd": {
+    "defaultMessage": "Angemeldet bleiben",
+    "description": "Login remember checkbox"
+  },
+  "JNfgeU": {
+    "defaultMessage": "Entferne diesen Ort.",
+    "description": "LocationDetails delete button title"
+  },
+  "JNyHka": {
+    "defaultMessage": "Dein Konto konnte nicht gelöscht werden.",
+    "description": "DeleteAccountModal error"
+  },
+  "JVGvUi": {
+    "defaultMessage": "Weiter",
+    "description": "Intro next label"
+  },
+  "K9N3QS": {
+    "defaultMessage": "Fertig",
+    "description": "Intro done label"
+  },
+  "KGSfqx": {
+    "defaultMessage": "Auch hier wird die Beschreibung des Ortes und der aktuelle Preis angezeigt. Zusätzlich ist es möglich direkt auf den Tankstellennamen zu klicken um diese auf Google Maps angezeigt zu bekommen.",
+    "description": "LocationDetails intro 2"
+  },
+  "KcdM1y": {
+    "defaultMessage": "Tankstellen:",
+    "description": "AveragePriceChart stations title"
+  },
+  "LD5F8Z": {
+    "defaultMessage": "Der Ort konnte nicht angelegt werden.",
+    "description": "AddLocation error"
+  },
+  "Li/N9y": {
+    "defaultMessage": "Nehmen Sie mit uns als Websitebetreiber durch die angebotenen Kontaktmöglichkeiten Verbindung auf, werden Ihre Angaben gespeichert, damit auf diese zur Bearbeitung und Beantwortung Ihrer Anfrage zurückgegriffen werden kann. Ohne Ihre Einwilligung werden diese Daten nicht an Dritte weitergegeben.",
+    "description": "PrivacyPolicy contact data paragraph 1"
+  },
+  "LrOhU/": {
+    "defaultMessage": "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.",
+    "description": "PriceStationFrequencyChart error"
+  },
+  "M7ET7T": {
+    "defaultMessage": "Inhaber:",
+    "description": "Imprint owner label"
+  },
+  "MVOFuO": {
+    "defaultMessage": "Wie können wir dir helfen?",
+    "description": "ContactForm text"
+  },
+  "N+9vgB": {
+    "defaultMessage": "Einstellungen",
+    "description": "Settings title"
+  },
+  "NCi6/3": {
+    "defaultMessage": "Für alle Graphen ist es möglich den angezeigten Zeitraum zu wählen.",
+    "description": "LocationDetails intro 5"
+  },
+  "NDgpCE": {
+    "defaultMessage": "Kontodaten",
+    "description": "Settings account data subtitle"
+  },
+  "Nkeovy": {
+    "defaultMessage": "Tankstellen",
+    "description": "CurrentPriceField stations title"
+  },
+  "NnXxq+": {
+    "defaultMessage": "Passwort zurücksetzen",
+    "description": "PasswordRecoveryEmail submit"
+  },
+  "NzeN5c": {
+    "defaultMessage": "Es ist möglich den Graphen zu vergrößern. Auf einem Mobiltelefon oder Tablet kann mit Pinch-and-Zoom die Zoomstufe verändert und danach mit zwei Fingern entlang der x-Achse gescrollt werden. Mit einer Maus ist das mit STRG + Mausrad, bzw. durch Klick + Ziehen möglich.",
+    "description": "LocationDetails intro 4"
+  },
+  "O30kBl": {
+    "defaultMessage": "Diese Website verwendet nur technisch notwendige Cookies die der Authentifizierung und dem Session-Management dienen.",
+    "description": "PrivacyPolicy cookies paragraph 1"
+  },
+  "OBkVFi": {
+    "defaultMessage": "Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink ungültig.",
+    "description": "ConfirmEmail error"
+  },
+  "OM/Js/": {
+    "defaultMessage": "Donnerstag",
+    "description": "AveragePriceDayOfWeekChart Thursday"
+  },
+  "OdSMhq": {
+    "defaultMessage": "Anmelden",
+    "description": "Login title"
+  },
+  "PaxL1r": {
+    "defaultMessage": "6M",
+    "description": "DateRange 6m"
+  },
+  "PlqGee": {
+    "defaultMessage": "Neu laden",
+    "description": "Dashboard reload button"
+  },
+  "Q6t6Oa": {
+    "defaultMessage": "Die Server-Logfiles werden für maximal 30 Tage gespeichert und anschließend gelöscht. Die Speicherung der Daten erfolgt aus Sicherheitsgründen, um z. B. Missbrauchsfälle aufklären zu können. Müssen Daten aus Beweisgründen aufgehoben werden, sind sie solange von der Löschung ausgenommen bis der Vorfall endgültig geklärt ist.",
+    "description": "PrivacyPolicy account data paragraph 2"
+  },
+  "Q92c/S": {
+    "defaultMessage": "Dienstag",
+    "description": "AveragePriceDayOfWeekChart Tuesday"
+  },
+  "QKW8Wc": {
+    "defaultMessage": "Aktuell niedrigster Preis",
+    "description": "CurrentPriceField price title"
+  },
+  "QyerpU": {
+    "defaultMessage": "Etwas anderes",
+    "description": "Contact subject 3"
+  },
+  "R/aFN2": {
+    "defaultMessage": "Der Websitebetreiber erhebt, nutzt und gibt Ihre personenbezogenen Daten nur dann weiter, wenn dies im gesetzlichen Rahmen erlaubt ist oder Sie in die Datenerhebung einwilligen. Als personenbezogene Daten gelten sämtliche Informationen, welche dazu dienen, Ihre Person zu bestimmen und welche zu Ihnen zurückverfolgt werden können – also beispielsweise Ihre E-Mail-Adresse.",
+    "description": "PrivacyPolicy personal data paragraph 1"
+  },
+  "R1r0bf": {
+    "defaultMessage": "Definitionen der verwendeten Begriffe (z.B. “personenbezogene Daten” oder “Verarbeitung”) finden Sie in Art. 4 DSGVO.",
+    "description": "PrivacyPolicy basic paragraph 3"
+  },
+  "R2r14Q": {
+    "defaultMessage": "Hast du dich schon immer gefragt wie sich der Spritpreis in deiner Gegend über die Zeit entwickelt? Oder an welchen Tagen es wirklich am günstigsten zu tanken ist? Ich auch und deswegen gibt es jetzt <color>SPRITSTAT</color>. Noch nie war es einfacher einen Überblick über die langfristige Preisentwicklung von Treibstoff in deiner Gegend zu bekommen.",
+    "description": "Home paragraph 1"
+  },
+  "RXDaQp": {
+    "defaultMessage": "Klicke hier um einen neuen Account anzulegen.",
+    "description": "Login register link title"
+  },
+  "RXbwpj": {
+    "defaultMessage": "Hinzufügen",
+    "description": "LocationList add button text"
+  },
+  "RthL03": {
+    "defaultMessage": "Gas",
+    "description": " Fuel type autogas"
+  },
+  "SC9B09": {
+    "defaultMessage": "Mittwoch",
+    "description": "AveragePriceDayOfWeekChart Wednesday"
+  },
+  "SHt6lh": {
+    "defaultMessage": "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen.",
+    "description": "LocationList add button title"
+  },
+  "SZnURO": {
+    "defaultMessage": "Wähle den Typ von Ortsangabe aus.",
+    "description": "AddLocation title dropdown location type"
+  },
+  "ScyX7+": {
+    "defaultMessage": "Registrieren",
+    "description": "Login register link"
+  },
+  "Sf6H5v": {
+    "defaultMessage": "Bitte gib deine E-Mail-Adresse an.",
+    "description": "EmailField title"
+  },
+  "ShMYXf": {
+    "defaultMessage": "Name",
+    "description": "ContactForm placeholder name"
+  },
+  "SpeLdJ": {
+    "defaultMessage": "Hinzufügen",
+    "description": "AddLocation submit"
+  },
+  "Sqp5hN": {
+    "defaultMessage": "3M",
+    "description": "DateRange 3m"
+  },
+  "StlVwq": {
+    "defaultMessage": "Wenn du \"Region\" auswählst, kannst du entweder einen Bezirk oder ein Bundesland auswählen.",
+    "description": "AddLocation intro 5"
+  },
+  "TOTLK2": {
+    "defaultMessage": "Kontakt",
+    "description": "Contact breadcrumb"
+  },
+  "Th6cLb": {
+    "defaultMessage": "Bezirk",
+    "description": "RegionLocationField dropdown district name"
+  },
+  "UGEdU1": {
+    "defaultMessage": "Kontakt:",
+    "description": "Imprint contact label"
+  },
+  "UPVbmK": {
+    "defaultMessage": "Betreff",
+    "description": "ContactForm subject dropdown text"
+  },
+  "UQ0XJ7": {
+    "defaultMessage": "Nutzer dieser Webseite können von ihrem Widerspruchsrecht Gebrauch machen und der Verarbeitung ihrer personenbezogenen Daten zu jeder Zeit widersprechen.",
+    "description": "PrivacyPolicy right of objection paragraph 1"
+  },
+  "UtIxdc": {
+    "defaultMessage": "Du hast dich erfolgreich von Benachrichtigungen abgemeldet.",
+    "description": "Unsubscribe message success"
+  },
+  "V0UhMo": {
+    "defaultMessage": "Die Beschreibung des Ortes enthält den Namen und den Treibstofftyp.",
+    "description": "LocationList intro 3"
+  },
+  "V6bwzT": {
+    "defaultMessage": "1M",
+    "description": "DateRange 1m"
+  },
+  "VDiPar": {
+    "defaultMessage": "Entfernen",
+    "description": "LocationDetails delete button text"
+  },
+  "W160a4": {
+    "defaultMessage": "Alle",
+    "description": "DateRange all"
+  },
+  "WOsv1u": {
+    "defaultMessage": "Zurück",
+    "description": "Intro previous label"
+  },
+  "WSYtgu": {
+    "defaultMessage": "Region",
+    "description": "AddLocation dropdown location type option 2"
+  },
+  "XA/gyI": {
+    "defaultMessage": "Kontakt",
+    "description": "BasePage header dropdown contact item"
+  },
+  "XGf1LU": {
+    "defaultMessage": "Abmelden",
+    "description": "HeaderDropdown logout link"
+  },
+  "XIA1Ou": {
+    "defaultMessage": "Name",
+    "description": "LocationField type named"
+  },
+  "Y25Oeb": {
+    "defaultMessage": "Für jeden deiner Orte wird eine Übersicht angezeigt. Klicke auf den Ort um die detaillierte Statistiken des Ortes zu erhalten.",
+    "description": "LocationList intro 2"
+  },
+  "YIsGXA": {
+    "defaultMessage": "Niedrigster Preis pro Wochentag",
+    "description": "AveragePriceDayOfWeekChart graph title"
+  },
+  "YWWthG": {
+    "defaultMessage": "Schlussendlich ist es möglich den Ort zu löschen, falls er nicht mehr relevant für dich ist.",
+    "description": "LocationDetails intro 10"
+  },
+  "Yr7OBm": {
+    "defaultMessage": "Geringster Preis",
+    "description": "PriceHistoryChart tooltip label"
+  },
+  "Ywx8az": {
+    "defaultMessage": "Speichern",
+    "description": "ChangePassword submit label"
+  },
+  "Z/Evby": {
+    "defaultMessage": "Nach dem Löschen kann das Konto nicht mehr wiederhergestellt werden. Bitte klicke nur wenn du dir sicher bist!",
+    "description": "Settings delete account check text"
+  },
+  "Z6chOG": {
+    "defaultMessage": "Passwort reset ist fehlgeschlagen.",
+    "description": "PasswordRecoveryEmail error"
+  },
+  "ZGeFsV": {
+    "defaultMessage": "Passwort",
+    "description": "PasswordField default label"
+  },
+  "ZWAOaP": {
+    "defaultMessage": "Dieser Graph zeigt an wie häufig eine Tankstelle im gewählten Zeitraum den niedrigsten Preis angeboten hat.",
+    "description": "LocationDetails intro 9"
+  },
+  "ZshY0w": {
+    "defaultMessage": "Sobald ein gültiger Ort ausgewählt wurde kann dieser hinzugefügt werden.",
+    "description": "AddLocation intro 10"
+  },
+  "aRxPhm": {
+    "defaultMessage": "Zusätzlich zum Ort kann auch der Treibstofftyp ausgewählt werden für den die Preise aufgezeichnet werden sollen. Es stehen Diesel, Super und Gas zur Verfügung.",
+    "description": "AddLocation intro 9"
+  },
+  "aiuoiM": {
+    "defaultMessage": "Neues Passwort",
+    "description": "ChangePassword new password field label"
+  },
+  "bIbVot": {
+    "defaultMessage": "Die gewünschte Seite konnte leider nicht gefunden werden.",
+    "description": "NoMatch text"
+  },
+  "bJGamk": {
+    "defaultMessage": "Willst du dein Konto wirklich löschen?",
+    "description": "DeleteAccountModal check text"
+  },
+  "bVTRz8": {
+    "defaultMessage": "Datenschutzerklärung",
+    "description": "Footer privacy policy"
+  },
+  "bob9Dl": {
+    "defaultMessage": "Suche",
+    "description": "AddLocation dropdown location type option 1"
+  },
+  "c4rsfm": {
+    "defaultMessage": "Senden der Nachricht ist fehlgeschlagen, bitte probiere es erneut.",
+    "description": "ContactForm error"
+  },
+  "cggCQJ": {
+    "defaultMessage": "Widerspruchsrecht",
+    "description": "PrivacyPolicy right of objection subtitle"
+  },
+  "f8L9Dz": {
+    "defaultMessage": "Auf dieser Seite werden alle deine Orte angezeigt.",
+    "description": "LocationList intro 1"
+  },
+  "fcbGML": {
+    "defaultMessage": "Samstag",
+    "description": "AveragePriceDayOfWeekChart Saturday"
+  },
+  "foByCl": {
+    "defaultMessage": "Neuen Ort hinzufügen",
+    "description": "NoLocation button text"
+  },
+  "fr0MJM": {
+    "defaultMessage": "Deine Orte konnten nicht geladen werden.",
+    "description": "Dashboard error"
+  },
+  "g+LWth": {
+    "defaultMessage": "Der Websitebetreiber nimmt Ihren Datenschutz sehr ernst und behandelt Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Vorschriften. Da durch neue Technologien und die ständige Weiterentwicklung dieser Webseite Änderungen an dieser Datenschutzerklärung vorgenommen werden können, empfehlen wir Ihnen sich die Datenschutzerklärung in regelmäßigen Abständen wieder durchzulesen.",
+    "description": "PrivacyPolicy basic paragraph 2"
+  },
+  "gEdqLH": {
+    "defaultMessage": "Außerdem wird der aktuell niedrigste Preis für den angegebenen Treibstofftyp und die Tankstellen die diesen anbieten angezeigt.",
+    "description": "LocationList intro 4"
+  },
+  "guyVJg": {
+    "defaultMessage": "Homepage",
+    "description": "ConfirmEmail homepage button"
+  },
+  "hAx7Dk": {
+    "defaultMessage": "Alternativ kannst du auch die gewünschte Postleitzahl eingeben. In diesem Fall wird automatisch der zugehörige Bezirk ausgewählt.",
+    "description": "AddLocation intro 8"
+  },
+  "hJLqiI": {
+    "defaultMessage": "Wenn Sie eine Berichtigung, Sperrung, Löschung oder Auskunft über die zu Ihrer Person gespeicherten personenbezogenen Daten wünschen oder Fragen bzgl. der Erhebung, Verarbeitung oder Verwendung Ihrer personenbezogenen Daten haben oder erteilte Einwilligungen widerrufen möchten, nutzen Sie bitte das Kontaktformular das Ihnen nach dem Anmelden zur Verfügung steht.",
+    "description": "PrivacyPolicy right of objection paragraph 2"
+  },
+  "hQY09y": {
+    "defaultMessage": "Dein Name ist optional, aber wir freuen uns wenn du ihn angibst.",
+    "description": "ContactForm title name"
+  },
+  "hcaLGS": {
+    "defaultMessage": "Dieser Graph zeigt den durchschnittlichen niedrigsten Preis pro Tag im Monat im gewählten Zeitraum an.",
+    "description": "LocationDetails intro 8"
+  },
+  "i77Pf3": {
+    "defaultMessage": "Der Ort ist aktuell nicht verfügbar.",
+    "description": "NamedLocationField error 3"
+  },
+  "iNAhuz": {
+    "defaultMessage": "Es ist nicht möglich sich mit diesen Benutzerdaten einzuloggen.",
+    "description": "Login error"
+  },
+  "iY9Sfo": {
+    "defaultMessage": "Klicke hier um einen neuen Ort hinzuzufügen.",
+    "description": "LocationList intro 5"
+  },
+  "kD1AoS": {
+    "defaultMessage": "Häufigkeit niedrigster Preis",
+    "description": "PriceStationFrequencyChart title"
+  },
+  "kXTXGA": {
+    "defaultMessage": "Bundesland",
+    "description": "RegionLocationField dropdown state name"
+  },
+  "l/W/K+": {
+    "defaultMessage": "Diesel",
+    "description": "Fuel type diesel"
+  },
+  "ln5KDR": {
+    "defaultMessage": "Ort",
+    "description": "LocationDetails breadcrumb"
+  },
+  "mQ7scF": {
+    "defaultMessage": "Dein Passwort wurde geändert, nun kannst du dich mit deinem neuen Passwort einloggen.",
+    "description": "Login notification 2"
+  },
+  "msfceW": {
+    "defaultMessage": "<p>Es tut uns leid dass du deinen Account gelöscht hast.</p><p>Hoffentlich sehen wir uns trotzdem bald wieder!</p>",
+    "description": "AccountDeleted text"
+  },
+  "mwzgGX": {
+    "defaultMessage": "Zugriffsdaten",
+    "description": "PrivacyPolicy account data subtitle"
+  },
+  "nRmDOO": {
+    "defaultMessage": "Email",
+    "description": "EmailField placeholder"
+  },
+  "nYoCW/": {
+    "defaultMessage": "Tipp einfach einen Suchbegriff (Adresse, Ortsname, ...) ein und du erhältst die gefundenen Vorschläge angezeigt.",
+    "description": "AddLocation intro 3"
+  },
+  "nzFbKA": {
+    "defaultMessage": "Sonntag",
+    "description": "AveragePriceDayOfWeekChart Sunday"
+  },
+  "o2QAy5": {
+    "defaultMessage": "Super",
+    "description": "Fuel type gasoline"
+  },
+  "o8WY/x": {
+    "defaultMessage": "Neuen Ort hinzufügen",
+    "description": "AddLocation title"
+  },
+  "oKxjT1": {
+    "defaultMessage": "Registrieren",
+    "description": "Signup title"
+  },
+  "oSsjU/": {
+    "defaultMessage": "Passwort ändern",
+    "description": "ChangePassword title"
+  },
+  "oZZNq+": {
+    "defaultMessage": "Senden",
+    "description": "ContactForm submit"
+  },
+  "oeapZ+": {
+    "defaultMessage": "Einstellungen",
+    "description": "Settings breadcrumb"
+  },
+  "ogMBir": {
+    "defaultMessage": "oder",
+    "description": "RegionLocationField text or"
+  },
+  "oyMixT": {
+    "defaultMessage": "Startseite",
+    "description": "NoMatch link"
+  },
+  "oyv26g": {
+    "defaultMessage": "Passwort vergessen?",
+    "description": "PasswordRecoveryEmail title"
+  },
+  "pCx/eL": {
+    "defaultMessage": "Die Preise für diesen Ort konnten nicht abgerufen werden, bitte probier es nochmal.",
+    "description": "PriceHistoryChart error"
+  },
+  "pEonG3": {
+    "defaultMessage": "1W",
+    "description": "DateRange 1w"
+  },
+  "pI1vSB": {
+    "defaultMessage": "Los gehts!",
+    "description": "Home register button"
+  },
+  "qQ90jN": {
+    "defaultMessage": "Sie haben als Nutzer das Recht, auf Antrag eine kostenlose Auskunft darüber zu erhalten, welche personenbezogenen Daten über Sie gespeichert wurden. Sie haben außerdem das Recht auf Berichtigung falscher Daten und auf die Verarbeitungseinschränkung oder Löschung Ihrer personenbezogenen Daten. Falls zutreffend, können Sie auch Ihr Recht auf Datenportabilität geltend machen. Sollten Sie annehmen, dass Ihre Daten unrechtmäßig verarbeitet wurden, können Sie eine Beschwerde bei der zuständigen Aufsichtsbehörde einreichen.",
+    "description": "PrivacyPolicy user rights paragraph 1"
+  },
+  "qZ7LeF": {
+    "defaultMessage": "Konto löschen",
+    "description": "Settings delete account subtitle"
+  },
+  "qfWy4V": {
+    "defaultMessage": "Erfassung und Verarbeitung personenbezogener Daten",
+    "description": "PrivacyPolicy personal data subtitle"
+  },
+  "qwCYqH": {
+    "defaultMessage": "Freitag",
+    "description": "AveragePriceDayOfWeekChart Friday"
+  },
+  "sZ78zh": {
+    "defaultMessage": "Ort hinzufügen",
+    "description": "AddLocation breadcrumb"
+  },
+  "t2UyKv": {
+    "defaultMessage": "Wir verarbeiten nur die im Zuge der Registrierung angegebene E-Mail-Adresse. Diese wird nur zur Identifikation des Benutzers und zur Zusendung von E-Mails die der Funktionserhaltung dienen (z. B. Passwort-Reset). Alle personenbezogenen Daten werden bei Löschung des Accounts entfernt.",
+    "description": "PrivacyPolicy personal data paragraph 2"
+  },
+  "tTzqLI": {
+    "defaultMessage": "Wähle den Typ von Treibstoff aus für den Preise aufgezeichnet werden sollen.",
+    "description": "AddLocation dropdown fuel type title"
+  },
+  "u7td5N": {
+    "defaultMessage": "Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise aufgezeichnet werden sollen.",
+    "description": "RegionLocationField dropdown title"
+  },
+  "uBGbNi": {
+    "defaultMessage": "Klicke hier um für den aktuellen Standort Vorschläge anzuzeigen.",
+    "description": "AddLocation intro 4"
+  },
+  "uS0pAO": {
+    "defaultMessage": "Cookies",
+    "description": "PrivacyPolicy cookies subtitle"
+  },
+  "uYxjys": {
+    "defaultMessage": "Registrieren",
+    "description": "Signup submit"
+  },
+  "ui0bO6": {
+    "defaultMessage": "Umgang mit Kontaktdaten",
+    "description": "PrivacyPolicy contact data subtitle"
+  },
+  "vZ4xUU": {
+    "defaultMessage": "Aktiviere/deaktiviere Benachrichtigungen",
+    "description": "Settings switch notifications"
+  },
+  "w9uAqT": {
+    "defaultMessage": "Datenschutzerklärung",
+    "description": "PrivacyPolicy title"
+  },
+  "wvCDvE": {
+    "defaultMessage": "Dieser Graph zeigt den durchschnittlich niedrigsten Preis pro Tageszeit im gewählten Zeitraum an.",
+    "description": "LocationDetails intro 6"
+  },
+  "x1YlhM": {
+    "defaultMessage": "Passwort reset ist fehlgeschlagen.",
+    "description": "ResetPassword error"
+  },
+  "xU7Y5H": {
+    "defaultMessage": "Ort",
+    "description": "NamedLocationField placeholder location"
+  },
+  "xi+2kU": {
+    "defaultMessage": "Passwortänderung ist fehlgeschlagen.",
+    "description": "ChangePassword error message"
+  },
+  "xpbxR9": {
+    "defaultMessage": "Kontakt",
+    "description": "Contact title"
+  },
+  "xxYVPt": {
+    "defaultMessage": "Durchschnittlich geringster Preis",
+    "description": "AveragePriceChart tooltip label"
+  },
+  "y7+c8U": {
+    "defaultMessage": "Homepage",
+    "description": "Unsubscribe link home"
+  },
+  "yCxT5P": {
+    "defaultMessage": "Passwort wiederherstellen",
+    "description": "ResetPassword title"
+  },
+  "yq8VDJ": {
+    "defaultMessage": "Es war nicht möglich ein Konto mit diesen Benutzerdaten zu registrieren.",
+    "description": "Signup error"
+  },
+  "z3ymI5": {
+    "defaultMessage": "Impressum",
+    "description": "Footer imprint"
+  },
+  "zBgg4+": {
+    "defaultMessage": "Demo Graph",
+    "description": "Home figure alt text"
+  },
+  "zEm2Fo": {
+    "defaultMessage": "Speichern",
+    "description": "ResetPassword"
+  },
+  "zW09Q3": {
+    "defaultMessage": "Passwort",
+    "description": "Settings key password"
+  },
+  "zkyB1J": {
+    "defaultMessage": "Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche nach einem konkreten Ort aktiviert.",
+    "description": "AddLocation intro 2"
+  }
+}

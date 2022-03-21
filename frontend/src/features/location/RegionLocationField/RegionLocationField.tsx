@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useIntl} from "react-intl";
 
 import {RegionType} from "../../../common/types";
 import {useGetRegionsQuery} from "./regionsApiSlice";
@@ -21,14 +22,16 @@ export default function RegionLocationField(
   const [selectedState, setSelectedState] = useState<number | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<number | null>(null);
   const [postalCode, setPostalCode] = useState(NO_POSTAL_CODE);
+  const intl = useIntl();
 
   useEffect(() => {
     if (error) {
       console.error(`Failed to get region map: ${JSON.stringify(error, null, 2)}`);
-      setErrorMessage(
-        "Die Seite konnte nicht vollständig geladen werden, bitte lade sie " +
-        "neu und versuche es nochmal."
-      );
+      setErrorMessage(intl.formatMessage({
+        description: "RegionLocationField error 1",
+        defaultMessage: "Die Seite konnte nicht vollständig geladen werden, bitte " +
+          "lade sie neu und versuche es nochmal."
+      }));
     }
   }, [error]);
 
@@ -54,9 +57,11 @@ export default function RegionLocationField(
       setSelectedState(null);
       setSelectedDistrict(null);
 
-      setErrorMessage(
-        "Die Postleitzahl konnte nicht gefunden werden, bitte überprüfe diese nochmal."
-      );
+      setErrorMessage(intl.formatMessage({
+        description: "RegionLocationField error 2",
+        defaultMessage: "Die Postleitzahl konnte nicht gefunden werden, bitte " +
+          "überprüfe diese nochmal."
+      }));
     }
   }, [postalCode, isLoading]);
 
@@ -110,9 +115,11 @@ export default function RegionLocationField(
     }
   }
 
-  const dropdownTitle =
-    "Wähle ein Bundesland und optional einen Bezirk aus für den " +
-    "Spritpreise gesucht werden sollen.";
+  const dropdownTitle = intl.formatMessage({
+    description: "RegionLocationField dropdown title",
+    defaultMessage: "Wähle ein Bundesland und optional einen Bezirk aus für den " +
+      "Spritpreise aufgezeichnet werden sollen."
+  });
   return (
     <div className="field" data-test="location-add-region">
       <div className="field is-horizontal">
@@ -133,7 +140,10 @@ export default function RegionLocationField(
                   id={DROPDOWN_STATE_ID}
                 >
                   <option value="" disabled={true}>
-                    Bundesland
+                    {intl.formatMessage({
+                      description: "RegionLocationField dropdown state name",
+                      defaultMessage: "Bundesland"
+                    })}
                   </option>
                   {states.map((entry, index) => {
                     return (
@@ -162,7 +172,10 @@ export default function RegionLocationField(
                   id={DROPDOWN_DISTRICT_ID}
                 >
                   <option value="" disabled={true}>
-                    Bezirk
+                    {intl.formatMessage({
+                      description: "RegionLocationField dropdown district name",
+                      defaultMessage: "Bezirk"
+                    })}
                   </option>
                   {districts.map((entry, index) => {
                     return (
@@ -178,15 +191,27 @@ export default function RegionLocationField(
         </div>
       </div>
       <div className="field ml-4">
-        <span>oder</span>
+        <span>
+          {intl.formatMessage({
+            description: "RegionLocationField text or",
+            defaultMessage: "oder"
+          })}
+        </span>
       </div>
       <div className="control">
         <input
           className="input"
-          title="Gib eine Postleitzahl ein um die zugehörige Region zu suchen."
+          title={intl.formatMessage({
+            description: "RegionLocationField title postal code",
+            defaultMessage: "Gib eine Postleitzahl ein um den zugehörigen Bezirk zu " +
+              "suchen."
+          })}
           type="text"
           maxLength={4}
-          placeholder="PLZ"
+          placeholder={intl.formatMessage({
+            description: "RegionLocationField placeholder postal code",
+            defaultMessage: "PLZ"
+          })}
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
           data-test="field-postal-code"

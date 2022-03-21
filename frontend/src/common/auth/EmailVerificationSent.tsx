@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
+import {useIntl} from "react-intl";
 
 import CenteredBox from "../components/CenteredBox";
 import BasePage from "../components/BasePage";
@@ -10,6 +11,7 @@ function EmailVerificationSent(): JSX.Element {
   const [resendEmail, {isLoading}] = useResendEmailMutation();
   const buttonRef = useRef() as React.MutableRefObject<HTMLButtonElement>;
   const [submitted, setSubmitted] = useState(false);
+  const intl = useIntl();
 
   useEffect(() => {
     if (submitted) {
@@ -43,8 +45,18 @@ function EmailVerificationSent(): JSX.Element {
   return (
     <BasePage>
       <CenteredBox>
-        <p>Wir haben ein Email an deine Adresse gesendet.</p>
-        <p>Bitte klicke auf den Link um die Registrierung abzuschließen!</p>
+        <p>
+          {intl.formatMessage({
+            description: "EmailVerificationSent text paragraph 1",
+            defaultMessage: "Wir haben ein Email an deine Adresse gesendet."
+          })}
+        </p>
+        <p>
+          {intl.formatMessage({
+            description: "EmailVerificationSent text paragraph 2",
+            defaultMessage: "Bitte klicke auf den Link um die Registrierung abzuschließen!"
+          })}
+        </p>
         <p className="mt-3">
           <button
             className="button is-primary is-ghost"
@@ -52,7 +64,10 @@ function EmailVerificationSent(): JSX.Element {
             ref={buttonRef}
             data-test="btn-resend"
           >
-            Nicht erhalten?
+            {intl.formatMessage({
+              description: "EmailVerificationSent button",
+              defaultMessage: "Nicht erhalten?"
+            })}
           </button>
         </p>
       </CenteredBox>
