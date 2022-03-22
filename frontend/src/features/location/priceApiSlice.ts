@@ -1,9 +1,17 @@
 import {eControlApi, regionTypeMap} from "../../common/apis/eControl"
-import {FuelType, Location, LocationType, Station} from "../../common/types";
+import {FuelType, Location, LocationType} from "../../common/types";
 
 const fuelTypeMap = new Map<FuelType, string>([
   [FuelType.Diesel, "DIE"], [FuelType.Super, "SUP"], [FuelType.Gas, "GAS"],
 ]);
+
+interface Station {
+  id: number;
+  name: string;
+  address: string;
+  postalCode: string;
+  city: string;
+}
 
 interface Price {
   id: number;
@@ -89,5 +97,5 @@ const extendedApi = eControlApi.injectEndpoints({
  })
 })
 
-export type {CurrentPrice};
+export type {CurrentPrice, Station};
 export const {useGetCurrentPriceQuery} = extendedApi;

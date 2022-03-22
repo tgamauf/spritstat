@@ -115,18 +115,6 @@ const dateRangeNames = new Map<DateRange, MessageDescriptor>([
   ],
 ]);
 
-interface Station {
-  id: number;
-  name: string;
-  address: string;
-  postalCode: string;
-  city: string;
-}
-
-type StationMap = {
-  [key: number]: Station;
-};
-
 interface Price {
   id: number;
   datetime: string;
@@ -148,8 +136,6 @@ export type {
   OurFormElement,
   NamedLocation,
   Price,
-  Station,
-  StationMap
 };
 
 export {

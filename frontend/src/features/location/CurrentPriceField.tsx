@@ -1,21 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {useIntl} from "react-intl";
 
-import {Location, Station} from "../../common/types";
-import {useGetCurrentPriceQuery} from "./priceApiSlice";
+import {Location} from "../../common/types";
+import {Station, useGetCurrentPriceQuery} from "./priceApiSlice";
 
 
 const MAPS_URL = "https://www.google.com/maps/search";
 const NO_CURRENT_PRICE = -1;
 const CURRENT_PRICE_FIELD_ID = "current-price-field";
 
-type Stations = {
-  name: string;
-  address: string;
-  postalCode: string;
-  city: string;
-  url: string;
-}[];
+type Stations = (Station & {url: string; })[];
 
 interface Props {
   location: Location;

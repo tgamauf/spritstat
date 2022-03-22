@@ -14,18 +14,9 @@ const INVALID_LOCATION: NamedLocation = {
   coords: INVALID_COORDINATES
 }
 
-const INVALID_STATION: Station = {
-  id: -1,
-  name: "",
-  address: "",
-  postalCode: "",
-  city: ""
-}
-
 export {
   INVALID_COORDINATES,
   INVALID_LOCATION,
-  INVALID_STATION,
   MAX_SCREENSIZE_MOBILE,
   TIMEZONE
 };

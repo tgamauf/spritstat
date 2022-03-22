@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 
 import {DEFAULT_HEADERS, spritstatApi} from "../../common/apis/spritstatApi"
-import {DateRange, FuelType, Location, LocationType, RegionType, Station, StationMap} from "../../common/types";
+import {DateRange, FuelType, Location, LocationType, RegionType} from "../../common/types";
 import {reverseMap} from "../../common/utils";
 
 const locationTypeMap = new Map<LocationType, number>([
@@ -46,6 +46,15 @@ type LocationResults = {
   region_type?: string;
   fuel_type: string;
 }[];
+
+interface Station {
+  id: number;
+  name: string;
+}
+
+type StationMap = {
+  [key: number]: Station;
+};
 
 interface Price {
   id: number;
