@@ -33,7 +33,7 @@ from users.models import CustomUser
 class MockAPIResponseEntry:
     id: int
     name: Optional[str]
-    address: str
+    address: Optional[str]
     postal_code: str
     city: str
     latitude: float
@@ -45,7 +45,6 @@ class MockAPIResponseEntry:
         data = {
             "id": self.id,
             "location": {
-                "address": self.address,
                 "postalCode": self.postal_code,
                 "city": self.city,
                 "latitude": self.latitude,
@@ -55,6 +54,9 @@ class MockAPIResponseEntry:
         }
         if self.name:
             data["name"] = self.name
+
+        if self.address:
+            data["location"]["address"] = self.address
 
         if self.price:
             data["prices"].append({"fuelType": self.fuel_type, "amount": self.price})
@@ -178,7 +180,7 @@ class TestRequestLocationPrices(TestCase):
         )
         check_response_entry_5 = MockAPIResponseEntry(
             id=4000,
-            name=None,
+            name="Station 4000",
             address="Address 4000",
             postal_code="4000",
             city="City 4000",
@@ -187,6 +189,7 @@ class TestRequestLocationPrices(TestCase):
             fuel_type=check_location.fuel_type,
             price=None,
         )
+
         check_data = [
             check_response_entry_1,
             check_response_entry_2,
@@ -239,6 +242,85 @@ class TestRequestLocationPrices(TestCase):
         self.assertEqual(result_price.max_amount, check_max_price)
         self.assertEqual(result_price.average_amount, mean(check_prices))
         self.assertEqual(result_price.median_amount, median(check_prices))
+
+    def test_request_location_prices__station_data_combinations(self):
+        # Test price responses with different station data combinations:
+        #  no name, no address, and no name and address
+
+        check_location_id = 1
+        check_location = Location.objects.get(pk=check_location_id)
+
+        check_response_entry_no_name = MockAPIResponseEntry(
+            id=1000,
+            name=None,
+            address="Address 1000",
+            postal_code="1000",
+            city="City 1000",
+            latitude=1.0000000,
+            longitude=1.0000000,
+            fuel_type=check_location.fuel_type,
+            price=1.0,
+        )
+        check_response_entry_no_address = MockAPIResponseEntry(
+            id=2000,
+            name="Name 2000",
+            address=None,
+            postal_code="2000",
+            city="City 2000",
+            latitude=2.0000000,
+            longitude=2.0000000,
+            fuel_type=check_location.fuel_type,
+            price=1.0,
+        )
+        check_response_entry_no_name_address = MockAPIResponseEntry(
+            id=3000,
+            name=None,
+            address=None,
+            postal_code="3000",
+            city="City 3000",
+            latitude=3.0000000,
+            longitude=3.0000000,
+            fuel_type=check_location.fuel_type,
+            price=1.0,
+        )
+
+        check_data = [
+            check_response_entry_no_name,
+            check_response_entry_no_address,
+            check_response_entry_no_name_address,
+        ]
+        check_station_count = Station.objects.count() + 3
+        mock_response = MockAPIResponse(status=200, data=check_data).as_mock()
+        mock_datetime = Price.objects.filter(location=check_location_id).latest(
+            "datetime"
+        ).datetime + timedelta(hours=1)
+        with patch.object(
+            PoolManager, "request", return_value=mock_response
+        ) as mock_method:
+            with patch("django.utils.timezone.now", return_value=mock_datetime):
+                services.request_location_prices(check_location_id)
+
+        self.assertEqual(Station.objects.count(), check_station_count)
+        last_stations = list(Station.objects.all())[-3:]
+        self.assertListEqual(
+            [s.name for s in last_stations],
+            [
+                (
+                    f"{check_response_entry_no_name.address}, "
+                    f"{check_response_entry_no_name.postal_code} "
+                    f"{check_response_entry_no_name.city}"
+                ),
+                check_response_entry_no_address.name,
+                (
+                    f"{check_response_entry_no_name_address.postal_code} "
+                    f"{check_response_entry_no_name_address.city}"
+                ),
+            ],
+        )
+        self.assertListEqual(
+            [s.address for s in last_stations],
+            [check_response_entry_no_name.address, "", ""],
+        )
 
     def test_request_location_prices__region_super(self):
         # Test location type region, fuel type SUP, and station already exists

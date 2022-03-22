@@ -3,7 +3,7 @@ from decimal import Decimal
 from enum import Enum, unique
 import json
 from statistics import mean, median
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union, Optional
 import urllib3
 
 from spritstat import models
@@ -38,7 +38,7 @@ class InvalidFuelTypeError(Exception):
 class _Station:
     id: int
     name: str
-    address: str
+    address: Optional[str]
     postal_code: str
     city: str
     latitude: Decimal
@@ -121,7 +121,7 @@ def request_location_prices(location_id: int) -> None:
     if not stations:
         raise EControlAPIError(f"Invalid price object received: {prices}")
 
-    _create_price_if_changed(location, stations, statistics)
+    _create_price(location, stations, statistics)
 
 
 def _request_prices(url: str) -> Tuple[Price]:
@@ -180,13 +180,19 @@ def _parse_prices(item: Dict) -> Union[Price, None]:
     if not len(item["prices"]):
         return None
 
-    address = item["location"]["address"]
-    postal_code = item["location"]["postalCode"]
-    city = item["location"]["city"]
+    location = item["location"]
+    if "address" in location:
+        address = location["address"]
+    else:
+        address = ""
+    postal_code = location["postalCode"]
+    city = location["city"]
     if "name" in item:
         name = item["name"]
-    else:
+    elif address:
         name = f"{address}, {postal_code} {city}"
+    else:
+        name = f"{postal_code} {city}"
 
     station = _Station(
         id=item["id"],
@@ -236,7 +242,7 @@ def _calculate_statistics(
     return stations, statistics
 
 
-def _create_price_if_changed(
+def _create_price(
     location: models.Location,
     stations: List[_Station],
     price_statistics: PriceStatistics,

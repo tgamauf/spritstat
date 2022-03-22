@@ -40,8 +40,9 @@ class TestStations(APITestCase):
         for station, check_station in zip(
             response.data, Station.objects.filter(users=self.user).values()
         ):
-            [check_station.pop(key) for key in ["latitude", "longitude"]]
-            self.assertDictEqual(station, check_station)
+            self.assertDictEqual(
+                station, {k: v for k, v in check_station.items() if k in ["id", "name"]}
+            )
 
     def test_post(self):
         response = self.client.post(self.url)
