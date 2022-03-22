@@ -105,7 +105,7 @@ class ChartConfig implements ChartConfiguration {
             label: (item) => {
               return this.intl.formatNumber(
                 item.parsed.y,
-                {style: "currency", currency: "EUR"}
+                {style: "percent", maximumFractionDigits: 2}
               )
             },
           },
@@ -134,7 +134,7 @@ class ChartConfig implements ChartConfiguration {
             callback: (value) => {
               return this.intl.formatNumber(
                 value as number,
-                {style: "currency", currency: "EUR"}
+                {style: "percent", maximumFractionDigits: 2}
               )
             }
           }

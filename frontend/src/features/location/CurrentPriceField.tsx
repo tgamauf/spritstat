@@ -38,6 +38,7 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
       const stations_: Stations = [];
       for (const s of data.stations) {
         stations_.push({
+          id: s.id,
           name: s.name,
           address: s.address,
           postalCode: s.postalCode,
@@ -68,7 +69,12 @@ export default function CurrentPriceField({location, isInteractive}: Props): JSX
               <p className="card-value">
                 {intl.formatNumber(
                   currentPrice,
-                  {style: "currency", currency: "EUR"}
+                  {
+                    style: "currency",
+                    currency: "EUR",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 3
+                  }
                 )}
               </p>
             )}

@@ -94,7 +94,12 @@ class ChartConfig implements ChartConfiguration {
             label: (item) => {
               return this.intl.formatNumber(
                 item.parsed.y,
-                {style: "currency", currency: "EUR"}
+                {
+                  style: "currency",
+                  currency: "EUR",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 3
+                }
               )
             },
           },

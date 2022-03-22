@@ -16,7 +16,7 @@ module.exports = {
       {
         test: /\.(ts|js)x?$/,
 
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!react-intl|intl-messageformat|@formatjs\/icu-messageformat-parser)/,
         use: ["babel-loader"],
       },
       {
