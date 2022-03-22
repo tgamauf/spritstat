@@ -3,7 +3,7 @@ import {RouteNames} from "../../src/common/types";
 describe("Validate initial page load", () => {
   it("verify index redirects", () => {
     cy.visitWithLocale(RouteNames.Index);
-    cy.title().should("eq", "SPRITSTAT");
+    cy.title().should("include", "SPRITSTAT");
     cy.url().should("include", RouteNames.Home)
 
     cy.mockLoggedIn();
