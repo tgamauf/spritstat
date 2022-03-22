@@ -118,13 +118,7 @@ class StationSerializer(serializers.ModelSerializer):
     class Meta:
         ordering = ["id"]
         model = Station
-        fields = (
-            "id",
-            "name",
-            "address",
-            "postal_code",
-            "city",
-        )
+        fields = ("id", "name")
 
 
 class PriceHistorySerializer(serializers.ModelSerializer):
