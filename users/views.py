@@ -1,5 +1,3 @@
-import logging
-
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import redirect
@@ -9,14 +7,19 @@ from dj_rest_auth.views import (
     sensitive_post_parameters_m,
 )
 import json
+import logging
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.generics import DestroyAPIView, GenericAPIView
+from rest_framework.generics import DestroyAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import CustomUser
-from .serializers import ContactFormSerializer, PasswordValidationSerializer
+from .serializers import (
+    ContactFormSerializer,
+    PasswordValidationSerializer,
+    LocaleSerializer,
+)
 
 
 class PasswordValidationView(GenericAPIView):
@@ -50,13 +53,20 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 
 class CustomLoginView(LoginView):
-    def process_login(self):
-        super().process_login()
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
 
-        if not self.serializer.validated_data["remember"]:
-            self.request.session.set_expiry(0)
-        else:
+        if self.serializer.validated_data["remember"]:
             self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+        else:
+            self.request.session.set_expiry(0)
+
+        locale = self.request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
+        if locale:
+            self.user.locale = locale
+            self.user.save()
+
+        return response
 
 
 @api_view(["POST"])
@@ -123,3 +133,32 @@ class DeleteView(DestroyAPIView, GenericAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class LocaleView(RetrieveAPIView, GenericAPIView):
+    serializer_class = LocaleSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        locale = serializer.validated_data["locale"]
+
+        # If the user is authenticated, store the locale for the user and keep
+        #  also keep cookie until the session expires if the user stored the
+        #  session. Otherwise, delete the cookie on browser close.
+        max_age = None
+        if request.user.is_authenticated:
+            request.user.locale = locale
+            request.user.save()
+
+            if not request.session.get_expire_at_browser_close():
+                max_age = request.session.get_expiry_age()
+
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, locale, max_age=max_age)
+
+        return response

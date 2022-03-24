@@ -3,16 +3,16 @@
 {% load i18n %}
 
 {% block title %}{% autoescape off %}{% blocktrans %}
-Bitte bestätige deine Email-Addresse
+Bitte bestätige deine E-Mail-Adresse
 {% endblocktrans %}{% endautoescape %}{% endblock %}
 
 {% block preview %}{% autoescape off %}
 {% blocktrans with site_domain=current_site.domain %}
-Deine Email-Adresse wurde auf <a href="https://{{ site_domain }}/">{{ site_domain }}</a> registriert. Bitte bestätige
+Deine E-Mail-Adresse wurde auf <a href="https://{{ site_domain }}/">{{ site_domain }}</a> registriert. Bitte bestätige
 sie wenn du SPRITSTAT benutzen willst!
 {% endblocktrans %}{% endautoescape %}{% endblock %}
 
-{% block content %}{% autoescape off %} {% blocktrans with site_domain=current_site.domain %}
+{% block content %}{% autoescape off %}
 <tr>
   <td
     style="
@@ -24,13 +24,17 @@ sie wenn du SPRITSTAT benutzen willst!
     "
   >
     <p style="margin: 0">
-      Du erhältst dieses Email weil sich jemand mit dieser Email-Adresse bei
+      {% blocktrans with site_domain=current_site.domain %}
+      Du erhältst dieses Email weil sich jemand mit dieser E-Mail-Adresse bei
       <a href="https://{{ site_domain }}/"> {{ site_domain }}</a> registriert
       hat.
+      {% endblocktrans %}
     </p>
     <p style="margin: 0">
+      {% blocktrans with site_domain=current_site.domain %}
       Falls du das Service benutzen möchtest, klicke
-      <a href="{{ activate_url }}">hier</a> um die Email-Adresse zu bestätigen!
+      <a href="{{ activate_url }}">hier</a> um die E-Mail-Adresse zu bestätigen!
+      {% endblocktrans %}
     </p>
   </td>
 </tr>
@@ -45,8 +49,10 @@ sie wenn du SPRITSTAT benutzen willst!
     "
   >
     <p style="margin: 0">
+      {% blocktrans with site_domain=current_site.domain %}
       Es freut uns sehr dass du SPRITSTAT benutzen möchtest!
+      {% endblocktrans %}
     </p>
   </td>
 </tr>
-{% endblocktrans %}{% endautoescape %}{% endblock %}
+{% endautoescape %}{% endblock %}

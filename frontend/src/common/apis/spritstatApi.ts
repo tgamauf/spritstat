@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import Cookie from "universal-cookie";
-import {Settings} from "http2";
 
 
 interface SessionData {

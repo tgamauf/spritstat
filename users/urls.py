@@ -79,4 +79,5 @@ urlpatterns = [
     path("account/session/", views.session_view, name="account_session"),
     path("account/contact/", views.ContactView.as_view(), name="account_contact"),
     path("account/delete/", views.DeleteView.as_view(), name="account_delete"),
+    path("locale/", views.LocaleView.as_view(), name="locale"),
 ]

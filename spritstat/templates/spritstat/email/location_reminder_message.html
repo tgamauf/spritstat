@@ -10,7 +10,7 @@ Schau mal wieder vorbei
 Es sind daten für deinen neuen Ort verfügbar.
 {% endblocktrans %}{% endautoescape %}{% endblock %}
 
-{% block content %}{% autoescape off %} {% blocktrans with site_domain=current_site.domain %}
+{% block content %}{% autoescape off %}
 <tr>
   <td
     style="
@@ -22,10 +22,12 @@ Es sind daten für deinen neuen Ort verfügbar.
     "
   >
     <p style="margin: 0">
+      {% blocktrans with site_domain=current_site.domain %}
       Du hast vor kurzem einen neuen Ort auf <a href="https://{{ site_domain }}/">SPRITSTAT</a> angelegt.
       Schau doch mal wieder vorbei, es gibt schon einiges zu sehen! Wenn du zu deinen neuen Ort gehen willst,
       klicke <a href="https://{{ site_domain }}/location-details/{{ location_id }}/">hier</a>.
+      {% endblocktrans %}
     </p>
   </td>
 </tr>
-{% endblocktrans %}{% endautoescape %}{% endblock %}
+{% endautoescape %}{% endblock %}
