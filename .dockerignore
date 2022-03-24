@@ -8,7 +8,10 @@
 frontend/cypress/
 frontend/node_modules/
 frontend/public/
+frontend/src/locales/
 frontend/.gitignore
+
+!locale/**/*.po
 
 !spritstat/
 spritstat/fixtures/

@@ -5,8 +5,8 @@ WORKDIR build
 COPY frontend/ .
 
 RUN npm install
+RUN npm run trans:compile
 RUN npm run build
-
 
 FROM python:3.9
 
@@ -27,9 +27,12 @@ RUN useradd --user-group \
     --shell \
     /bin/bash $APP_USER
 
-# Required by entrypoint.sh in order to wait for the DB
 RUN apt-get update \
-  && apt-get install -y netcat \
+  && apt-get install -y \
+    # Required by entrypoint.sh in order to wait for the DB
+    netcat \
+    # Required by Django i18n
+    gettext \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR $APP_HOME
@@ -64,6 +67,9 @@ RUN mkdir -p $APP_STATIC_BUILD
 COPY --from=builder /build/public/ $APP_STATIC_BUILD/
 
 USER ${APP_USER}:${APP_USER}
+
+# Compile translations
+RUN export DJANGO_SECRET=notsecret; python manage.py compilemessages
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisord.conf"]
