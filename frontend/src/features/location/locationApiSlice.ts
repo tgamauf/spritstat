@@ -215,6 +215,9 @@ const extendedApi = spritstatApi.injectEndpoints({
         }
 
         let index = 0;
+        data.sort(({hour: a}, {hour: b}) => {
+          return a - b;
+        });
         for (let hour = 0 ; hour < 24 ; hour++) {
           chartData.labels.push(String(hour));
 
@@ -252,8 +255,11 @@ const extendedApi = spritstatApi.injectEndpoints({
         }
 
         let index = 0;
+        data.sort(({day_of_week: a}, {day_of_week: b}) => {
+          return a - b;
+        });
         for (let weekday = 1 ; weekday <= 7 ; weekday++) {
-          chartData.labels.push(moment().day(weekday).format("dddd"));
+          chartData.labels.push(String(weekday));
 
           // If no data is available for this weekday add 0 to the data.
           if ((index >= data.length) || data[index].day_of_week > weekday) {
@@ -263,6 +269,7 @@ const extendedApi = spritstatApi.injectEndpoints({
             index++;
           }
         }
+
         return chartData;
       }
     }),
@@ -289,6 +296,9 @@ const extendedApi = spritstatApi.injectEndpoints({
         }
 
         let index = 0;
+        data.sort(({day_of_month: a}, {day_of_month: b}) => {
+          return a - b;
+        });
         for (let dayOfMonth = 1 ; dayOfMonth <= 31 ; dayOfMonth++) {
           chartData.labels.push(String(dayOfMonth));
 
