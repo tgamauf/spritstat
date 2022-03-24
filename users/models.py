@@ -11,7 +11,7 @@ class Locales(models.TextChoices):
 
 
 class CustomUser(AbstractUser):
-    locale = models.CharField(default=Locales.DE, choices=Locales.choices, max_length=2)
+    locale = models.CharField(choices=Locales.choices, max_length=2, null=True)
     has_beta_access = models.BooleanField(default=False)
     last_activity = models.DateTimeField(auto_now=True)
     next_notification = models.OneToOneField(

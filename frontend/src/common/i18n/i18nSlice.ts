@@ -1,22 +1,41 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import Cookie from "universal-cookie";
 
 import {RootState} from "../../app/store";
-import {Locale} from "./types";
+import {Locale, Messages} from "./types";
 import {localeApi} from "./i18nApiSlice";
 
 
-const defaultLocale = Locale.DE;
-
 interface I18nState {
-  locale: Locale
+  locale: Locale;
+  messages: Messages;
 }
 
-const setLocale = createAsyncThunk<Locale, Locale>(
+interface LocaleData {
+  locale: Locale;
+  messages: Messages;
+}
+
+const DEFAULT_LOCALE = Locale.DE;
+const NO_MESSAGES = {};
+
+async function loadMessages(locale: Locale): Promise<Messages> {
+  switch (locale) {
+    case Locale.EN:
+      return await import("../../locales/en.json") as unknown as Messages;
+    default:
+      return NO_MESSAGES;
+  }
+}
+
+const setLocale = createAsyncThunk<LocaleData, Locale>(
   "i18n/setLocale",
   async (locale, {dispatch}) => {
     dispatch(localeApi.endpoints.setLocale.initiate(locale));
-    return locale;
+
+    let messages = await loadMessages(locale);
+
+    return {locale, messages};
   }
 )
 
@@ -26,7 +45,7 @@ function initialState(): I18nState {
   let locale = cookie.get("locale")
 
   if (locale) {
-    return {locale};
+    return {locale, messages: NO_MESSAGES};
   }
 
   if (/^de\b/.test(navigator.language)) {
@@ -34,25 +53,38 @@ function initialState(): I18nState {
   } else if (/^en\b/.test(navigator.language)) {
     locale = Locale.EN;
   } else {
-    locale = defaultLocale;
+    locale = DEFAULT_LOCALE;
   }
 
-  return {locale};
+  return {locale, messages: NO_MESSAGES};
 }
 
 const i18n = createSlice({
   name: "i18n",
   initialState,
-  reducers: {},
+  reducers: {
+    setMessages: (state, action: PayloadAction<Messages>) => {
+      state.messages = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(
       setLocale.fulfilled,
       (state, action) => {
-        state.locale = action.payload;
+        state.locale = action.payload.locale;
+        state.messages = action.payload.messages
       })
   }
 });
 
 const selectLocale = (state: RootState): Locale => state.i18n.locale;
+const selectLocaleData = (state: RootState): LocaleData => {
+  return {
+    locale: state.i18n.locale,
+    messages: state.i18n.messages
+  }
+};
 
-export {i18n, selectLocale, setLocale};
+const {setMessages} = i18n.actions;
+
+export {i18n, loadMessages, selectLocale, selectLocaleData, setLocale, setMessages};

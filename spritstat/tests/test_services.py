@@ -8,6 +8,7 @@ from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
 from django.core import mail
 from django.db.models.signals import post_save, pre_delete
+from django.http import HttpRequest
 from django.test import TestCase
 from django.utils import timezone
 import json
@@ -503,7 +504,7 @@ class TestNotifications(TestCase):
         datetime_mock = MagicMock(autospec=datetime)
         datetime_mock.now.return_value = mock_now
         with patch("spritstat.services.notification.timezone", new=datetime_mock):
-            user_signed_up.send(self.__class__, request=None, user=self.user)
+            user_signed_up.send(self.__class__, request=HttpRequest(), user=self.user)
         self.user.refresh_from_db()
         next_notification = self.user.next_notification
         self.assertEqual(

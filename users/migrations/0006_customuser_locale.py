@@ -14,9 +14,7 @@ class Migration(migrations.Migration):
             model_name="customuser",
             name="locale",
             field=models.CharField(
-                choices=[("de", "Deutsch"), ("en", "Englisch")],
-                default="de",
-                max_length=2,
+                choices=[("de", "Deutsch"), ("en", "Englisch")], max_length=2, null=True
             ),
         ),
     ]
