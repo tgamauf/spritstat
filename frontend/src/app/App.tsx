@@ -37,8 +37,8 @@ export default function App() {
   useEffect(() => {
     loadMessages(locale)
       .then((messages) => {
-        setMessagesLocale(locale);
         setMessages(messages);
+        setMessagesLocale(locale);
       })
       .catch((e) => console.error(`Failed to load locale '${locale}': ${e}`))
   }, [locale]);

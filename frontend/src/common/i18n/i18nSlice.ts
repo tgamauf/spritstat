@@ -24,8 +24,9 @@ function initialState(): I18nState {
   // Check if we have a language cookie set and if this is the case use that.
   const cookie = new Cookie();
   let locale = cookie.get("locale")
+
   if (locale) {
-    return locale;
+    return {locale};
   }
 
   if (/^de\b/.test(navigator.language)) {

@@ -122,6 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
+LOCALE_PATHS = [BASE_DIR / "locale"]
 LANGUAGE_CODE = "de"
 LANGUAGE_COOKIE_NAME = "locale"
 TIME_ZONE = "UTC"

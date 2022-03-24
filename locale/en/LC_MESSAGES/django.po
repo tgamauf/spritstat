@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-23 22:22+0100\n"
+"POT-Creation-Date: 2022-03-24 13:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,12 +23,17 @@ msgid ""
 "\n"
 "Lege doch einen Ort an\n"
 msgstr ""
+"\n"
+"You haven't created a location yet\n"
 
 #: spritstat/templates/spritstat/email/create_location_reminder_message.html:9
 msgid ""
 "\n"
 "Lege einen Ort an um zu sehen wie sich die Spritpreise bei dir entwickeln.\n"
 msgstr ""
+"\n"
+"Create a new location so you can see how fuel prices develop at your "
+"location.\n"
 
 #: spritstat/templates/spritstat/email/create_location_reminder_message.html:25
 #, python-format
@@ -41,6 +46,11 @@ msgid ""
 "      wie sich die Spritpreise an deinen Orten entwickeln!\n"
 "      "
 msgstr ""
+"\n"
+"You registered at <a href=\"https://%(site_domain)s/\">%(site_domain)s</a>, "
+"but haven't create any location yet.\n"
+"If you set up a new location, we can start collecting data for you and give "
+"you an idea of how petrol prices develop soon."
 
 #: spritstat/templates/spritstat/email/create_location_reminder_message.txt:5
 #, python-format
@@ -52,22 +62,31 @@ msgid ""
 "schon bald zeigen wie sich\n"
 "die Spritpreise an deinen Orten entwickeln!\n"
 msgstr ""
+"\n"
+"You registered at <a href=\"https://%(site_domain)s/\">%(site_domain)s</a>, "
+"but haven't create any location yet.\n"
+"If you set up a new location, we can start collecting data for you and give "
+"you an idea of how petrol prices develop soon.\n"
 
 #: spritstat/templates/spritstat/email/create_location_reminder_subject.txt:3
 msgid "Du hast noch keinen Ort angelegt"
-msgstr ""
+msgstr "You haven't created a location yet"
 
 #: spritstat/templates/spritstat/email/location_reminder_message.html:4
 msgid ""
 "\n"
 "Schau mal wieder vorbei\n"
 msgstr ""
+"\n"
+"Have a look, there's already something to see\n"
 
 #: spritstat/templates/spritstat/email/location_reminder_message.html:9
 msgid ""
 "\n"
 "Es sind daten für deinen neuen Ort verfügbar.\n"
 msgstr ""
+"\n"
+"We have collected some data for your location.\n"
 
 #: spritstat/templates/spritstat/email/location_reminder_message.html:25
 #, python-format
@@ -81,6 +100,11 @@ msgid ""
 "%(location_id)s/\">hier</a>.\n"
 "      "
 msgstr ""
+"\n"
+"You have created a new location on <a href=\"https://%(site_domain)s/"
+"\">SPRITSTAT</a> some time ago and there is already something to see.\n"
+"If you want to have a look at your new location, click <a href=\"https://"
+"%(site_domain)s/location-details/%(location_id)s/\">here</a>."
 
 #: spritstat/templates/spritstat/email/location_reminder_message.txt:5
 #, python-format
@@ -91,42 +115,51 @@ msgid ""
 "es gibt schon einiges zu sehen: https://%(site_domain)s/location-details/"
 "%(location_id)s/\n"
 msgstr ""
+"\n"
+"You have created a new location on SPRITSTAT some time ago and there is "
+"already something to see.\n"
+"You can have a look at your new location here: https://%(site_domain)s/"
+"location-details/%(location_id)s/.\n"
 
 #: spritstat/templates/spritstat/email/location_reminder_subject.txt:3
 msgid "Schau mal wieder vorbei, es gibt schon einiges zu sehen"
-msgstr ""
+msgstr "Have a look, there's already something to see"
 
 #: templates/email/base_message.html:250
 msgid "Hallo!"
-msgstr ""
+msgstr "Hi!"
 
 #: templates/email/base_message.html:258
 msgid "Dein SPRITSTAT-Team!"
-msgstr ""
+msgstr "Your SPRITSTAT-Team!"
 
 #: templates/email/base_message.txt:1
 msgid "Hallo!\n"
-msgstr ""
+msgstr "Hi!\n"
 
 #: templates/email/base_message.txt:4
 msgid ""
 "\n"
 "Dein SPRITSTAT-Team\n"
 msgstr ""
+"\n"
+"Your SPRITSTAT-Team!\n"
 
 #: templates/email/base_notification_message.html:19
 msgid "Abmelden"
-msgstr ""
+msgstr "Unsubscribe"
 
 #: templates/email/base_notification_message.txt:3
 msgid "Abmelden: "
-msgstr ""
+msgstr "Unsubscribe: "
 
 #: users/templates/account/email/email_confirmation_message.html:5
 msgid ""
 "\n"
 "Bitte bestätige deine E-Mail-Adresse\n"
 msgstr ""
+"\n"
+"Please confirm your email address\n"
 
 #: users/templates/account/email/email_confirmation_message.html:10
 #, python-format
@@ -136,6 +169,10 @@ msgid ""
 "%(site_domain)s</a> registriert. Bitte bestätige\n"
 "sie wenn du SPRITSTAT benutzen willst!\n"
 msgstr ""
+"\n"
+"Your email address has been registered at <a href=\"https://%(site_domain)s/"
+"\">%(site_domain)s</a>.Please confirm your email if you want to use "
+"SPRITSTAT!\n"
 
 #: users/templates/account/email/email_confirmation_message.html:27
 #, python-format
@@ -147,6 +184,9 @@ msgid ""
 "      hat.\n"
 "      "
 msgstr ""
+"\n"
+"You are receiving this email because someone signed up to <a href=\"https://"
+"%(site_domain)s/\">%(site_domain)s</a> with your email address."
 
 #: users/templates/account/email/email_confirmation_message.html:34
 #, python-format
@@ -157,6 +197,8 @@ msgid ""
 "bestätigen!\n"
 "      "
 msgstr ""
+"\n"
+"Click <a href=\"%(activate_url)s\">here</a> if you want to use the service!"
 
 #: users/templates/account/email/email_confirmation_message.html:52
 msgid ""
@@ -164,6 +206,8 @@ msgid ""
 "      Es freut uns sehr dass du SPRITSTAT benutzen möchtest!\n"
 "      "
 msgstr ""
+"\n"
+"We are glad that you want to use SPRITSTAT!"
 
 #: users/templates/account/email/email_confirmation_message.txt:6
 #, python-format
@@ -179,17 +223,24 @@ msgid ""
 "Es freut uns sehr dass du SPRITSTAT benutzen möchtest!"
 msgstr ""
 "\n"
-"TEEEEEEEST %(activate_url)s"
+"Someone signed up for https://%(site_domain)s/ with your email address. "
+"Please click \n"
+"the link to confirm the email address:\n"
+"%(activate_url)s\n"
+"\n"
+"We are glad that you want to use SPRITSTAT!"
 
 #: users/templates/account/email/email_confirmation_subject.txt:3
 msgid "Bitte bestätige deine E-mail-Adresse"
-msgstr ""
+msgstr "Please confirm your email address"
 
 #: users/templates/account/email/password_reset_key_message.html:4
 msgid ""
 "\n"
 "Password-Reset E-Mail\n"
 msgstr ""
+"\n"
+"Password reset email\n"
 
 #: users/templates/account/email/password_reset_key_message.html:8
 #, python-format
@@ -198,6 +249,9 @@ msgid ""
 "Ein Passwort-Reset deines <a href=\"https://%(site_domain)s/\">SPRITSTAT</a>-"
 "Kontos wurde beantragt.\n"
 msgstr ""
+"\n"
+"A password reset for your account at <a href=\"https://%(site_domain)s/"
+"\">SPRITSTAT</a> has been requested.\n"
 
 #: users/templates/account/email/password_reset_key_message.html:24
 msgid ""
@@ -208,6 +262,10 @@ msgid ""
 "      angefordert hast, kannst du dieses E-Mail einfach ignorieren.\n"
 "      "
 msgstr ""
+"\n"
+"You are receiving this email because you or someone else has requested a "
+"password reset for your SPRITSTAT account. If this wasn't you, you can "
+"simply ignore this email."
 
 #: users/templates/account/email/password_reset_key_message.html:43
 #, python-format
@@ -217,6 +275,8 @@ msgid ""
 "      zurückzusetzen!\n"
 "      "
 msgstr ""
+"\n"
+"Click <a href=\"%(password_reset_url)s\">here</a> to reset your password!"
 
 #: users/templates/account/email/password_reset_key_message.txt:4
 msgid ""
@@ -228,7 +288,13 @@ msgid ""
 "ignorieren.\n"
 "Klicke hier um dein Passwort zurückzusetzen: "
 msgstr ""
+"\n"
+"You are receiving this email because you or someone else has requested a "
+"password reset \n"
+"for your SPRITSTAT account. If this wasn't you, you can simply ignore this "
+"email.\n"
+"Click here to reset your password: "
 
 #: users/templates/account/email/password_reset_key_subject.txt:3
 msgid "Password-Reset E-mail"
-msgstr ""
+msgstr "Password reset email"

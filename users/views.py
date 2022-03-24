@@ -1,5 +1,8 @@
+from allauth.account.signals import user_signed_up
 from django.conf import settings
+from django.contrib.auth import user_logged_in
 from django.core.mail import send_mail
+from django.dispatch import receiver
 from django.shortcuts import redirect
 from dj_rest_auth.views import (
     LoginView,
@@ -12,6 +15,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.generics import DestroyAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .models import CustomUser
@@ -60,11 +64,6 @@ class CustomLoginView(LoginView):
             self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
         else:
             self.request.session.set_expiry(0)
-
-        locale = self.request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
-        if locale:
-            self.user.locale = locale
-            self.user.save()
 
         return response
 
@@ -162,3 +161,13 @@ class LocaleView(RetrieveAPIView, GenericAPIView):
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, locale, max_age=max_age)
 
         return response
+
+
+@receiver(user_signed_up)
+@receiver(user_logged_in)
+def set_locale(request: Request, user: CustomUser, **kwargs) -> None:
+    # Save the locale provided via session for the user.
+    locale = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
+    if locale:
+        user.locale = locale
+        user.save()
