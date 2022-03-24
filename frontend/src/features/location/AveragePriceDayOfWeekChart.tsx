@@ -26,33 +26,33 @@ const BAR_CHART_CONTAINER_NAME = "bar-chart";
 const BAR_COLOR = "#88B04B";
 const BAR_LOWER_BOUND_FRACTION = 0.999;
 const DAY_OF_WEEK_MAPPING: {[key: string]: MessageDescriptor} = {
-  "0": defineMessage({
-    description: "AveragePriceDayOfWeekChart Sunday",
-    defaultMessage: "Sonntag"
-  }),
-  "1": defineMessage({
+  0: defineMessage({
     description: "AveragePriceDayOfWeekChart Monday",
     defaultMessage: "Montag"
   }),
-  "2": defineMessage({
+  1: defineMessage({
     description: "AveragePriceDayOfWeekChart Tuesday",
     defaultMessage: "Dienstag"
   }),
-  "3": defineMessage({
+  2: defineMessage({
     description: "AveragePriceDayOfWeekChart Wednesday",
     defaultMessage: "Mittwoch"
   }),
-  "4": defineMessage({
+  3: defineMessage({
     description: "AveragePriceDayOfWeekChart Thursday",
     defaultMessage: "Donnerstag"
   }),
-  "5": defineMessage({
+  4: defineMessage({
     description: "AveragePriceDayOfWeekChart Friday",
     defaultMessage: "Freitag"
   }),
-  "6": defineMessage({
+  5: defineMessage({
     description: "AveragePriceDayOfWeekChart Saturday",
     defaultMessage: "Samstag"
+  }),
+  6: defineMessage({
+    description: "AveragePriceDayOfWeekChart Sunday",
+    defaultMessage: "Sonntag"
   }),
 }
 
@@ -145,8 +145,9 @@ class ChartConfig implements ChartConfiguration {
       scales: {
         x: {
           ticks: {
-            callback: (value) => {
-              return this.intl.formatMessage(DAY_OF_WEEK_MAPPING[value]);
+            autoSkip: false,
+            callback: (index) => {
+              return this.intl.formatMessage(DAY_OF_WEEK_MAPPING[index]);
             }
           }
         },
