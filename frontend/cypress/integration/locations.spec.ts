@@ -238,7 +238,6 @@ describe("Validate location page content", () => {
       cy.mockSettings();
       cy.resetDB([
         "user.json",
-        "schedule.json",
         "location.json",
         "test_station.json",
         "test_price.json"

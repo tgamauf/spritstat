@@ -9,7 +9,6 @@ from users.models import CustomUser
 class TestStations(APITestCase):
     fixtures = [
         "user.json",
-        "schedule.json",
         "location.json",
         "test_station.json",
     ]

@@ -10,6 +10,7 @@ from rest_framework.test import APITestCase
 import re
 
 from spritstat.models import Location
+from users.models import CustomUser
 
 
 class TestLocationCreate(APITestCase):
@@ -258,7 +259,7 @@ class TestLocationCreate(APITestCase):
 
 
 class TestLocationList(APITestCase):
-    fixtures = ["user.json", "settings.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "settings.json", "location.json"]
     url: str
 
     @classmethod
@@ -272,7 +273,10 @@ class TestLocationList(APITestCase):
     def test_no_locations_for_user(self):
         # No locations exist for this user.
 
-        self.client.login(username="test@test.at", password="test")
+        user = CustomUser.objects.get(email="test@test.at")
+        user.locations.get_queryset().delete()
+
+        self.client.login(username=user.email, password="test")
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -298,7 +302,7 @@ class TestLocationList(APITestCase):
 
 
 class TestLocationOther(APITestCase):
-    fixtures = ["user.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "location.json"]
     url: str
 
     @classmethod

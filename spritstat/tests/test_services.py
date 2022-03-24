@@ -16,6 +16,7 @@ from statistics import mean, median
 from typing import List, Dict, Optional
 from unittest.mock import MagicMock, patch
 
+from django.utils.translation import activate
 from django_q.models import Schedule
 from urllib3 import PoolManager
 
@@ -493,11 +494,16 @@ class TestClearExpiredSessions(TestCase):
 
 
 class TestNotifications(TestCase):
-    fixtures = ["user.json", "settings.json", "schedule.json", "location.json"]
+    fixtures = ["user.json", "settings.json", "location.json"]
 
     @classmethod
     def setUpTestData(cls):
         cls.user = CustomUser.objects.get(pk=200)
+
+    def setUp(self):
+        # Activate default translation before each test as this obviously doesn't
+        #  happen automatically
+        activate(settings.LANGUAGE_CODE)
 
     def test_schedule_create_location_notification(self):
         mock_now = datetime.strptime("2022-02-02T22:53+0000", "%Y-%m-%dT%H:%M%z")
@@ -518,13 +524,38 @@ class TestNotifications(TestCase):
             mock_now + timedelta(days=CREATE_LOCATION_REMINDER_DELAY_DAYS),
         )
 
-    def test_send_create_location_notification(self):
-        # Test if notification is sent
+    def test_send_create_location_notification_default_locale(self):
+        # Test if notification is sent with the default locale (German)
         services.send_create_location_notification(self.user.id)
         message = mail.outbox[0]
         self.assertEqual(message.to[0], self.user.email)
         self.assertEqual(message.from_email, settings.DEFAULT_FROM_EMAIL)
         self.assertEqual(message.alternatives[0][1], "text/html")
+        self.assertEqual(
+            message.subject, "[SPRITSTAT] Du hast noch keinen Ort angelegt"
+        )
+
+    def test_send_create_location_notification_locale_de(self):
+        # Test if notification is sent correctly if the locale is explicitly set to
+        #  German
+        self.user.locale = "de"
+        self.user.save()
+        services.send_create_location_notification(self.user.id)
+        message = mail.outbox[0]
+        self.assertEqual(
+            message.subject, "[SPRITSTAT] Du hast noch keinen Ort angelegt"
+        )
+
+    def test_send_create_location_notification_locale_en(self):
+        # Test if notification is sent correctly if the locale is explicitly set to
+        #  English
+        self.user.locale = "en"
+        self.user.save()
+        services.send_create_location_notification(self.user.id)
+        message = mail.outbox[0]
+        self.assertEqual(
+            message.subject, "[SPRITSTAT] You haven't created a location yet"
+        )
 
     def test_send_location_notification_user_inactive(self):
         # Test if notification is not sent if the user is inactive
@@ -534,16 +565,15 @@ class TestNotifications(TestCase):
         self.assertEqual(len(mail.outbox), 0)
 
     def test_schedule_location_reminder_notification(self):
-        location = Location.objects.get(id=3)
-        user = location.user
+        location = self.user.locations.last()
         mock_now = datetime.strptime("2022-02-02T22:53+0000", "%Y-%m-%dT%H:%M%z")
         datetime_mock = MagicMock(autospec=datetime)
         datetime_mock.now.return_value = mock_now
 
         with patch("spritstat.services.notification.timezone", new=datetime_mock):
             post_save.send(Location, instance=location, created=True, raw=False)
-        user.refresh_from_db()
-        next_notification = user.next_notification
+        self.user.refresh_from_db()
+        next_notification = self.user.next_notification
         self.assertEqual(
             next_notification.func,
             "spritstat.services.send_location_reminder_notification",
@@ -558,52 +588,76 @@ class TestNotifications(TestCase):
         # Test if save signal is called with created=False
         check_next_notification_id = next_notification.id
         post_save.send(Location, instance=location, created=False, raw=False)
-        user.refresh_from_db()
-        self.assertEqual(user.next_notification_id, check_next_notification_id)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.next_notification_id, check_next_notification_id)
 
         # Test if save signal is called with raw=True
         check_next_notification_id = next_notification.id
         post_save.send(Location, instance=location, created=False, raw=False)
-        user.refresh_from_db()
-        self.assertEqual(user.next_notification_id, check_next_notification_id)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.next_notification_id, check_next_notification_id)
 
         # Ensure that no notification is created if the user has notifications
         #  disabled.
         location.refresh_from_db()
-        user.settings.notifications_active = False
-        user.settings.save()
-        user.next_notification.delete()
+        self.user.settings.notifications_active = False
+        self.user.settings.save()
+        self.user.next_notification.delete()
         post_save.send(Location, instance=location, created=True, raw=False)
-        user.refresh_from_db()
-        self.assertIsNone(user.next_notification_id)
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.next_notification_id)
 
     def test_delete_location_reminder_notification(self):
-        location = Location.objects.get(id=3)
-        user = location.user
+        location = self.user.locations.last()
         pre_delete.send(Location, instance=location)
-        user.refresh_from_db()
-        self.assertIsNone(user.next_notification_id)
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.next_notification_id)
 
         # Test if no notification is scheduled
         location.refresh_from_db()
         pre_delete.send(Location, instance=location)
 
-    def test_send_location_reminder_notification(self):
-        # Test if notification is sent
-        location = Location.objects.get(id=3)
+    def test_send_location_reminder_notification_default_locale(self):
+        # Test if notification is sent with the default locale (German)
+        location = self.user.locations.last()
         services.send_location_reminder_notification(location.id)
         message = mail.outbox[0]
         self.assertEqual(message.to[0], location.user.email)
         self.assertEqual(message.from_email, settings.DEFAULT_FROM_EMAIL)
         self.assertEqual(message.alternatives[0][1], "text/html")
+        self.assertEqual(
+            message.subject,
+            "[SPRITSTAT] Schau mal wieder vorbei, es gibt schon einiges zu sehen",
+        )
+
+    def test_send_location_reminder_notification_locale_de(self):
+        # Test if notification is sent correctly if the locale is explicitly set to
+        #  German
+        location = CustomUser.objects.get(locale="de").locations.last()
+        services.send_location_reminder_notification(location.id)
+        message = mail.outbox[0]
+        self.assertEqual(
+            message.subject,
+            "[SPRITSTAT] Schau mal wieder vorbei, es gibt schon einiges zu sehen",
+        )
+
+    def test_send_location_reminder_notification_locale_en(self):
+        # Test if notification is sent correctly if the locale is explicitly set to
+        #  English
+        location = CustomUser.objects.get(locale="en").locations.last()
+        services.send_location_reminder_notification(location.id)
+        message = mail.outbox[0]
+        self.assertEqual(
+            message.subject, "[SPRITSTAT] Have a look, there's already something to see"
+        )
 
     def test_send_location_reminder_notification_skip_due_to_activity(self):
         # Test if notification isn't sent if the user was active since the
         #  notification was scheduled
-        location = Location.objects.get(id=3)
-        location.user.last_activity = timezone.now() - timedelta(
+        self.user.last_activity = timezone.now() - timedelta(
             weeks=LOCATION_REMINDER_DELAY_WEEKS - 1
         )
-        location.user.save()
+        self.user.save()
+        location = self.user.locations.last()
         services.send_location_reminder_notification(location.id)
         self.assertEqual(len(mail.outbox), 0)
