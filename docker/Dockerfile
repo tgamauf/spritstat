@@ -5,7 +5,6 @@ WORKDIR build
 COPY frontend/ .
 
 RUN npm install
-RUN npm run trans:compile
 RUN npm run build
 
 FROM python:3.9

@@ -43,6 +43,9 @@ jobs:
       - name: Apply migrations
         run: |
           python manage.py migrate --noinput
+      - name: Compile locales
+        run: |
+          python manage.py compilemessages
       - name: Execute tests
         run: |
           python manage.py test
@@ -111,6 +114,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python manage.py migrate --noinput
+          python manage.py compilemessages
       - name: Install frontend dependencies
         working-directory: frontend
         run: |
