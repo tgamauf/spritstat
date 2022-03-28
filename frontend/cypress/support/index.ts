@@ -66,6 +66,13 @@ declare global {
       mockSettings(settings?: SettingsData): Chainable<Element>;
 
       /**
+       * Mock settings.
+       * @example cy.mockLocale();
+       * @example cy.mockLocale("en");
+       */
+      mockLocale(locale?: string): Chainable<Element>;
+
+      /**
        * Mock the E-Control price API.
        * @example cy.mockEcontrolPriceAPI();
        * @example cy.mockEcontrolPriceAPI(400, []);

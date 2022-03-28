@@ -4,6 +4,7 @@ describe("Validate change password view", () => {
   it("validate content", () => {
     cy.mockLoggedIn();
     cy.mockSettings();
+    cy.mockLocale();
     cy.visitWithLocale(RouteNames.ChangePassword);
 
     cy.hasBaseStructure(true);
@@ -32,6 +33,7 @@ describe("Validate password change process", () => {
     cy.resetDB(["user.json"]);
 
     cy.mockSettings();
+    cy.mockLocale();
     cy.intercept("POST", "/api/v1/users/auth/password/validate/")
       .as("validatePassword");
     cy.intercept("POST", "/api/v1/users/auth/password/change/")

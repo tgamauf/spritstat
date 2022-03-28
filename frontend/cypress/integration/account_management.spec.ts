@@ -4,6 +4,7 @@ describe("Validate settings view", () => {
   it("validate content", () => {
     cy.mockLoggedIn();
     cy.mockSettings();
+    cy.mockLocale();
     cy.visitWithLocale(RouteNames.Settings);
 
     cy.hasBaseStructure(true);
@@ -51,6 +52,7 @@ describe("Validate settings change", () => {
     cy.resetDB(["user.json", "settings.json"]);
     cy.login(this.username, this.password);
     cy.intercept("GET", "/api/v1/sprit/settings/").as("settings");
+    cy.mockLocale();
   });
 
   it("set intro settings", () => {
@@ -90,6 +92,7 @@ describe("Validate delete account", () => {
     cy.wrap("test@test.at").as("username");
     cy.wrap("test").as("password");
     cy.mockSettings();
+    cy.mockLocale();
   });
 
   beforeEach(function () {

@@ -3,6 +3,12 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 
 
+interface AccountData {
+  isAuthenticated: boolean;
+  hasBetaAccess: boolean;
+  email: string;
+}
+
 interface AccountState {
   isAuthenticated: boolean;
   hasBetaAccess: boolean;
@@ -21,7 +27,7 @@ const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
-    setAccount: (state, action: PayloadAction<AccountState>) => {
+    setAccount: (state, action: PayloadAction<AccountData>) => {
       state.isAuthenticated = action.payload.isAuthenticated;
       state.hasBetaAccess = action.payload.hasBetaAccess;
       state.email = action.payload.email;

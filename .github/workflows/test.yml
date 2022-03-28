@@ -30,6 +30,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
+      - name: Install translation dependencies
+        run: |
+          sudo apt install gettext
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -43,6 +46,9 @@ jobs:
       - name: Apply migrations
         run: |
           python manage.py migrate --noinput
+      - name: Compile locales
+        run: |
+          python manage.py compilemessages
       - name: Execute tests
         run: |
           python manage.py test

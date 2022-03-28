@@ -118,8 +118,9 @@ function mockEControlApi(responseStatus = 200) {
 describe("Add location flows", () => {
   beforeEach(() => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.resetDB(["user.json", "settings.json"]);
-    cy.login("test@test.at", "test");
+    cy.login("tom@test.at", "test");
 
     mockEControlApi();
     cy.mockEcontrolPriceAPI();

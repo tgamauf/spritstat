@@ -12,6 +12,7 @@ describe("Validate password change process", () => {
 
   beforeEach(() => {
     cy.mockSettings();
+    cy.mockLocale();
   });
 
   it("validate content", () => {

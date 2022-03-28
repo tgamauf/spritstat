@@ -107,6 +107,28 @@ Install frontend requirements:
 1. Change to the frontend directory: `cd frontend`
 2. Install dependencies: `npm install`
 
+### Create translations
+
+Translation is done by [Django](https://docs.djangoproject.com/en/4.0/topics/i18n/translation/) for the email templates 
+and by [react-intl](https://formatjs.io/docs/react-intl/) in the frontend.
+
+### Backend/Email
+
+In the project directory:
+1. Execute `django-admin makemessages -l en -i frontend -i venv -e html,txt` to create the source language file
+    for English at `locale/en/LC_MESSAGES/django.po`
+2. Translate the content of the source language file 
+3. Execute `django-admin compilemessages` to compile the messages
+
+### Frontend
+
+In the `frontend` directory:
+1. Execute `npm run trans` to create the source language file for English at `frontend/translation/locales/en.json`. 
+    The command will print added/deleted/changed text ids. Also, if a changed text has been found the previous 
+    translation is stored as "obsoleteMessage" in the source language file
+2. Translate the content of the source language file
+3. Execute `npm run trans:compile` to compile the messages
+
 ### Execute tests
 
 In the project directory:

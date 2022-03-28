@@ -80,3 +80,9 @@ class ContactFormSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=50, allow_blank=True)
     subject = serializers.CharField(max_length=100)
     message = serializers.CharField(max_length=500)
+
+
+class LocaleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ("locale",)

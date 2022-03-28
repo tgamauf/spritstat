@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Route, Routes, useLocation} from "react-router-dom";
-import {IntlProvider} from "react-intl";
 
 import {RouteNames} from "../common/types";
 import NoMatch from "../common/components/NoMatch";
@@ -24,33 +23,15 @@ import {AuthProvider, RequireAuth, RequireNoAuth} from "../common/auth/AuthProvi
 import LocationDetails from "../features/location/LocationDetails";
 import {SettingsProvider} from "../common/settings/SettingsProvider";
 import Unsubscribe from "../common/settings/Unsubscribe";
-import {useAppSelector} from "../common/utils";
-import {loadMessages, Locale, selectLocale} from "../common/i18n";
+import I18nProvider from "../common/i18n/I18nProvider";
 
 
 export default function App() {
   const location = useLocation();
-  const locale = useAppSelector(selectLocale);
-  const [messagesLocale, setMessagesLocale] = useState(Locale.DE);
-  const [messages, setMessages] = useState<any>();  // type isn't exported by react-intl
-
-  useEffect(() => {
-    loadMessages(locale)
-      .then((messages) => {
-        setMessagesLocale(locale);
-        setMessages(messages);
-      })
-      .catch((e) => console.error(`Failed to load locale '${locale}': ${e}`))
-  }, [locale]);
 
   console.debug(`Navigating to location ${JSON.stringify(location)}`);
   return (
-      <IntlProvider
-        defaultLocale={Locale.DE}
-        locale={messagesLocale}
-        messages={messages}
-        key={messagesLocale}
-      >
+    <I18nProvider>
       <AuthProvider>
         <SettingsProvider>
           <Routes>
@@ -118,6 +99,6 @@ export default function App() {
           </Routes>
         </SettingsProvider>
       </AuthProvider>
-    </IntlProvider>
+    </I18nProvider>
   );
 }

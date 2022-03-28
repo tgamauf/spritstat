@@ -35,7 +35,7 @@ class TestPasswordReset(APITestCase):
         self.assertEqual(sent_mail.to[0], check_email_address)
         self.assertEqual(
             sent_mail.subject,
-            f"{settings.ACCOUNT_EMAIL_SUBJECT_PREFIX}Password-Reset Email",
+            f"{settings.ACCOUNT_EMAIL_SUBJECT_PREFIX}Password-Reset E-mail",
         )
 
     def test_send_invalid_email(self):

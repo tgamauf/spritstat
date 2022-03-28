@@ -5,8 +5,8 @@
   "browser": "webpack.config.js",
   "scripts": {
     "start": "webpack --mode=development --watch",
-    "build:dev": "webpack --mode=development",
-    "build": "webpack --mode=production",
+    "build:dev": "npm run trans:compile &&webpack --mode=development",
+    "build": "npm run trans:compile && webpack --mode=production",
     "db:flush": "python ../manage.py flush --noinput",
     "db:seed": "python ../manage.py loaddata",
     "test": "cypress run",

@@ -9,6 +9,7 @@ from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
+from django.utils.translation import activate
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import salted_hmac
@@ -136,6 +137,11 @@ def _send_mail(
     }
     if additional_context:
         context.update(additional_context)
+
+    # If the user has a locale set activate it before we render the email.
+    if user.locale:
+        activate(user.locale)
+
     msg = _render_mail(email_template_prefix, user.email, context)
     msg.send()
 

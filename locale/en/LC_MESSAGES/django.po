@@ -1,0 +1,300 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-24 13:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: spritstat/templates/spritstat/email/create_location_reminder_message.html:4
+msgid ""
+"\n"
+"Lege doch einen Ort an\n"
+msgstr ""
+"\n"
+"You haven't created a location yet\n"
+
+#: spritstat/templates/spritstat/email/create_location_reminder_message.html:9
+msgid ""
+"\n"
+"Lege einen Ort an um zu sehen wie sich die Spritpreise bei dir entwickeln.\n"
+msgstr ""
+"\n"
+"Create a new location so you can see how fuel prices develop at your "
+"location.\n"
+
+#: spritstat/templates/spritstat/email/create_location_reminder_message.html:25
+#, python-format
+msgid ""
+"\n"
+"      Du hast dich vor kurzem bei <a href=\"https://%(site_domain)s/\">"
+"%(site_domain)s</a> registriert, aber noch\n"
+"      keinen Ort angelegt. Schau doch mal wieder vorbei und lege einen Ort "
+"an, dann können wir dir schon bald zeigen\n"
+"      wie sich die Spritpreise an deinen Orten entwickeln!\n"
+"      "
+msgstr ""
+"\n"
+"You registered at <a href=\"https://%(site_domain)s/\">%(site_domain)s</a>, "
+"but haven't create any location yet.\n"
+"If you set up a new location, we can start collecting data for you and give "
+"you an idea of how petrol prices develop soon."
+
+#: spritstat/templates/spritstat/email/create_location_reminder_message.txt:5
+#, python-format
+msgid ""
+"\n"
+"Du hast dich vor kurzem bei https://%(site_domain)s/ registriert, aber noch "
+"keinen Ort angelegt.\n"
+"Schau doch mal wieder vorbei und lege einen Ort an, dann können wir dir "
+"schon bald zeigen wie sich\n"
+"die Spritpreise an deinen Orten entwickeln!\n"
+msgstr ""
+"\n"
+"You registered at <a href=\"https://%(site_domain)s/\">%(site_domain)s</a>, "
+"but haven't create any location yet.\n"
+"If you set up a new location, we can start collecting data for you and give "
+"you an idea of how petrol prices develop soon.\n"
+
+#: spritstat/templates/spritstat/email/create_location_reminder_subject.txt:3
+msgid "Du hast noch keinen Ort angelegt"
+msgstr "You haven't created a location yet"
+
+#: spritstat/templates/spritstat/email/location_reminder_message.html:4
+msgid ""
+"\n"
+"Schau mal wieder vorbei\n"
+msgstr ""
+"\n"
+"Have a look, there's already something to see\n"
+
+#: spritstat/templates/spritstat/email/location_reminder_message.html:9
+msgid ""
+"\n"
+"Es sind daten für deinen neuen Ort verfügbar.\n"
+msgstr ""
+"\n"
+"We have collected some data for your location.\n"
+
+#: spritstat/templates/spritstat/email/location_reminder_message.html:25
+#, python-format
+msgid ""
+"\n"
+"      Du hast vor kurzem einen neuen Ort auf <a href=\"https://"
+"%(site_domain)s/\">SPRITSTAT</a> angelegt.\n"
+"      Schau doch mal wieder vorbei, es gibt schon einiges zu sehen! Wenn du "
+"zu deinen neuen Ort gehen willst,\n"
+"      klicke <a href=\"https://%(site_domain)s/location-details/"
+"%(location_id)s/\">hier</a>.\n"
+"      "
+msgstr ""
+"\n"
+"You have created a new location on <a href=\"https://%(site_domain)s/"
+"\">SPRITSTAT</a> some time ago and there is already something to see.\n"
+"If you want to have a look at your new location, click <a href=\"https://"
+"%(site_domain)s/location-details/%(location_id)s/\">here</a>."
+
+#: spritstat/templates/spritstat/email/location_reminder_message.txt:5
+#, python-format
+msgid ""
+"\n"
+"Du hast vor kurzem einen neuen Ort auf SPRITSTAT angelegt! Schau doch mal "
+"wieder vorbei,\n"
+"es gibt schon einiges zu sehen: https://%(site_domain)s/location-details/"
+"%(location_id)s/\n"
+msgstr ""
+"\n"
+"You have created a new location on SPRITSTAT some time ago and there is "
+"already something to see.\n"
+"You can have a look at your new location here: https://%(site_domain)s/"
+"location-details/%(location_id)s/.\n"
+
+#: spritstat/templates/spritstat/email/location_reminder_subject.txt:3
+msgid "Schau mal wieder vorbei, es gibt schon einiges zu sehen"
+msgstr "Have a look, there's already something to see"
+
+#: templates/email/base_message.html:250
+msgid "Hallo!"
+msgstr "Hi!"
+
+#: templates/email/base_message.html:258
+msgid "Dein SPRITSTAT-Team!"
+msgstr "Your SPRITSTAT-Team!"
+
+#: templates/email/base_message.txt:1
+msgid "Hallo!\n"
+msgstr "Hi!\n"
+
+#: templates/email/base_message.txt:4
+msgid ""
+"\n"
+"Dein SPRITSTAT-Team\n"
+msgstr ""
+"\n"
+"Your SPRITSTAT-Team!\n"
+
+#: templates/email/base_notification_message.html:19
+msgid "Abmelden"
+msgstr "Unsubscribe"
+
+#: templates/email/base_notification_message.txt:3
+msgid "Abmelden: "
+msgstr "Unsubscribe: "
+
+#: users/templates/account/email/email_confirmation_message.html:5
+msgid ""
+"\n"
+"Bitte bestätige deine E-Mail-Adresse\n"
+msgstr ""
+"\n"
+"Please confirm your email address\n"
+
+#: users/templates/account/email/email_confirmation_message.html:10
+#, python-format
+msgid ""
+"\n"
+"Deine E-Mail-Adresse wurde auf <a href=\"https://%(site_domain)s/\">"
+"%(site_domain)s</a> registriert. Bitte bestätige\n"
+"sie wenn du SPRITSTAT benutzen willst!\n"
+msgstr ""
+"\n"
+"Your email address has been registered at <a href=\"https://%(site_domain)s/"
+"\">%(site_domain)s</a>.Please confirm your email if you want to use "
+"SPRITSTAT!\n"
+
+#: users/templates/account/email/email_confirmation_message.html:27
+#, python-format
+msgid ""
+"\n"
+"      Du erhältst dieses Email weil sich jemand mit dieser E-Mail-Adresse "
+"bei\n"
+"      <a href=\"https://%(site_domain)s/\"> %(site_domain)s</a> registriert\n"
+"      hat.\n"
+"      "
+msgstr ""
+"\n"
+"You are receiving this email because someone signed up to <a href=\"https://"
+"%(site_domain)s/\">%(site_domain)s</a> with your email address."
+
+#: users/templates/account/email/email_confirmation_message.html:34
+#, python-format
+msgid ""
+"\n"
+"      Falls du das Service benutzen möchtest, klicke\n"
+"      <a href=\"%(activate_url)s\">hier</a> um die E-Mail-Adresse zu "
+"bestätigen!\n"
+"      "
+msgstr ""
+"\n"
+"Click <a href=\"%(activate_url)s\">here</a> if you want to use the service!"
+
+#: users/templates/account/email/email_confirmation_message.html:52
+msgid ""
+"\n"
+"      Es freut uns sehr dass du SPRITSTAT benutzen möchtest!\n"
+"      "
+msgstr ""
+"\n"
+"We are glad that you want to use SPRITSTAT!"
+
+#: users/templates/account/email/email_confirmation_message.txt:6
+#, python-format
+msgid ""
+"\n"
+"Du erhältst dieses E-mail weil sich jemand mit dieser E-mail-Adresse bei "
+"https://%(site_domain)s/ registriert hat.\n"
+"\n"
+"Falls du das Service benutzen möchtest, klicke den Link um die E-Mail-"
+"Adresse zu bestätigen:\n"
+"%(activate_url)s\n"
+"\n"
+"Es freut uns sehr dass du SPRITSTAT benutzen möchtest!"
+msgstr ""
+"\n"
+"Someone signed up for https://%(site_domain)s/ with your email address. "
+"Please click \n"
+"the link to confirm the email address:\n"
+"%(activate_url)s\n"
+"\n"
+"We are glad that you want to use SPRITSTAT!"
+
+#: users/templates/account/email/email_confirmation_subject.txt:3
+msgid "Bitte bestätige deine E-mail-Adresse"
+msgstr "Please confirm your email address"
+
+#: users/templates/account/email/password_reset_key_message.html:4
+msgid ""
+"\n"
+"Password-Reset E-Mail\n"
+msgstr ""
+"\n"
+"Password reset email\n"
+
+#: users/templates/account/email/password_reset_key_message.html:8
+#, python-format
+msgid ""
+"\n"
+"Ein Passwort-Reset deines <a href=\"https://%(site_domain)s/\">SPRITSTAT</a>-"
+"Kontos wurde beantragt.\n"
+msgstr ""
+"\n"
+"A password reset for your account at <a href=\"https://%(site_domain)s/"
+"\">SPRITSTAT</a> has been requested.\n"
+
+#: users/templates/account/email/password_reset_key_message.html:24
+msgid ""
+"\n"
+"      Du erhältst diese E-Mail da du oder jemand anderes einen Passwort-"
+"Reset für\n"
+"      dein SPRITSTAT-Konto angefordert hat. Falls du keinen Passwort-Reset\n"
+"      angefordert hast, kannst du dieses E-Mail einfach ignorieren.\n"
+"      "
+msgstr ""
+"\n"
+"You are receiving this email because you or someone else has requested a "
+"password reset for your SPRITSTAT account. If this wasn't you, you can "
+"simply ignore this email."
+
+#: users/templates/account/email/password_reset_key_message.html:43
+#, python-format
+msgid ""
+"\n"
+"      Klicke <a href=\"%(password_reset_url)s\">hier</a> um dein Passwort\n"
+"      zurückzusetzen!\n"
+"      "
+msgstr ""
+"\n"
+"Click <a href=\"%(password_reset_url)s\">here</a> to reset your password!"
+
+#: users/templates/account/email/password_reset_key_message.txt:4
+msgid ""
+"\n"
+"Du erhältst diese E-Mail da du oder jemand anderes einen Passwort-Reset für "
+"dein SPRITSTAT-Konto\n"
+"angefordert hat. Falls du keinen Passwort-Reset angefordert hast, kannst du "
+"dieses E-Mail einfach\n"
+"ignorieren.\n"
+"Klicke hier um dein Passwort zurückzusetzen: "
+msgstr ""
+"\n"
+"You are receiving this email because you or someone else has requested a "
+"password reset \n"
+"for your SPRITSTAT account. If this wasn't you, you can simply ignore this "
+"email.\n"
+"Click here to reset your password: "
+
+#: users/templates/account/email/password_reset_key_subject.txt:3
+msgid "Password-Reset E-mail"
+msgstr "Password reset email"

@@ -70,6 +70,7 @@ describe("Validate signup", () => {
 
   it("redirect on logged-in", () => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
     cy.intercept("/api/v1/users/auth/logout/").as("logout")
@@ -80,7 +81,7 @@ describe("Validate signup", () => {
 });
 
 describe("Validate confirm email address", () => {
-  // We mock all of the API calls as the tests would require receiving emails
+  // We mock all the API calls as the tests would require receiving emails
   //  and then grepping for the key inside. All of this is tested on the backend.
 
   it("validate success logged out", () => {
@@ -109,6 +110,7 @@ describe("Validate confirm email address", () => {
 
   it("validate success logged in", () => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
     cy.intercept("/api/v1/users/auth/logout/").as("logout")
