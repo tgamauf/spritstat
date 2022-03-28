@@ -69,7 +69,7 @@
     "model": "users.customuser",
     "pk": 100,
     "fields": {
-      "password": "pbkdf2_sha256$260000$gbmierftrfzEOYIenzha1y$p/jAi+b+8c5kL1SmmrE/PvT4bLB6Fo4s9CtIMicjgFA=",
+      "password": "pbkdf2_sha256$260000$9v2WyCYKwR1QmldBoDAfih$q1Ie/FT6/aepA0ylHE3qmXnQtE6ql2sWTxQsg21z4LY=",
       "last_login": null,
       "is_superuser": true,
       "username": "admin",
@@ -91,7 +91,7 @@
     "model": "users.customuser",
     "pk": 200,
     "fields": {
-      "password": "pbkdf2_sha256$260000$4Ecfwg9prHkrBoNJtwgVtO$J4EJOL4LvtRN6WPQA86HMLj5hMeRjR8rU9PT1kK8KTQ=",
+      "password": "pbkdf2_sha256$260000$9v2WyCYKwR1QmldBoDAfih$q1Ie/FT6/aepA0ylHE3qmXnQtE6ql2sWTxQsg21z4LY=",
       "last_login": "2021-10-11T17:10:04.007Z",
       "is_superuser": false,
       "username": "tom",
