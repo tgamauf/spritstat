@@ -243,7 +243,7 @@ describe("Validate location page content", () => {
         "test_price.json"
       ]);
       cy.mockEcontrolPriceAPI();
-      cy.login("test2@test.at", "test");
+      cy.login("tom@test.at", "test");
     })
 
     it("validate data loaded", () => {
@@ -253,7 +253,7 @@ describe("Validate location page content", () => {
       cy.visitWithLocale(RouteNames.Dashboard);
 
 
-      const locationId = 2;
+      const locationId = 1;
       cy.getBySel(`card-location-${locationId}`).click();
       cy.url().should("include", `${RouteNames.LocationDetails}/${locationId}`)
     });

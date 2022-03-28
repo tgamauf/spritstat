@@ -119,7 +119,7 @@ describe("Add location flows", () => {
   beforeEach(() => {
     cy.mockSettings();
     cy.resetDB(["user.json", "settings.json"]);
-    cy.login("test@test.at", "test");
+    cy.login("tom@test.at", "test");
 
     mockEControlApi();
     cy.mockEcontrolPriceAPI();
