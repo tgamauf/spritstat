@@ -30,6 +30,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
+      - name: Install translation dependencies
+        run: |
+          sudo apt install gettext
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -114,7 +117,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python manage.py migrate --noinput
-          python manage.py compilemessages
       - name: Install frontend dependencies
         working-directory: frontend
         run: |
