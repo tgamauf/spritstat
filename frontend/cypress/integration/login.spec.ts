@@ -41,6 +41,7 @@ describe("Login process", () => {
 
   beforeEach(() => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.logout();
     cy.intercept("POST", "/api/v1/users/auth/login/").as("login");
     Cypress.Cookies.preserveOnce("csrftoken");

@@ -126,6 +126,20 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "mockLocale",
+  (locale = null) => {
+    cy.intercept(
+      "GET",
+      "/api/v1/user/locale/",
+      {
+        statusCode: 200,
+        body: {locale}
+      }
+    ).as("settings");
+  }
+);
+
+Cypress.Commands.add(
   "mockEcontrolPriceAPI",
   (responseStatus = 200, responseBody = null) => {
     let body = responseBody ? responseBody : [{

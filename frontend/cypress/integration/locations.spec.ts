@@ -5,6 +5,7 @@ describe("Validate location page content", () => {
     cy.mockEcontrolPriceAPI();
     cy.mockLoggedIn();
     cy.mockSettings();
+    cy.mockLocale();
 
     // Test no locations
     cy.intercept(
@@ -236,6 +237,7 @@ describe("Validate location page content", () => {
   describe("Dashboard process", () => {
     before(() => {
       cy.mockSettings();
+      cy.mockLocale();
       cy.resetDB([
         "user.json",
         "location.json",

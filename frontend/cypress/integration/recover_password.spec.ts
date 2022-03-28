@@ -62,6 +62,7 @@ describe("Validate sending of password recovery email", () => {
 
   it("redirect if logged in", () => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
 
@@ -144,6 +145,7 @@ describe("Validate reset password flow", () => {
 
   it("redirect if logged in", () => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test")
 

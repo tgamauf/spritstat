@@ -8,6 +8,7 @@ describe("Validate initial page load", () => {
 
     cy.mockLoggedIn();
     cy.mockSettings();
+    cy.mockLocale();
     cy.visitWithLocale(RouteNames.Index);
     cy.wait("@isAuthenticated");
     cy.url().should("include", RouteNames.Dashboard);
@@ -38,6 +39,7 @@ describe("Validate initial page load", () => {
   it("validate content of homepage if logged in", () => {
     cy.mockLoggedIn();
     cy.mockSettings();
+    cy.mockLocale();
     cy.visitWithLocale(RouteNames.Home);
     cy.wait("@isAuthenticated");
     cy.hasBaseStructure(true);
@@ -54,6 +56,7 @@ describe("Validate initial page load", () => {
 
   it("validate header dropdown buttons", () => {
     cy.mockSettings();
+    cy.mockLocale();
     cy.resetDB(["user.json"]);
     cy.login("test@test.at", "test");
 
@@ -103,5 +106,12 @@ describe("Validate initial page load", () => {
     cy.getBySel("header-btn-login").contains("Login");
     cy.getBySel("link-imprint").contains("Imprint");
     cy.getBySel("link-privacy").contains("Privacy");
+
+    // Check if the locale is set correctly if a logged-in user has a locale set.
+    cy.mockLocale("en");
+    cy.resetDB(["user.json", "settings.json"]);
+    cy.login("tom@test.at", "test");
+    cy.visit(RouteNames.Home)
+    cy.getBySel("link-imprint").contains("Imprint");
   });
 });
