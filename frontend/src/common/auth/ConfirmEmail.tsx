@@ -4,13 +4,14 @@ import {useIntl} from "react-intl";
 
 import {RouteNames} from "../types";
 import BasePage from "../components/BasePage";
-import {useVerifyEmailMutation} from "../apis/spritstatApi";
+import {spritstatApi, useVerifyEmailMutation} from "../apis/spritstatApi";
 import LoadingError from "../components/LoadingError";
+import {useAppDispatch} from "../utils";
 
 export default function ConfirmEmail(): JSX.Element {
-  const [confirmEmail] = useVerifyEmailMutation();
+  const dispatch = useAppDispatch();
+  const [confirmEmail, {isLoading}] = useVerifyEmailMutation();
   const {key} = useParams();
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const intl = useIntl();
 
@@ -21,28 +22,22 @@ export default function ConfirmEmail(): JSX.Element {
    }
 
     confirmEmail(key).unwrap()
-      .then((valid) => {
-        if (valid) {
-          navigate(
-            `${RouteNames.Login}?emailVerified=true`,
-            {replace: true}
-          );
-       } else {
-          console.error("Email verification returned false");
-       }
+      .then(() => {
+        navigate(
+          `${RouteNames.Dashboard}`,
+          {replace: true}
+        );
+        dispatch(spritstatApi.util.invalidateTags(["Session"]));
      })
       .catch((e: any) => {
         console.error(`Email verification failed: ${JSON.stringify(e, null, 2)}`);
-     })
-      .finally(() => {
-        setLoading(false);
      });
  }, [key]);
 
   return (
     <BasePage>
       <LoadingError
-        loading={loading}
+        loading={isLoading}
         message={intl.formatMessage({
           description: "ConfirmEmail error",
           defaultMessage: "Bestätigung fehlgeschlagen, eventuell ist der Bestätigungslink " +

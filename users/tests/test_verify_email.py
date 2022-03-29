@@ -35,16 +35,19 @@ class TestVerifyEmail(APITestCase):
 
     def test_ok(self):
         response = self.client.post(self.url, {"key": self.key})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertTrue(response.cookies.get("sessionid").value)
 
     def test_logged_in(self):
         self.client.login(username="test@test.at", password="test")
         response = self.client.post(self.url, {"key": self.key})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertTrue(response.cookies.get("sessionid").value)
 
     def test_invalid_key(self):
         response = self.client.post(self.url, {"key": "invalid"})
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIsNone(response.cookies.get("sessionid"))
 
     def test_get(self):
         response = self.client.get(self.url, {"key": self.key})

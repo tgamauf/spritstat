@@ -191,10 +191,6 @@
     "defaultMessage": "So gehts - einfach anmelden, einen Ort anlegen und von diesem Zeitpunkt an werden die Spritkosten in deiner Gegend aufgezeichnet.",
     "description": "Home paragraph 2"
   },
-  "DwMbP5": {
-    "defaultMessage": "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen.",
-    "description": "Login notification 3"
-  },
   "EKcJXR": {
     "defaultMessage": "Diese Website wird als ein Hobbyprojekt betrieben, daher sind alle Angaben ohne gewähr.",
     "description": "Imprint block 1"

@@ -156,10 +156,7 @@ SESSION_COOKIE_SAMESITE = "Strict"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = Settings.SECURE_COOKIE
 
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
+AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend",)
 
 SITE_ID = 1
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[SPRITSTAT] "

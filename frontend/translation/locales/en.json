@@ -183,10 +183,6 @@
     "defaultMessage": "It's really simple, just sign up, create a location and we'll record fuel prices for you.",
     "description": "Home paragraph 2"
   },
-  "DwMbP5": {
-    "defaultMessage": "We have confirmed your email address, you can now continue to login.",
-    "description": "Login notification 3"
-  },
   "EKcJXR": {
     "defaultMessage": "This website is operated as a hobby, so no limit or warranty is provided.",
     "description": "Imprint block 1"

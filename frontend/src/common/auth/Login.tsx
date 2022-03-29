@@ -93,12 +93,6 @@ function Login(): JSX.Element {
       defaultMessage: "Dein Passwort wurde geändert, nun kannst du dich mit deinem " +
         "neuen Passwort einloggen."
     });
- } else if (emailVerified) {
-    notificationSeverity = BasePageSeverity.Info;
-    notificationText = intl.formatMessage({
-      description: "Login notification 3",
-      defaultMessage: "Deine E-Mail-Adresse wurde bestätigt, nun kannst du dich einloggen."
-    });
  }
 
   let submitDisabled = true;

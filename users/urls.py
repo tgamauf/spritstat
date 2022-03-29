@@ -29,7 +29,7 @@ urlpatterns = [
     ),
     path(
         "auth/verify-email/",
-        dj_rest_auth_registration_views.VerifyEmailView.as_view(),
+        views.CustomVerifyEmailView.as_view(),
         name="account_verify_email",
     ),
     path(
