@@ -85,12 +85,27 @@ describe("Validate confirm email address", () => {
   //  and then grepping for the key inside. All of this is tested on the backend.
 
   it("validate success logged out", () => {
-    cy.mockLoggedOut();
+    let getSessionResponseIdx = 0;
+    const getSessionResponse = [
+      {isAuthenticated: false},
+      {isAuthenticated: true, email: "test@test.at", has_beta_access: false},
+    ]
+
+    cy.mockSettings();
+    cy.mockLocale();
     cy.intercept(
       "POST",
       "/api/v1/users/auth/verify-email/",
       {statusCode: 200, body: {detail: "Ok"}}
     ).as("verifyRequest");
+    cy.intercept(
+      "POST",
+      "/api/v1/users/account/session/",
+      (request) => {
+        request.reply(getSessionResponse[getSessionResponseIdx])
+        getSessionResponseIdx++;
+      }
+    ).as("isAuthenticated");
 
     cy.visitWithLocale(`${RouteNames.ConfirmEmail}/key/`);
 
@@ -101,33 +116,44 @@ describe("Validate confirm email address", () => {
       .then((interception) => {
         expect(interception.request.body).to.deep.equal({key: "key"});
      });
+    cy.wait("@isAuthenticated");
     cy.getBySel("loading").should("not.exist");
-    cy.url().should("include", RouteNames.Login);
-    cy.getBySel("notification")
-      .should("exist")
-      .should("have.class", "is-info");
+    cy.url().should("include", RouteNames.Dashboard);
  });
 
   it("validate success logged in", () => {
+    let getSessionResponseIdx = 0;
+    const getSessionResponse = [
+      {isAuthenticated: true, email: "test@test.at", has_beta_access: false},
+      {isAuthenticated: false},
+      {isAuthenticated: true, email: "new@test.at", has_beta_access: false},
+    ]
+
     cy.mockSettings();
     cy.mockLocale();
-    cy.resetDB(["user.json"]);
-    cy.login("test@test.at", "test")
     cy.intercept("/api/v1/users/auth/logout/").as("logout")
     cy.intercept(
       "POST",
       "/api/v1/users/auth/verify-email/",
       {statusCode: 200, body: {detail: "Ok"}}
     ).as("verifyRequest");
+    cy.intercept(
+      "POST",
+      "/api/v1/users/account/session/",
+      (request) => {
+        request.reply(getSessionResponse[getSessionResponseIdx])
+        getSessionResponseIdx++;
+      }
+    ).as("isAuthenticated");
 
     cy.visitWithLocale(`${RouteNames.ConfirmEmail}/key/`);
 
     // Ensure that the progress bar is shown while the API request is processed
     cy.getBySel("loading").should("exist");
 
-    cy.wait(["@logout", "@verifyRequest"]);
+    cy.wait(["@logout", "@verifyRequest", "@isAuthenticated"]);
     cy.getBySel("loading").should("not.exist");
-    cy.url().should("include", RouteNames.Login);
+    cy.url().should("include", RouteNames.Dashboard);
  });
 
   it("validate error", () => {

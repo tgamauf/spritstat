@@ -1,6 +1,9 @@
+from allauth.account.adapter import get_adapter
 from allauth.account.signals import user_signed_up
+from allauth.account.utils import url_str_to_user_pk
+from dj_rest_auth.registration.views import VerifyEmailView
 from django.conf import settings
-from django.contrib.auth import user_logged_in
+from django.contrib.auth import user_logged_in, login
 from django.core.mail import send_mail
 from django.dispatch import receiver
 from django.shortcuts import redirect
@@ -44,6 +47,29 @@ class PasswordValidationView(GenericAPIView):
 def dummy_confirm_email_view(request, key):
     # This view really just redirects the call so the frontend can handle it.
     return redirect(f"/confirm-email/{key}")
+
+
+class CustomVerifyEmailView(VerifyEmailView):
+    # Adapt the email verification view, so we log in users automatically after
+    #  email confirmation.
+
+    def login_on_confirm(self, confirmation):
+        user_pk = None
+        user_pk_str = get_adapter(self.request).unstash_user(self.request)
+        if user_pk_str:
+            user_pk = url_str_to_user_pk(user_pk_str)
+        user = confirmation.email_address.user
+        if user_pk == user.pk and self.request.user.is_anonymous:
+            login(self.request, user)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.kwargs["key"] = serializer.validated_data["key"]
+        confirmation = self.get_object()
+        confirmation.confirm(self.request)
+        self.login_on_confirm(confirmation)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):

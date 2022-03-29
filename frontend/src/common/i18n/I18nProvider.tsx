@@ -26,8 +26,6 @@ export default function I18nProvider({children}: Props): JSX.Element {
   ] = useLazyGetLocaleQuery();
   const dispatch = useAppDispatch();
 
-  console.log(`I18nProvider [0] locale=${locale}, messages=${JSON.stringify(messages)}, isAuthenticated=${isAuthenticated}`);//TODO
-
   useLayoutEffect(() => {
     // Load messages initially
     loadMessages(locale)

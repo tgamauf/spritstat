@@ -150,7 +150,7 @@ const spritstatApi = createApi({
       },
       invalidatesTags: ["Session"]
     }),
-    verifyEmail: builder.mutation<boolean, string>({
+    verifyEmail: builder.mutation<void, string>({
       query: (key) => {
         return {
           url: "users/auth/verify-email/",
@@ -159,9 +159,12 @@ const spritstatApi = createApi({
           body: {key}
         };
       },
-      transformResponse: (response: { detail?: string }) => {
-        return response.detail !== "undefined";
-      },
+      invalidatesTags: (result, error, arg) => {
+        // Invalidate the tags only if login succeeded. This prevents reloading
+        //  of the session, which in turn would prevent a login error message
+        //  from being shown
+        return error ? [] : ["Locations", "Session", "Settings"]
+      }
     }),
     resendEmail: builder.mutation<boolean, string>({
       query: (email) => {
