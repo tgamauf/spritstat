@@ -1,6 +1,6 @@
 FROM node:17 AS builder
 
-WORKDIR build
+WORKDIR build/
 
 COPY frontend/ .
 
@@ -63,7 +63,8 @@ RUN chown -R ${APP_USER}:${APP_USER} $APP_HOME
 
 # Copy frontend build artifacts
 RUN mkdir -p $APP_STATIC_BUILD
-COPY --from=builder /build/public/ $APP_STATIC_BUILD/
+COPY --from=builder /build/frontend/public/ $APP_STATIC_BUILD/
+COPY --from=builder /build/templates/* templates/
 
 USER ${APP_USER}:${APP_USER}
 

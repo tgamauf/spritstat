@@ -14,7 +14,7 @@ const {resolve} = require("path");
 module.exports = {
   devtool: "eval-source-map",
   entry: {
-    app: resolve(__dirname, "./src/index.tsx"),
+    app: resolve(__dirname, "src/index.tsx"),
   },
   mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production",
   module: {
@@ -128,7 +128,7 @@ module.exports = {
       ],
     }),
     new HtmlWebpackPlugin({
-      filename: resolve(__dirname, '../templates/base.html'),
+      filename: resolve(__dirname, 'templates/base.html'),
       inject: false,
       publicPath: "/static/"
     }),
