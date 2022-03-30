@@ -108,6 +108,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build
+      - uses: mxschmitt/action-tmate@v3 #TODO
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2
         with:
