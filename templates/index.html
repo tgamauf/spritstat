@@ -1,33 +1,31 @@
+{% extends "base.html" %}
+
 {% load static %}
+
+{% block html %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" />
     <meta charset="utf-8" />
-    <link rel="icon" href="{% static 'spritstat/build/img/favicon.ico' %}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="Die Spritpreisentwicklung ist unübersichtlich und stark vom Ort abhängig. SPRITSTAT ermöglicht es für deinen Ort Preise aufzuzeichnen."
     />
     <meta name="keywords" content="Sprit, Preis, Statistik, Österreich" />
     <title>SPRITSTAT - Spritpreisstatistiken für Österreich</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'spritstat/build/css/app.css' %}"
-    />
+
+    {% block head %}{{ block.super }}{% endblock %}
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&region=AT&language=de&callback=initGoogleMapsAPI"
+    ></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script
-      type="text/javascript"
-      src="{% static 'spritstat/build/js/app.js' %}"
-    ></script>
 
-    <script
-      async
-      src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&region=AT&language=de&callback=initGoogleMapsAPI"
-    ></script>
+    {% block body %}{{ block.super }}{% endblock %}
   </body>
 </html>
+{% endblock %}

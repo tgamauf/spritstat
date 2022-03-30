@@ -10,9 +10,6 @@
 /cypress/screenshots/
 /cypress/videos/
 
-# production
-/public/
-
 # misc
 .DS_Store
 .env.local
@@ -21,5 +18,7 @@
 .env.production.local
 npm-debug.log*
 
-# translations
+# compiled files
+public/
 src/locales/
+templates/

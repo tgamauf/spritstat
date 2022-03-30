@@ -20,7 +20,7 @@ from .serializers import PriceStationFrequencySerializer, UnsubscribeSerializer
 def index(request):
     return render(
         request,
-        "spritstat/index.html",
+        "index.html",
         context={"google_maps_api_key": settings.GOOGLE_MAPS_API_KEY},
     )
 

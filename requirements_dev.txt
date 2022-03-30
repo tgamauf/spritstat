@@ -16,8 +16,6 @@ black==22.1.0
     # via -r requirements/dev.in
 blessed==1.19.1
     # via django-q
-brotli==1.0.9
-    # via django-compress-staticfiles
 certifi==2021.10.8
     # via requests
 cffi==1.15.0
@@ -36,8 +34,6 @@ cryptography==36.0.1
     # via
     #   ansible-core
     #   pyjwt
-csscompressor==0.9.5
-    # via django-compress-staticfiles
 defusedxml==0.7.1
     # via python3-openid
 distlib==0.3.4
@@ -49,14 +45,11 @@ django==3.2.12
     #   -r requirements/production.in
     #   dj-rest-auth
     #   django-allauth
-    #   django-compress-staticfiles
     #   django-cors-headers
     #   django-picklefield
     #   django-q
     #   djangorestframework
 django-allauth==0.48.0
-    # via -r requirements/production.in
-django-compress-staticfiles==1.0.1b0
     # via -r requirements/production.in
 django-cors-headers==3.11.0
     # via -r requirements/production.in
@@ -134,8 +127,6 @@ requests-oauthlib==1.3.1
     # via django-allauth
 resolvelib==0.5.4
     # via ansible-core
-rjsmin==1.2.0
-    # via django-compress-staticfiles
 six==1.16.0
     # via
     #   blessed

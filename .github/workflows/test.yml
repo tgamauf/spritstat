@@ -70,11 +70,13 @@ jobs:
           runTests: false
           build: npm run build:dev
       - name: Save build folder for use in end-to-end tests
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           if-no-files-found: error
-          path: frontend/public
+          path: |
+            frontend/public/
+            frontend/templates/
           retention-days: 1
       - name: Collect test specs to allow for parallel tests
         id: parse
@@ -103,10 +105,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Download the build folders from prepare step
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build
-          path: frontend/public
+          path: frontend/
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2
         with:

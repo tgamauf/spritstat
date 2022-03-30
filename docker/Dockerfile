@@ -15,7 +15,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 ENV APP_USER=spritstat
 ENV APP_HOME=/home/app/web
-ENV APP_STATIC_BUILD=$APP_HOME/spritstat/static/spritstat/build
 
 EXPOSE 8000
 
@@ -62,8 +61,9 @@ COPY templates/ ${APP_HOME}/templates/
 RUN chown -R ${APP_USER}:${APP_USER} $APP_HOME
 
 # Copy frontend build artifacts
-RUN mkdir -p $APP_STATIC_BUILD
-COPY --from=builder /build/public/ $APP_STATIC_BUILD/
+RUN mkdir -p frontend/public/
+COPY --from=builder /build/public/ frontend/public/
+COPY --from=builder /build/templates/ templates/
 
 USER ${APP_USER}:${APP_USER}
 

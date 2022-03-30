@@ -9,13 +9,13 @@ frontend/cypress/
 frontend/node_modules/
 frontend/public/
 frontend/src/locales/
+frontend/templates/
 frontend/.gitignore
 
 !locale/**/*.po
 
 !spritstat/
 spritstat/fixtures/
-spritstat/static/spritstat/build/
 spritstat/tests/
 
 !templates/

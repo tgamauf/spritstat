@@ -68,3 +68,6 @@ dmypy.json
 
 # IntelliJ
 .idea/
+
+# Files created by Webpack
+templates/base.html
