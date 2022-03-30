@@ -128,8 +128,6 @@ module.exports = {
       ],
     }),
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, './src/index.ejs'),
-      favicon: resolve(__dirname, "./public/img/favicon.ico"),
       filename: resolve(__dirname, '../templates/base.html'),
       inject: false,
       publicPath: "/static/"

@@ -1,7 +1,4 @@
 {% block html %}
-
-  {% block css %}<%= htmlWebpackPlugin.tags.headTags %>{% endblock %}
-
-  {% block js %}<%= htmlWebpackPlugin.tags.bodyTags %>{% endblock %}
-
+  {% block head %}<%= htmlWebpackPlugin.tags.headTags %>{% endblock %}
+  {% block body %}<%= htmlWebpackPlugin.tags.bodyTags %>{% endblock %}
 {% endblock %}
