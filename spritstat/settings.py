@@ -132,11 +132,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# Use StaticFilesStorage as otherwise some tests do not work otherwise
-if DEBUG:
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-else:
-    STATICFILES_STORAGE = "compress_staticfiles.storage.CompressStaticFilesStorage"
+STATICFILES_DIRS = (BASE_DIR / "frontend" / "public",)
 STATIC_ROOT = Settings.STATIC_ROOT
 STATIC_URL = "/static/"
 

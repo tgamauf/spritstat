@@ -1,9 +1,12 @@
+{% extends "base.html" %}
+
 {% load static %}
+
+{% block html %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="{% static 'spritstat/build/img/favicon.ico' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
@@ -11,19 +14,14 @@
     />
     <meta name="keywords" content="Sprit, Preis, Statistik, Österreich" />
     <title>SPRITSTAT - Spritpreisstatistiken für Österreich</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'spritstat/build/css/app.css' %}"
-    />
+
+    {% block css %}{{ block.super }}{% endblock %}
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script
-      type="text/javascript"
-      src="{% static 'spritstat/build/js/app.js' %}"
-    ></script>
+
+    {% block js %}{{ block.super }}{% endblock %}
 
     <script
       async
@@ -31,3 +29,4 @@
     ></script>
   </body>
 </html>
+{% endblock %}
