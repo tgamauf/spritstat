@@ -18,6 +18,8 @@ $section-padding-large-mobile: 7rem 1.5rem
 
 $table-cell-border-width: 0 0 0
 
+$tabs-link-active-color: $primary
+
 @import "../node_modules/bulma/bulma.sass"
 @import "~bulma-switch"
 
@@ -77,3 +79,8 @@ td.key
 
 .intro-tooltip
   text-align: center
+
+.tabs-box
+  @extend .box
+  margin-top: 0
+  box-shadow: 0 0.1em 0.5em -0.125em rgba($scheme-invert, 0.1), 0 0px 0 1px rgba($scheme-invert, 0.02)
