@@ -304,7 +304,11 @@ export default function AddLocation(): JSX.Element {
         <form onSubmit={onSubmit}>
           <div className="tabs is-right is-boxed mb-0">
             <ul>
-              <li ref={namedTabRef} id={TAB_LOCATION_TYPE_NAMED_ID}>
+              <li
+                ref={namedTabRef}
+                id={TAB_LOCATION_TYPE_NAMED_ID}
+                data-test="tab-location-type-named"
+              >
                 <a onClick={(e) => {
                     e.preventDefault();
                     changeLocationType(LocationType.Named);
@@ -315,7 +319,11 @@ export default function AddLocation(): JSX.Element {
                   })}
                 </a>
               </li>
-              <li ref={regionTabRef} id={TAB_LOCATION_TYPE_REGION_ID}>
+              <li
+                ref={regionTabRef}
+                id={TAB_LOCATION_TYPE_REGION_ID}
+                data-test="tab-location-type-region"
+              >
                 <a onClick={(e) => {
                     e.preventDefault();
                     changeLocationType(LocationType.Region);
