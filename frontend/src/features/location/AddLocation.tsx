@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import introJs from "intro.js";
-import {defineMessage, MessageDescriptor, useIntl} from "react-intl";
+import {defineMessage, useIntl} from "react-intl";
 
 import NamedLocationField from "./NamedLocationField";
 import BasePage from "../../common/components/BasePage";
@@ -11,15 +11,7 @@ import RegionLocationField, {
   DROPDOWN_STATE_ID,
   TEXT_POSTAL_CODE_ID
 } from "./RegionLocationField/RegionLocationField";
-import {
-  FuelType,
-  fuelTypeNames,
-  IntroJs,
-  LocationType,
-  OurFormElement,
-  RegionType,
-  RouteNames
-} from "../../common/types";
+import {FuelType, IntroJs, LocationType, OurFormElement, RegionType, RouteNames} from "../../common/types";
 import {INVALID_LOCATION} from "../../common/constants";
 import {useAddLocationMutation} from "./locationApiSlice";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
@@ -27,6 +19,7 @@ import {getFormattedIntroOption, updateIntroStepElement, useAppSelector} from ".
 import {selectIntroSettingsAddLocation} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
 import {BTN_CURRENT_LOCATION_ID, TEXT_LOCATION_ID} from "./NamedLocationField/NamedLocationField";
+import FuelTypeButton from "./FuelTypeButton";
 
 
 const BREADCRUMB: BreadcrumbItem = {
@@ -44,8 +37,9 @@ const INVALID_REGION: Region = {
   name: ""
 }
 
-const DROPDOWN_LOCATION_TYPE_ID = "dropdown-location-type";
-const DROPDOWN_FUEL_ID = "dropdown-fuel-type";
+const TAB_LOCATION_TYPE_NAMED_ID = "tab-location-type-named";
+const TAB_LOCATION_TYPE_REGION_ID = "tab-location-type-region";
+const BTN_FUEL_TYPE_ID = "btn-fuel-type";
 const BTN_ADD_LOCATION_ID = "btn-add-location"
 
 interface Region {
@@ -56,6 +50,8 @@ interface Region {
 
 export default function AddLocation(): JSX.Element {
   const [addLocation, {isLoading}] = useAddLocationMutation();
+  const namedTabRef = useRef() as React.MutableRefObject<HTMLLIElement>;
+  const regionTabRef = useRef() as React.MutableRefObject<HTMLLIElement>;
   const buttonRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   // @ts-ignore this is a fluke caused somehow by intro.js-react typing
   const [errorMessage, setErrorMessage] = useState("");
@@ -117,6 +113,29 @@ export default function AddLocation(): JSX.Element {
   }, [submitted]);
 
   useEffect(() => {
+    if (namedTabRef.current && regionTabRef.current) {
+      const token = "is-active";
+      if (locationType == LocationType.Named) {
+        namedTabRef.current.classList.add(token);
+        regionTabRef.current.classList.remove(token);
+      } else {
+        namedTabRef.current.classList.remove(token);
+        regionTabRef.current.classList.add(token);
+      }
+    }
+  })
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      if (submitted || isLoading) {
+        buttonRef.current.classList.add("is-loading");
+      } else {
+        buttonRef.current.classList.remove("is-loading");
+      }
+    }
+  })
+
+  useEffect(() => {
     if (introDone) {
       setIntroDone(false);
 
@@ -142,11 +161,11 @@ export default function AddLocation(): JSX.Element {
             })
           },
           {
-            element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
+            element: `#${TAB_LOCATION_TYPE_NAMED_ID}`,
             intro: intl.formatMessage({
               description: "AddLocation intro 2",
-              defaultMessage: "Klicke hier um den Ortstyp auszuwählen. Standardmäßig " +
-                "ist die Suche nach einem konkreten Ort aktiviert."
+              defaultMessage: 'Standardmäßig ist der Ortstyp "Suche" nach einem konkreten Ort ' +
+                'aktiviert.'
             })
           },
           {
@@ -166,7 +185,7 @@ export default function AddLocation(): JSX.Element {
             })
           },
           {
-            element: `#${DROPDOWN_LOCATION_TYPE_ID}`,
+            element: `#${TAB_LOCATION_TYPE_REGION_ID}`,
             intro: intl.formatMessage({
               description: "AddLocation intro 5",
               defaultMessage: 'Wenn du "Region" auswählst, kannst du entweder einen ' +
@@ -198,7 +217,7 @@ export default function AddLocation(): JSX.Element {
             })
           },
           {
-            element: `#${DROPDOWN_FUEL_ID}`,
+            element: `#${BTN_FUEL_TYPE_ID}`,
             intro: intl.formatMessage({
               description: "AddLocation intro 9",
               defaultMessage: "Zusätzlich zum Ort kann auch der Treibstofftyp " +
@@ -227,11 +246,7 @@ export default function AddLocation(): JSX.Element {
           // Switch to region location type if we select the location type dropdown
           //  the second time. While this is still kind of hacky, it should be
           //  reasonably reliable.
-          if (
-            (this._currentStep >= 2)
-            && targetElement
-            && (targetElement.id === DROPDOWN_LOCATION_TYPE_ID)
-          ) {
+          if (targetElement && (targetElement.id === TAB_LOCATION_TYPE_REGION_ID)) {
             setLocationType(LocationType.Region);
           }
         }
@@ -239,10 +254,7 @@ export default function AddLocation(): JSX.Element {
     }
   }, [introActive]);
 
-  function changeLocationType(event: React.ChangeEvent<HTMLSelectElement>) {
-    event.preventDefault();
-
-    const type = Number(event.target.value);
+  function changeLocationType(type: LocationType) {
     if (type !== locationType) {
       // Clean up previously chosen locations
       setNamedLocation(INVALID_LOCATION);
@@ -256,14 +268,6 @@ export default function AddLocation(): JSX.Element {
 
     setSubmitted(true);
     setErrorMessage("");
-  }
-
-  if (buttonRef.current) {
-    if (submitted || isLoading) {
-      buttonRef.current.classList.add("is-loading");
-    } else {
-      buttonRef.current.classList.remove("is-loading");
-    }
   }
 
   let mainComponent;
@@ -298,87 +302,81 @@ export default function AddLocation(): JSX.Element {
           })}
         </h1>
         <form onSubmit={onSubmit}>
-          <div className="block">
-            <div className="field is-grouped is-grouped-right">
-              <div className="control">
-                <p className="select is-primary">
-                  <select
-                    title={intl.formatMessage({
-                      description: "AddLocation title dropdown location type",
-                      defaultMessage: "Wähle den Typ von Ortsangabe aus."
-                    })}
-                    value={locationType}
-                    onChange={(e) => changeLocationType(e)}
-                    data-test="field-location-type"
-                    id={DROPDOWN_LOCATION_TYPE_ID}
-                  >
-                    <option value={LocationType.Named}>
-                      {intl.formatMessage({
-                        description: "AddLocation dropdown location type option 1",
-                        defaultMessage: "Suche"
-                      })}
-                    </option>
-                    <option value={LocationType.Region}>
-                      {intl.formatMessage({
-                        description: "AddLocation dropdown location type option 2",
-                        defaultMessage: "Region"
-                      })}
-                    </option>
-                  </select>
-                </p>
-              </div>
-            </div>
+          <div className="tabs is-right is-boxed mb-0">
+            <ul>
+              <li
+                ref={namedTabRef}
+                id={TAB_LOCATION_TYPE_NAMED_ID}
+                data-test="tab-location-type-named"
+              >
+                <a onClick={(e) => {
+                    e.preventDefault();
+                    changeLocationType(LocationType.Named);
+                  }}>
+                  {intl.formatMessage({
+                    description: "AddLocation dropdown location type option 1",
+                    defaultMessage: "Suche"
+                  })}
+                </a>
+              </li>
+              <li
+                ref={regionTabRef}
+                id={TAB_LOCATION_TYPE_REGION_ID}
+                data-test="tab-location-type-region"
+              >
+                <a onClick={(e) => {
+                    e.preventDefault();
+                    changeLocationType(LocationType.Region);
+                  }}>
+                  {intl.formatMessage({
+                    description: "AddLocation dropdown location type option 2",
+                    defaultMessage: "Region"
+                  })}
+                </a>
+              </li>
+            </ul>
           </div>
-          <div className="block">{mainComponent}</div>
-          <div className="block">
-            <div className="field">
-              <div className="control">
-                <div className="select is-primary">
-                  <select
-                    title={intl.formatMessage({
-                      description: "AddLocation dropdown fuel type title",
-                      defaultMessage: "Wähle den Typ von Treibstoff aus für den " +
-                        "Preise aufgezeichnet werden sollen."
-                    })}
-                    value={fuelType}
-                    onChange={(e) => setFuelType(
-                      e.target.value as unknown as FuelType
-                    )}
-                    data-test="field-fuel-type"
-                    id={DROPDOWN_FUEL_ID}
-                  >
-                    <option value={FuelType.Diesel}>
-                      {intl.formatMessage(fuelTypeNames.get(FuelType.Diesel) as MessageDescriptor)}
-                    </option>
-                    <option value={FuelType.Super}>
-                      {intl.formatMessage(fuelTypeNames.get(FuelType.Super) as MessageDescriptor)}
-                    </option>
-                    <option value={FuelType.Gas}>
-                      {intl.formatMessage(fuelTypeNames.get(FuelType.Gas) as MessageDescriptor)}
-                    </option>
-                  </select>
+          <div className="tabs-box">
+            <div className="block">{mainComponent}</div>
+            <div className="block">
+              <div className="is-inline-block">
+                <div className="field has-addons" id={BTN_FUEL_TYPE_ID}>
+                  <FuelTypeButton
+                    value={FuelType.Diesel}
+                    selected={fuelType === FuelType.Diesel}
+                    onClick={setFuelType}
+                  />
+                  <FuelTypeButton
+                    value={FuelType.Super}
+                    selected={fuelType === FuelType.Super}
+                    onClick={setFuelType}
+                  />
+                  <FuelTypeButton
+                    value={FuelType.Gas}
+                    selected={fuelType === FuelType.Gas}
+                    onClick={setFuelType} />
                 </div>
               </div>
             </div>
-          </div>
-          <div className="block">
-            <div className="field is-grouped is-grouped-right">
-              <p className="control" id={BTN_ADD_LOCATION_ID}>
-                <input
-                  className="button is-primary"
-                  type="submit"
-                  value={intl.formatMessage({
-                    description: "AddLocation submit",
-                    defaultMessage: "Hinzufügen"
-                  })}
-                  disabled={
-                    (namedLocation === INVALID_LOCATION)
-                    && (region === INVALID_REGION)
-                  }
-                  ref={buttonRef}
-                  data-test="btn-submit"
-                />
-              </p>
+            <div className="block">
+              <div className="field is-grouped is-grouped-right">
+                <p className="control" id={BTN_ADD_LOCATION_ID}>
+                  <input
+                    className="button is-primary"
+                    type="submit"
+                    value={intl.formatMessage({
+                      description: "AddLocation submit",
+                      defaultMessage: "Hinzufügen"
+                    })}
+                    disabled={
+                      (namedLocation === INVALID_LOCATION)
+                      && (region === INVALID_REGION)
+                    }
+                    ref={buttonRef}
+                    data-test="btn-submit"
+                  />
+                </p>
+              </div>
             </div>
           </div>
         </form>

@@ -139,43 +139,56 @@ describe("Add location flows", () => {
       });
 
     // Defaults
-    cy.getBySel("field-location-type")
+    cy.getBySel("tab-location-type-named")
       .should("be.visible")
-      .should("have.value", LocationType.Named);
+      .should("have.class", "is-active");
+    cy.getBySel("tab-location-type-region")
+      .should("be.visible")
+      .should("not.have.class", "is-active");
     cy.getBySel("location-add-address")
       .should("be.visible");
-    cy.getBySel("field-fuel-type")
+    cy.getBySel(`btn-fuel-${FuelType.Diesel}`)
       .should("be.visible")
-      .should("have.value", FuelType.Diesel);
+      .should("have.class", "is-selected");
+    cy.getBySel(`btn-fuel-${FuelType.Super}`)
+      .should("be.visible")
+      .should("not.have.class", "is-selected");
+    cy.getBySel(`btn-fuel-${FuelType.Gas}`)
+      .should("be.visible")
+      .should("not.have.class", "is-selected");
     cy.getBySel("btn-submit")
       .should("be.visible")
       .should("be.disabled");
 
-    // Address location
-    cy.getBySel("field-location-type")
-      .select(LocationType.Named.toString())
-      .should("have.value", LocationType.Named);
-    cy.getBySel("location-add-address")
-      .should("be.visible");
-
     // Region location
-    cy.getBySel("field-location-type")
-      .select(LocationType.Region.toString())
-      .should("have.value", LocationType.Region);
+    cy.getBySel("tab-location-type-region").click();
     cy.getBySel("location-add-region").should("be.visible");
     cy.getBySel("btn-submit")
       .should("be.visible")
       .should("be.disabled");
 
+    // Address location
+    cy.getBySel("tab-location-type-named").click();
+    cy.getBySel("location-add-address")
+      .should("be.visible");
+
     // Fuel type super
-    cy.getBySel("field-fuel-type")
-      .select(FuelType.Super)
-      .should("have.value", FuelType.Super);
+    cy.getBySel(`btn-fuel-${FuelType.Super}`)
+      .click()
+      .should("have.class", "is-selected");
+    cy.getBySel(`btn-fuel-${FuelType.Diesel}`)
+      .should("not.have.class", "is-selected");
+    cy.getBySel(`btn-fuel-${FuelType.Gas}`)
+      .should("not.have.class", "is-selected");
 
     // Fuel type gas
-    cy.getBySel("field-fuel-type")
-      .select(FuelType.Gas)
-      .should("have.value", FuelType.Gas);
+    cy.getBySel(`btn-fuel-${FuelType.Gas}`)
+      .click()
+      .should("have.class", "is-selected");
+    cy.getBySel(`btn-fuel-${FuelType.Diesel}`)
+      .should("not.have.class", "is-selected");
+    cy.getBySel(`btn-fuel-${FuelType.Super}`)
+      .should("not.have.class", "is-selected");
   });
 
   it("create location from address success", () => {
@@ -284,10 +297,9 @@ describe("Add location flows", () => {
   it("create location from region success", () => {
     cy.visitWithLocale(RouteNames.AddLocation);
 
-    cy.getBySel("field-location-type")
-      .select(LocationType.Region.toString())
+    cy.getBySel("tab-location-type-region").click();
     cy.getBySel("field-state").select(1);
-    cy.getBySel("field-fuel-type").select(FuelType.Super);
+    cy.getBySel(`btn-fuel-${FuelType.Super}`).click();
     cy.getBySel("btn-submit").click();
 
     cy.wait("@addLocationRequest").then((interception) => {
@@ -311,10 +323,8 @@ describe("Add location flows", () => {
 
     cy.visitWithLocale(RouteNames.AddLocation);
 
-    cy.getBySel("field-location-type")
-      .select(LocationType.Region.toString())
+    cy.getBySel("tab-location-type-region").click();
     cy.getBySel("field-state").select(1);
-    cy.getBySel("field-fuel-type").select(FuelType.Super);
     cy.getBySel("btn-submit").click();
 
     cy.wait("@addLocationRequest");
@@ -350,8 +360,7 @@ describe("Add location flows", () => {
 
     cy.visitWithLocale(RouteNames.AddLocation);
 
-    cy.getBySel("field-location-type")
-      .select(LocationType.Region.toString())
+    cy.getBySel("tab-location-type-region").click();
 
     cy.wait("@econtrolRegionRequest");
     cy.getBySel("notification")
