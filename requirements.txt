@@ -115,6 +115,7 @@ django==3.2.12 \
     #   django-cors-headers
     #   django-picklefield
     #   django-q
+    #   django-user-visit
     #   djangorestframework
 django-allauth==0.48.0 \
     --hash=sha256:531821ce6a2278168054add13421776c9f8e565cf39926e799fa02d6c29da920
@@ -130,6 +131,10 @@ django-picklefield==3.0.1 \
 django-q==1.3.9 \
     --hash=sha256:1b74ce3a8931990b136903e3a7bc9b07243282a2b5355117246f05ed5d076e68 \
     --hash=sha256:5c6b4d530aa3aabf9c6aa57376da1ca2abf89a1562b77038b7a04e52a4a0a91b
+    # via -r requirements/production.in
+django-user-visit==0.5.1 \
+    --hash=sha256:bf77de360107105c0eefa2e27af4d1d3ad8edeab5a9c3a718c5b057165ac1681 \
+    --hash=sha256:fc1098a792146762815f22cb31ab3187513d5be8b6ead9a918046f503fafb42f
     # via -r requirements/production.in
 djangorestframework==3.13.1 \
     --hash=sha256:0c33407ce23acc68eca2a6e46424b008c9c02eceb8cf18581921d0092bc1f2ee \
@@ -259,12 +264,20 @@ sqlparse==0.4.2 \
     --hash=sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae \
     --hash=sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d
     # via django
+ua-parser==0.10.0 \
+    --hash=sha256:46ab2e383c01dbd2ab284991b87d624a26a08f72da4d7d413f5bfab8b9036f8a \
+    --hash=sha256:47b1782ed130d890018d983fac37c2a80799d9e0b9c532e734c67cf70f185033
+    # via user-agents
 urllib3==1.26.8 \
     --hash=sha256:000ca7f471a233c2251c6c7023ee85305721bfdf18621ebff4fd17a8653427ed \
     --hash=sha256:0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c
     # via
     #   -r requirements/production.in
     #   requests
+user-agents==2.2.0 \
+    --hash=sha256:a98c4dc72ecbc64812c4534108806fb0a0b3a11ec3fd1eafe807cee5b0a942e7 \
+    --hash=sha256:d36d25178db65308d1458c5fa4ab39c9b2619377010130329f3955e7626ead26
+    # via django-user-visit
 wcwidth==0.2.5 \
     --hash=sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784 \
     --hash=sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83

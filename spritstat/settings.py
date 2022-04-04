@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django_q",
     "users",
     "spritstat",
+    "user_visit",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "user_visit.middleware.UserVisitMiddleware",
 ]
 
 ROOT_URLCONF = "spritstat.urls"
