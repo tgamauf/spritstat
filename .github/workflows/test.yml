@@ -42,7 +42,7 @@ jobs:
           black --check .
       - name: Check if all migrations have been created
         run : |
-          python manage.py makemigrations --check --noinput
+          python manage.py makemigrations users spritstat --check --noinput
       - name: Apply migrations
         run: |
           python manage.py migrate --noinput
