@@ -115,10 +115,11 @@ and by [react-intl](https://formatjs.io/docs/react-intl/) in the frontend.
 ### Backend/Email
 
 In the project directory:
-1. Execute `django-admin makemessages -l en -i frontend -i venv -e html,txt` to create the source language file
+1. Execute `django-admin makemessages -a -i frontend -i venv -e html,txt` to create the source language file
     for English at `locale/en/LC_MESSAGES/django.po`
-2. Translate the content of the source language file 
-3. Execute `django-admin compilemessages` to compile the messages
+2. Translate the content of the source language file
+3. Check if everything is translated by executing `django-admin checkmessages`
+4. Execute `django-admin compilemessages` to compile the messages
 
 ### Frontend
 
@@ -127,7 +128,8 @@ In the `frontend` directory:
     The command will print added/deleted/changed text ids. Also, if a changed text has been found the previous 
     translation is stored as "obsoleteMessage" in the source language file
 2. Translate the content of the source language file
-3. Execute `npm run trans:compile` to compile the messages
+3. Check if everything is translated by executing `npm run trans:manage --check`
+4. Execute `npm run trans:compile` to compile the messages
 
 ### Execute tests
 

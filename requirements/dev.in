@@ -2,4 +2,5 @@ ansible
 black
 coverage
 pip-tools
+polib
 pre-commit

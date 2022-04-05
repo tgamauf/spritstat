@@ -46,6 +46,9 @@ jobs:
       - name: Apply migrations
         run: |
           python manage.py migrate --noinput
+      - name: Check locales
+        run: |
+          python manage.py checkmessages
       - name: Compile locales
         run: |
           python manage.py compilemessages
@@ -63,6 +66,10 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
+      - name: Check translations
+        working-directory: ./frontend
+        run: |
+          npm run trans:manage -- --check
       - name: Build frontend
         uses: cypress-io/github-action@v2
         with:

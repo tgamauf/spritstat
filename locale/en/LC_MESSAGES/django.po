@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-24 13:50+0100\n"
+"POT-Creation-Date: 2022-04-05 11:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,11 +125,11 @@ msgstr ""
 msgid "Schau mal wieder vorbei, es gibt schon einiges zu sehen"
 msgstr "Have a look, there's already something to see"
 
-#: templates/email/base_message.html:250
+#: templates/email/base_message.html:247
 msgid "Hallo!"
 msgstr "Hi!"
 
-#: templates/email/base_message.html:258
+#: templates/email/base_message.html:255
 msgid "Dein SPRITSTAT-Team!"
 msgstr "Your SPRITSTAT-Team!"
 

@@ -395,10 +395,6 @@
     "defaultMessage": "Add a new location for which fuel prices should be recorded.",
     "description": "LocationList add button title"
   },
-  "SZnURO": {
-    "defaultMessage": "Please select the type of location.",
-    "description": "AddLocation title dropdown location type"
-  },
   "ScyX7+": {
     "defaultMessage": "Sign up",
     "description": "Login register link"
@@ -723,10 +719,6 @@
     "defaultMessage": "We only process the email address provided during registration. The email address is used to identify the user and to send emails that help to maintain functionality (e.g. password reset). All personal data will be removed on deletion of the account.",
     "description": "PrivacyPolicy personal data paragraph 2"
   },
-  "tTzqLI": {
-    "defaultMessage": "Please select the type of fuel for which prices should be recorded.",
-    "description": "AddLocation dropdown fuel type title"
-  },
   "u7td5N": {
     "defaultMessage": "Please select a federal state and optional a district for which fuel prices should be recorded.",
     "description": "RegionLocationField dropdown title"
@@ -803,10 +795,6 @@
     "defaultMessage": "Password",
     "description": "Settings key password"
   },
-  "zkyB1J": {
-    "defaultMessage": "Click here to select the type of location. By default \"search\" is selected.",
-    "description": "AddLocation intro 2"
-  },
   "yCxT5P": {
     "defaultMessage": "Reset Password",
     "description": "ResetPassword title",
@@ -827,5 +815,9 @@
   "RXDaQp": {
     "defaultMessage": "Click here to create a new account.",
     "description": "Login register link title"
+  },
+  "MD+Zn1": {
+    "defaultMessage": "By default the type \"search\" is active that allows you to search for a specific location.",
+    "description": "AddLocation intro 2"
   }
 }
