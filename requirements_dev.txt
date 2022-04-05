@@ -94,6 +94,8 @@ platformdirs==2.5.0
     # via
     #   black
     #   virtualenv
+polib==1.1.1
+    # via -r requirements/dev.in
 pre-commit==2.17.0
     # via -r requirements/dev.in
 psycopg2-binary==2.9.3
