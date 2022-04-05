@@ -118,7 +118,8 @@ In the project directory:
 1. Execute `django-admin makemessages -a -i frontend -i venv -e html,txt` to create the source language file
     for English at `locale/en/LC_MESSAGES/django.po`
 2. Translate the content of the source language file
-3. Execute `django-admin compilemessages` to compile the messages
+3. Check if everything is translated by executing `django-admin checkmessages`
+4. Execute `django-admin compilemessages` to compile the messages
 
 ### Frontend
 

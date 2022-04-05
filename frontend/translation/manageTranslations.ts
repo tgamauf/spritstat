@@ -25,14 +25,14 @@ interface TranslationData {
 async function main() {
   const check = process.argv.includes("--check");
 
-  let success;
+  let error;
   if (check) {
-    success = await checkTranslations();
+    error = await checkTranslations();
   } else {
-    success = await manageTranslations();
+    error = await manageTranslations();
   }
 
-  if (!success) {
+  if (error) {
     process.exit(1);
   }
 }
