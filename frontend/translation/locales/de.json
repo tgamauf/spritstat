@@ -311,6 +311,10 @@
     "defaultMessage": "Inhaber:",
     "description": "Imprint owner label"
   },
+  "MD+Zn1": {
+    "defaultMessage": "Standardmäßig ist der Ortstyp \"Suche\" nach einem konkreten Ort aktiviert.",
+    "description": "AddLocation intro 2"
+  },
   "MVOFuO": {
     "defaultMessage": "Wie können wir dir helfen?",
     "description": "ContactForm text"
@@ -410,10 +414,6 @@
   "SHt6lh": {
     "defaultMessage": "Fügen einen neuen Ort hinzu für den Spritpreise aufgezeichnet werden sollen.",
     "description": "LocationList add button title"
-  },
-  "SZnURO": {
-    "defaultMessage": "Wähle den Typ von Ortsangabe aus.",
-    "description": "AddLocation title dropdown location type"
   },
   "ScyX7+": {
     "defaultMessage": "Registrieren",
@@ -739,10 +739,6 @@
     "defaultMessage": "Wir verarbeiten nur die im Zuge der Registrierung angegebene E-Mail-Adresse. Diese wird nur zur Identifikation des Benutzers und zur Zusendung von E-Mails die der Funktionserhaltung dienen (z. B. Passwort-Reset). Alle personenbezogenen Daten werden bei Löschung des Accounts entfernt.",
     "description": "PrivacyPolicy personal data paragraph 2"
   },
-  "tTzqLI": {
-    "defaultMessage": "Wähle den Typ von Treibstoff aus für den Preise aufgezeichnet werden sollen.",
-    "description": "AddLocation dropdown fuel type title"
-  },
   "u7td5N": {
     "defaultMessage": "Wähle ein Bundesland und optional einen Bezirk aus für den Spritpreise aufgezeichnet werden sollen.",
     "description": "RegionLocationField dropdown title"
@@ -822,9 +818,5 @@
   "zW09Q3": {
     "defaultMessage": "Passwort",
     "description": "Settings key password"
-  },
-  "zkyB1J": {
-    "defaultMessage": "Klicke hier um den Ortstyp auszuwählen. Standardmäßig ist die Suche nach einem konkreten Ort aktiviert.",
-    "description": "AddLocation intro 2"
   }
 }

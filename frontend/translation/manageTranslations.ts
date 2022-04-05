@@ -1,4 +1,5 @@
 import {readFile, writeFile} from "fs/promises";
+import * as process from "process";
 
 const DEFAULT_LOCALE = "de";
 const LOCALES = ["en"];
@@ -21,13 +22,61 @@ interface TranslationData {
   data: LocaleData;
 }
 
-async function manageLocaleFiles() {
+async function main() {
+  const check = process.argv.includes("--check");
+
+  let success;
+  if (check) {
+    success = await checkTranslations();
+  } else {
+    success = await manageTranslations();
+  }
+
+  if (!success) {
+    process.exit(1);
+  }
+}
+
+async function checkTranslations(): Promise<boolean> {
+  let error = false;
+
+  console.debug(`Checking translations`);
+
+  for (const locale of LOCALES) {
+    console.debug(`Checking translation of locale '${locale}'`);
+
+    const data = await readLocale(locale);
+
+    // Check if there is still any empty "defaultMessage" or any "obsoleteMessage"
+    //  in the translated file.
+    for (const [key, entry] of Object.entries(data.data)) {
+      if (entry.obsoleteMessage) {
+        console.info(`Obsolete translation found for locale '${locale}': ${key}`);
+        error = true;
+      }
+      if (entry.defaultMessage === "") {
+        console.info(`Missing translation found for locale '${locale}': ${key}`);
+        error = true;
+      }
+    }
+  }
+
+  return error;
+}
+
+async function manageTranslations(): Promise<boolean> {
+  console.debug(`Managing translations`);
+
   const defaultData = await readLocale(DEFAULT_LOCALE);
   for (const locale of LOCALES) {
+    console.debug(`Manage translation of locale '${locale}'`);
+
     const translatedData = await readLocale(locale);
     const mergedData = mergeChanges(defaultData, translatedData);
     await writeLocale(locale, mergedData);
   }
+
+  return true;
 }
 
 async function readLocale(locale: string, required: boolean = false): Promise<TranslationData> {
@@ -164,4 +213,8 @@ async function writeLocale(locale: string, translatedData: TranslationData) {
   }
 }
 
-void manageLocaleFiles().catch((e) => console.error(e));
+void main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
