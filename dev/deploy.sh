@@ -3,7 +3,7 @@
 # Exit if any command fails
 set -e
 
-script_path=$(dirname "$(realpath "$0")")
+script_path=$(dirname "$(readlink -f "$0")")
 
 # Build the docker container
 cd ..
