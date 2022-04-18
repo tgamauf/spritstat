@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "users",
     "spritstat",
     "user_visit",
+    "user_statistics",
 ]
 
 MIDDLEWARE = [

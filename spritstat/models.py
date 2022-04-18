@@ -131,7 +131,7 @@ class DateRange(str, Enum):
 class PriceQuerySet(models.QuerySet):
     def date_range(
         self, date_range: Optional[DateRange]
-    ) -> Union["PriceQuerySet", models.QuerySet]:
+    ) -> Union[PriceQuerySet, models.QuerySet]:
         now = datetime.now()
 
         # We use days instead of months here as we always want 31 days per month
@@ -157,7 +157,7 @@ class PriceQuerySet(models.QuerySet):
 
         return data
 
-    def average_hour(self) -> Union["PriceQuerySet", models.QuerySet]:
+    def average_hour(self) -> Union[PriceQuerySet, models.QuerySet]:
         return (
             self.annotate(hour=ExtractHour("datetime"))
             .values("hour")
@@ -165,7 +165,7 @@ class PriceQuerySet(models.QuerySet):
             .order_by("hour")
         )
 
-    def average_day_of_week(self) -> Union["PriceQuerySet", models.QuerySet]:
+    def average_day_of_week(self) -> Union[PriceQuerySet, models.QuerySet]:
         return (
             self.annotate(day_of_week=ExtractIsoWeekDay("datetime"))
             .values("day_of_week")
@@ -173,7 +173,7 @@ class PriceQuerySet(models.QuerySet):
             .order_by("day_of_week")
         )
 
-    def average_day_of_month(self) -> Union["PriceQuerySet", models.QuerySet]:
+    def average_day_of_month(self) -> Union[PriceQuerySet, models.QuerySet]:
         return (
             self.annotate(day_of_month=ExtractDay("datetime"))
             .values("day_of_month")
