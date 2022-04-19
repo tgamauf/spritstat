@@ -1,7 +1,7 @@
 [
   {
     "model": "django_q.schedule",
-    "pk": 1,
+    "pk": 500,
     "fields": {
       "name": null,
       "func": "spritstat.services.request_location_prices",
@@ -19,7 +19,7 @@
   },
   {
     "model": "django_q.schedule",
-    "pk": 2,
+    "pk": 501,
     "fields": {
       "name": null,
       "func": "spritstat.services.request_location_prices",
@@ -37,7 +37,7 @@
   },
   {
     "model": "django_q.schedule",
-    "pk": 3,
+    "pk": 502,
     "fields": {
       "name": null,
       "func": "spritstat.services.request_location_prices",
@@ -55,7 +55,7 @@
   },
   {
     "model": "django_q.schedule",
-    "pk": 4,
+    "pk": 503,
     "fields": {
       "name": null,
       "func": "spritstat.services.request_location_prices",
