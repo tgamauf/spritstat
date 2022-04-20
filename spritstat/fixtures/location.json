@@ -83,7 +83,7 @@
       "region_code": null,
       "region_type": "",
       "fuel_type": "DIE",
-      "schedule": 1
+      "schedule": 500
     }
   },
   {
@@ -98,7 +98,7 @@
       "region_code": null,
       "region_type": "",
       "fuel_type": "DIE",
-      "schedule": 2
+      "schedule": 501
     }
   },
   {
@@ -113,7 +113,7 @@
       "region_code": 201,
       "region_type": "PB",
       "fuel_type": "SUP",
-      "schedule": 3
+      "schedule": 502
     }
   },
   {
@@ -128,7 +128,7 @@
       "region_code": 201,
       "region_type": "PB",
       "fuel_type": "SUP",
-      "schedule": 4
+      "schedule": 503
     }
   }
 ]
