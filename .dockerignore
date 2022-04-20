@@ -20,6 +20,9 @@ spritstat/tests/
 
 !templates/
 
+!user_statistics/
+user_statistics/tests/
+
 !users/
 users/fixtures/
 users/tests/
