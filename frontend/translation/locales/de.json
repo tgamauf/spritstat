@@ -59,6 +59,10 @@
     "defaultMessage": "Aktuelles Passwort",
     "description": "ChangePassword current password field label"
   },
+  "4ZTO5S": {
+    "defaultMessage": "Die Server-Logfiles werden für maximal 35 Tage gespeichert und anschließend gelöscht. Die Speicherung der Daten erfolgt aus Sicherheitsgründen, um z. B. Missbrauchsfälle aufklären zu können. Müssen Daten aus Beweisgründen aufgehoben werden, sind sie solange von der Löschung ausgenommen bis der Vorfall endgültig geklärt ist.",
+    "description": "PrivacyPolicy account data paragraph 2"
+  },
   "4fZBmw": {
     "defaultMessage": "Die Aufzeichnung hat gerade erst begonnen, daher sind noch keine Daten vorhanden.",
     "description": "NoGraphDataField"
@@ -198,10 +202,6 @@
   "EMlxA/": {
     "defaultMessage": "Du hast leider nicht die erforderlichen Berechtigungen um diesen Ort abzurufen.",
     "description": "NamedLocationField error 2"
-  },
-  "Ejhe0U": {
-    "defaultMessage": "Wir, der Websitebetreiber bzw. Seitenprovider, erheben aufgrund unseres berechtigten Interesses (s. Art. 6 Abs. 1 lit. f. DSGVO) Daten über Zugriffe auf die Website und speichern diese als „Server-Logfiles“ auf dem Server der Website ab. Folgende Daten werden so protokolliert: <ul> <li>Besuchte Website</li> <li>Uhrzeit zum Zeitpunkt des Zugriffes</li> <li>Menge der gesendeten Daten in Byte</li> <li>Quelle/Verweis, von welchem Sie auf die Seite gelangten</li> <li>Verwendeter Browser</li> <li>Verwendetes Betriebssystem</li> <li>Verwendete IP-Adresse</li> </ul>",
-    "description": "PrivacyPolicy account data paragraph 1"
   },
   "Et0wru": {
     "defaultMessage": "Impressum",
@@ -359,6 +359,10 @@
     "defaultMessage": "Anmelden",
     "description": "Login title"
   },
+  "P8uT3b": {
+    "defaultMessage": "Wir, der Websitebetreiber bzw. Seitenprovider, erheben aufgrund unseres berechtigten Interesses (s. Art. 6 Abs. 1 lit. f. DSGVO) Daten über Zugriffe auf die Website und speichern diese als „Server-Logfiles“ und in einer Datenbank auf dem Server der Website ab. Folgende Daten werden so protokolliert: <ul> <li>Besuchte Website</li> <li>Uhrzeit zum Zeitpunkt des Zugriffes</li> <li>Menge der gesendeten Daten in Byte</li> <li>Quelle/Verweis, von welchem Sie auf die Seite gelangten</li> <li>Verwendeter Browser</li> <li>Verwendetes Betriebssystem</li> <li>Verwendete IP-Adresse</li> </ul>",
+    "description": "PrivacyPolicy account data paragraph 1"
+  },
   "PaxL1r": {
     "defaultMessage": "6M",
     "description": "DateRange 6m"
@@ -366,10 +370,6 @@
   "PlqGee": {
     "defaultMessage": "Neu laden",
     "description": "Dashboard reload button"
-  },
-  "Q6t6Oa": {
-    "defaultMessage": "Die Server-Logfiles werden für maximal 30 Tage gespeichert und anschließend gelöscht. Die Speicherung der Daten erfolgt aus Sicherheitsgründen, um z. B. Missbrauchsfälle aufklären zu können. Müssen Daten aus Beweisgründen aufgehoben werden, sind sie solange von der Löschung ausgenommen bis der Vorfall endgültig geklärt ist.",
-    "description": "PrivacyPolicy account data paragraph 2"
   },
   "Q92c/S": {
     "defaultMessage": "Dienstag",

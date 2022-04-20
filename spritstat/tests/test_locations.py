@@ -1,4 +1,3 @@
-import unittest
 from copy import deepcopy
 from django.conf import settings
 from django.urls import reverse

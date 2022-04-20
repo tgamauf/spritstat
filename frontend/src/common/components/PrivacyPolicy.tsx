@@ -67,8 +67,8 @@ export default function PrivacyPolicy() {
                   defaultMessage: "Wir, der Websitebetreiber bzw. Seitenprovider, " +
                     "erheben aufgrund unseres berechtigten Interesses (s. Art. 6 Abs. " +
                     "1 lit. f. DSGVO) Daten über Zugriffe auf die Website und " +
-                    "speichern diese als „Server-Logfiles“ auf dem Server der " +
-                    "Website ab. Folgende Daten werden so protokolliert:\n" +
+                    "speichern diese als „Server-Logfiles“ und in einer Datenbank auf " +
+                    "dem Server der Website ab. Folgende Daten werden so protokolliert:\n" +
                     "<ul>\n" +
                     "  <li>Besuchte Website</li>\n" +
                     "  <li>Uhrzeit zum Zeitpunkt des Zugriffes</li>\n" +
@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
               <p>
                 {intl.formatMessage({
                   description: "PrivacyPolicy account data paragraph 2",
-                  defaultMessage: "Die Server-Logfiles werden für maximal 30 Tage " +
+                  defaultMessage: "Die Server-Logfiles werden für maximal 35 Tage " +
                     "gespeichert und anschließend gelöscht. Die Speicherung der " +
                     "Daten erfolgt aus Sicherheitsgründen, um z. B. Missbrauchsfälle " +
                     "aufklären zu können. Müssen Daten aus Beweisgründen aufgehoben " +

@@ -191,10 +191,6 @@
     "defaultMessage": "You do not have the required permissions to request this location.",
     "description": "NamedLocationField error 2"
   },
-  "Ejhe0U": {
-    "defaultMessage": "We, as the website operator, have a legitimate interest to collect data about access to the website (see art. 6 para. 1 lit. f. GDPR) and save these as “server log files” on the website server. The following data is logged in this way: <ul> <li>visited website</li> <li>time of access</li> <li>amount of data sent in bytes</li> <li>referrer</li> <li>browser</li> <li>operating system</li> <li>ip address</li> </ul>",
-    "description": "PrivacyPolicy account data paragraph 1"
-  },
   "FA5qMb": {
     "defaultMessage": "Login",
     "description": "Login submit"
@@ -350,10 +346,6 @@
   "PlqGee": {
     "defaultMessage": "Reload",
     "description": "Dashboard reload button"
-  },
-  "Q6t6Oa": {
-    "defaultMessage": "Server log files are stored for a maximum of 30 days and then deleted. The data is stored for security reasons, e.g. to be able to clarify cases of abuse. If data has to be kept for reasons of proof, they are excluded from deletion until the incident has been resolved.",
-    "description": "PrivacyPolicy account data paragraph 2"
   },
   "Q92c/S": {
     "defaultMessage": "Tuesday",
@@ -819,5 +811,13 @@
   "MD+Zn1": {
     "defaultMessage": "By default the type \"search\" is active that allows you to search for a specific location.",
     "description": "AddLocation intro 2"
+  },
+  "P8uT3b": {
+    "defaultMessage": "We, as the website operator, have a legitimate interest to collect data about access to the website (see art. 6 para. 1 lit. f. GDPR) and save these as “server log files” and in the database on the website server. The following data is logged in this way: <ul> <li>visited website</li> <li>time of access</li> <li>amount of data sent in bytes</li> <li>referrer</li> <li>browser</li> <li>operating system</li> <li>ip address</li> </ul>",
+    "description": "PrivacyPolicy account data paragraph 1"
+  },
+  "4ZTO5S": {
+    "defaultMessage": "Server log files are stored for a maximum of 35 days and then deleted. The data is stored for security reasons, e.g. to be able to clarify cases of abuse. If data has to be kept for reasons of proof, they are excluded from deletion until the incident has been resolved.",
+    "description": "PrivacyPolicy account data paragraph 2"
   }
 }
