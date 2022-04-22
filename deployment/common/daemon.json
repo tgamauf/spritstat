@@ -1,8 +1,7 @@
 {
-  "log-driver": "json-file",
+  "log-driver": "awslogs",
   "log-opts": {
-    "max-size": "30m",
-    "max-file": "5"
+    "awslogs-region": "eu-central-1"
   }
 }
 
