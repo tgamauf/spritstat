@@ -87,6 +87,7 @@
           - name: spritstat
         networks_cli_compatible: yes
         env_file: /etc/spritstat/production.env
+        log_driver: awslogs  # Same as in daemon.json, but required for log_options to work
         log_options:
           awslogs-stream: spritstat
 
@@ -112,6 +113,7 @@
         ports:
           - 80:80
           - 443:443
+        log_driver: awslogs  # Same as in daemon.json, but required for log_options to work
         log_options:
           awslogs-stream: nginx-proxy
 
@@ -135,6 +137,7 @@
         networks:
           - name: spritstat
         networks_cli_compatible: yes
+        log_driver: awslogs  # Same as in daemon.json, but required for log_options to work
         log_options:
           awslogs-stream: nginx-proxy-acme
 
