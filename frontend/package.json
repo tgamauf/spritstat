@@ -14,7 +14,7 @@
     "trans:extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file translation/locales/de.json",
     "trans:manage": "babel-node -x .ts -- translation/manageTranslations.ts",
     "trans": "npm run trans:extract && npm run trans:manage",
-    "trans:compile": "formatjs compile 'translation/locales/en.json' --ast --out-file 'src/locales/en.json'",
+    "trans:compile": "formatjs compile 'translation/locales/en.json' --ast --out-file 'src/locales/en.json'"
   },
   "browserslist": {
     "production": [
