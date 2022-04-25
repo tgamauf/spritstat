@@ -88,7 +88,7 @@
         networks_cli_compatible: yes
         env_file: /etc/spritstat/production.env
         log_options:
-          - awslogs-stream: spritstat
+          awslogs-stream: spritstat
 
     - name: Run nginx-proxy
       # This nginx container uses autoconfiguration to map domain names
@@ -113,7 +113,7 @@
           - 80:80
           - 443:443
         log_options:
-          - awslogs-stream: nginx-proxy
+          awslogs-stream: nginx-proxy
 
     - name: Run the nginx-companion
       # Automatically configures Letsencrypt certificates for all hosts that
@@ -136,7 +136,7 @@
           - name: spritstat
         networks_cli_compatible: yes
         log_options:
-          - awslogs-stream: nginx-proxy-acme
+          awslogs-stream: nginx-proxy-acme
 
     - name: Remove all but selected list of containers
       docker_network:
