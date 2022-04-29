@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
                   defaultMessage: "Zugriffsdaten"
                 })}
               </h4>
-              <p>
+              <div>
                 {intl.formatMessage({
                   description: "PrivacyPolicy account data paragraph 1",
                   defaultMessage: "Wir, der Websitebetreiber bzw. Seitenprovider, " +
@@ -84,7 +84,7 @@ export default function PrivacyPolicy() {
                     li: str => <li>{str}</li>
                   }
                 )}
-              </p>
+              </div>
               <p>
                 {intl.formatMessage({
                   description: "PrivacyPolicy account data paragraph 2",
