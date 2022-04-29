@@ -12,7 +12,7 @@ describe("Validate initial page load", () => {
     cy.visitWithLocale(RouteNames.Index);
     cy.wait("@isAuthenticated");
     cy.url().should("include", RouteNames.Dashboard);
- });
+  });
 
   it("validate content of homepage if logged out", () => {
     cy.visitWithLocale(RouteNames.Home);
@@ -33,8 +33,8 @@ describe("Validate initial page load", () => {
       .click()
       .then(() => {
         cy.url().should("include", RouteNames.Signup);
-     })
- });
+      })
+  });
 
   it("validate content of homepage if logged in", () => {
     cy.mockLoggedIn();
@@ -45,14 +45,14 @@ describe("Validate initial page load", () => {
     cy.hasBaseStructure(true);
     cy.getBySel("content-text").should("have.length.at.least", 2);
     cy.getBySel("content-img").should("exist");
- });
+  });
 
   it("validate login button", () => {
     cy.visitWithLocale(RouteNames.Home);
 
     cy.getBySel("header-btn-login").click();
     cy.url().should("include", RouteNames.Login);
- });
+  });
 
   it("validate header dropdown buttons", () => {
     cy.mockSettings();
@@ -76,7 +76,7 @@ describe("Validate initial page load", () => {
     cy.getBySel("header-dropdown").realHover();
     cy.getBySel("link-logout").click({force: true});
     cy.url().should("include", RouteNames.Login);
- });
+  });
 
   it("validate footer links", () => {
     cy.visitWithLocale(RouteNames.Home);
@@ -97,9 +97,11 @@ describe("Validate initial page load", () => {
       cy.get(".dropdown-item").contains("English").click();
     });
     cy.getBySel("header-btn-login").contains("Login");
- });
+  });
 
-  it("validate English as browser language", () => {
+  // TODO: skip test as changing of language broke again. Add again after
+  //  https://github.com/cypress-io/cypress/issues/7890 has been implemented.
+  it.skip("validate English as browser language", () => {
     cy.visitWithLocale(RouteNames.Home, "en");
 
     // Just check a few items on the page for the english version
