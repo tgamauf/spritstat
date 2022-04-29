@@ -80,8 +80,8 @@ export default function PrivacyPolicy() {
                     "</ul>"
                   },
                   {
-                    ul: block => <ul>{block}</ul>,
-                    li: str => <li>{str}</li>
+                    ul: (block: React.ReactNode) => <ul>{block}</ul>,
+                    li: (str: React.ReactNode) => <li>{str}</li>
                   }
                 )}
               </p>
