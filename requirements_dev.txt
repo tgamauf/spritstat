@@ -40,7 +40,7 @@ distlib==0.3.4
     # via virtualenv
 dj-rest-auth==2.2.3
     # via -r requirements/production.in
-django==3.2.12
+django==3.2.13
     # via
     #   -r requirements/production.in
     #   dj-rest-auth
@@ -50,7 +50,7 @@ django==3.2.12
     #   django-q
     #   django-user-visit
     #   djangorestframework
-django-allauth==0.48.0
+django-allauth==0.50.0
     # via -r requirements/production.in
 django-cors-headers==3.11.0
     # via -r requirements/production.in
@@ -110,7 +110,7 @@ python-dateutil==2.8.2
     # via
     #   -r requirements/production.in
     #   arrow
-python-dotenv==0.19.2
+python-dotenv==0.20.0
     # via -r requirements/production.in
 python3-openid==3.2.0
     # via django-allauth

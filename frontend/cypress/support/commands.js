@@ -3,7 +3,6 @@ const path = require("path");
 Cypress.Commands.add(
   "resetDB",
   (fixtures = []) => {
-    const managePath = path.resolve(__dirname);
 
     // Clear database
     cy.exec("npm run db:flush")

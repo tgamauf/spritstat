@@ -1,4 +1,5 @@
 from django.core import mail
+from django.test import override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -12,6 +13,7 @@ class TestRegister(APITestCase):
     def setUpTestData(cls):
         cls.url = reverse("account_register")
 
+    @override_settings(ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN=0)
     def test_ok(self):
         response = self.client.post(
             self.url,
