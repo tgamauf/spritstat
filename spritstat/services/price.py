@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum, unique
 import json
+import logging
 from statistics import mean, median
 from typing import Dict, List, Tuple, Union, Optional
 import urllib3
@@ -9,6 +10,7 @@ import urllib3
 from spritstat import models
 
 
+_LOG = logging.getLogger(__name__)
 _BASE_URL = "https://api.e-control.at/sprit/1.0"
 _STATION_BASE_URL = f"{_BASE_URL}/search/gas-stations"
 _STATION_BY_ADDRESS_PARAMS = (
@@ -160,7 +162,12 @@ def _execute_api_request(url: str) -> Dict:
             f"{json_error['exceptionMessage']}"
         )
 
-    json_data = json.loads(r.data.decode("utf-8"))
+    try:
+        json_data = json.loads(r.data.decode("utf-8"))
+    except json.decoder.JSONDecodeError as e:
+        _LOG.error(
+            f"Decoding of price response failed with error '{e}' for response {r.data}"
+        )
 
     return json_data
 

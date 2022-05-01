@@ -11,7 +11,7 @@ def add_schedules(apps, schema_editor):
     # Create schedule for calculating the daily active users.
     # We schedule it on the next day at 3 o'clock.
     Schedule.objects.create(
-        func="spritstat.user_statistics.services.calculate_daily_active_users",
+        func="user_statistics.services.calculate_daily_active_users",
         schedule_type="D",
         next_run=timezone.datetime(
             year=now.year, month=now.month, day=now.day + 1, hour=3
@@ -21,7 +21,7 @@ def add_schedules(apps, schema_editor):
     # Create schedule for calculating the monthly active users.
     # We schedule it on the first day of the next month at 3 o'clock.
     Schedule.objects.create(
-        func="spritstat.user_statistics.services.calculate_monthly_active_users",
+        func="user_statistics.services.calculate_monthly_active_users",
         schedule_type="M",
         next_run=timezone.datetime(year=now.year, month=now.month + 1, day=1, hour=3),
     )
@@ -30,7 +30,7 @@ def add_schedules(apps, schema_editor):
     # We schedule this on the 5th day of the next month to allow for error mitigation
     #  in case that calculation of the daily and monthly visits failed.
     Schedule.objects.create(
-        func="spritstat.user_statistics.services.delete_past_user_visits",
+        func="user_statistics.services.delete_past_user_visits",
         schedule_type="M",
         next_run=timezone.datetime(year=now.year, month=now.month + 1, day=5, hour=3),
     )
