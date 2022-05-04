@@ -184,7 +184,9 @@ class LocaleView(RetrieveAPIView, GenericAPIView):
             if not request.session.get_expire_at_browser_close():
                 max_age = request.session.get_expiry_age()
 
-        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, locale, max_age=max_age)
+        response.set_cookie(
+            settings.LANGUAGE_COOKIE_NAME, locale, max_age=max_age, samesite="strict"
+        )
 
         return response
 
