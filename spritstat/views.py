@@ -18,7 +18,7 @@ from .permissions import IsOwner
 from .serializers import PriceStationFrequencySerializer, UnsubscribeSerializer
 
 
-SERVICE_WORKER_FILENAME = "js/service-worker.js"
+SERVICE_WORKER_FILENAME = "service-worker.js"
 
 
 def index(request):
@@ -30,10 +30,16 @@ def index(request):
 
 
 def manifest(request):
+    # We need to provide the webmanifest file from the root path as
+    #  otherwise it wouldn't work.
+
     return render(request, "manifest.json")
 
 
 def service_worker(request):
+    # We need to provide the service-worker.js file from the root path as
+    #  otherwise it wouldn't have the correct scope.
+
     service_worker_path = find(SERVICE_WORKER_FILENAME)
 
     if not service_worker_path:

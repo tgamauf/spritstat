@@ -15,10 +15,6 @@ module.exports = {
   devtool: "eval-source-map",
   entry: {
     app: resolve(__dirname, "src/index.tsx"),
-    "service-worker": {
-      import: resolve(__dirname, "src/service-worker.ts"),
-      filename: "js/service-worker.js"
-    }
   },
   mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production",
   module: {
@@ -131,6 +127,17 @@ module.exports = {
         {
           from: "assets/img/favicon.ico",
           to: "img",
+        },
+      ],
+    }),
+    // Copy the unprocessed service-worker.js instead of transpiling/optimizing
+    //  it, as this didn't work (see src/service-worker.js for more info).
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "src/service-worker.js",
+          to: "service-worker.js",
+          toType: "file"
         },
       ],
     }),
