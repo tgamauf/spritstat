@@ -64,7 +64,6 @@ RUN chown -R ${APP_USER}:${APP_USER} $APP_HOME
 # Copy frontend build artifacts
 RUN mkdir -p frontend/public/
 COPY --from=builder /build/public/ frontend/public/
-COPY --from=builder /build/templates/ templates/
 
 USER ${APP_USER}:${APP_USER}
 
