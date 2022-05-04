@@ -1,0 +1,37 @@
+{% load manifest %}
+
+{
+  "id": "/",
+  "name": "SPRITSTAT",
+  "short_name": "SPRITSTAT",
+  "description": "Spritpreisstatistiken für Österreich",
+  "background_color": "#F5F5F5",
+  "theme_color": "#F5F5F5",
+  "display": "fullscreen",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "{% manifest 'img/pwa_logo_192.png' %}",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "{% manifest 'img/pwa_logo_192_mask.png' %}",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "{% manifest 'img/pwa_logo_512.png' %}",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "{% manifest 'img/pwa_logo_512_mask.png' %}",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ]
+}

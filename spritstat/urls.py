@@ -6,6 +6,9 @@ from . import views
 
 urlpatterns = [
     path("", views.index),
+    path("manifest.json", views.manifest),
+    path("service-worker.js", views.service_worker),
+    path("offline.html", views.offline),
     path("admin/", admin.site.urls),
     path("api/v1/users/", include("users.urls")),
     path("api/v1/sprit/settings/", views.Settings.as_view(), name="settings"),

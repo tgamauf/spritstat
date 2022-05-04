@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "corsheaders",
     "django_q",
+    "manifest_loader",
     "users",
     "spritstat",
     "user_visit",
@@ -74,7 +75,6 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            BASE_DIR / "frontend" / "templates",
             BASE_DIR / "templates",
             BASE_DIR / "users" / "templates",
             BASE_DIR / "spritstat" / "templates",
@@ -206,3 +206,10 @@ Q_CLUSTER = {
 
 # Frontend configuration
 GOOGLE_MAPS_API_KEY = Frontend.GOOGLE_MAPS_API_KEY
+
+
+# Webpack integration
+MANIFEST_LOADER = {
+    "manifest_file": "webpack_manifest.json",
+    "cache": not DEBUG,  # Activate caching for production
+}

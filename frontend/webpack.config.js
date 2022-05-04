@@ -2,13 +2,13 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+const {resolve} = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
+const {WebpackManifestPlugin} = require("webpack-manifest-plugin");
 const zlib = require("zlib");
-const {resolve} = require("path");
 
 
 module.exports = {
@@ -98,7 +98,7 @@ module.exports = {
       new CompressionPlugin({
         filename: "[path][base].br",
         algorithm: "brotliCompress",
-        test: /\.(js|css|html|svg)$/,
+        test: /\.(js|css|html|png|svg)$/,
         compressionOptions: {
           params: {
             [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
@@ -112,9 +112,12 @@ module.exports = {
     ]
   },
   plugins: [
-    // Don"t output new files if there is an error
     new webpack.NoEmitOnErrorsPlugin(),
     new CleanWebpackPlugin(),
+    new WebpackManifestPlugin({
+      fileName: "webpack_manifest.json",
+      publicPath: ""
+    }),
     new MiniCssExtractPlugin({
       filename: "css/[name].css",
       chunkFilename: "css/[id]-[contenthash].css",
@@ -127,20 +130,37 @@ module.exports = {
         },
       ],
     }),
-    new HtmlWebpackPlugin({
-      filename: resolve(__dirname, 'templates/base.html'),
-      inject: false,
-      publicPath: "/static/"
+    // Copy the unprocessed service-worker.js instead of transpiling/optimizing
+    //  it, as this didn't work (see src/service-worker.js for more info).
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "src/service-worker.js",
+          to: "service-worker.js",
+          toType: "file"
+        },
+      ],
+    }),
+    // These are files used in the progressive web app manifest only, so they wouldn't
+    //  be processed without this.
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "assets/img/pwa_logo_*.png",
+          to: "img/[name]-[contenthash].png",
+          toType: "template"
+        },
+      ],
     }),
     new MomentLocalesPlugin({
       localesToKeep: ["de", "en"],
-    }),
+    })
   ],
   resolve: {
     extensions: [".js", ".jsx", ".tsx", ".ts"],
     modules: [
       resolve(__dirname, "src"),
       resolve(__dirname, "node_modules"),
-    ],
+    ]
   },
 };

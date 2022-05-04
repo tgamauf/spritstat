@@ -1,31 +1,39 @@
-{% extends "base.html" %}
+{% load manifest %}
 
-{% load static %}
-
-{% block html %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
-    <link rel="icon" href="{% static 'img/favicon.ico' %}" />
+    <link rel="manifest" href="/manifest.json">
     <meta charset="utf-8" />
     <meta
       name="description"
       content="Die Spritpreisentwicklung ist unübersichtlich und stark vom Ort abhängig. SPRITSTAT ermöglicht es für deinen Ort Preise aufzuzeichnen."
     />
     <meta name="keywords" content="Sprit, Preis, Statistik, Österreich" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>SPRITSTAT - Spritpreisstatistiken für Österreich</title>
 
-    {% block head %}{{ block.super }}{% endblock %}
+    {% manifest_match 'img/favicon.ico' '<link rel="icon" href="{match}" />' %}
+    {% manifest_match '*.css' '<link rel="stylesheet" href="{match}" />' %}
+    {% manifest_match '*.js' '<script defer src="{match}"></script>' %}
+    {% manifest_match '*-js' '<script defer src="{match}"></script>' %}
+
     <script
       defer
       src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&region=AT&language=de&callback=initGoogleMapsAPI"
     ></script>
+
+      <!-- Progressive web application stuff -->
+    <meta name="application-name" content="SPRITSTAT">
+    <meta name="mobile-web-app-capable" content="yes">
+    {% manifest_match 'img/pwa_logo_512.png' '<link rel="icon" href="{match}" />' %}
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    {% manifest_match 'img/pwa_logo_512.png' '<link rel="apple-touch-icon" href="{match}" />' %}
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-
-    {% block body %}{{ block.super }}{% endblock %}
   </body>
 </html>
-{% endblock %}
