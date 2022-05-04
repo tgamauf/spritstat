@@ -11,6 +11,16 @@ import App from "./app/App";
 import {store} from "./app/store";
 
 
+window.addEventListener("load", async () => {
+  if ("serviceWorker" in navigator) {
+    console.debug("Register service worker");
+
+    await navigator.serviceWorker.register("/service-worker.js");
+  }
+});
+
+console.debug("Start application");
+
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(

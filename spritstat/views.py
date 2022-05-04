@@ -1,20 +1,24 @@
 from abc import ABC, abstractmethod
-from typing import Union
-
 from django.conf import settings
+from django.contrib.staticfiles.finders import find
 from django.db.models import Count, QuerySet, F, FloatField
 from django.db.models.functions import Cast
+from django.http import HttpResponse, HttpResponseServerError
 from django.shortcuts import render, get_object_or_404, redirect
 from django_q.tasks import schedule, Schedule
 from rest_framework import generics, status
 from rest_framework import permissions
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView, Response
+from typing import Union
 
 from . import models
 from . import serializers
 from .permissions import IsOwner
 from .serializers import PriceStationFrequencySerializer, UnsubscribeSerializer
+
+
+SERVICE_WORKER_FILENAME = "js/service-worker.js"
 
 
 def index(request):
@@ -23,6 +27,25 @@ def index(request):
         "index.html",
         context={"google_maps_api_key": settings.GOOGLE_MAPS_API_KEY},
     )
+
+
+def manifest(request):
+    return render(request, "manifest.json")
+
+
+def service_worker(request):
+    service_worker_path = find(SERVICE_WORKER_FILENAME)
+
+    if not service_worker_path:
+        return HttpResponseServerError("Service worker not found")
+
+    return HttpResponse(
+        open(service_worker_path).read(), content_type="application/javascript"
+    )
+
+
+def offline(request):
+    return render(request, "offline.html")
 
 
 class Settings(generics.RetrieveUpdateAPIView):

@@ -61,13 +61,8 @@ db.sqlite3-journal
 venv/
 venv.bak/
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# IntelliJ
+# Development files
 .idea/
 
-# Files created by Webpack
-templates/base.html
+# OS
+.DS_store
