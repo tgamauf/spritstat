@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
 
-import Logo from "../../../assets/img/logo.svg";
+import Logo from "../../../assets/img/logo.png";
 import {RouteNames} from "../types";
 import HeaderBurger from "./HeaderBurger";
 import HeaderDropdown, {HeaderDropdownItem} from "./HeaderDropdown";
