@@ -77,7 +77,6 @@ module.exports = {
     },
     splitChunks: {
       chunks(chunk) {
-        console.log(chunk)
         return chunk.name !== "service-worker";
       },
       cacheGroups: {
