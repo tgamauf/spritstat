@@ -11,10 +11,17 @@ const {WebpackManifestPlugin} = require("webpack-manifest-plugin");
 const zlib = require("zlib");
 
 
+const COMPRESSION_THRESHOLD = 10240;
+const COMPRESSION_MIN_RATIO = 0.8;
+
 module.exports = {
   devtool: "eval-source-map",
   entry: {
     app: resolve(__dirname, "src/index.tsx"),
+    "service-worker": {
+      import: resolve(__dirname, "src/service-worker.ts"),
+      filename: "service-worker.js"
+    }
   },
   mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production",
   module: {
@@ -60,10 +67,19 @@ module.exports = {
   },
   optimization: {
     runtimeChunk: {
-      name: "runtime"
+      name: (entrypoint) => {
+        if (entrypoint.name.startsWith("service-worker")) {
+          return null;
+        }
+
+        return `runtime-${entrypoint.name}`
+      }
     },
     splitChunks: {
-      chunks: "all",
+      chunks(chunk) {
+        console.log(chunk)
+        return chunk.name !== "service-worker";
+      },
       cacheGroups: {
         // disable webpack's default cacheGroup
         default: false,
@@ -92,8 +108,8 @@ module.exports = {
         filename: "[path][base].gz",
         algorithm: "gzip",
         test: /\.js$|\.css$|\.html$/,
-        threshold: 10240,
-        minRatio: 0.8,
+        threshold: COMPRESSION_THRESHOLD,
+        minRatio: COMPRESSION_MIN_RATIO,
       }),
       new CompressionPlugin({
         filename: "[path][base].br",
@@ -104,8 +120,8 @@ module.exports = {
             [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
           },
         },
-        threshold: 10240,
-        minRatio: 0.8,
+        threshold: COMPRESSION_THRESHOLD,
+        minRatio: COMPRESSION_MIN_RATIO,
       }),
       new CssMinimizerPlugin(),
       new TerserPlugin(),
@@ -122,34 +138,12 @@ module.exports = {
       filename: "css/[name].css",
       chunkFilename: "css/[id]-[contenthash].css",
     }),
+    // These are files used in the html template and progressive web app manifest only,
+    //  so they wouldn't be processed without this.
     new CopyWebpackPlugin({
       patterns: [
-        {
-          from: "assets/img/favicon.ico",
-          to: "img",
-        },
-      ],
-    }),
-    // Copy the unprocessed service-worker.js instead of transpiling/optimizing
-    //  it, as this didn't work (see src/service-worker.js for more info).
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: "src/service-worker.js",
-          to: "service-worker.js",
-          toType: "file"
-        },
-      ],
-    }),
-    // These are files used in the progressive web app manifest only, so they wouldn't
-    //  be processed without this.
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: "assets/img/pwa_logo_*.png",
-          to: "img/[name]-[contenthash].png",
-          toType: "template"
-        },
+        {from: "assets/img/favicon.ico", to: "img"},
+        {from: "assets/img/pwa_logo_*.png", to: "img/[name]-[contenthash].png", toType: "template"},
       ],
     }),
     new MomentLocalesPlugin({

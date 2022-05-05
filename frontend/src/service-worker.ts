@@ -1,6 +1,4 @@
-// TODO: Had to convert to a JS service worker as transpiling of TS code broke the
-//  code for some reason.
-//  More info: https://stackoverflow.com/questions/72114876/webpack-transpiled-typescript-service-worker-code-doesnt-seem-to-work
+declare const self: ServiceWorkerGlobalScope;
 
 // Incrementing OFFLINE_VERSION will kick off the install event and force
 //  previously cached resources to be updated from the network.
@@ -77,3 +75,5 @@ self.addEventListener("fetch", (event) => {
     console.debug("Fetch request not handled by service worker");
   }
 });
+
+export default null;
