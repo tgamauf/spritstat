@@ -2,6 +2,10 @@ import React, {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
 
 import Logo from "../../../assets/img/logo.png";
+import Logo1_5x from "../../../assets/img/logo@1.5.png";
+import Logo2x from "../../../assets/img/logo@2x.png";
+import Logo3x from "../../../assets/img/logo@3x.png";
+import Logo4x from "../../../assets/img/logo@4x.png";
 import {RouteNames} from "../types";
 import HeaderBurger from "./HeaderBurger";
 import HeaderDropdown, {HeaderDropdownItem} from "./HeaderDropdown";
@@ -43,7 +47,13 @@ export default function Header({dropdownItems}: Props): JSX.Element {
           to={RouteNames.Home}
           data-test="header-logo-link"
         >
-          <img src={Logo} alt="SPRITSTAT" width="250" data-test="header-logo-img"/>
+          <img
+            className="logo"
+            src={Logo}
+            srcSet={`${Logo}, ${Logo1_5x} 1.5x, ${Logo2x} 2x, ${Logo3x} 3x, ${Logo4x} 4x`}
+            alt="SPRITSTAT"
+            data-test="header-logo-img"
+          />
         </Link>
         <HeaderBurger onClick={() => setMenuActive(!menuActive)} />
       </div>
