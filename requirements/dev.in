@@ -1,6 +1,6 @@
 ansible
 black
 coverage
-pip-tools
+pip-tools>=6.8.0
 polib
 pre-commit

@@ -16,6 +16,8 @@ black==22.3.0
     # via -r requirements/dev.in
 blessed==1.19.1
     # via django-q
+build==0.8.0
+    # via pip-tools
 certifi==2021.10.8
     # via requests
 cffi==1.15.0
@@ -40,7 +42,7 @@ distlib==0.3.4
     # via virtualenv
 dj-rest-auth==2.2.3
     # via -r requirements/production.in
-django==3.2.13
+django==3.2.14
     # via
     #   -r requirements/production.in
     #   dj-rest-auth
@@ -86,12 +88,14 @@ nodeenv==1.6.0
 oauthlib==3.2.0
     # via requests-oauthlib
 packaging==21.3
-    # via ansible-core
+    # via
+    #   ansible-core
+    #   build
 pathspec==0.9.0
     # via black
 pep517==0.12.0
-    # via pip-tools
-pip-tools==6.5.1
+    # via build
+pip-tools==6.8.0
     # via -r requirements/dev.in
 platformdirs==2.5.0
     # via
@@ -147,6 +151,7 @@ toml==0.10.2
 tomli==2.0.1
     # via
     #   black
+    #   build
     #   pep517
 typing-extensions==4.0.1
     # via black
