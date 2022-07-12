@@ -1,9 +1,5 @@
 declare const self: ServiceWorkerGlobalScope;
 
-// Incrementing OFFLINE_VERSION will kick off the install event and force
-//  previously cached resources to be updated from the network.
-// This variable is intentionally declared and unused.
-const OFFLINE_VERSION = 1;
 const CACHE_NAME = "offline";
 const OFFLINE_URL = "offline.html";
 
@@ -74,6 +70,23 @@ self.addEventListener("fetch", (event) => {
   } else {
     console.debug("Fetch request not handled by service worker");
   }
+});
+
+// TODO
+self.addEventListener("push", (event) => {
+  // Retrieve the textual payload from event.data (a PushMessageData object).
+  // Other formats are supported (ArrayBuffer, Blob, JSON), check out the documentation
+  // on https://developer.mozilla.org/en-US/docs/Web/API/PushMessageData.
+  const payload = event.data ? event.data.text() : "no payload";
+
+  // Keep the service worker alive until the notification is created.
+  event.waitUntil(
+    // Show a notification with title 'ServiceWorker Cookbook' and use the payload
+    // as the body.
+    self.registration.showNotification("ServiceWorker Cookbook", {
+      body: payload,
+    })
+  );
 });
 
 export default null;

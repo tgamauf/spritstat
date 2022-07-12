@@ -9,15 +9,11 @@ import {Provider} from "react-redux";
 
 import App from "./app/App";
 import {store} from "./app/store";
+import setupServiceWorker from "./common/service_worker/service-worker";
 
 
-window.addEventListener("load", async () => {
-  if ("serviceWorker" in navigator) {
-    console.debug("Register service worker");
-
-    await navigator.serviceWorker.register("/service-worker.js");
-  }
-});
+setupServiceWorker();
+activatePushMessages();//TODO
 
 console.debug("Start application");
 
