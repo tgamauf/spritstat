@@ -1,4 +1,4 @@
-django>=3.2.14, <4
+django>=3.2.15, <4
 django-allauth~=0.51
 django-cors-headers~=3.13
 django-manifest-loader~=1.0
