@@ -42,7 +42,7 @@
     "intro.js": "^6.0.0",
     "intro.js-react": "^0.6.0",
     "lodash.debounce": "^4.0.8",
-    "moment-timezone": "^0.5.34",
+    "moment-timezone": "^0.5.35",
     "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
