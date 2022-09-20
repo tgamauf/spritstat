@@ -171,10 +171,12 @@ idna==3.3 \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
     --hash=sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d
     # via requests
-oauthlib==3.2.0 \
-    --hash=sha256:23a8208d75b902797ea29fd31fa80a15ed9dc2c6c16fe73f5d346f83f6fa27a2 \
-    --hash=sha256:6db33440354787f9b7f3a6dbd4febf5d0f93758354060e802f6c06cb493022fe
-    # via requests-oauthlib
+oauthlib==3.2.1 \
+    --hash=sha256:1565237372795bf6ee3e5aba5e2a85bd5a65d0e2aa5c628b9a97b7d7a0da3721 \
+    --hash=sha256:88e912ca1ad915e1dcc1c06fc9259d19de8deacd6fd17cc2df266decc2e49066
+    # via
+    #   -r requirements/production.in
+    #   requests-oauthlib
 psycopg2-binary==2.9.3 \
     --hash=sha256:01310cf4cf26db9aea5158c217caa92d291f0500051a6469ac52166e1a16f5b7 \
     --hash=sha256:083a55275f09a62b8ca4902dd11f4b33075b743cf0d360419e2051a8a5d5ff76 \

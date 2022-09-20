@@ -85,8 +85,10 @@ mypy-extensions==0.4.3
     # via black
 nodeenv==1.7.0
     # via pre-commit
-oauthlib==3.2.0
-    # via requests-oauthlib
+oauthlib==3.2.1
+    # via
+    #   -r requirements/production.in
+    #   requests-oauthlib
 packaging==21.3
     # via
     #   ansible-core
