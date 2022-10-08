@@ -54,6 +54,7 @@ export default function I18nProvider({children}: Props): JSX.Element {
 
   return (
     <IntlProvider
+      defaultLocale="de"
       locale={locale}
       messages={messages}
       key={locale}
