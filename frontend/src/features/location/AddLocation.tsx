@@ -4,13 +4,12 @@ import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import introJs from "intro.js";
 import {defineMessage, useIntl} from "react-intl";
 
-import NamedLocationField from "./NamedLocationField";
 import BasePage from "../../common/components/BasePage";
 import RegionLocationField, {
   DROPDOWN_DISTRICT_ID,
   DROPDOWN_STATE_ID,
   TEXT_POSTAL_CODE_ID
-} from "./RegionLocationField/RegionLocationField";
+} from "./RegionLocationField";
 import {FuelType, IntroJs, LocationType, OurFormElement, RegionType, RouteNames} from "../../common/types";
 import {INVALID_LOCATION} from "../../common/constants";
 import {useAddLocationMutation} from "./locationApiSlice";
@@ -18,7 +17,7 @@ import {BreadcrumbItem} from "../../common/components/Breadcrumb";
 import {getFormattedIntroOption, updateIntroStepElement, useAppSelector} from "../../common/utils";
 import {selectIntroSettingsAddLocation} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
-import {BTN_CURRENT_LOCATION_ID, TEXT_LOCATION_ID} from "./NamedLocationField/NamedLocationField";
+import {BTN_CURRENT_LOCATION_ID, NamedLocationField, TEXT_LOCATION_ID} from "./NamedLocationField";
 import FuelTypeButton from "./FuelTypeButton";
 
 

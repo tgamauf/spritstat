@@ -1,4 +1,4 @@
-import {NamedLocation, Station} from "./types";
+import {NamedLocation} from "./types";
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -14,9 +14,12 @@ const INVALID_LOCATION: NamedLocation = {
   coords: INVALID_COORDINATES
 }
 
+const LOCATION_REQUEST_TIMEOUT_MS = 5000;
+
 export {
   INVALID_COORDINATES,
   INVALID_LOCATION,
+  LOCATION_REQUEST_TIMEOUT_MS,
   MAX_SCREENSIZE_MOBILE,
   TIMEZONE
 };

@@ -5,6 +5,7 @@ import {eControlApi} from "../common/apis/eControl";
 import {spritstatApi} from "../common/apis/spritstatApi";
 import {accountSlice} from "../common/auth/accountSlice";
 import {i18n} from "../common/i18n";
+import {positionSlice} from "../common/components/CurrentPosition";
 
 
 const store = configureStore({
@@ -13,12 +14,13 @@ const store = configureStore({
     [spritstatApi.reducerPath]: spritstatApi.reducer,
     account: accountSlice.reducer,
     i18n: i18n.reducer,
-    settings: settingsSlice.reducer
- },
+    settings: settingsSlice.reducer,
+    position: positionSlice.reducer
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
-   }).concat(
+    }).concat(
       eControlApi.middleware,
       spritstatApi.middleware,
     ),

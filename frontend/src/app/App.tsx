@@ -24,6 +24,7 @@ import LocationDetails from "../features/location/LocationDetails";
 import {SettingsProvider} from "../common/settings/SettingsProvider";
 import Unsubscribe from "../common/settings/Unsubscribe";
 import I18nProvider from "../common/i18n/I18nProvider";
+import {PositionProvider} from "../common/components/CurrentPosition";
 
 
 export default function App() {
@@ -34,69 +35,71 @@ export default function App() {
     <I18nProvider>
       <AuthProvider>
         <SettingsProvider>
-          <Routes>
-            <Route path="*" element={<NoMatch/>}/>
-            <Route index element={<Index/>}/>
-            <Route path={RouteNames.Home} element={<Home/>}/>
-            <Route path={RouteNames.Imprint} element={<Imprint/>}/>
-            <Route path={RouteNames.PrivacyPolicy} element={<PrivacyPolicy/>}/>
-            <Route
-              path={RouteNames.Signup}
-              element={<RequireNoAuth><Signup/></RequireNoAuth>}
-            />
-            <Route
-              path={`${RouteNames.VerifyEmailSent}/:email`}
-              element={<RequireNoAuth><EmailVerificationSent/></RequireNoAuth>}
-            />
-            <Route
-              path={`${RouteNames.ConfirmEmail}/:key`}
-              element={<RequireNoAuth><ConfirmEmail/></RequireNoAuth>}
-            />
-            <Route
-              path={RouteNames.Login}
-              element={<RequireNoAuth><Login/></RequireNoAuth>}
-            />
-            <Route
-              path={RouteNames.PasswordRecoveryEmail}
-              element={<RequireNoAuth><PasswordRecoveryEmail/></RequireNoAuth>}
-            />
-            <Route
-              path={`${RouteNames.ResetPassword}/:uid/:token`}
-              element={<RequireNoAuth><ResetPassword/></RequireNoAuth>}
-            />
-            <Route
-              path={RouteNames.AccountDeleted}
-              element={<RequireNoAuth><AccountDeleted/></RequireNoAuth>}
-            />
-            <Route
-              path={RouteNames.Settings}
-              element={<RequireAuth><Settings/></RequireAuth>}
-            />
-            <Route
-              path={RouteNames.ChangePassword}
-              element={<RequireAuth><ChangePassword/></RequireAuth>}
-            />
-            <Route
-              path={RouteNames.Contact}
-              element={<RequireAuth><Contact/></RequireAuth>}
-            />
-            <Route
-              path={RouteNames.Dashboard}
-              element={<RequireAuth><Dashboard/></RequireAuth>}
-            />
-            <Route
-              path={RouteNames.AddLocation}
-              element={<RequireAuth><AddLocation/></RequireAuth>}
-            />
-            <Route
-              path={`${RouteNames.LocationDetails}/:locationId`}
-              element={<RequireAuth><LocationDetails/></RequireAuth>}
-            />
-            <Route
-              path={`${RouteNames.Unsubscribe}/:uid/:token`}
-              element={<Unsubscribe/>}
-            />
-          </Routes>
+          <PositionProvider>
+            <Routes>
+              <Route path="*" element={<NoMatch/>}/>
+              <Route index element={<Index/>}/>
+              <Route path={RouteNames.Home} element={<Home/>}/>
+              <Route path={RouteNames.Imprint} element={<Imprint/>}/>
+              <Route path={RouteNames.PrivacyPolicy} element={<PrivacyPolicy/>}/>
+              <Route
+                path={RouteNames.Signup}
+                element={<RequireNoAuth><Signup/></RequireNoAuth>}
+              />
+              <Route
+                path={`${RouteNames.VerifyEmailSent}/:email`}
+                element={<RequireNoAuth><EmailVerificationSent/></RequireNoAuth>}
+              />
+              <Route
+                path={`${RouteNames.ConfirmEmail}/:key`}
+                element={<RequireNoAuth><ConfirmEmail/></RequireNoAuth>}
+              />
+              <Route
+                path={RouteNames.Login}
+                element={<RequireNoAuth><Login/></RequireNoAuth>}
+              />
+              <Route
+                path={RouteNames.PasswordRecoveryEmail}
+                element={<RequireNoAuth><PasswordRecoveryEmail/></RequireNoAuth>}
+              />
+              <Route
+                path={`${RouteNames.ResetPassword}/:uid/:token`}
+                element={<RequireNoAuth><ResetPassword/></RequireNoAuth>}
+              />
+              <Route
+                path={RouteNames.AccountDeleted}
+                element={<RequireNoAuth><AccountDeleted/></RequireNoAuth>}
+              />
+              <Route
+                path={RouteNames.Settings}
+                element={<RequireAuth><Settings/></RequireAuth>}
+              />
+              <Route
+                path={RouteNames.ChangePassword}
+                element={<RequireAuth><ChangePassword/></RequireAuth>}
+              />
+              <Route
+                path={RouteNames.Contact}
+                element={<RequireAuth><Contact/></RequireAuth>}
+              />
+              <Route
+                path={RouteNames.Dashboard}
+                element={<RequireAuth><Dashboard/></RequireAuth>}
+              />
+              <Route
+                path={RouteNames.AddLocation}
+                element={<RequireAuth><AddLocation/></RequireAuth>}
+              />
+              <Route
+                path={`${RouteNames.LocationDetails}/:locationId`}
+                element={<RequireAuth><LocationDetails/></RequireAuth>}
+              />
+              <Route
+                path={`${RouteNames.Unsubscribe}/:uid/:token`}
+                element={<Unsubscribe/>}
+              />
+            </Routes>
+          </PositionProvider>
         </SettingsProvider>
       </AuthProvider>
     </I18nProvider>
