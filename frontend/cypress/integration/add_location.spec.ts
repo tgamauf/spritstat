@@ -1,5 +1,5 @@
 import {FuelType, LocationType, RouteNames} from "../../src/common/types";
-import * as google from "../../src/features/location/NamedLocationField/google";
+import * as google from "../../src/common/apis/google";
 
 
 class MockLatLng {

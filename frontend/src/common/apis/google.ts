@@ -1,5 +1,5 @@
-import {INVALID_COORDINATES, INVALID_LOCATION} from "../../../common/constants";
-import {Coordinates, NamedLocation} from "../../../common/types";
+import {INVALID_COORDINATES, INVALID_LOCATION} from "../constants";
+import {Coordinates, NamedLocation} from "../types";
 
 
 let ready = false;
@@ -42,6 +42,9 @@ const INVALID_PARSED_LOCATION: ParsedLocation = {
 };
 
 class GoogleMapsAPI {
+  public readonly Map = google.maps.Map;
+  public readonly Marker = google.maps.Marker;
+
   private autocompleteService: google.maps.places.AutocompleteService;
   private geocoderService: google.maps.Geocoder;
   private readonly sessionToken: google.maps.places.AutocompleteSessionToken;
