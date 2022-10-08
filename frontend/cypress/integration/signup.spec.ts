@@ -145,6 +145,14 @@ describe("Validate confirm email address", () => {
         getSessionResponseIdx++;
       }
     ).as("isAuthenticated");
+    cy.intercept(
+      "GET",
+      "/api/v1/sprit/",
+      {
+        statusCode: 200,
+        body: []
+      }
+    );
 
     cy.visitWithLocale(`${RouteNames.ConfirmEmail}/key/`);
 
