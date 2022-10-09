@@ -18,7 +18,7 @@ import {getFormattedIntroOption, updateIntroStepElement, useAppSelector} from ".
 import {selectIntroSettingsAddLocation} from "../../common/settings/settingsSlice";
 import {useSetSettingMutation} from "../../common/apis/spritstatApi";
 import {BTN_CURRENT_LOCATION_ID, NamedLocationField, TEXT_LOCATION_ID} from "./NamedLocationField";
-import FuelTypeButton from "./FuelTypeButton";
+import {BTN_FUEL_TYPE_ID, FuelTypeButtonGroup} from "../../common/components/FuelTypeButtonGroup";
 
 
 const BREADCRUMB: BreadcrumbItem = {
@@ -38,7 +38,6 @@ const INVALID_REGION: Region = {
 
 const TAB_LOCATION_TYPE_NAMED_ID = "tab-location-type-named";
 const TAB_LOCATION_TYPE_REGION_ID = "tab-location-type-region";
-const BTN_FUEL_TYPE_ID = "btn-fuel-type";
 const BTN_ADD_LOCATION_ID = "btn-add-location"
 
 interface Region {
@@ -339,22 +338,7 @@ export default function AddLocation(): JSX.Element {
             <div className="block">{mainComponent}</div>
             <div className="block">
               <div className="is-inline-block">
-                <div className="field has-addons" id={BTN_FUEL_TYPE_ID}>
-                  <FuelTypeButton
-                    value={FuelType.Diesel}
-                    selected={fuelType === FuelType.Diesel}
-                    onClick={setFuelType}
-                  />
-                  <FuelTypeButton
-                    value={FuelType.Super}
-                    selected={fuelType === FuelType.Super}
-                    onClick={setFuelType}
-                  />
-                  <FuelTypeButton
-                    value={FuelType.Gas}
-                    selected={fuelType === FuelType.Gas}
-                    onClick={setFuelType} />
-                </div>
+                <FuelTypeButtonGroup value={fuelType} setSelected={setFuelType} />
               </div>
             </div>
             <div className="block">
