@@ -63,6 +63,7 @@ venv.bak/
 
 # Development files
 .idea/
+.magicignore
 
 # OS
 .DS_store
