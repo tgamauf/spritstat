@@ -87,7 +87,7 @@ jobs:
           retention-days: 1
       - name: Collect test specs to allow for parallel tests
         id: parse
-        uses: tgamauf/cypress-parallel@v2
+        uses: tgamauf/cypress-parallel@v2.0.0
         with:
           working-directory: frontend
           count-runners: 5
