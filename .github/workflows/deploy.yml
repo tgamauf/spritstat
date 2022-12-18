@@ -70,6 +70,8 @@ jobs:
           IMAGE: "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}"
       - name: Commit and push changes
         run: |
+          git config user.name "SPRITSTAT Github Action"
+          git config user.email "robot@farside.ai"
           git add ${DEPLOYMENT_FILE_PATH}
           git commit -m "Update SPRITSTAT image version to ${IMAGE_VERSION}"
           git push
