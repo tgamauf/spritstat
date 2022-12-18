@@ -17,8 +17,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/tgamauf/spritstat
-        tags:
-          type=edge
+          tags:
+            type=edge
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to Github container registry
