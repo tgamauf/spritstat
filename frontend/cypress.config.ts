@@ -1,5 +1,3 @@
-import { defineConfig } from 'cypress'
-
 export default {
   viewportWidth: 1280,
   viewportHeight: 720,
