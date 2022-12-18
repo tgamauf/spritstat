@@ -131,7 +131,7 @@ jobs:
         run: |
           npm install
       - name: Execute tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           working-directory: frontend
           install: false
