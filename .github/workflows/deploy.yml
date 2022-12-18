@@ -7,9 +7,9 @@ name: Deploy
 #    branches: [main]
 on: push
 env:
-  image_name: "ghcr.io/tgamauf/spritstat"
-  deployment_repo: "tgamauf/spritstat-deployment"
-  deployment_path: "k8s/spritstat/deployment.yaml"
+  IMAGE_NAME: "ghcr.io/tgamauf/spritstat"
+  DEPLOYMENT_REPO: "tgamauf/spritstat-deployment"
+  DEPLOYMENT_FILE_PATH: "k8s/spritstat/deployment.yaml"
 
 jobs:
   docker:
@@ -22,7 +22,7 @@ jobs:
         uses: docker/metadata-action@v4
         id: meta
         with:
-          images: ${{ env.image_name }}
+          images: ${{ env.IMAGE_NAME }}
           tags: type=sha
 #          flavor: latest=true TODO
       - name: Login to Github container registry
@@ -46,9 +46,9 @@ jobs:
       - name: Checkout spritstat-deployment
         uses: actions/checkout@v3
         with:
-          repository:
+          repository: ${{ env.DEPLOYMENT_REPO }}
           ref: ${{ github.ref_name }}
-          token:
+          token: ${{ secrets.SPRITSTAT_DEPLOYMENT_TOKEN }}
       - name: Install Python dependencies
         run: pip install PyYAML
       - name: Update deployed version
@@ -59,12 +59,19 @@ jobs:
           
           print(environ)
           
-          deployment_path = environ["INPUTS_DEPLOYMENT_PATH"]
-          image = environ["INPUTS_IMAGE"]
+          deployment_path = environ["DEPLOYMENT_FILE_PATH"]
+          image = environ["IMAGE"]
           with open(deployment_path) as f:
               data = yaml.safe_load(f)
           data["spec"]["template"]["spec"]["containers"][0]["image"] = image
           with open(deployment_path, "w") as f:
               data = yaml.safe_dump(data, f)
         env:
-          image: "${{ env.image }}:${{ steps.meta.outputs.version }}"
+          IMAGE: "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}"
+      - name: Commit and push changes
+        run: |
+          git add ${DEPLOYMENT_FILE_PATH}
+          git commit -m "Update SPRITSTAT image version to ${IMAGE_VERSION}"
+          git push
+        env:
+          IMAGE_VERSION: "${{ steps.meta.outputs.version }}"
