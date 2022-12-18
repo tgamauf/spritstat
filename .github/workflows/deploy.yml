@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 #    if: ${{ github.event.workflow_run.conclusion == 'success' }} TODO
     steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       - name: Docker meta
         uses: docker/metadata-action@v4
         id: meta
