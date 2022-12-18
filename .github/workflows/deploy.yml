@@ -42,6 +42,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [docker]
+    env:
+      image: "${{ env.image }}:${{ steps.meta.outputs.version }}"
     steps:
       - name: Checkout spritstat-deployment
         uses: actions/checkout@v3
@@ -62,5 +64,3 @@ jobs:
           data["spec"]["template"]["spec"]["containers"][0]["image"] = image
           with open(deployment_path, "w") as f:
               data = yaml.safe_dump(data, f)
-        with:
-          image: "${{ env.image }}:${{ steps.meta.outputs.version }}"
