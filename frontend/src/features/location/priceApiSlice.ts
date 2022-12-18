@@ -98,4 +98,4 @@ const extendedApi = eControlApi.injectEndpoints({
 })
 
 export type {CurrentPrice, Station};
-export const {useGetCurrentPriceQuery} = extendedApi;
+export const {useGetCurrentPriceQuery, useLazyGetCurrentPriceQuery} = extendedApi;

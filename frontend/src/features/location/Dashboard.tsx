@@ -10,6 +10,7 @@ import {RouteNames} from "../../common/types";
 import {useGetLocationsQuery} from "./locationApiSlice";
 import LoadingError from "../../common/components/LoadingError";
 import {BreadcrumbItem} from "../../common/components/Breadcrumb";
+import CurrentLocationMap from "./CurrentLocationMap";
 
 
 const BREADCRUMB: BreadcrumbItem = {
@@ -30,7 +31,7 @@ export default function Dashboard() {
     isFetching,
     isSuccess,
     refetch
- } = useGetLocationsQuery();
+  } = useGetLocationsQuery();
   const [errorMessage, setErrorMessage] = useState("");
   const intl = useIntl();
 
@@ -39,18 +40,18 @@ export default function Dashboard() {
       console.error(
         `Failed to get locations: ${JSON.stringify(error, null, 2)}`
       );
-   }
- }, [isError]);
+    }
+  }, [isError]);
 
-  let mainComponent;
+  let myLocationsComponent;
   if (isSuccess && locations) {
     if (locations.length === 0) {
-      mainComponent = <NoLocation />;
-   } else {
-      mainComponent = <LocationList setErrorMessage={setErrorMessage} />;
-   }
- } else {
-    mainComponent = (
+      myLocationsComponent = <NoLocation/>;
+    } else {
+      myLocationsComponent = <LocationList setErrorMessage={setErrorMessage}/>;
+    }
+  } else {
+    myLocationsComponent = (
       <LoadingError
         loading={isFetching}
         message={intl.formatMessage({
@@ -64,10 +65,10 @@ export default function Dashboard() {
               defaultMessage: "Neu laden"
             })}
           </Link>
-       }
+        }
       />
     );
- }
+  }
 
   return (
     <BasePage
@@ -77,7 +78,12 @@ export default function Dashboard() {
     >
       <div className="columns is-centered wide-content">
         <div className="column is-two-thirds-fullhd">
-          {mainComponent}
+          <section className="section">
+            <CurrentLocationMap />
+          </section>
+          <section className="section">
+            {myLocationsComponent}
+          </section>
         </div>
       </div>
     </BasePage>
