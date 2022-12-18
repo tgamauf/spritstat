@@ -20,7 +20,7 @@ jobs:
         with:
           images: ghcr.io/tgamauf/spritstat
           tags:
-            type=edge
+            type=edge,branch=gitops-deployment
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to Github container registry
