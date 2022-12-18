@@ -1,10 +1,11 @@
 name: Deploy
 
-on:
-  workflow_run:
-    workflows: [Test]
-    types: [completed]
-    branches: [gitops-deployment]
+#on:
+#  workflow_run: TODO
+#    workflows: [Test]
+#    types: [completed]
+#    branches: [gitops-deployment]
+on: push
 
 jobs:
   docker:
