@@ -24,9 +24,9 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -61,7 +61,7 @@ jobs:
     outputs:
       integration-tests: ${{ steps.parse.outputs.integration-tests }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install frontend dependencies
         working-directory: ./frontend
         run: |
@@ -71,7 +71,7 @@ jobs:
         run: |
           npm run trans:manage -- --check
       - name: Build frontend
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           working-directory: frontend
           runTests: false
@@ -110,14 +110,14 @@ jobs:
       matrix:
         spec: ${{ fromJson(needs.prepare-end-to-end-tests.outputs.integration-tests) }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Download the build folders from prepare step
         uses: actions/download-artifact@v3
         with:
           name: build
           path: frontend/
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
