@@ -69,7 +69,7 @@ jobs:
           with open(deployment_path, "w") as f:
               data = yaml.safe_dump(data, f)
         env:
-          IMAGE: "${{ env.IMAGE_NAME }}:${{ docker.meta.outputs.image_version }}"
+          IMAGE: "${{ env.IMAGE_NAME }}:${{ needs.docker.outputs.image_version }}"
       - name: Commit and push changes
         run: |
           git config user.name "SPRITSTAT Github Action"
@@ -78,4 +78,4 @@ jobs:
           git commit -m "Update SPRITSTAT image version to ${IMAGE_VERSION}"
           git push
         env:
-          IMAGE_VERSION: "${{ docker.meta.outputs.image_version }}"
+          IMAGE_VERSION: "${{ needs.docker.outputs.image_version }}"
