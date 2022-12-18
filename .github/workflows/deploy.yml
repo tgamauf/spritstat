@@ -27,7 +27,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        users: docker/build-push-action@v3
+        uses: docker/build-push-action@v3
         with:
           context: .
           push: true
