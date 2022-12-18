@@ -1,8 +1,0 @@
-{
-  "log-driver": "awslogs",
-  "log-opts": {
-    "awslogs-region": "eu-central-1",
-    "awslogs-group": "spritstat"
-  }
-}
-
