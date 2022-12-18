@@ -13,8 +13,9 @@ def add_schedules(apps, schema_editor):
     Schedule.objects.create(
         func="user_statistics.services.calculate_daily_active_users",
         schedule_type="D",
-        next_run=timezone.datetime(
-            year=now.year, month=now.month, day=now.day + 1, hour=3
+        next_run=(
+            timezone.datetime(year=now.year, month=now.month, day=now.day, hour=3)
+            + relativedelta(days=1)
         ),
     )
 
@@ -23,7 +24,10 @@ def add_schedules(apps, schema_editor):
     Schedule.objects.create(
         func="user_statistics.services.calculate_monthly_active_users",
         schedule_type="M",
-        next_run=timezone.datetime(year=now.year, month=now.month + 1, day=1, hour=3),
+        next_run=(
+            timezone.datetime(year=now.year, month=now.month, day=1, hour=3)
+            + relativedelta(months=1)
+        ),
     )
 
     # Create schedule for deleting user visits.
@@ -32,7 +36,10 @@ def add_schedules(apps, schema_editor):
     Schedule.objects.create(
         func="user_statistics.services.delete_past_user_visits",
         schedule_type="M",
-        next_run=timezone.datetime(year=now.year, month=now.month + 1, day=5, hour=3),
+        next_run=(
+            timezone.datetime(year=now.year, month=now.month, day=5, hour=3)
+            + relativedelta(months=1)
+        ),
     )
 
 
