@@ -48,6 +48,7 @@ jobs:
         with:
           repository:
           ref: ${{ github.ref_name }}
+          token:
       - name: Install Python dependencies
         run: pip install PyYAML
       - name: Update deployed version
@@ -55,6 +56,9 @@ jobs:
         run: |
           from os import environ
           import yaml
+          
+          print(environ)
+          
           deployment_path = environ["INPUTS_DEPLOYMENT_PATH"]
           image = environ["INPUTS_IMAGE"]
           with open(deployment_path) as f:
