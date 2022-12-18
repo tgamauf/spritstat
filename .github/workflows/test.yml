@@ -87,7 +87,7 @@ jobs:
           retention-days: 1
       - name: Collect test specs to allow for parallel tests
         id: parse
-        uses: tgamauf/cypress-parallel@2
+        uses: tgamauf/cypress-parallel@2.0.0
         with:
           working-directory: frontend
           count-runners: 5
@@ -131,7 +131,7 @@ jobs:
         run: |
           npm install
       - name: Execute tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           working-directory: frontend
           install: false
