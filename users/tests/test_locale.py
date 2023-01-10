@@ -42,6 +42,11 @@ class TestSession(APITestCase):
     def test_set_locale_same_locale(self):
         self.user.locale = Locales.EN
         self.user.save()
+
+        # Do a login here as the test uses a deep copy of the user object instead of the
+        #  real object itself
+        self.client.login(username=self.user.email, password="test")
+
         response = self.client.post(self.url, {"locale": Locales.EN.value})
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         locale_cookie = response.cookies.get(settings.LANGUAGE_COOKIE_NAME)
@@ -53,6 +58,11 @@ class TestSession(APITestCase):
     def test_set_locale_different_locale(self):
         self.user.locale = Locales.EN
         self.user.save()
+
+        # Do a login here as the test uses a deep copy of the user object instead of the
+        #  real object itself
+        self.client.login(username=self.user.email, password="test")
+
         response = self.client.post(self.url, {"locale": Locales.DE.value})
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         locale_cookie = response.cookies.get(settings.LANGUAGE_COOKIE_NAME)
@@ -95,6 +105,11 @@ class TestSession(APITestCase):
     def test_get(self):
         self.user.locale = Locales.EN
         self.user.save()
+
+        # Do a login here as the test uses a deep copy of the user object instead of the
+        #  real object itself
+        self.client.login(username=self.user.email, password="test")
+
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["locale"], Locales.EN.value)
