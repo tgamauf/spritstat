@@ -151,6 +151,7 @@ CSRF_COOKIE_SAMESITE = "Strict"
 # False to allow extraction of the CSRF token from the cookie by the frontend
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SECURE = Settings.SECURE_COOKIE
+CSRF_TRUSTED_ORIGINS = [f"https://{DOMAIN}"] if Settings.SECURE_COOKIE else []
 SESSION_COOKIE_AGE = 2419200  # 4 weeks
 SESSION_COOKIE_SAMESITE = "Strict"
 SESSION_COOKIE_HTTPONLY = True
