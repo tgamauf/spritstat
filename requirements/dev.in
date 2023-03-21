@@ -1,4 +1,3 @@
-ansible
 black
 coverage
 pip-tools>=6.8.0
