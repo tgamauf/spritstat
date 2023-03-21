@@ -16,7 +16,6 @@ def assing_stations_to_users(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("spritstat", "0012_auto_20220210_2059"),

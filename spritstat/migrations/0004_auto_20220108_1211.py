@@ -11,7 +11,6 @@ def replace_schedule_function(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("spritstat", "0003_auto_20220108_1200"),
     ]

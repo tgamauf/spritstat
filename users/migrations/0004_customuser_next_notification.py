@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("django_q", "0014_schedule_cluster"),
         ("users", "0003_customuser_last_activity"),

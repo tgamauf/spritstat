@@ -47,7 +47,6 @@ def fill_missing_data(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("spritstat", "0014_remove_station_user"),
     ]

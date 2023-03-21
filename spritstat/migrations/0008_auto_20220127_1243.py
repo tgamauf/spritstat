@@ -20,7 +20,6 @@ def set_name(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("spritstat", "0007_auto_20220127_1203"),
     ]

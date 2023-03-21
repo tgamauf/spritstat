@@ -15,7 +15,6 @@ def create_settings(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("spritstat", "0016_alter_price_options"),

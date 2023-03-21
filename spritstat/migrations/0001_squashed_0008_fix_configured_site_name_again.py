@@ -14,7 +14,6 @@ def set_site(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     replaces = [
         ("spritstat", "0001_initial"),
         ("spritstat", "0002_initial"),

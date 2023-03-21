@@ -12,7 +12,6 @@ def add_clear_session_task(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("spritstat", "0010_alter_station_name"),
     ]

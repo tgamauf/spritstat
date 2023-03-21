@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("spritstat", "0001_squashed_0008_fix_configured_site_name_again"),
     ]
