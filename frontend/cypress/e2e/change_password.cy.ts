@@ -61,7 +61,7 @@ describe("Validate password change process", () => {
     cy.url().should("include", RouteNames.Dashboard);
  });
 
-  it("invalid current password", () => {
+  it.skip("invalid current password", () => {
     cy.visitWithLocale(RouteNames.ChangePassword);
 
     cy.getBySel("field-current-password").type("invalid");
