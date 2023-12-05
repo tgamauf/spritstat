@@ -4,39 +4,39 @@
 #
 #    pip-compile --output-file=requirements_dev.txt requirements/dev.in requirements/production.in
 #
-asgiref==3.6.0
+asgiref==3.7.2
     # via django
-black==23.3.0
+black==23.11.0
     # via -r requirements/dev.in
-build==0.10.0
+build==1.0.3
     # via pip-tools
-certifi==2023.5.7
+certifi==2023.11.17
     # via
     #   -r requirements/production.in
     #   requests
-cffi==1.15.1
+cffi==1.16.0
     # via cryptography
-cfgv==3.3.1
+cfgv==3.4.0
     # via pre-commit
-charset-normalizer==3.1.0
+charset-normalizer==3.3.2
     # via requests
-click==8.1.3
+click==8.1.7
     # via
     #   black
     #   pip-tools
-coverage==7.2.5
+coverage==7.3.2
     # via -r requirements/dev.in
-cryptography==40.0.2
+cryptography==41.0.7
     # via
     #   -r requirements/production.in
     #   pyjwt
 defusedxml==0.7.1
     # via python3-openid
-distlib==0.3.6
+distlib==0.3.7
     # via virtualenv
-dj-rest-auth==2.2.8
+dj-rest-auth==5.0.2
     # via -r requirements/production.in
-django==4.2.1
+django==4.2.8
     # via
     #   -r requirements/production.in
     #   dj-rest-auth
@@ -47,7 +47,7 @@ django==4.2.1
     #   django-q2
     #   django-user-visit
     #   djangorestframework
-django-allauth==0.54.0
+django-allauth==0.58.2
     # via -r requirements/production.in
 django-cors-headers==3.14.0
     # via -r requirements/production.in
@@ -55,7 +55,7 @@ django-manifest-loader==1.0.0
     # via -r requirements/production.in
 django-picklefield==3.1
     # via django-q2
-django-q2==1.5.3
+django-q2==1.6.1
     # via -r requirements/production.in
 django-user-visit==1.1
     # via -r requirements/production.in
@@ -63,14 +63,18 @@ djangorestframework==3.14.0
     # via
     #   -r requirements/production.in
     #   dj-rest-auth
-filelock==3.12.0
+filelock==3.13.1
     # via virtualenv
 gunicorn==20.1.0
     # via -r requirements/production.in
-identify==2.5.24
+identify==2.5.32
     # via pre-commit
-idna==3.4
+idna==3.6
     # via requests
+importlib-metadata==7.0.0
+    # via
+    #   build
+    #   django-q2
 mypy-extensions==1.0.0
     # via black
 nodeenv==1.8.0
@@ -79,28 +83,30 @@ oauthlib==3.2.2
     # via
     #   -r requirements/production.in
     #   requests-oauthlib
-packaging==23.1
+packaging==23.2
     # via
     #   black
     #   build
-pathspec==0.11.1
+pathspec==0.11.2
     # via black
-pip-tools==6.13.0
+pip-tools==7.3.0
     # via -r requirements/dev.in
-platformdirs==3.5.1
+platformdirs==4.1.0
     # via
     #   black
     #   virtualenv
 polib==1.2.0
     # via -r requirements/dev.in
-pre-commit==3.3.1
+pre-commit==3.5.0
     # via -r requirements/dev.in
-psycopg2-binary==2.9.6
+psycopg2-binary==2.9.9
     # via -r requirements/production.in
 pycparser==2.21
     # via cffi
-pyjwt[crypto]==2.7.0
-    # via django-allauth
+pyjwt[crypto]==2.8.0
+    # via
+    #   django-allauth
+    #   pyjwt
 pyproject-hooks==1.0.0
     # via build
 python-dateutil==2.8.2
@@ -109,12 +115,13 @@ python-dotenv==0.21.1
     # via -r requirements/production.in
 python3-openid==3.2.0
     # via django-allauth
-pytz==2023.3
+pytz==2023.3.post1
     # via djangorestframework
-pyyaml==6.0
+pyyaml==6.0.1
     # via pre-commit
-requests==2.30.0
+requests==2.31.0
     # via
+    #   -r requirements/production.in
     #   django-allauth
     #   requests-oauthlib
 requests-oauthlib==1.3.1
@@ -129,20 +136,26 @@ tomli==2.0.1
     # via
     #   black
     #   build
-typing-extensions==4.5.0
-    # via black
-ua-parser==0.16.1
+    #   pip-tools
+    #   pyproject-hooks
+typing-extensions==4.8.0
+    # via
+    #   asgiref
+    #   black
+ua-parser==0.18.0
     # via user-agents
-urllib3==1.26.15
+urllib3==1.26.18
     # via
     #   -r requirements/production.in
     #   requests
 user-agents==2.2.0
     # via django-user-visit
-virtualenv==20.23.0
+virtualenv==20.25.0
     # via pre-commit
-wheel==0.40.0
+wheel==0.42.0
     # via pip-tools
+zipp==3.17.0
+    # via importlib-metadata
 zxcvbn==4.4.28
     # via -r requirements/production.in
 

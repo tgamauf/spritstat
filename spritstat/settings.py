@@ -67,6 +67,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "user_visit.middleware.UserVisitMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "spritstat.urls"
@@ -181,12 +182,12 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
-REST_AUTH_TOKEN_MODEL = None
-REST_SESSION_LOGIN = True
-REST_AUTH_SERIALIZERS = {
+# dj-rest-auth config
+REST_AUTH = {
+    "TOKEN_MODEL": None,
+    "SESSION_LOGIN": True,
     "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
 }
-
 
 # Application config
 
