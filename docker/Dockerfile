@@ -28,7 +28,7 @@ RUN useradd --user-group \
 RUN apt-get update \
   && apt-get install -y \
     # Required by entrypoint.sh in order to wait for the DB
-    netcat \
+    netcat-traditional \
     # Required by Django i18n
     gettext \
   && rm -rf /var/lib/apt/lists/*
